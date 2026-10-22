@@ -103,8 +103,9 @@ Na jídlo podle programu (večeře 18–19, snídaně 7:30–9, oběd 12–13) c
 Každý soubor má jednoho vlastníka a jen ten ho mění, ostatní ho jen čtou. Tím odpadne většina konfliktů v Gitu.
 
 ```
-hackathon-2026/
-├── CLAUDE.md          Tobias   zadání, data, metrika, pravidla
+hackathon-decin-2026-ml-ai/
+├── CLAUDE.md          Tobias   kontext a pravidla pro Claude, sekce Stav
+├── .claude/           Ondra    role, příkazy a nastavení pro Claude
 ├── data/
 │   ├── raw/           nikdo    data od pořadatelů, NE do Gitu
 │   └── split/         Ondra    pevné rozdělení train / val / test
@@ -125,74 +126,57 @@ Tři pravidla:
 2. **Jedno měření pro všechny.** Každý pokus se hodnotí přes `src/evaluate.py` a uloží jako nový soubor `results/<jméno>-<čas>-<popis>.json`. Když má každý pokus vlastní soubor, nevznikají konflikty.
 3. **`predict.py` je dohoda mezi modelem a aplikací.** Honza zatím používá falešnou verzi, Dan ji pak vymění za skutečnou.
 
-Claude Code čte `CLAUDE.md` automaticky při každém startu, takže všichni čtyři Claude mají stejný kontext. Na začátku každé relace stačí napsat: „Jsem Dan, přečti CLAUDE.md.“
+## Claude Code v repozitáři
 
-```markdown
-# Hackathon ML/AI 2026
+Claude Code při každém startu sám načte `CLAUDE.md`: kontext hackathonu, pravidla, dohody v kódu, harmonogram a tento plán. Všichni čtyři Claude tak vědí totéž. Na začátku relace napiš svoje jméno jako příkaz a Claude se dozví tvou roli a úkoly.
 
-## Zadání
-(Tobias doplní hned po výběru tématu: co řešíme, pro koho, jak poznáme úspěch)
+| Příkaz | Kdo | Co dělá |
+|---|---|---|
+| `/ondra`, `/dan`, `/honza`, `/tobias` | každý svůj | role, úkoly a postup daného člověka |
+| `/sync` | všichni | commit vlastních souborů, stažení práce ostatních, push vlastní větve |
+| `/sync main` | všichni | totéž a hotovou práci pošle i do `main` |
+| `/temata <text zadání>` | pátek 15:30 | rozbor témat a návrhy nápadů podle vzorců vítězů |
+| `/stav` | kontrolní body | přehled, co kdo má hotové a co ho blokuje |
+| `/denik` | Tobias | zápis změn do `docs/DENIK.md` |
+| `/kontrola` | Ondra | kontrola výsledků ostatních (únik dat, rozdělení, metrika) |
+| `/porota` | sobota ráno | nácvik otázek poroty |
 
-## Data
-(kde leží: data/raw/, co obsahují, sloupce, velikost)
+Subagent `kontrolor` nezávisle zkontroluje jeden pokus. Commity z Claude jsou bez podpisu Claude, jen pod jménem autora.
 
-## Metrika
-(jedna metrika, např. F1 nebo MAE; počítá ji jen src/evaluate.py na validační části)
-
-## Kdo vlastní které soubory
-- Ondra: data/split/, src/evaluate.py, src/features.py
-- Dan: src/train_*.py, src/predict.py, models/
-- Honza: app/
-- Tobias: CLAUDE.md, docs/
-
-## Pravidla pro Claude
-- Měň jen soubory toho, kdo s tebou pracuje. Cizí soubory jen čti.
-- Nikdy netrénuj ani nelaď na testovací části z data/split/.
-- Každý pokus vyhodnoť přes src/evaluate.py a ulož jako nový soubor v results/.
-- Po každém funkčním kroku: git pull --rebase, commit jen svých souborů, git push.
-- Do commitu napiš jednou větou, co a proč.
-- Nikdy git push --force. Data a .env nikdy do Gitu.
-```
+V `.claude/settings.json` je povolené spouštět Python, Streamlit, Kaggle a běžné příkazy Gitu bez ptaní. Zakázané jsou `git push --force`, `git reset --hard` a čtení `.env` a `kaggle.json`. Povolení začnou platit, až Claude Code při prvním spuštění ve složce potvrdíš, že jí důvěřuješ.
 
 ## Git
 
-Všichni pracujeme přímo ve větvi `main`, každý jen ve svých souborech. Na 22 hodin je to rychlejší než větve a pull requesty.
+Každý má svou větev: `ondra`, `dan`, `honza`, `tobias`. Na ni pushuje kdykoli a nikomu tím nic nerozbije. Do `main` posíláme to, co funguje a co potřebují ostatní, nejméně na každém kontrolním bodě. Soubory má každý své, takže slučování bývá bez konfliktů.
 
-**Dnes večer, Ondra:**
-
-1. Na GitHubu založí repozitář `hackathon-2026` jako **Private**, bez README, `.gitignore` i licence. Všechno už je připravené a pushne se. Data od pořadatelů můžou být citlivá, proto Private.
-2. V Settings → Collaborators pozve ostatní tři. Pozvánku přijmou v e-mailu.
-
-`.gitignore` v repozitáři hlídá, aby se do Gitu nedostala data (`data/raw/`), virtuální prostředí, klíče (`.env`, `kaggle.json`) a velké modely.
+**Dnes večer, Ondra:** v Settings → Collaborators pozvat ostatní tři. Repozitář i větve jsou připravené.
 
 **Dnes večer, každý:**
 
-1. Přihlásit se: `gh auth login` (nebo přes GitHub Desktop).
-2. Naklonovat: `git clone https://github.com/ondrej-cloud/hackathon-2026.git`
-3. Zkušební commit: vytvořit `docs/test-<jméno>.txt`, pak `git add`, `git commit` a `git push`. Komu to projde, má přístup v pořádku.
+1. Přijmout pozvánku z e-mailu od GitHubu.
+2. Přihlásit se: `gh auth login` (nebo přes GitHub Desktop).
+3. Naklonovat: `git clone https://github.com/ondrej-cloud/hackathon-decin-2026-ml-ai.git`
+4. Přepnout na svou větev: `cd hackathon-decin-2026-ml-ai` a `git switch dan` (svoje jméno).
+5. Spustit `claude`, potvrdit důvěru ve složku a napsat `/dan` (svoje jméno).
+6. Zkušební commit: vytvořit `docs/test-dan.txt` a napsat `/sync`. Komu to projde, má přístup v pořádku.
 
-**Pracovní cyklus během hackathonu:**
+**Pracovní cyklus během hackathonu** (celý ho udělá `/sync`):
 
-1. `git pull --rebase` stáhne práci ostatních.
-2. Pracuješ se svým Claude jen ve svých souborech.
-3. `git add` jen na svoje soubory, nikdy naslepo `git add .`
-4. `git commit -m "Dan: LightGBM, val F1 0,81"`
-5. `git push`
+1. commit jen vlastních souborů na vlastní větvi
+2. `git fetch` a `git merge origin/main` stáhne práci ostatních
+3. `git push origin <větev>`
+4. s `/sync main` navíc `git push origin HEAD:main`
 
-Cyklus opakuj po každém funkčním kroku, nejméně jednou za hodinu. Celý ho zvládne Claude, stačí mu říct „commitni a pushni“.
+`/sync` spouštěj po každém funkčním kroku, nejméně jednou za hodinu. `/sync main` vždy, když máš něco, co potřebují ostatní (rozdělení dat, `evaluate.py`, `predict.py`, sekce Stav).
 
 **Když něco nejde:**
-- Push je odmítnutý: nejdřív `git pull --rebase`, pak push znovu.
+- Push do `main` je odmítnutý: někdo byl rychlejší, pusť `/sync main` znovu.
 - Konflikt: řekni Claude „vyřeš konflikt a zachovej změny obou stran“. Nikdy `git push --force`.
 - Data a velké modely: přes AirDrop, flashku nebo Google Disk, u všech do stejné složky `data/raw/`.
 
 ## Deník a přehled
 
-Tobias každou hodinu, nebo když někdo napíše „pushnuto“:
-
-1. `git pull`
-2. Řekne Claude: „Shrň, co se v repozitáři změnilo za poslední hodinu (git log a git diff). Vysvětli to jednoduše, tak aby se to dalo říct porotě, a připiš to do docs/DENIK.md.“
-3. Čemu nerozumí, na to se zeptá v týmu. Dvě věty vysvětlení ušetří půl hodiny čtení kódu.
+Tobias každou hodinu spustí `/denik`. Claude projde změny na všech větvích, jednoduše je vysvětlí a připíše do `docs/DENIK.md`. Čemu Tobias nerozumí, na to se zeptá v týmu. Dvě věty vysvětlení ušetří půl hodiny čtení kódu.
 
 Ondra deník průběžně čte a opravuje, co v něm technicky nesedí.
 
@@ -232,15 +216,15 @@ Pokud vybereme úlohu s textem (chatbot nad dokumenty), může být jazykový mo
 
 ## Dnes večer
 
-- [ ] Ondra: založit soukromý repozitář, pozvat ostatní, `.gitignore`, `CLAUDE.md` ze šablony
-- [ ] Všichni: zkušební commit a push
+- [ ] Ondra: pozvat ostatní do repozitáře
+- [ ] Všichni: naklonovat, přepnout na svou větev, spustit `claude` se svým příkazem a zkušební `/sync` (postup v sekci Git)
 - [ ] Všichni: Python 3.11 nebo novější, virtuální prostředí a balíčky níž
 - [ ] Všichni: Claude Code nainstalovaný, přihlášený a vyzkoušený
 - [ ] Všichni: účet Google kvůli Colabu a Disku
 - [ ] Dan: účet na Kaggle s ověřeným telefonem (bez něj nejde GPU), API token, vyzkoušet poslat skript na GPU
 - [ ] Ondra a Tobias: ověřit, že PyTorch vidí GPU Macu (příkaz níž)
 - [ ] Honza: spustit ukázkovou aplikaci `streamlit hello`; PyTorch instalovat nemusí, finální demo poběží u Tobiase
-- [ ] Tobias: založit prázdný `docs/DENIK.md`
+- [ ] Tobias: vyzkoušet `/denik`, založí `docs/DENIK.md`
 - [ ] Všichni: přečíst [článek Datového centra](https://dcuk.cz/novinky/od-otazky-k-prototypu-co-se-da-vytvorit-za-jeden-hackathon/)
 - [ ] Sbalit nabíječky, prodlužku, flashku, spacák a karimatku
 
