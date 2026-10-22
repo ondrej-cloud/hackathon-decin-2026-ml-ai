@@ -1,0 +1,23 @@
+# Data od pořadatelů a velké soubory
+data/raw/
+*.zip
+models/*.pt
+models/*.pth
+models/*.pkl
+models/*.joblib
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.ipynb_checkpoints/
+
+# Klíče a hesla
+.env
+kaggle.json
+.streamlit/secrets.toml
+
+# Systém
+.DS_Store
+Thumbs.db
