@@ -153,3 +153,8 @@ Následující záznamy jsou doplněné zpětně (pá 19:35) podle commitů, ať
 ## pá 20:30 · Ondra
 - Co: sepsali jsme celkový přehled řešení `docs/PREHLED.md`: co předpovídáme, které vstupy každý model používá, co jsme nevzali a proč, rozdělení, výsledky a tabulku všech rozhodnutí s důvody.
 - Proč: rozhodnutí byla rozesetá po deníku, pokusech a datech. Pro prezentaci a otázky poroty je potřebujeme pohromadě.
+
+## pá 20:45 · Ondra
+- Co: zjistili jsme, že doba putování vody závisí na průtoku. Při povodni se vlna zpomalí (Mělník → Ústí 8 h při malé vodě, 16 h nad 1 500 m³/s), protože se rozlije do nivy. Modely zatím počítají s jednou dobou na stanici.
+- Kdo co: Dan zkusí dobu putování podle průtoku (zadání v `docs/UKOL_MODELY.md`, sekce Další úkol), Ondra srážky, sníh a teplotu z 25 stanic ČHMÚ v povodí.
+- Proč: čtyři modely skončily blízko sebe, strop dělají vstupy. Oba pokusy přidávají informaci, kterou modely zatím nemají. Sklon a vzdálenost samotné se nemění, jejich vliv je už ve změřené době putování.

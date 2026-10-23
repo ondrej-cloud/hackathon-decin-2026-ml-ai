@@ -158,3 +158,26 @@ Zjišťujeme, jestli složitější model přidá něco, co lineární regrese n
 4. **Vysvětlení:** permutační důležitost vstupů (`sklearn.inspection.permutation_importance`) na validaci a srovnání s vahami lineárního modelu.
 
 Ondra navíc: ve 21:00 `python src/porovnej.py --prehled`, porovnat všechny čtyři modely na povodních, vybrat finální model a zapsat to do `docs/DENIK.md`. Finální test (`--test`) jednou v sobotu ráno.
+
+## Další úkol (pá 20:45): Dan, doba putování podle průtoku
+
+Doba, za kterou voda doteče do cíle, není stálá. Při povodni se vlna rozlije do nivy a zpomalí se. Na trénovacích datech 2006–2018 (největší korelace změn průtoku za 6 h, podle průtoku v Ústí):
+
+| Odkud → kam | pod 300 m³/s | 300–800 | 800–1500 | nad 1500 |
+|---|---|---|---|---|
+| Mělník → Ústí | 8 h | 9 h | 10 h | 16 h |
+| Praha → Ústí | 13 h | 13 h | 14 h | 39 h |
+| Louny → Ústí | 13 h | 12 h | 14 h | 23 h |
+| Ústí → Děčín | 5 h | 4 h | 3 h | 3 h |
+
+Nad 1 500 m³/s je málo hodin (hlavně povodně 2006, 2011, 2013), čísla jsou proto jen orientační. Ověř to.
+
+Úkol: v `lgbm_a.vstupy` je pro každou stanici jedna doba doběhu (`DOBA`). Udělej variantu, kde doba závisí na průtoku, který je v čase předpovědi známý (třeba v cíli nebo na té stanici teď):
+
+1. Na trénovacích datech změř dobu doběhu každé stanice zvlášť pro 3–4 pásma průtoku. Málo dat v pásmu = vezmi sousední pásmo, nic nevymýšlej.
+2. Vstupy „průtok, který dorazí za h hodin“ počítej s dobou podle pásma. Zpoždění zaokrouhli na ta, která jsou v X.
+3. Vyzkoušej to v LightGBM (`lgbm_doba.py`). Když to pomůže, zkus stejné vstupy i v lineární regresi (`ridge_doba.py`, odmocnina průtoků jako v `ridge.py`), ať víme, jestli to platí obecně.
+4. Platí pravidla iterace a „Na co si dát pozor“. Doby měř jen na trénovacích datech, nikdy na validaci.
+5. Do 22:00 zapiš výsledek do `docs/POKUSY.md` (i když nepomůže), rozbor do `docs/DENIK.md` a `/sync main`.
+
+Proč: fyzikálně je to transformace povodňové vlny (rozliv do nivy, drsnost a sklon koryta). Když to pomůže, máme pro porotu silný a vysvětlitelný krok. Když ne, víme proč.
