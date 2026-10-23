@@ -215,7 +215,7 @@ Následující záznamy jsou doplněné zpětně (pá 19:35) podle commitů, ať
 - Co: odpověď na otázku poroty k době doběhu podle průtoku, jak ji budeme říkat. Zapsaná i do `docs/POROZUMENI.md`, sekce Otázky, které čekáme od poroty.
 - Otázka poroty a odpověď: „Když víte, že se vlna při povodni zpomalí, proč to model nepoužívá?“ Zkusili jsme to a nepomohlo to (21,8 vs 22,2 cm, pod hranicí 1 cm). Lineární model má 98 zpožděných hodnot (z každé stanice 7 zpoždění 0–36 h) a dobu doběhu včetně roztažení vlny si z vah najde sám. Zpomalení při velkých povodních nejde spolehlivě změřit – nad 1 500 m³/s je v tréninku jen jedna povodeň (6/2013, 227 h).
 
-## pá 21:00 · Ondra · Rozhodnutí: finální model
+## pá 20:58 · Ondra · Rozhodnutí: finální model
 - Co: finální model je lineární regrese `src/models/ridge.py` (alpha 1, odmocnina průtoků, všech 98 vstupů). Rozhodnuto před spuštěním testu, test se pouští jednou.
 - Proč: na validaci nejlepší (17,1 cm na povodních, 61 % méně než „jako teď“), nic nepropásl, žádný planý poplach, trénink za sekundu a každá váha jde vysvětlit. Všechny pokusy o zlepšení skončily pod hranicí 1 cm nebo horší: síť 17,8, průměr ridge a sítě 16,9, srážky a sníh 17,4, doba putování podle průtoku (Dan) 21,8, větší váha povodní (Honza) 17,2, kratší historie (Honza) 16,6 při 8 letech, rozdíl pod 1 cm.
 - Test: finální model se natrénuje na všem do konce 2020 (train i validace) a vyhodnotí na 2021–2025 (`python src/porovnej.py jako_ted ridge --test`). Pro srovnání pustíme na test i ostatní tři přístupy, výběr je už uzavřený a podle testu se nemění.

@@ -94,6 +94,16 @@ Limity, na jakých datech by selhal, co jsme nestihli.
 
 ## Otázky pro mentory a odpovědi
 
+Připraveno pá 21:00 (Ondra jde za mentory). Odpověď dopsat pod každou otázku.
+
+1. Předpovídáme hladinu Labe v Děčíně a Ústí na 12–36 h dopředu a varujeme před 2. a 3. stupněm povodňové aktivity. Je to směr, který od úlohy chcete, nebo by vás víc zajímalo něco jiného (sucho, rychlé změny, teplota vody)?
+2. Trénujeme na otevřeném archivu ČHMÚ 2006–2025 i se stanicemi mimo kraj (Praha, Mělník, Louny). Data z balíčku se s ním shodují, používáme je jako kontrolu a pro prahy stupňů. Je v pořádku, že jsme sáhli i mimo balíček?
+3. S jakým zpožděním ČHMÚ v provozu zveřejňuje hodinové průtoky? A jak moc se předběžné průtoky při povodni liší od ověřených v archivu?
+4. Existují historické oficiální předpovědi ČHMÚ pro Děčín (třeba z povodní 2013 nebo 2024), se kterými bychom se mohli srovnat? Jak přesné bývají?
+5. Hodnotíme chybu jen během povodní a předstih varování, ne přesnost za celý rok, protože na klidné řece je přesný i odhad „zůstane to stejné“. Je to podle vás správné, nebo chcete jinou metriku?
+6. Pro koho má být výstup: krizový štáb, obec, nebo lidi u řeky? Co by na obrazovce chtěli vidět jako první?
+7. Ocenili byste v aplikaci data z balíčku za rok 2026 jako „aktuální stav řeky“?
+
 - Hodinové hodnoty ČHMÚ jsou průměry za hodinu a zveřejňují se se zpožděním. S jakým zpožděním jsou v provozu dostupné? Model bere hodnotu z času t jako známou v čase t; v provozu by se předstih zkrátil zhruba o to zpoždění.
 
 ## Otázky, které čekáme od poroty
