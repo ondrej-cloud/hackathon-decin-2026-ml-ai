@@ -70,6 +70,21 @@ Hlavní číslo je průměrná chyba hladiny během povodní (`mae_povodne`, pr�
 | fyzikální | 27,1 cm | 45 % | 80 / 64 / 38 % | 21 z 21 | 2 |
 | „bude jako teď“ | 50,2 cm | 0 % | 57 / 32 / 20 % | 0 z 21 | 0 |
 
+**Finální model na testu podrobně** (lineární regrese, 2021–2025; povodně = 7 dní před vrcholem až 5 po; klid = hladina pod 1. stupněm; do ±cm a % výšky jen při vodě nad 1. stupněm, 1 061 h v Děčíně a 857 h v Ústí; předstih je průměr a propásnutá povodeň se počítá jako 0):
+
+| Stanice | Za | Chyba na povodních | „Jako teď“ | Menší o | Chyba v klidu | Do ±10 / ±20 / ±30 cm | Chyba v % výšky | Bias | Chyba vrcholu | 2. stupeň: zachyceno, předstih, plané poplachy | 3. stupeň: zachyceno, předstih |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| Děčín | 12 h | 10,2 cm | 23,3 cm | 56 % | 5,0 cm | 70 / 91 / 97 % | 1,8 % | −2,7 cm | 13,1 cm | 3 z 4, 5 h, 0 | 3 z 3, 11 h |
+| Děčín | 24 h | 17,5 cm | 44,8 cm | 61 % | 7,1 cm | 45 / 70 / 87 % | 3,2 % | −10,5 cm | 21,4 cm | 3 z 4, 12 h, 1 | 3 z 3, 21 h |
+| Děčín | 36 h | 29,9 cm | 65,5 cm | 54 % | 10,2 cm | 25 / 46 / 64 % | 6,2 % | −21,7 cm | 21,6 cm | 3 z 4, 14 h, 1 | 3 z 3, 27 h |
+| Ústí | 12 h | 14,7 cm | 29,3 cm | 50 % | 5,8 cm | 60 / 87 / 94 % | 2,0 % | −3,0 cm | 21,6 cm | 2 z 3, 7 h, 0 | 3 z 3, 12 h |
+| Ústí | 24 h | 24,0 cm | 56,2 cm | 57 % | 8,1 cm | 34 / 63 / 80 % | 3,6 % | −13,2 cm | 22,1 cm | 3 z 3, 19 h, 0 | 3 z 3, 19 h |
+| Ústí | 36 h | 38,1 cm | 81,8 cm | 53 % | 11,1 cm | 23 / 40 / 55 % | 6,2 % | −26,6 cm | 25,0 cm | 3 z 3, 21 h, 1 | 3 z 3, 22 h |
+
+Graf: `docs/grafy/test_chybovost.png` (`python src/graf_test.py ridge`).
+
+Vrcholy testových povodní na 24 h (Děčín 2/2024, 12/2023, 9/2024): o 10, 17 a 38 cm níž. Propásnutý 2. stupeň v Děčíně je únor 2024 (vrchol 496 cm, hranice 490), v Ústí Vánoce 2023 o 2 cm.
+
 Povodeň Boris 9/2024 v Děčíně: 3. stupeň hlášen 27 h předem (předpověď na 24 h), vrchol 649 cm předpovězen na 611 cm. Grafy `docs/grafy/srovnani_procenta_test.png`, `povoden_2024-09_decin_24h.png`, `povoden_2023-12_decin_24h.png`.
 
 Grafy validace: `docs/grafy/srovnani_procenta.png`, `srovnani_ctyr_modelu.png`, `povoden_2011-01_decin_24h.png`, `povoden_2006-03_decin_36h.png`. Jak čísla číst a jestli jsou dobrá: `docs/POROZUMENI.md`, sekce Jak číst výsledky.
