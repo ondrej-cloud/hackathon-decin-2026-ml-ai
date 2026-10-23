@@ -15,7 +15,7 @@ Test 2021–2025 jsem nespouštěl.
   −3,9 až −4,6 cm. Platí za to ale přestřelením: na dešťové povodni 9/2010 předpověděl 575 cm místo 526
   (bez srážek 555) a dal 4 plané poplachy 3. stupně (Děčín a Ústí +24/+36 h). V LOFO zhoršil tání 4/2006
   o 3,9 cm. Do týmového LightGBM bych srážky nedával.
-- Jediný stálý, ale malý efekt je u týmového Ridge na začátku vzestupu: CV −0,9 cm, validace −1,9 cm, LOFO −0,9 cm.
+- U týmového Ridge je malý stálý efekt jen na začátku vzestupu: CV −0,9 cm, validace −1,9 cm, LOFO −0,9 cm.
   Na celkovou chybu na povodních to nestačí a u Danova Ridge s 30 stanicemi efekt není: horní stanice ukážou
   vlnu dřív, než by to uměly srážky ze 2 + 7 bodů.
 - Proč ne víc: v ISD po roce ~2013 chybí u 12 z 21 stanic hlavně suché termíny (nuly ze zpráv BUFR), takže zůstalo
@@ -167,6 +167,8 @@ souborem, řádkem a závažností). Prompty a plné odpovědi jsou v `codex/`, 
 
 Otázka poroty a odpověď: „Proč jste nepřidali srážky, když povodně dělá déšť?“ Zkusili jsme je dvakrát. Denní
 úhrny ČHMÚ jsou známé až druhý den ráno. Šestihodinové ze synoptických zpráv přijdou hodinu po měření, ani ty ale
-chybu na povodních nezlepšily o víc než 0,1 cm, ani v přísnější kontrole přes 22 povodní. Co spadlo, ukážou
+chybu na povodních nezlepšily ani o 1 cm, ani v přísnější kontrole přes 22 povodní (Ridge o 0,0, LightGBM o 0,5 cm).
+LightGBM s nimi sice dřív pozná začátek vzestupu, ale na dešťové povodni 2010 přestřelil a vyhlásil planý
+3. stupeň. Co spadlo, ukážou
 vodoměry proti proudu za pár hodin taky, a přesněji, protože měří celé povodí, ne jeden bod. Pomoct by mohla až
 srážková předpověď.
