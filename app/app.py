@@ -61,6 +61,13 @@ def animace_html(povoden, nazev):
 
 
 @st.cache_data
+def mapbox_animace_html(povoden, cil, nazev):
+    """Celá povodeň v mapě: čas po hodinách, vlevo rozliv z předpovědi 24 h předem, vpravo ze skutečné hladiny."""
+    od, do = animace.okno(povoden)
+    return mapbox_mapa.html_animace(od, do, cil, nazev, mapbox_mapa.MESTA[cil])
+
+
+@st.cache_data
 def mapbox_html(cas, predpovedi, pohled):
     """Mapa v Mapbox GL (satelit, 3D budovy, záplavová území na terénu); stavba stránky trvá asi sekundu."""
     return mapbox_mapa.html(cas, predpovedi, pohled)
@@ -287,17 +294,39 @@ with tab_mapa:
                 "průtoku, barva podle stupně povodňové aktivity, u Děčína a Ústí předpověď modelu za 24 h. Pohled "
                 "Děčín nebo Ústí přiblíží město s 3D budovami a oficiálním záplavovým územím, které předpovědi "
                 "odpovídá. Okamžik se mění v levém menu.")
-    pohled = st.radio("Pohled", list(POHLEDY), horizontal=True, key="mapa_pohled",
-                      help="Přiblížení na město ukáže oficiální záplavové území podle předpovědi.")
+    rezim = st.radio("Režim", ["Zvolený okamžik", "Celá povodeň: předpověď × skutečnost"], horizontal=True,
+                     key="mapa_rezim", help="Celá povodeň přehraje čas po hodinách a porovná rozliv z předpovědi "
+                                            "s rozlivem ze skutečné hladiny.")
+    if rezim != "Zvolený okamžik" and mapbox_token():
+        a, b = st.columns(2)
+        povoden_m = a.selectbox("Povodeň", list(POVODNE), index=3, key="mapa_povoden")
+        cil_m = b.radio("Město", list(KDE), format_func=jmeno, horizontal=True, key="mapa_cil")
+        getattr(st, "iframe", components.html)(mapbox_animace_html(povoden_m, cil_m, nazev), height=720)
+        st.caption("Vlevo rozliv z hladiny, kterou model předpověděl 24 h předem, vpravo rozliv ze skutečně naměřené "
+                   "hladiny v tutéž hodinu; posuvník uprostřed obě strany porovná, tlačítko spustí čas. Rozliv je "
+                   "z výškového modelu terénu ČÚZK DMR 5G (2 m): zaplaví se vše, co je níž než hladina a spojené "
+                   "s řekou; proti úředním územím Q5/Q20/Q100 se shoduje z 82 až 90 %. Je to statický odhad bez "
+                   "proudění; zdi a hráze pod rozlišením terénu nevidí.")
+        pohled = "celé povodí"
+    elif rezim != "Zvolený okamžik":
+        st.warning("Celá povodeň s porovnáním potřebuje token Mapboxu v .env.")
+        pohled = "celé povodí"
+    else:
+        pohled = st.radio("Pohled", list(POHLEDY), horizontal=True, key="mapa_pohled",
+                          help="Přiblížení na město ukáže záplavové území podle předpovědi.")
     misto = st.empty()
-    if DNES:
+    if rezim != "Zvolený okamžik":
+        pass
+    elif DNES:
         st.caption("Dnešek: sloupce jsou z živých dat ČHMÚ. Průtoky v Mělníku a Nymburce ČHMÚ operativně nezveřejňuje, "
                    "jsou dopočtené z bilance vody.")
         tabulka_mapy = DNES["tabulka"]
         pred_mapy = {c: (24, DNES[c]["predpoved"][24]) for c in KDE}
     else:
         tabulka_mapy, pred_mapy = None, predpovedi_pro_mapu(cas)
-    if st.button("Přehrát povodeň 1/2011 (8. až 24. 1., po 6 hodinách, asi 40 s)", icon=":material/play_arrow:"):
+    if rezim != "Zvolený okamžik":
+        pass
+    elif st.button("Přehrát povodeň 1/2011 (8. až 24. 1., po 6 hodinách, asi 40 s)", icon=":material/play_arrow:"):
         for t in pd.date_range("2011-01-08", "2011-01-24 18:00", freq="6h", tz=TZ):
             t = t.tz_convert("UTC")
             misto.pydeck_chart(mapa_deck(t, predpovedi_pro_mapu(t), pohled), height=650)
