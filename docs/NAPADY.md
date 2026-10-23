@@ -133,7 +133,7 @@ A je nejbezpečnější a nejefektnější, ale budeme jedni z mnoha. C je nejpo
 
 ČHMÚ má v otevřených datech hodinové stavy a průtoky zpětně od let 2002–2006 až do 2025. Stahuje je `src/stahni_chmu_hydro.py`. Stanice: Praha-Chuchle a Vraňany na Vltavě, Kostelec nad Labem, Mělník, Ústí nad Labem a Děčín.
 
-- **Povodní je dost.** V Děčíně byl 1. stupeň povodňové aktivity (400 cm) překročen ve 13 letech. Maxima: 2006 1 019 cm, 2011 730 cm, 2013 1 072 cm, 2023 624 cm, 2024 649 cm.
+- **Povodní je dost.** V Děčíně 31 povodní nad 1. stupněm povodňové aktivity (400 cm), 7 nad 3. stupněm. Maxima: 2006 875 cm, 2011 730 cm, 2013 1 072 cm, 2023 624 cm, 2024 649 cm. (Hodnota 1 019 cm z 6. 2. 2006 je chyba měření.)
 - **Doba, za kterou voda dorazí do Děčína** (podle největší korelace změn průtoku): z Ústí 4 h, z Kostelce 9 h, z Mělníka 12 h, z Vraňan 13 h, z Prahy 17 h.
 - **První jednoduchý model.** Lineární regrese: Děčín teď plus průtok v Mělníku teď a před 6–24 h plus Ústí. Trénink 2003–2016, test 2017–2025.
 

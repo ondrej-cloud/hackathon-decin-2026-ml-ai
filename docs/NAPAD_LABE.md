@@ -14,7 +14,7 @@ Všechna čísla níž jsou spočítaná z dat (pá 17:50). Co je jen domněnka,
 | | Co obsahuje | Co z toho jde |
 |---|---|---|
 | **Balíček od pořadatelů** | 28 stanic v kraji, 2024–9/2026. Jen 4 na Labi: Litoměřice, Ústí, Děčín, Hřensko. Do 2025 po hodinách, 2026 po 10 minutách | Předpověď jen na 4–5 h (nejvýš proti proudu je Ústí). Jediná povodeň (9/2024). Teplota vody, přítoky |
-| **Přidaná otevřená data ČHMÚ** (zdarma, staženo, `src/stahni_chmu_hydro.py`) | hodinový stav a průtok 2002–2025: Praha-Chuchle a Vraňany (Vltava), Kostelec nad Labem, Mělník, Ústí, Děčín | předpověď na 12–24 h, povodně ve 13 letech, test na povodni, kterou model neviděl, vývoj za 20 let |
+| **Přidaná otevřená data ČHMÚ** (zdarma, staženo, `src/stahni_chmu_hydro.py`) | hodinový stav a průtok 2002–2025: Praha-Chuchle a Vraňany (Vltava), Kostelec nad Labem, Mělník, Ústí, Děčín | předpověď na 12–24 h, 31 povodní nad 1. stupněm (7 nad 3. stupněm), test na povodních, které model neviděl, vývoj za 20 let |
 | **Co by ještě pomohlo** (neověřeno, jestli je volně) | srážky v povodí a jejich předpověď, vypouštění přehrad na Vltavě (Orlík, Slapy), historie oficiálních předpovědí ČHMÚ | předpověď dál než den a srovnání s ČHMÚ |
 
 Kupovat se nemusí nic. Bez srážek ale nejde předpovídat dál než zhruba den: voda, která do Děčína přijde za dva dny, ještě nespadla nebo je v potocích, které neměříme.
@@ -67,10 +67,39 @@ Z Mělníka do Děčína 12 h při malém průtoku, 13 h při velkém. Při mal�
 | vrchol skutečně / model | 1 072 / 1 106 cm | 1 072 / 1 179 cm |
 | varování před 3. stupněm (560 cm) | 11 h předem | 18 h předem |
 
+**Kolik povodní máme** (Děčín 11/2004–2025, po vyřazení chybných hodnot):
+
+| Stupeň povodňové aktivity | Povodní | Hodin | Podíl času |
+|---|---|---|---|
+| 1. (400 cm) | 31 | 5 434 | 2,9 % |
+| 2. (490 cm) | 14 | 1 904 | 1,0 % |
+| 3. (560 cm) | 7 | 1 073 | 0,6 % |
+
+Povodně nad 3. stupněm: 3/2005 (624 cm), 4/2006 (875), 8/2010 (560), 1/2011 (730), 6/2013 (1 072), 12/2023 (624), 9/2024 (649).
+
+**Každá velká povodeň zvlášť** (+24 h). Model se pokaždé učil bez ±20 dní kolem povodně a testoval se na týdnu před vrcholem a 5 dnech po něm:
+
+| Povodeň | Vrchol | Chyba model / „jako teď“ | Vrchol podle modelu | Varování před 3. stupněm |
+|---|---|---|---|---|
+| 4/2006 | 875 | 25 / 53 cm | 881 | 23 h předem |
+| 8/2010 | 560 | 29 / 45 cm | 612 | 29 h předem |
+| 1/2011 | 730 | 20 / 48 cm | 727 | 12 h předem |
+| 6/2013 | 1 072 | 60 / 99 cm | 1 179 | 18 h předem |
+| 12/2023 | 624 | 25 / 44 cm | 631 | 13 h předem |
+| 9/2024 | 649 | 29 / 64 cm | 690 | 25 h předem |
+
+Povodeň 3/2005 nejde otestovat, chybí data ze stanic nad krajem.
+
+**Proč stačí i málo povodní:** model se neučí „povodně“, ale to, jak voda putuje po řece. To se děje každou hodinu všech 20 let a povodeň je jen totéž s větším množstvím vody. Proto lineární model vyšel na všech šesti povodních, které neviděl.
+
+**Proč ne LightGBM:** u povodně 2013 předpověděl vrchol jen 823 cm místo 1 072. Rozhodovací stromy neumí předpovědět víc, než kdy viděly v tréninku. Lineární model ano. Tady je jednodušší model doopravdy lepší a porota to ocení.
+
 **Co z toho plyne:**
 - Za běžného stavu se řeka skoro nehýbe a „jako teď“ je skoro stejně dobré. Model pomáhá hlavně při velké vodě, kdy na předpovědi záleží.
-- Na 24 h model vrchol přestřelil o 10 %. Na varování to nevadí, na přesnou výšku ano.
-- Lepší vstupy a LightGBM to nejspíš ještě zlepší (domněnka). ČHMÚ s profesionálními modely a srážkami ale nepřekonáme a netvrdíme to.
+- Při všech šesti velkých povodních měl model chybu zhruba poloviční a varoval 12–29 h předem.
+- Na 24 h vrchol obvykle mírně přestřelí, u 2013 o 10 %. Na varování to nevadí, na přesnou výšku ano.
+- Na přesnost u extrémních povodní (nad 8 m) máme jen 2013, tam je závěr nejistý.
+- ČHMÚ s profesionálními modely a srážkami nepřekonáme a netvrdíme to.
 
 ## Přidaná hodnota
 
@@ -127,7 +156,8 @@ Porota se nejspíš zeptá: „ČHMÚ už předpovědi dělá, k čemu je váš 
 
 - **Opíráme se o data mimo balíček.** Pořadatelé je dovolili, ale v prezentaci musí být jasně, odkud jsou.
 - **Za běžného stavu je zlepšení malé.** Prezentace musí ukazovat povodně a vysvětlit proč.
-- **Velkých povodní je málo** (2006, 2013). Závěry o extrémních vodách stojí na pár případech.
+- **Velkých povodní je málo.** 7 nad 3. stupněm, extrémní jen 2013. Na předpověď to stačí (model se učí putování vody), ale přesnost u extrémů stojí na jednom případu.
+- **Chyby v datech:** 6.–7. 2. 2006 je v Děčíně zapsaná hladina 1 019 cm při průtoku 120 m³/s, a Ústí přitom ukazuje 161 cm. Je to chyba měření (25 hodin), vyřadit. Hledat podobné: hladina, která nesedí s průtokem, a skoky o víc než 1 m za hodinu.
 - **Data 2026 jsou z balíčku po 10 minutách**, historie ČHMÚ po hodinách. Sjednotit.
 
 ## Srovnání s ovzduším
