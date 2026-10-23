@@ -58,10 +58,11 @@ def _cislo(hodnota):
     return "chybí měření" if pd.isna(hodnota) else f"{hodnota:,.0f}".replace(",", " ")
 
 
-def _stanice(cas, predpovedi=None):
-    """predpovedi: {klic: (horizont, hladina_cm)} z modelu, přidá se k popisku Děčína a Ústí."""
+def _stanice(cas, predpovedi=None, tabulka=None):
+    """predpovedi: {klic: (horizont, hladina_cm)} z modelu, přidá se k popisku Děčína a Ústí.
+    tabulka: hodinová tabulka se sloupci jako data.nacti() místo archivu (živá data ČHMÚ pro dnešek)."""
     metadata, percentily = _podklady()
-    radek = nacti().loc[_cas_utc(cas)]
+    radek = (nacti() if tabulka is None else tabulka).loc[_cas_utc(cas)]
     body = []
     for stanice in metadata.itertuples(index=False):
         klic = stanice.klic
@@ -109,9 +110,15 @@ def _stanice(cas, predpovedi=None):
     return body
 
 
-def deck(cas: pd.Timestamp, predpovedi=None) -> pdk.Deck:
-    """Mapa měření v dané hodině; čas bez pásma se bere jako český čas. predpovedi viz _stanice."""
-    body = _stanice(cas, predpovedi)
+POHLEDY = {  # (šířka, délka, zoom); celé povodí, nebo přiblížení na město kvůli záplavovému území
+    "celé povodí": (50.30, 14.65, 8.15), "Děčín": (50.775, 14.205, 12.6), "Ústí nad Labem": (50.655, 14.05, 12.6)}
+
+
+def deck(cas: pd.Timestamp, predpovedi=None, pohled="celé povodí", tabulka=None) -> pdk.Deck:
+    """Mapa měření v dané hodině; čas bez pásma se bere jako český čas. predpovedi a tabulka viz _stanice, pohled viz POHLEDY."""
+    body = _stanice(cas, predpovedi, tabulka)
+    lat, lon, zoom = POHLEDY[pohled]
+    mesto = pohled != "celé povodí"  # v pohledu na město menší a nižší sloupce, jinak zakryjí údolí
     token = mapbox_token()
     if token:
         vysky = f"https://api.mapbox.com/v4/mapbox.terrain-rgb/{{z}}/{{x}}/{{y}}.pngraw?access_token={token}"
@@ -143,8 +150,8 @@ def deck(cas: pd.Timestamp, predpovedi=None) -> pdk.Deck:
         get_position="pozice",
         get_elevation="prutok",
         get_fill_color="barva",
-        elevation_scale=MERITKO_PRUTOKU,
-        radius=800,
+        elevation_scale=MERITKO_PRUTOKU / 10 if mesto else MERITKO_PRUTOKU,
+        radius=120 if mesto else 800,
         disk_resolution=20,
         extruded=True,
         pickable=True,
@@ -169,10 +176,12 @@ def deck(cas: pd.Timestamp, predpovedi=None) -> pdk.Deck:
         character_set="'auto'",
         pickable=True,
     )
+    from rozliv import vrstvy  # oficiální záplavová území podle předpovědi (DIBAVOD), viz rozliv.py
+    rozliv = [v for k, (h, cm) in (predpovedi or {}).items() for v in vrstvy(k, cm)]
     return pdk.Deck(
-        layers=[teren, sloupce, popisky],
+        layers=[teren, *rozliv, sloupce, popisky],
         initial_view_state=pdk.ViewState(
-            latitude=50.30, longitude=14.65, zoom=8.15, pitch=55, bearing=0,
+            latitude=lat, longitude=lon, zoom=zoom, pitch=55, bearing=0,
             min_zoom=6, max_zoom=14,
         ),
         map_style=None,

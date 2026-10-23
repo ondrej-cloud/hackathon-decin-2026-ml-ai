@@ -31,7 +31,8 @@ REKY = ROOT / "data/external/reky.geojson"
 OSM = ROOT / "data/raw/osm/reky_overpass.json"
 STANICE = ROOT / "data/external/stanice_hydro.csv"
 POVODNE = {"4/2006": ("2006-03-25", "2006-04-10"), "3/2009": ("2009-02-26", "2009-03-14"),
-           "9/2010": ("2010-09-20", "2010-10-06"), "1/2011": ("2011-01-08", "2011-01-24")}
+           "9/2010": ("2010-09-20", "2010-10-06"), "1/2011": ("2011-01-08", "2011-01-24"),
+           "9/2024 Boris (test)": ("2024-09-08", "2024-09-24")}
 # Doba putování vody v hodinách. Ústí → Děčín, Praha → Vraňany a Mělník → Ústí jsou změřené (docs/DATA.md),
 # ostatní jsou odhad z rozdílu dob do Ústí v tabulce stanic a z délky úseku.
 USEKY = {

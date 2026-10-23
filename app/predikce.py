@@ -26,18 +26,19 @@ BARVY = ["#2e7d32", "#f2c437", "#ef6c00", "#c62828"]
 def modely():
     """Modely, které mají v models/ aspoň jeden soubor; ridge vždy, ten se umí dotrénovat."""
     nazvy = {f.name.rsplit("_", 2)[0] for f in MODELS.glob("*_*_*.joblib")} if MODELS.exists() else set()
-    return sorted(nazvy | {"ridge"})
+    return sorted(nazvy | {"ridge", "ridge_vse"})
 
 
 def nacti_model(nazev, cil, h):
     soubor = MODELS / f"{nazev}_{cil}_{h}.joblib"
     if not soubor.exists():
-        if nazev != "ridge":
+        if nazev not in ("ridge", "ridge_vse"):
             raise FileNotFoundError(f"chybí {soubor}, uloží ho autor modelu")
         from evaluate import casti
         from models import ridge
         X, y = tabulka(cil, h)
-        tr = casti(cil, h).reindex(X.index) == "train"
+        # ridge se učí do 2018 (pro přehrávání historie), ridge_vse na všem do 2025 (pro dnešek)
+        tr = (casti(cil, h).reindex(X.index) == "train") | (nazev == "ridge_vse")
         MODELS.mkdir(exist_ok=True)
         joblib.dump(ridge.pipeline(ridge.PARAMETRY["alpha"]).fit(X[tr], y[tr]), soubor)
     return joblib.load(soubor)
@@ -67,7 +68,7 @@ def _intervaly():
 def interval(nazev, cil, h, hladina_ted, pred):
     """Rozmezí (dolní, horní) v cm, do kterého se vešlo 90 % chyb na tréninku v pásmu hladiny teď; jen pro ridge."""
     z = _intervaly()
-    if nazev != "ridge" or not z:
+    if nazev not in ("ridge", "ridge_vse") or not z:
         return None
     z = z[f"{cil}_{h}"]
     i = max(k for k, hranice in enumerate(z["pasma"][:-1]) if hladina_ted >= hranice)
