@@ -16,6 +16,7 @@ import streamlit.components.v1 as components
 import aktualni
 import animace
 from mapa import deck as mapa_deck, mapbox_token
+from rozliv import n_leta_voda
 from predikce import (BARVY, HORIZONTY, KDE, NAZEV, ROOT, SPA, STUPNE, interval, modely, nacti, nacti_model, stupen,
                       vstupy, vysvetleni)
 
@@ -262,7 +263,14 @@ with tab_mapa:
             cas_modul.sleep(0.6)
     else:
         misto.pydeck_chart(mapa_deck(cas_mapa, predpovedi_pro_mapu(cas_mapa)), height=650)
-    st.caption("Děčín a Ústí: barva podle hladiny a stupňů povodňové aktivity. Ostatní stanice: zelená pod 95. "
+        voda = n_leta_voda(cil, pred[24])
+        st.markdown(f"**Co předpověď znamená pro {jmeno(cil)}:** {voda['popis']} "
+                    + (f"Na mapě je vyplněné oficiální záplavové území pro {voda['N']}letou vodu (DIBAVOD), ostatní "
+                       "jen obrysem." if voda["N"] >= 5 else
+                       "Rozliv mimo koryto se čeká až od pětileté vody, záplavová území jsou na mapě jen obrysem."))
+    st.caption("Záplavová území Q5 / Q20 / Q100 jsou oficiální polygony pro ustálený N-letý průtok (VÚV TGM, DIBAVOD), "
+               "ne výpočet pro naši konkrétní povodeň; N-leté průtoky a měrná křivka jsou z ČHMÚ. "
+               "Děčín a Ústí: barva podle hladiny a stupňů povodňové aktivity. Ostatní stanice: zelená pod 95. "
                "percentilem průtoku z let 2006–2018, žlutá do 99., červená nad ním; nejde o oficiální stupně. "
                "Kolečkem přiblížíte, tažením posunete, Shift a tažením natočíte. "
                + ("Snímky a výšky © Mapbox, © Maxar. " if mapbox_token() else

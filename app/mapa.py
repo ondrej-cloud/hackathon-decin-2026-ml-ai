@@ -169,8 +169,10 @@ def deck(cas: pd.Timestamp, predpovedi=None) -> pdk.Deck:
         character_set="'auto'",
         pickable=True,
     )
+    from rozliv import vrstvy  # oficiální záplavová území podle předpovědi (DIBAVOD), viz rozliv.py
+    rozliv = [v for k, (h, cm) in (predpovedi or {}).items() for v in vrstvy(k, cm)]
     return pdk.Deck(
-        layers=[teren, sloupce, popisky],
+        layers=[teren, *rozliv, sloupce, popisky],
         initial_view_state=pdk.ViewState(
             latitude=50.30, longitude=14.65, zoom=8.15, pitch=55, bearing=0,
             min_zoom=6, max_zoom=14,
