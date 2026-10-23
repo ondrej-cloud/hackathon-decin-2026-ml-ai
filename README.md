@@ -95,6 +95,7 @@ Výchozí struktura. Klidně ji měňte, přejmenovávejte a přidávejte, co bu
 hackathon-decin-2026-ml-ai/
 ├── CLAUDE.md          kontext pro Claude, sekce Stav
 ├── .claude/           role, příkazy a nastavení pro Claude
+├── zadani/            všech pět zadání (PDF a text), přehled v README
 ├── data/
 │   ├── raw/           data od pořadatelů, NE do Gitu
 │   └── split/         společné rozdělení train / val / test
@@ -102,7 +103,12 @@ hackathon-decin-2026-ml-ai/
 ├── results/           výsledky pokusů, každý jako nový soubor
 ├── models/            malé modely, velké přes Google Disk
 ├── app/               aplikace
-└── docs/              deník, poznámky od mentorů, prezentace, podklady
+└── docs/
+    ├── POKUSY.md      každý trénink a pokus: co, jak, výsledek, závěr
+    ├── DENIK.md       rozhodnutí, proč, co je špatně
+    ├── DATA.md        jak data vypadají, chyby v nich, rozdělení
+    ├── POROZUMENI.md  úloha a výsledky našimi slovy, limity, otázky
+    └── grafy/         grafy do prezentace
 ```
 
 Pár pravidel, která platí, ať se struktura změní jakkoli:
@@ -125,7 +131,7 @@ Claude Code při každém startu sám načte `CLAUDE.md`: kontext hackathonu, pr
 | `/sync main` | když je něco hotové | totéž a hotovou práci pošle i do `main` |
 | `/temata <text zadání>` | pátek 15:30 | rozbor témat a návrhy nápadů podle vzorců vítězů |
 | `/stav` | kontrolní body | přehled, co je hotové, kdo na čem dělá a co blokuje |
-| `/denik` | jednou za hodinu | zápis změn do `docs/DENIK.md` |
+| `/denik` | jednou za hodinu | dohledá, co se na všech větvích udělalo a v `docs/` chybí, doplní to a shrne |
 | `/kontrola` | po nových výsledcích | kontrola výsledků (únik dat, rozdělení, metrika) |
 | `/porota` | sobota ráno | nácvik otázek poroty |
 | `/kaggle [co natrénovat]` | neuronové sítě, noční trénink | nahraje data, pošle trénink na GPU na Kaggle, ohlídá ho a stáhne výsledky |
@@ -163,17 +169,18 @@ Každý má svou větev: `ondra`, `dan`, `honza`, `tobias`. Na ni pushuje kdykol
 
 ## Deník a prezentace
 
-Jednou za hodinu někdo spustí `/denik`, nejlépe ten, kdo zrovna dělá na prezentaci. Claude projde změny na všech větvích, jednoduše je vysvětlí a připíše do `docs/DENIK.md`. Čemu nerozumíme, na to se zeptáme v týmu. Dvě věty vysvětlení ušetří půl hodiny čtení kódu.
+Porota hodnotí hlavně, jak úloze rozumíme a jak to vysvětlíme. Proto každý Claude zapisuje průběžně a sám, bez připomínání, ve stejném commitu jako kód (pravidla jsou v CLAUDE.md, sekce Dokumentace):
 
-```markdown
-## 21:15
-- Změna: přechod z Random Forest na LightGBM
-- Proč: o 6 % lepší F1 na validačních datech
-- Výsledek: F1 0,81 (results/dan-2110-lgbm.json)
-- Otázka pro mentory: je F1 pro zadavatele ta správná metrika?
-```
+| Soubor | Co tam je |
+|---|---|
+| `docs/POKUSY.md` | každý trénink a pokus, i nepovedený: otázka, data, vstupy, model, výsledek proti baseline, závěr |
+| `docs/DENIK.md` | rozhodnutí a proč, změny postupu, co je špatně a jak to řešíme |
+| `docs/DATA.md` | soubory, sloupce, rozložení, chybějící a chybné hodnoty, rozdělení, úpravy |
+| `docs/POROZUMENI.md` | úloha a pojmy našimi slovy, proč tahle metoda, jak číst výsledky, limity, odpovědi mentorů |
 
-Od 21:00 se z deníku skládá prezentace v tomto pořadí: problém, pro koho, data, postup, výsledek a jak víme, že funguje, demo, co dál. V sobotu ráno sepíšeme 15–20 pravděpodobných otázek poroty a necháme Claude hrát porotu (`/porota`).
+Do deníku a pokusů se jen připisuje na konec a Git záznamy z různých větví spojí bez konfliktu. Jednou za hodinu někdo spustí `/denik`: Claude projde všechny větve, doplní, co se nezapsalo, a napíše krátké shrnutí. Čemu nerozumíme, na to se zeptáme v týmu nebo mentora.
+
+Od 21:00 se z `docs/` skládá prezentace v tomto pořadí: problém, pro koho, data, postup, výsledek a jak víme, že funguje, demo, co dál. V sobotu ráno sepíšeme 15–20 pravděpodobných otázek poroty a necháme Claude hrát porotu (`/porota`).
 
 ## Claude
 

@@ -1,0 +1,257 @@
+# Nápad: Labe v Děčíně, kdy přijde velká a kdy malá voda
+
+Všechna čísla níž jsou spočítaná z dat (pá 17:50). Co je jen domněnka, je tak označené.
+
+## Otázka a pro koho
+
+**Hlavní otázka:** dokážeme den dopředu říct, jak vysoko bude Labe v Děčíně, a vysvětlit, odkud voda přichází?
+
+- Pro město a obyvatele u řeky: varování před povodní s předstihem 12–24 h místo 4 h.
+- Pro kraj (DCÚK): jak se mění Labe za 20 let, povodně i sucho.
+
+## Data
+
+| | Co obsahuje | Co z toho jde |
+|---|---|---|
+| **Balíček od pořadatelů** | 28 stanic v kraji, 2024–9/2026. Jen 4 na Labi: Litoměřice, Ústí, Děčín, Hřensko. Do 2025 po hodinách, 2026 po 10 minutách | Předpověď jen na 4–5 h (nejvýš proti proudu je Ústí). Jediná povodeň (9/2024). Teplota vody, přítoky |
+| **Přidaná otevřená data ČHMÚ** (zdarma, staženo, `src/stahni_chmu_hydro.py`) | hodinový stav a průtok 2002–2025: Praha-Chuchle a Vraňany (Vltava), Kostelec nad Labem, Mělník, Ústí, Děčín | předpověď na 12–24 h, 31 povodní nad 1. stupněm (7 nad 3. stupněm), test na povodních, které model neviděl, vývoj za 20 let |
+| **Co by ještě pomohlo** (neověřeno, jestli je volně) | srážky v povodí a jejich předpověď, vypouštění přehrad na Vltavě (Orlík, Slapy), historie oficiálních předpovědí ČHMÚ | předpověď dál než den a srovnání s ČHMÚ |
+
+Kupovat se nemusí nic. Bez srážek ale nejde předpovídat dál než zhruba den: voda, která do Děčína přijde za dva dny, ještě nespadla nebo je v potocích, které neměříme.
+
+## Co z dat umíme (ne jen povodně)
+
+### 1. Předpověď stavu v Děčíně na 12 a 24 h (hlavní část)
+
+- Voda do Děčína dorazí (největší korelace změn průtoku): z Ústí za 4 h, z Kostelce za 9 h, z Mělníka za 12 h, z Vraňan za 13 h, z Prahy za 17 h.
+- Model: stav a průtok v Děčíně teď, průtok v Ústí, průtok v Mělníku teď a před 6–24 h, průtok v Praze teď a před 6–12 h.
+
+### 2. Odkud voda při povodni přichází
+
+Podíl Vltavy na vrcholu povodně v Mělníku:
+
+| Povodeň | Vrchol v Mělníku | Vltava | Horní Labe | Podíl Vltavy |
+|---|---|---|---|---|
+| 4/2006 | 2 410 m³/s | 1 440 | 956 | 60 % |
+| 1/2011 | 1 580 m³/s | 924 | 645 | 59 % |
+| 6/2013 | 3 630 m³/s | 3 030 | 743 | 80 % |
+| 9/2024 | 1 720 m³/s | 953 | 750 | 56 % |
+
+Povodeň 2013 byla hlavně Vltava. Pro Děčín z toho plyne, že klíčová stanice je Praha.
+
+### 3. Sucho a klesající hladina
+
+- Počet dní, kdy byla hladina v Děčíně pod 150 cm: 2004 jen 8, 2015 181, 2018 236, 2025 263.
+- Pozor na interpretaci. Při stejném průtoku 150–170 m³/s byla hladina v roce 2004 159 cm, v roce 2025 jen 143 cm. Hladina tedy klesá i při stejném množství vody. Část „sucha“ proto není méně vody, ale něco se změnilo v korytě nebo u vodočtu. Domněnka: prohlubování dna. Otázka na mentora.
+- Skutečně suchá léta podle průtoku: průměr VI–IX kolem 100 m³/s v letech 2015, 2018, 2019, 2023 a 2025, proti 504 m³/s v roce 2013.
+- Využití: lodní doprava na Labi potřebuje určitou hloubku. Jakou, je potřeba zjistit.
+
+### 4. Jak rychle putuje vlna
+
+Z Mělníka do Děčína 12 h při malém průtoku, 13 h při velkém. Při malém průtoku je ale souvislost slabá (korelace 0,08), změny jsou malé a ruší je jezy.
+
+## Jak dobré to bude
+
+**Test 2017–2025, model se učil na 2003–2016** (lineární regrese bez ladění):
+
+| | +12 h | +24 h |
+|---|---|---|
+| celkově, model / „bude jako teď“ | 7,8 / 8,0 cm | 10,8 / 11,2 cm |
+| voda nad 1. stupněm povodňové aktivity (1 061 h), model / „jako teď“ | 12,0 / 22,5 cm | 24,7 / 44,6 cm |
+
+**Povodeň 2013, kterou model při tréninku neviděl:**
+
+| | +12 h | +24 h |
+|---|---|---|
+| chyba model / „jako teď“ | 22 / 34 cm | 37 / 68 cm |
+| vrchol skutečně / model | 1 072 / 1 106 cm | 1 072 / 1 179 cm |
+| varování před 3. stupněm (560 cm) | 11 h předem | 18 h předem |
+
+**Kolik povodní máme** (Děčín 11/2004–2025, po vyřazení chybných hodnot):
+
+| Stupeň povodňové aktivity | Povodní | Hodin | Podíl času |
+|---|---|---|---|
+| 1. (400 cm) | 31 | 5 434 | 2,9 % |
+| 2. (490 cm) | 14 | 1 904 | 1,0 % |
+| 3. (560 cm) | 7 | 1 073 | 0,6 % |
+
+Povodně nad 3. stupněm: 3/2005 (624 cm), 4/2006 (875), 8/2010 (560), 1/2011 (730), 6/2013 (1 072), 12/2023 (624), 9/2024 (649).
+
+**Každá velká povodeň zvlášť** (+24 h). Model se pokaždé učil bez ±20 dní kolem povodně a testoval se na týdnu před vrcholem a 5 dnech po něm:
+
+| Povodeň | Vrchol | Chyba model / „jako teď“ | Vrchol podle modelu | Varování před 3. stupněm |
+|---|---|---|---|---|
+| 4/2006 | 875 | 25 / 53 cm | 881 | 23 h předem |
+| 8/2010 | 560 | 29 / 45 cm | 612 | 29 h předem |
+| 1/2011 | 730 | 20 / 48 cm | 727 | 12 h předem |
+| 6/2013 | 1 072 | 60 / 99 cm | 1 179 | 18 h předem |
+| 12/2023 | 624 | 25 / 44 cm | 631 | 13 h předem |
+| 9/2024 | 649 | 29 / 64 cm | 690 | 25 h předem |
+
+Povodeň 3/2005 nejde otestovat, chybí data ze stanic nad krajem.
+
+**Proč stačí i málo povodní:** model se neučí „povodně“, ale to, jak voda putuje po řece. To se děje každou hodinu všech 20 let a povodeň je jen totéž s větším množstvím vody. Proto lineární model vyšel na všech šesti povodních, které neviděl.
+
+**Proč ne LightGBM:** u povodně 2013 předpověděl vrchol jen 823 cm místo 1 072. Rozhodovací stromy neumí předpovědět víc, než kdy viděly v tréninku. Lineární model ano. Tady je jednodušší model doopravdy lepší a porota to ocení.
+
+**Co z toho plyne:**
+- Za běžného stavu se řeka skoro nehýbe a „jako teď“ je skoro stejně dobré. Model pomáhá hlavně při velké vodě, kdy na předpovědi záleží.
+- Při všech šesti velkých povodních měl model chybu zhruba poloviční a varoval 12–29 h předem.
+- Na 24 h vrchol obvykle mírně přestřelí, u 2013 o 10 %. Na varování to nevadí, na přesnou výšku ano.
+- Na přesnost u extrémních povodní (nad 8 m) máme jen 2013, tam je závěr nejistý.
+- ČHMÚ s profesionálními modely a srážkami nepřekonáme a netvrdíme to.
+
+## Příběh: co přinesla přidaná data
+
+Začneme jen s tím, co jsme dostali, ukážeme, kde to nestačí, a přidáváme data krok za krokem. U každého kroku změříme, o kolik pomohl. Přidaná hodnota je pak číslo, ne tvrzení.
+
+**Krok 0, jen balíček:** 2024–9/2026 a jediná povodeň (9/2024). Model na povodni nejde ani natrénovat, ani ověřit. Proto jsme hledali víc.
+
+**Další kroky** (+24 h a +12 h, průměr přes 6 velkých povodní, které model při tréninku neviděl, lineární regrese):
+
+| Krok | Co model ví | Chyba +12 h | Chyba +24 h | Varování před 3. stupněm (+24 h) |
+|---|---|---|---|---|
+| „bude jako teď“ | nic | 30,5 cm | 58,7 cm | 0 h |
+| 1 | Děčín, vlastní historie 20 let | 24,6 cm | 47,5 cm | 10 h předem |
+| 2 | + Ústí (stanice z balíčku, 20 let) | 20,1 cm | 41,5 cm | 14 h předem |
+| 3 | + Mělník (navíc z ČHMÚ) | 13,9 cm | 32,9 cm | 17 h předem |
+| 4 | + Praha-Chuchle (navíc z ČHMÚ) | 13,8 cm | 29,6 cm | 21 h předem |
+
+- Přidaná data přinesla dvě věci: **čas** (20 let historie, tedy povodně na učení i test) a **prostor** (stanice proti proudu, tedy delší předstih).
+- Průtoky jdou do modelu jako odmocnina. Výška hladiny neroste s průtokem rovnoměrně, protože se řeka při velké vodě rozlije do šířky. Bez odmocniny Mělník a Praha na 12 h chybu zhoršily (model při velké vodě přestřeloval).
+- **Pozor:** odmocninu jsme zatím vybrali podle stejných povodní, na kterých ji měříme. Ve finále ji vybrat na validačních povodních (do 2016) a testovat jen na 2023 a 2024.
+
+## Stačí data z balíčku? Čas proti prostoru
+
+Čtyři varianty, všechny testované na stejných 6 povodních v Děčíně, které model při tréninku neviděl. „Balíček“ jsou stejné stanice z kraje (Děčín, Ústí, Louny na Ohři) a stejné období jako v balíčku (2024–2025), data ČHMÚ. Lineární regrese, průtoky jako odmocnina.
+
+| Varianta | Chyba +12 h | Chyba +24 h |
+|---|---|---|
+| „bude jako teď“ | 30,3 cm | 58,0 cm |
+| A: jen kraj, 2 roky (balíček) | 23,0 | 43,0 |
+| B: kraj + stanice proti proudu, 2 roky | 17,2 | 28,2 |
+| C: jen kraj, 20 let | 19,0 | 38,3 |
+| D: kraj + stanice proti proudu, 20 let | **13,7** | **24,3** |
+
+- **Trénovat jen na balíčku dává smysl.** Model je výrazně lepší než „bude jako teď“ (43 proti 58 cm), i když se učil skoro bez povodní. Funguje, protože se učí putování vody, a to se děje i za běžného stavu.
+- **Prostor je důležitější než čas.** Dva roky se stanicemi proti proudu (B, 28 cm) jsou lepší než 20 let jen z kraje (C, 38 cm). Kde voda teče teď, řekne víc než dlouhá historie.
+- **Nejlepší je obojí** (D, 24 cm).
+- **Historie je potřeba hlavně k ověření.** V balíčku je jediná povodeň, takže samotný balíček neumí ukázat, jestli model na povodních funguje. Tyhle výsledky máme jen díky starým povodním od ČHMÚ.
+- Pozor: období balíčku jsme vzali z dat ČHMÚ (2024–2025), ne přímo ze souboru balíčku (ten má navíc rok 2026 po 10 minutách, víc přítoků a počasí).
+
+## Brány proti proudu: předpověď pro celý kraj
+
+Labe do kraje přitéká z Vltavy (s Berounkou a Sázavou), z horního Labe (s Jizerou) a z Ohře. Na každé větvi bereme stanice v několika vzdálenostech, „branách“. Stahuje je `src/stahni_chmu_hydro.py` (16 stanic, hodinově zhruba 2002–2025, 168 MB).
+
+| Brána | Stanice | Vrchol povodně dorazí do Ústí zhruba za |
+|---|---|---|
+| v kraji | Děčín (cíl), Ústí (cíl), Louny na Ohři (cíl) | Ústí → Děčín 4 h (1–6 h) |
+| blízké | Mělník, Vraňany (Vltava), Kostelec (Labe) | 9–14 h |
+| střední | Praha-Chuchle (Vltava), Nymburk (Labe), Předměřice (Jizera) | asi 15–25 h |
+| vzdálené | Beroun (Berounka), Nespeky (Sázava), Přelouč (Labe), Karlovy Vary a Žatec (Ohře) | asi den a víc |
+
+Doby jsou jen přibližné, rozptyl mezi povodněmi je velký. Vrchol v Ústí se skládá z vln z několika řek a ty nepřijdou najednou. Model proto přesné doby nepotřebuje: dostane od každé stanice zpoždění 0, 6, 12, 24 a 36 h a sám najde, které je nejdůležitější. Váhy modelu pak dobu putování ukážou.
+
+**Ústí, chyba předpovědi** (průměr přes 5 povodní nad 3. stupněm, které model neviděl; průtoky jako odmocnina):
+
+| Co model ví | +12 h | +24 h | +36 h |
+|---|---|---|---|
+| „bude jako teď“ | 30,9 cm | 59,4 cm | 86,3 cm |
+| jen Ústí, vlastní historie | 26,8 | 49,9 | 74,2 |
+| + blízké brány | **17,0** | 31,4 | 51,6 |
+| + střední brány | 21,0 | 31,9 | 44,3 |
+| + vzdálené brány | 18,0 | **26,9** | **36,8** |
+
+**Hlavní zjištění:** čím dál dopředu chceme předpovídat, tím dál proti proudu se musíme dívat. Na 12 h stačí blízké brány a vzdálené jen přidají šum, protože voda z nich za 12 h ještě nedoteče. Na 36 h pomáhá každá další vrstva.
+
+Pro každý horizont proto budeme mít jiný model s jinými branami. Platí stejná výhrada: výběr odmocniny a skupin bran udělat na validačních povodních, test nechat stranou.
+
+## Proč nestačí „když stoupá voda, bude povodeň“
+
+Porota se zeptá, proč nestačí sledovat, jestli voda stoupá. Pravidlo jsme změřili stejně jako model (+24 h, test 2017–2025, model se učil na 2003–2016):
+
+| Předpověď výšky (hodiny s vodou nad 300 cm) | Chyba |
+|---|---|
+| „bude jako teď“ | 27,3 cm |
+| „stoupá, bude stoupat dál stejně rychle“ | 33,0 cm, horší než nedělat nic |
+| model se stanicemi proti proudu | 16,9 cm |
+
+| Varování „za 24 h bude nad 1. stupněm“ (nastalo v 1 061 h) | Planý poplach | Propásnuto |
+|---|---|---|
+| voda stoupla za 6 h o víc než 20 cm | 91 % | 85 % |
+| voda stoupla za 6 h o víc než 40 cm | 85 % | 97 % |
+| model | 10 % | 11 % |
+
+- Voda v Děčíně stoupla o víc než 40 cm za 6 h celkem 197krát, ale povodeň přišla jen 31krát. Pravidlo „stoupá, takže bude povodeň“ se tedy plete pětkrát z šesti.
+- Když voda stoupá v Děčíně, už je pozdě. Model vidí vodu, která do Děčína teprve teče, a proto pozná, které stoupání skončí povodní a jak vysokou.
+
+## Přidaná hodnota
+
+Porota se nejspíš zeptá: „ČHMÚ už předpovědi dělá, k čemu je váš model?“ Odpověď:
+
+1. **Je průhledný.** Jedna rovnice: „za 12 h přijde do Děčína to, co teď teče Mělníkem“. Každý pochopí, proč model předpovídá, co předpovídá.
+2. **Analýza za 20 let:** odkud přicházejí povodně, jak se mění sucho a že hladina klesá i při stejném průtoku.
+3. **Ukázka, kolik se dá zjistit jen z otevřených dat** zdarma.
+
+## Model a vyhodnocení
+
+- **Cíl:** stav v Děčíně (cm) za 6, 12 a 24 h a z něj stupeň povodňové aktivity (1. 400, 2. 490, 3. 560 cm).
+- **Postup modelů:** „bude jako teď“, pak lineární regrese, pak LightGBM. Složitější jen když výrazně pomůže.
+- **Metriky:**
+  - průměrná chyba (cm) celkově a zvlášť nad 1. stupněm,
+  - správně určený stupeň povodňové aktivity,
+  - předstih varování v hodinách.
+- **Ověření:**
+  - časové rozdělení (trénink 2003–2016, validace 2017–2020, test 2021–2025),
+  - k tomu vynechané povodně: model se pokaždé učí bez jedné povodně (2006, 2011, 2013, 2024) a na ní se testuje.
+- **Vysvětlení:** váhy lineárního modelu a SHAP. Která stanice a jaké zpoždění rozhoduje.
+
+## Aplikace a mapa
+
+- Mapa řeky od Prahy po Hřensko se stanicemi, barva podle stupně povodňové aktivity.
+- Přehrání povodně 2013 hodinu po hodině: vlna putuje z Prahy přes Mělník do Děčína.
+- Panel Děčín: graf stavu, předpověď na 12 a 24 h a pásma stupňů povodňové aktivity.
+- Graf „odkud voda přišla“ u každé povodně.
+
+## Prezentace (15 min)
+
+1. Děčín a povodně 2002, 2013, 2024 (fotka, výška hladiny).
+2. Otázka: dá se den dopředu říct, co přijde?
+3. Data z balíčku: jedna povodeň, nejvýš Ústí. Model nejde ani ověřit.
+4. Fyzika: voda putuje, Praha 17 h, Mělník 12 h, Ústí 4 h.
+5. Krok za krokem: přidáváme historii a stanice proti proudu, chyba na 24 h klesá z 59 na 30 cm a varování z 0 na 21 h předem (tabulka výš).
+6. Za běžného stavu se řeka skoro nehýbe a model nic moc nepřidá. Při povodni má poloviční chybu.
+7. Odkud povodně přicházejí (2013 80 % Vltava).
+8. Sucho a záhada klesající hladiny při stejném průtoku.
+9. Demo: přehrání 2013.
+10. Limity: bez srážek ne dál než den, vrchol přestřelí, ČHMÚ je lepší.
+
+## Rozdělení práce (návrh)
+
+| Kdo | Co |
+|---|---|
+| Ondra | rozdělení a vyhodnocení, vynechané povodně, kontrola výsledků |
+| Dan | modely od baseline po LightGBM, SHAP |
+| Honza | mapa a přehrávání povodně |
+| Tobias | příběh, analýza „odkud voda“ a sucho, grafy |
+
+**Do 21:00 minimum:** data všech stanic v jedné tabulce, baseline a lineární model na 12 a 24 h s vyhodnocením, mapa se stanicemi.
+
+## Rizika
+
+- **Opíráme se o data mimo balíček.** Pořadatelé je dovolili, ale v prezentaci musí být jasně, odkud jsou.
+- **Za běžného stavu je zlepšení malé.** Prezentace musí ukazovat povodně a vysvětlit proč.
+- **Velkých povodní je málo.** 7 nad 3. stupněm, extrémní jen 2013. Na předpověď to stačí (model se učí putování vody), ale přesnost u extrémů stojí na jednom případu.
+- **Chyby v datech:** 6.–7. 2. 2006 je v Děčíně zapsaná hladina 1 019 cm při průtoku 120 m³/s, a Ústí přitom ukazuje 161 cm. Je to chyba měření (25 hodin), vyřadit. Hledat podobné: hladina, která nesedí s průtokem, a skoky o víc než 1 m za hodinu.
+- **Data 2026 jsou z balíčku po 10 minutách**, historie ČHMÚ po hodinách. Sjednotit.
+
+## Srovnání s ovzduším
+
+| | Labe | Ovzduší |
+|---|---|---|
+| Data z balíčku stačí? | ne, potřeba přidat ČHMÚ (hotovo) | ano |
+| Originalita | vysoká | nízká, víc týmů |
+| Jasný výsledek | ano: při povodni poloviční chyba, varování 18 h předem | ano: model vs. „jako teď“ na 6–24 h |
+| Šíře | povodně, odkud voda, sucho, rychlost vlny | předpověď, otisky zdrojů, inverze, události |
+| Místní příběh | Děčín, povodně | smog v kraji |
+| Hlavní riziko | zlepšení jen při velké vodě | splyneme s ostatními |

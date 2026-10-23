@@ -1,23 +1,20 @@
 ---
 name: denik
-description: Zapíše do docs/DENIK.md, co se v týmu změnilo od posledního zápisu. Spouští se jednou za hodinu.
+description: Kontrola dokumentace. Dohledá, co se od posledního zápisu udělalo na všech větvích a v docs/ chybí, a doplní to. Spouští se jednou za hodinu.
 disable-model-invocation: true
 model: sonnet
 ---
 
-1. Najdi čas posledního zápisu v `docs/DENIK.md` (nadpis `## HH:MM`). Když soubor neexistuje, vytvoř ho s nadpisem `# Deník týmu`.
-2. `git fetch origin` a projdi commity na všech větvích od toho času: `git log --all --since="<čas>" --stat`. Nové výsledky z `results/` si přečti přes `git show`.
-3. Ke každé podstatné změně připiš záznam:
+Zápisy dělá každý Claude průběžně (sekce Dokumentace v CLAUDE.md). Tenhle příkaz dohledá, co se nezapsalo.
 
-```
-## HH:MM
-- Změna: …
-- Proč: …
-- Výsledek: … (soubor v results/)
-- Otázka pro mentory: … (jen když dává smysl)
-```
+1. `git fetch origin`. Najdi čas posledního záznamu `Shrnutí` v `docs/DENIK.md` a projdi commity na všech větvích od té doby: `git log --all --since="<čas>" --stat`.
+2. Porovnej je se záznamy v `docs/DENIK.md` a `docs/POKUSY.md` na všech větvích (`git show origin/<větev>:docs/POKUSY.md`), ať nevznikají dvojí, a s novými soubory v `results/`. Co chybí, doplň:
+   - pokus nebo trénink bez záznamu do `docs/POKUSY.md`,
+   - rozhodnutí nebo změnu postupu bez vysvětlení do `docs/DENIK.md`,
+   - nové zjištění o datech do `docs/DATA.md`.
+3. Co z commitů nepoznáš, třeba proč to někdo udělal, nevymýšlej. Napiš „proč: zeptat se <jméno>“ a řekni to člověku.
+4. Piš jednoduše, aby se to dalo říct porotě. Odborné výrazy vysvětli v závorce. Formát záznamů je v hlavičce každého souboru.
+5. Na konec `docs/DENIK.md` připiš záznam `## <čas> · Shrnutí` se třemi body: co se za poslední hodinu posunulo, nejlepší výsledek zatím a co je nejasné nebo chybí v `docs/POROZUMENI.md`.
+6. Proveď `/sync`.
 
-4. Piš jednoduše, aby se to dalo říct porotě. Odborné výrazy vysvětli v závorce.
-5. Změň jen `docs/DENIK.md` a pak proveď `/sync`.
-
-Šetři limit: čti jen diffy a výsledky, ne celé soubory.
+Šetři limit: čti diffy a výsledky, ne celé soubory.
