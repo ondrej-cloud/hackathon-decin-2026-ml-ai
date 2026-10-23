@@ -1,0 +1,18 @@
+# Průběh: šestihodinové srážky ze synoptických zpráv pro Labe v Děčíně
+
+Dan, větev `dan-srazky` (z `origin/dan-ridge`), worktree `hackathon-2026-srazky`. Čas + jedna věta.
+
+- 22:47 Worktree `hackathon-2026-srazky` s větví `dan-srazky` z `origin/dan-ridge`, vše v `srazky_dan/`, hodinovou tabulku ČHMÚ jen čtu z `hackathon-2026-ridge/ridge_dan/tabulka/labe_ridge.parquet`.
+- 22:50 Stažený seznam stanic ISD (`isd-history.csv`), českých stanic s daty 2006–2025 je 31, vybírám ty v povodí Labe nad Děčínem.
+- 22:55 Adresa NCEI `data/global-hourly/access/<rok>/<stanice>.csv` vrací 301 na úvodní stránku kopie NOAA na AWS (23 pokusů dostalo HTML, smazané a vyškrtnuté ze `STAZENO.csv`), data se proto stahují přímo z `noaa-global-hourly-pds.s3.amazonaws.com` (stejné soubory).
+- 22:56 Rozbor Ústí 2010 (zpráva SYNOP v poli REM): 6h úhrn v 00 a 12 UTC, 12h v 06 a 18 UTC, 24h v 06 UTC; chybějící 6h hodnota v 00/12 je opravdu chybějící (`6///1`, iR=0), ne „bez srážek“, 12h hodnoty jsou úplné.
+- 22:57 Rozhodnutí: stanice blízko Děčína Ústí, Doksany, Milešovka, Liberec; dál proti proudu Ohře (Cheb, Karlovy Vary, Tušimice), Berounka (Plzeň-Mikulka, Přimda), Vltava se Sázavou (Churáňov, Kocelovice, Temelín, Č. Budějovice, Praha-Ruzyně, Praha-Libuš, Košetice, Přibyslav), horní Labe (Pec pod Sněžkou, Pardubice, Čáslav, Ústí nad Orlicí); Jizera vlastní synoptickou stanici nemá, zastupuje ji Liberec.
+- 22:57 Obaly modelů a vyhodnocení připravuje souběžně druhý pracovní proud (převzatý `stanice_vsem/spolecne.py`), já stahuju ISD (3 souběžně, pauza 1,5 s, cache).
+- 22:59 Kvalita: podmínka „3“ nese v souborech od ~2013 běžně změřené úhrny (ověřeno proti zprávě SYNOP v REM: `60021` → `06,0020,3,1`), beru ji jako platnou; kvalitu 2 a 6 (podezřelé, hlavně nesoulad 12h a 24h úhrnu o 0,1 mm) nechávám, vyhazuju jen 3 a 7 (chybné), podmínky 1 a 4–8, 9999 a 6h > 150 mm / 12h > 250 mm; stopové srážky = 0.
+- 23:00 Test úniku `kontrola_casovani.py` (Ústí 2009–2010, 300 náhodně změněných nebo smazaných zpráv): žádný příznak před E + 1 h se nezměnil; 24h součty sedí s přímým výpočtem z 12h úhrnů (rozdíl nejvýš 1 mm tam, kde je v datech 6h úhrn větší než 12h). Codex (jen čtení) kontroluje časování na pozadí.
+- 23:05 Staženo všech 420 souborů (21 stanic × 2006–2025, žádný rok nechybí), seznam adres v `STAZENO.csv`.
+- 23:07 Pokrytí: u 12 stanic chybí od ~2013–2015 hlavně suché termíny (podíl kladných úhrnů mezi platnými stoupl z ~0,2 na 0,6–0,9, nuly ze zpráv BUFR se do ISD nedostaly), průměr skupiny by srážky nadhodnotil.
+- 23:08 Rozhodnutí: do příznaků jen stanice s 6h úhrnem v ≥ 80 % termínů 00/12 UTC v KAŽDÉM roce 2006–2020 (bez testovacích let): Ústí n. L., Doksany (blízko), Tušimice, Plzeň-Mikulka, Temelín, Přibyslav, Pec pod Sněžkou, Pardubice, Ústí n. O. (dál); vyřazené mají pokrytí ≤ 0,39 a podíl kladných ≥ 0,59, hranice je ostrá. Pokrytí v `vysledky/pokryti_stanic.csv`.
+- 23:10 Díry: když v termínu zpráva chybí, platí ještě součty z předchozího termínu (jen dopředu, nejvýš o 6 h starší), jinak NaN a řádek se vyhodí u obou variant; v letech 2006–2020 je bez hodnoty 0,8–6,7 % hodin.
+- 23:11 Test úniku znovu na finální funkci (Ústí i Doksany, 2 × 300 změn): žádná změna před E + 1 h.
+- 23:11 **Tabulka srážkových příznaků je hotová: `srazky_dan/data/srazky_6h.parquet`** (mimo Git, 175 320 hodin UTC 2006–2025, 30 sloupců `sr_<skupina>_<6|12|24|48|72>h` v mm, skupiny blizko, dal, ohre, berounka, vltava, horni_labe; hlavní sada = blizko + dal, 10 sloupců; nejstarší použité měření t − 78 h; otisk b9705b40). Postaví ji `python srazky_dan/srazky.py` z cache. Pozor pro test: v letech 2024–2025 chybí 41–47 % hodin (výpadky zpráv u Doksan, Temelína, Pardubic).

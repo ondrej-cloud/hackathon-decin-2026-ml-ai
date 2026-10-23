@@ -1,0 +1,6 @@
+cache/
+tabulka/
+vysledky/*.parquet
+__pycache__/
+codex/*.log
+data/
