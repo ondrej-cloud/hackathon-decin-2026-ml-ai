@@ -11,6 +11,50 @@ Co víme o datech. Kdo něco zjistí, doplní nebo opraví příslušnou sekci. 
 | hladina (cm) i průtok (m³/s) | Děčín, Ústí nad Labem (cíle) |
 | jen průtok | Louny (Ohře), Mělník, Vraňany (Vltava), Kostelec n. L., Praha-Chuchle, Nymburk, Předměřice (Jizera), Beroun (Berounka), Nespeky (Sázava), Přelouč |
 
+### Přidaná data ČHMÚ: co, odkud a proč
+
+**Odkud:** otevřená data ČHMÚ, https://opendata.chmi.cz/hydrology/historical/data/hourly/. Soubory jsou `H_0-203-1-<číslo stanice>_HQ_<rok>.json` s hodinovou hladinou (H) a průtokem (Q). Zdarma a bez registrace, v prezentaci uvést zdroj ČHMÚ. Stáhli jsme 26 stanic (`src/stahni_chmu_hydro.py`), do společné tabulky bereme 12.
+
+**Proč přidávat data:** balíček má na Labi jen Litoměřice, Ústí, Děčín a Hřensko, a to jen 2024–2026 s jedinou povodní (9/2024). Nejvýš proti proudu je Ústí, odkud voda do Děčína doteče za 4 h. Z balíčku tedy nejde vidět dál než pár hodin dopředu a s jednou povodní nejde nic ověřit. Přidaná data dávají dvě věci:
+- **prostor:** stanice proti proudu, tedy delší předstih,
+- **čas:** 20 let historie, tedy povodně na učení i na test.
+
+**Které stanice a proč.** Labe do kraje přitéká třemi větvemi: Vltava, horní Labe a Ohře. Na každé bereme stanice v několika vzdálenostech („brány“), protože na delší horizont je potřeba vidět dál proti proudu. Doba putování do Ústí je změřená z dat ve dvou podobách: kdy se nejvíc projeví změna průtoku a medián, za jak dlouho dorazil vrchol povodně. Mezi povodněmi se hodně liší.
+
+| Klíč | Stanice | Větev | Do Ústí (změna / vrchol) | Proč |
+|---|---|---|---|---|
+| `decin` | Děčín | Labe | Ústí → Děčín 4 h | cíl, nejbližší stanice k městu |
+| `usti` | Ústí nad Labem | Labe | 0 | druhý cíl a pro Děčín nejbližší brána |
+| `louny` | Louny | Ohře | 12 / 34 h | poslední stanice na Ohři před soutokem v Litoměřicích |
+| `melnik` | Mělník | Labe pod soutokem s Vltavou | 9 / 14 h | všechna voda z Čech kromě Ohře na jednom místě |
+| `vranany` | Vraňany | Vltava | 9 / 20 h | Vltava těsně před soutokem |
+| `kostelec` | Kostelec nad Labem | horní Labe | 6 / 14 h | horní Labe těsně před soutokem |
+| `praha` | Praha-Chuchle | Vltava | 14 / 22 h | Vltava s Berounkou; povodeň 2013 byla z 80 % Vltava |
+| `nymburk` | Nymburk | horní Labe | 6 / 14 h | Labe nad Jizerou |
+| `jizera` | Předměřice | Jizera | 15 / 26 h | největší přítok horního Labe |
+| `beroun` | Beroun | Berounka | 18 / 36 h | velký přítok Vltavy, nejdelší předstih |
+| `sazava` | Nespeky | Sázava | 20 / 24 h | velký přítok Vltavy |
+| `prelouc` | Přelouč | horní Labe | 15 / 22 h | nejvzdálenější stanice na Labi |
+
+U stanic proti proudu bereme jen **průtok**, ne hladinu. Průtok se mezi stanicemi sčítá (Mělník = Vraňany + Kostelec, ověřeno), kdežto hladina je místní a závisí na korytě a jezech.
+
+**Co jsme nevzali a proč:**
+- **Zbraslav (Vltava):** skoro totéž co Praha-Chuchle, jen bez Berounky.
+- **Žatec, Kadaň, Karlovy Vary (Ohře):** Ohři reguluje přehrada Nechranice a informaci z nich z velké části nese Louny. Dají se přidat, kdyby Ohře modelu chyběla.
+- **Litoměřice:** data až od 2017.
+- **Hřensko (Labe):** leží pod Děčínem, pro předpověď nepomůže.
+- **Malé řeky v kraji** (Kamenice, Bílina, Ploučnice, Mandava, Chomutovka): voda z nich do Labe doteče za 0–7 h a k Děčínu přidají jen pár procent (Děčín má o 4–8 % víc vody než Ústí). Stažené jsou na pozdější druhou zkoušku modelů.
+- **Roky 2002–2005:** Kostelec a průtok v Mělníku a Nymburku chybí do konce 2005. Povodeň 2002 proto nemáme (Děčín má data až od 2003).
+- **Rok 2026 z balíčku:** stanice proti proudu za 2026 nemáme, proto tabulka končí rokem 2025.
+- **Srážky a počasí:** balíček má meteorologii jen 2024–2026, na 20 let nestačí. Bez srážek nejde předpovídat dál než zhruba den a půl. Možné rozšíření.
+
+**Jak to ovlivňuje výsledek** (ověřeno, podrobně v `docs/NAPAD_LABE.md` a `docs/POKUSY.md`):
+- Děčín +24 h, 6 povodní, které model neviděl: „jako teď“ 58 cm, jen kraj za 2 roky (jako balíček) 43 cm, kraj + proti proudu za 2 roky 28 cm, jen kraj za 20 let 38 cm, oboje 24 cm. Stanice proti proudu pomohly víc než dlouhá historie.
+- Ústí: na 12 h stačí blízké brány (17 cm), na 36 h pomáhá každá další vrstva (37 cm se všemi, 52 cm jen s blízkými).
+- Se společným rozdělením (`src/evaluate.py`): lineární model Děčín +24 h 15,5 cm na povodních proti 44,4 cm u „jako teď“.
+
+**Limity:** neznáme srážky, takže předpověď dál než den a půl nejde. Doba putování se mezi povodněmi mění. V tréninku je jen jedna opravdu velká povodeň (2013). Jestli jde v aplikaci brát aktuální data ČHMÚ v reálném čase, je neověřené.
+
 Ověřeno:
 - Začínáme rokem 2006, protože průtok v Kostelci, Mělníku a Nymburku za rok 2005 chybí celý.
 - Chyba měření: 5.–7. 2. 2006 je v Děčíně hladina až 1 019 cm při průtoku kolem 120 m³/s, skoky o 1–3 m za hodinu. Vyřazeno (66 hodin chybí).
