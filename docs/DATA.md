@@ -56,7 +56,7 @@ U stanic proti proudu bereme jen **průtok**, ne hladinu. Průtok se mezi stanic
 - Ústí: na 12 h stačí blízké brány (17 cm), na 36 h pomáhá každá další vrstva (37 cm se všemi, 52 cm jen s blízkými).
 - Se společným rozdělením (`src/evaluate.py`): lineární model Děčín +24 h 15,5 cm na povodních proti 44,4 cm u „jako teď“.
 
-**Limity:** neznáme srážky, takže předpověď dál než den a půl nejde. Doba putování se mezi povodněmi mění. V tréninku je jen jedna opravdu velká povodeň (2013). Jestli jde v aplikaci brát aktuální data ČHMÚ v reálném čase, je neověřené.
+**Limity:** neznáme srážky, takže předpověď dál než den a půl nejde. Doba putování se mezi povodněmi mění. V tréninku je jen jedna opravdu velká povodeň (2013). Aktuální data ČHMÚ v aplikaci brát jdou (odstavec „Aktuální data“ níže), jen Mělník a Nymburk se musí dopočítat.
 
 Ověřeno:
 - Začínáme rokem 2006, protože průtok v Kostelci, Mělníku a Nymburku za rok 2005 chybí celý.
@@ -93,6 +93,18 @@ Proč takhle: mezi 2016 a 2020 povodeň nebyla, validace na pozdějších letech
 V letech 2014–2018 nebyl v Děčíně ani v Ústí dosažen 2. stupeň: maxima hladin jsou 465 proti prahu 490 cm a 490 proti prahu 530 cm. Okna 1, 2, 3 a 5 let končící rokem 2018 proto neobsahují povodeň na tomto stupni. Okna 8 a 13 let už zahrnují povodeň 2013; množství historie tedy zároveň mění zastoupení vysoké vody.
 
 Na stejné validaci dává nezměněný Ridge se všemi stanicemi při 2 / 5 / 8 / 13 letech chybu na povodních 26,9 / 21,0 / 16,6 / 17,1 cm proti 44,3 cm u „bude jako teď“. Propásnutá varování jsou 4 / 3 / 0 / 0 z 24 případů. Dva roky se všemi stanicemi mají podobnou chybu jako 13 let jen z kraje (27,8 cm), ale slabší varování. Osm a třináct let se v chybě liší jen o 0,47 cm; obecný minimální počet let z toho určit nejde. Podrobnosti a všechny varianty v `docs/POKUSY.md`, graf `docs/grafy/kolik_dat.png`.
+
+### Aktuální data (ověřeno pá 23. 10. večer)
+
+Operativní data ČHMÚ pro předpověď na teď existují, jsou otevřená a bez registrace. Načítá je `app/aktualni.py` (`predpoved_dnes()`), stažené soubory jdou do `data/raw/chmu_aktualni/` (není v Gitu).
+
+- **Odkud:** dnešek od 0:00 UTC po 10 minutách je v `https://opendata.chmi.cz/hydrology/now/data/0-203-1-<číslo stanice>.json`. Soubor se obnovuje zhruba každých 20 minut (viděno 18:20, 19:00 a 19:20 UTC), poslední hodnota je 10–30 minut stará. Předchozí dny jsou po jednom souboru na den v `https://opendata.chmi.cz/hydrology/recent/data/<RRRRMMDD>_0-203-1-<číslo stanice>.json`, od 1. 1. 2026 do včerejška; včerejšek se objeví kolem 0:20 UTC. Model potřebuje 37 hodin zpátky, bereme dnešek a tři předchozí dny (72–96 h), aby to šlo i těsně po půlnoci.
+- **Formát:** JSON, `objList[0].tsList`, řady `H` (cm), `Q` (m³/s), `TH` (teplota vody) a k tomu předpověď ČHMÚ `H_F` a `Q_F` po hodinách na 3 dny dopředu. Data jsou nevalidovaná (popis `hydrologicka_data_now_a_recent_popis.pdf` na stejném serveru).
+- **Čas je UTC**, i když popis píše SEČ a SELČ. Děčín 18:50 v JSON ukazuje hydro.chmi.cz/hpps jako 20:50 se stejnou hodnotou 90 cm a 85,2 m³/s a den přechodu na letní čas (29. 3. 2026) má všech 144 hodnot.
+- **Z 10 minut na hodinu:** hodinové hodnoty v archivu, ze kterého se modely učily, jsou podle ČHMÚ „průměrné hodinové hodnoty“. Na Děčíně 2025 jsme je porovnali s 10minutovými okamžitými stavy: hodina t je průměr t:00 až t:50, po zaokrouhlení sedí v 90 % hodin (průměrná odchylka 0,3 cm). Hodnota přesně v celou hodinu sedí jen v 56 % (0,7 cm), průměr předchozí hodiny ve 43 % (1,1 cm). Aplikace proto počítá stejný průměr a hodinu bere, až když je u stanice celá. Čas vydání předpovědi je tak 1–2 h za skutečným časem.
+- **Co chybí:** všech 12 stanic v now/ je, ale průtok v Nymburce ČHMÚ operativně nezveřejňuje vůbec (ani na hpps, jen hladinu) a v Mělníku jen dvakrát denně kolem 5:00 a 11:00 UTC. Oba dopočítáváme z bilance vody ověřené na archivu 2006–2020: Mělník = Vraňany + Kostelec o hodinu dřív (medián odchylky 0,5 %), Nymburk = Kostelec − Jizera (medián odchylky 8 %). Na validaci to Ridge zhorší málo: předpověď se v průměru posune o 1 cm, chyba na povodních Děčín +24 h 15,5 → 16,9 cm a +12 h 9,0 → 10,8 cm, pořád daleko pod „bude jako teď“ (44,3 cm). Dvě denní hodnoty v Mělníku se za 20.–23. 10. od dopočtu liší o 0–15 m³/s při průtoku kolem 60 m³/s. Aplikace u předpovědi vždy píše, co je dopočtené.
+- **Navazuje na archiv:** při průtoku 80–90 m³/s je teď Děčín na 90 cm (archiv 2022–2025: 90–94 cm), Ústí při 72–82 m³/s na 125 cm (122–125 cm). Jednotky sedí a posun hladiny proti archivu tam není.
+- **Nejnovější stažená hodnota** (pá 23. 10. 2026 v 18:50 UTC, 20:50 našeho času): Děčín 90 cm a 85 m³/s, Ústí 125 cm a 78 m³/s, oboje pod 1. stupněm. Ridge vydaný z hodiny 18:00 UTC: Děčín 98 / 98 / 98 cm za 12 / 24 / 36 h, ČHMÚ ve stejných časech 93 / 91 / 90 cm; Ústí 136 / 135 / 131 cm, ČHMÚ 126 / 126 / 125 cm. Při nízké vodě kolísá hladina v Děčíně a Ústí o 10–30 cm během pár hodin (nejspíš jezy, domněnka). Za 21.–23. 10. měl Ridge na 12 h průměrnou chybu 11 cm v Děčíně i v Ústí, „bude jako teď“ 8 a 12 cm. Na nízké vodě model nic nepřidá, dnešní data hlavně ukazují, že celý řetězec od ČHMÚ po předpověď funguje i naživo.
 
 ## Ovzduší
 

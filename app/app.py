@@ -13,6 +13,7 @@ import plotly.graph_objects as go
 import streamlit as st
 import streamlit.components.v1 as components
 
+import aktualni
 import animace
 from mapa import deck as mapa_deck, mapbox_token
 from predikce import (BARVY, HORIZONTY, KDE, NAZEV, ROOT, SPA, STUPNE, interval, modely, nacti, nacti_model, stupen,
@@ -53,6 +54,12 @@ def animace_html(povoden, nazev):
     return animace.html(od, do, nazev)
 
 
+@st.cache_data(ttl=600)
+def dnes_c(nazev):
+    """Předpověď z aktuálních dat ČHMÚ, nejvýš 10 minut stará."""
+    return aktualni.predpoved_dnes(nazev)
+
+
 @st.cache_data
 def metriky(nazev, cast="val"):
     """Poslední plný výsledek modelu na validaci (nebo testu) z results/."""
@@ -90,8 +97,11 @@ st.caption("Předpověď hladiny Labe za 12, 24 a 36 hodin z toho, co teď teče
 with st.sidebar:
     st.header("Nastavení")
     seznam = modely()
-    nazev = st.selectbox("Model", seznam, index=seznam.index("ridge"))
+    nazev = st.selectbox("Model", seznam, index=seznam.index("ridge"),
+                         help="ridge se učil do roku 2018 (pro přehrávání historie), ridge_vse na všem do 2025 (pro dnešek).")
     cil = st.radio("Stanice", list(KDE), format_func=jmeno)
+    dnes = st.toggle("Dnešek: živá data ČHMÚ", value=False,
+                     help="Stáhne poslední měření z opendata.chmi.cz a vydá předpověď na teď. Vypnuté = přehrávání historie.")
     st.subheader("Okamžik předpovědi")
     st.caption("Přehrávání historie: vyber den a hodinu a aplikace ukáže, co by model řekl tehdy.")
     den = st.date_input("Den", value=date(2011, 1, 15), min_value=date(2006, 1, 3), max_value=date(2025, 12, 30))
@@ -99,20 +109,36 @@ with st.sidebar:
 
 X = vstupy_c(cil)
 H = hladiny(cil)
-cas = pd.Timestamp(datetime.combine(den, time(hodina))).tz_localize(TZ, ambiguous=False, nonexistent="shift_forward")
-cas = cas.tz_convert("UTC")
-if cas not in X.index:
-    cas = X.index[X.index.get_indexer([cas], method="nearest")[0]]
-    st.sidebar.warning(f"Pro zvolenou hodinu chybí data, beru nejbližší: {cesky(cas):%d. %m. %Y %H:%M}.")
-radek = X.loc[[cas]]
-ted = float(radek[f"{cil}_H_0"].iloc[0])
-pred = {h: float(model_c(nazev, cil, h).predict(radek)[0]) for h in HORIZONTY}
+DNES = None
+if dnes:
+    DNES = dnes_c(nazev)
+    if not DNES["ok"]:
+        st.sidebar.warning(DNES["chyba"])
+        DNES = None
+if DNES:
+    cas, radek, ted, pred = DNES["cas_utc"], DNES[cil]["radek"], DNES[cil]["ted"], DNES[cil]["predpoved"]
+    H = DNES["hladiny"][f"{cil}_H"]
+else:
+    cas = pd.Timestamp(datetime.combine(den, time(hodina))).tz_localize(TZ, ambiguous=False, nonexistent="shift_forward")
+    cas = cas.tz_convert("UTC")
+    if cas not in X.index:
+        cas = X.index[X.index.get_indexer([cas], method="nearest")[0]]
+        st.sidebar.warning(f"Pro zvolenou hodinu chybí data, beru nejbližší: {cesky(cas):%d. %m. %Y %H:%M}.")
+    radek = X.loc[[cas]]
+    ted = float(radek[f"{cil}_H_0"].iloc[0])
+    pred = {h: float(model_c(nazev, cil, h).predict(radek)[0]) for h in HORIZONTY}
 
 tab_ted, tab_kvalita, tab_mapa, tab_animace = st.tabs(["Teď", "Jak dobře to funguje", "Mapa povodí",
                                                         "Animace povodně"])
 
 with tab_ted:
-    st.subheader(f"{jmeno(cil)}, {cesky(cas):%d. %m. %Y %H:%M} českého času")
+    if DNES:
+        st.subheader(f"{jmeno(cil)} dnes, předpověď vydaná {cesky(cas):%d. %m. %Y %H:%M} českého času")
+        st.caption(f"Živá data ČHMÚ (opendata.chmi.cz), {DNES['stari_h']} h stará. "
+                   + (f"Dopočteno z bilance vody: {', '.join(DNES['dopocteno'])}. " if DNES["dopocteno"] else "")
+                   + (DNES["upozorneni"] or ""))
+    else:
+        st.subheader(f"{jmeno(cil)}, {cesky(cas):%d. %m. %Y %H:%M} českého času")
     sloupce = st.columns(4)
     sloupce[0].metric("Hladina teď", f"{ted:.0f} cm")
     sloupce[0].markdown(odznak(cil, ted), unsafe_allow_html=True)
@@ -123,6 +149,10 @@ with tab_ted:
         if rozmezi[h]:
             c.caption(f"nejspíš {rozmezi[h][0]:.0f} až {rozmezi[h][1]:.0f} cm")
     st.info(vysvetleni(cil, 24, ted, pred[24], radek))
+    if DNES and any(v is not None for v in DNES[cil]["chmu"].values()):
+        st.caption("Pro srovnání oficiální předpověď ČHMÚ na stejné hodiny: "
+                   + ", ".join(f"za {h} h {v:.0f} cm" for h, v in DNES[cil]["chmu"].items() if v is not None)
+                   + ". Náš model je jednodušší a nemá počasí, ČHMÚ má srážkovou předpověď.")
 
     okno = H[cas - pd.Timedelta(hours=72): cas]
     fig = go.Figure()
@@ -212,13 +242,19 @@ with tab_mapa:
                 "U Děčína a Ústí je v popisku předpověď modelu za 24 h. Okamžik se mění v levém menu, terén je "
                 "2,5× zvýšený.")
     misto = st.empty()
+    if DNES:
+        st.info("Pro dnešek mapa ukazuje poslední hodinu z archivu, ne živá data: průtoky v Mělníku a Nymburce ČHMÚ "
+                "operativně nezveřejňuje, pro předpověď jsou dopočtené z bilance vody.")
+        cas_mapa = vstupy_c(cil).index[-1]
+    else:
+        cas_mapa = cas
     if st.button("Přehrát povodeň 1/2011 (8. až 24. 1., po 6 hodinách, asi 40 s)"):
         for t in pd.date_range("2011-01-08", "2011-01-24 18:00", freq="6h", tz=TZ):
             t = t.tz_convert("UTC")
             misto.pydeck_chart(mapa_deck(t, predpovedi_pro_mapu(t)), height=650)
             cas_modul.sleep(0.6)
     else:
-        misto.pydeck_chart(mapa_deck(cas, predpovedi_pro_mapu(cas)), height=650)
+        misto.pydeck_chart(mapa_deck(cas_mapa, predpovedi_pro_mapu(cas_mapa)), height=650)
     st.caption("Děčín a Ústí: barva podle hladiny a stupňů povodňové aktivity. Ostatní stanice: zelená pod 95. "
                "percentilem průtoku z let 2006–2018, žlutá do 99., červená nad ním; nejde o oficiální stupně. "
                "Kolečkem přiblížíte, tažením posunete, Shift a tažením natočíte. "

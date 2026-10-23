@@ -68,7 +68,7 @@ def _intervaly():
 def interval(nazev, cil, h, hladina_ted, pred):
     """Rozmezí (dolní, horní) v cm, do kterého se vešlo 90 % chyb na tréninku v pásmu hladiny teď; jen pro ridge."""
     z = _intervaly()
-    if nazev != "ridge" or not z:
+    if nazev not in ("ridge", "ridge_vse") or not z:
         return None
     z = z[f"{cil}_{h}"]
     i = max(k for k, hranice in enumerate(z["pasma"][:-1]) if hladina_ted >= hranice)
