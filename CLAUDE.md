@@ -4,9 +4,24 @@ Pracuješ v týmu čtyř středoškoláků na Hackathonu ML/AI 2026 (FJFI ČVUT 
 
 Na začátku relace člověk zadá `/ondra`, `/dan`, `/honza` nebo `/tobias`. Z toho poznáš, s kým pracuješ. Když to neudělá, zeptej se ho, kdo je.
 
+## Hodnocení (50 bodů)
+
+| Kritérium | Body |
+|---|---|
+| Splnění zadání | 0–10 |
+| Postup řešení: správné metody a jak je vysvětlíme | 0–10 |
+| Odbornost řešení | 0–20 |
+| Kvalita prezentace: vizualizace, celkový dojem | 0–10 |
+
+Nejvíc bodů je za odbornost a pořadatelé řekli rovnou: radši jednodušší model, kterému rozumíme. Z toho plyne:
+
+- Jednodušší model, který všichni vysvětlí, je lepší než o kousek přesnější, kterému nerozumíme.
+- Vysvětlit, co jsme udělali a proč, musí umět každý z týmu, ne jen ten, kdo to dělal.
+- Zadání vybrané úlohy říká, co musí v prezentaci zaznít. Hlídej, ať nic z toho nechybí.
+
 ## Stav (aktualizuje kdokoli, kdo má novou informaci)
 
-- **Zadání:** pět úloh v `zadani/`, přehled v `zadani/README.md`. Vybraná úloha: zatím ne. Až bude, její celé zadání (`zadani/<úloha>.md`) si přečti na začátku každé relace.
+- **Zadání:** pět úloh v `zadani/`, přehled v `zadani/README.md`. Vybraná úloha: nejspíš ovzduší (`zadani/ksi-2-ovzdusi.md`), potvrdit do 17:30. Celé zadání vybrané úlohy si přečti na začátku každé relace.
 - **Komu řešení pomáhá:**
 - **Data:** (kde leží v `data/raw/`, co obsahují, velikost)
 - **Metrika:** (jedna hlavní metrika a s jakým jednoduchým řešením se srovnáváme)
@@ -32,6 +47,7 @@ Zaměření je jen výchozí. Role se během hackathonu míchají a na čem kdo 
 
 ## Jak pracuješ
 
+- Na začátku relace si přečti nové záznamy v `docs/DENIK.md` a `docs/POKUSY.md` na všech větvích (`git show origin/<větev>:docs/DENIK.md`). Řekni člověku v pár větách, co ostatní od jeho poslední relace udělali a proč.
 - Mluv česky, stručně a jasně. Každé rozhodnutí zdůvodni jednou větou, porota se bude ptát „proč zrovna tohle?“.
 - Než začneš výrazně měnit soubor, na kterém podle Stavu nebo posledních commitů pracuje někdo jiný, upozorni na to, ať se domluví.
 - Commituj malé a časté kroky, ať se práce snadno spojuje.
@@ -60,12 +76,29 @@ Porota hodnotí hlavně to, jak úloze a výsledkům rozumíme a jak to vysvětl
 - Do `DENIK.md` a `POKUSY.md` jen připisuj na konec, nic nepřepisuj. Git je při slučování spojí sám. V `DATA.md` a `POROZUMENI.md` uprav jen to, čeho se zjištění týká.
 - Než relace skončí nebo před `/sync` zkontroluj, že nic z toho nechybí.
 
+**Rozbor po každém kroku.** Po každém dokončeném kusu práce (pokus, nová část kódu, změna postupu) napiš člověku v chatu krátký rozbor, nejvýš na jednu obrazovku. Stejný rozbor připiš do `docs/DENIK.md`, ať ho vidí i ostatní:
+
+```
+## pá 19:20 · Dan · Rozbor: první model
+- Co jsme udělali:
+- Jak to funguje, jednoduše:
+- Proč tak a ne jinak:
+- Výsledek a co znamená:
+- Slabiny a co může být špatně:
+- Otázka poroty a odpověď:
+```
+
+Na konci polož člověku tu otázku poroty. Když neví nebo odpoví špatně, vysvětli to jinak a jednodušeji.
+
 ## Pravidla pro data a modely
 
 - Data od pořadatelů leží v `data/raw/` a nikdy nejdou do Gitu.
 - Rozdělení na train / val / test je jedno společné pro všechny. Testovací část nikdy nepoužívej k tréninku, ladění ani výběru modelu. Pustí se jednou, na finální model, a rozhoduje o tom Ondra.
 - Všichni měří stejně: společným vyhodnocením na validační části. Každý pokus ulož jako nový soubor do `results/` (autor, čas, popis, metrika, parametry).
 - Vždy srovnávej s jednoduchým základem (baseline). Číslo bez srovnání nic neříká.
+- Postupuj od nejjednoduššího: baseline (průměr, poslední hodnota), lineární model, LightGBM, teprve pak malá neuronová síť. Další stupeň jen když na val výrazně pomůže a dá se jednoduše vysvětlit. Srovnání všech stupňů patří do `docs/POKUSY.md`, porota ho chce vidět.
+- Nepoužívej nic, co nikdo z týmu nevysvětlí: skládání mnoha modelů (stacking), AutoML, velké architektury nebo triky bez jasného důvodu. Když člověk chce složitější věc, upozorni ho na to a nech rozhodnout Ondru.
+- U každého modelu ukaž, podle čeho rozhoduje (důležitost vstupů, SHAP, graf chyb). To je nejlepší důkaz, že mu rozumíme.
 - Seed je vždy 42, aby šly výsledky zopakovat.
 - Podezřele dobrý výsledek nech zkontrolovat subagentem `kontrolor` (únik dat, špatné rozdělení).
 - Velký model od nuly netrénuj, dolaďuj předtrénovaný. Nikdo nemá grafiku NVIDIA: GPU je zdarma na Kaggle (příkaz `kaggle`) nebo v Colabu, Macy mají MPS.

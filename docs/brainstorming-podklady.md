@@ -42,6 +42,7 @@ Citace z článků DCÚK k ročníku 2026:
 | 2023 | zpracování matematického modelu, grafické rozhraní aplikace, prezentace výsledků [S8] | 3× KSI FJFI, 1× Autodesk, 2× DCÚK [S8] |
 | 2024 | splnění zadání, zvolený postup (vhodné metody, úprava dat), odbornost řešení, prezentace [S9] | 3× FJFI (z toho jeden i FIT), 1× Autodesk, 1× DCÚK; předseda RNDr. Petr Kubera [S9] |
 | 2025 | nezveřejněno | nezveřejněno; část mentorů zasedla i v porotě [S11] |
+| 2026 | splnění zadání 0–10, postup řešení a metody 0–10, odbornost 0–20 (radši jednodušší modely, kterým rozumíme), kvalita prezentace a vizualizace 0–10 (řečeno na místě) | |
 
 - Týmům pomáhají tutoři z řad studentů FJFI a IT odborníků, mentoři DCÚK chodí mezi týmy a radí. [S9][S10]
 
