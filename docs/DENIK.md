@@ -35,3 +35,8 @@ Po každém dokončeném kusu práce rozbor, aby ho pochopil i ten, kdo u toho n
 - Výsledek a co znamená: Děčín za 24 h, chyba na povodních: „jako teď“ 44,4 cm, lineární model 15,5 cm. Lineární model varoval před 2. stupněm v průměru 15,5 h předem, nic nepropásl a neměl planý poplach. „Jako teď“ propásl všechny.
 - Slabiny a co může být špatně: ve validaci jsou jen 4 povodně, čísla berte jako směr. Odmocnina na hladinu (místo jen na průtok) zkazila vrchol 2006 o metr, pozor na to v každém modelu.
 - Otázka poroty a odpověď: „Proč netestujete na náhodně vybraných hodinách?“ Sousední hodiny jsou skoro stejné, model by je znal z tréninku a výsledek by byl falešně dobrý. Proto dělíme v čase a kolem validačních povodní vynecháváme 20 dní.
+
+## pá 19:45 · Ondra
+- Co: zkontroloval jsem správnost dat (shoda s balíčkem pořadatelů, bilance vody mezi stanicemi, měrné křivky, časy, odlehlé hodnoty). Data jsou v pořádku, nic se neměnilo. Podrobnosti v `docs/DATA.md`, sekce Labe.
+- Co: do zadání modelů přibyla pravidla, jak dlouho iterovat (jedna změna s důvodem, zlepšení aspoň o 1 cm v `prumer_povodne`, konec po 3 neúspěšných variantách, 10 variantách nebo ve 20:50).
+- Proč: validace má jen 4 povodně, nekonečné ladění by našlo variantu, která na nich vyjde náhodou dobře.

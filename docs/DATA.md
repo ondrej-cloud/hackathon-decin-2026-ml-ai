@@ -20,6 +20,15 @@ Ověřeno:
 - Mezi lety 2016 a 2020 nepřekročilo Labe v Děčíně ani 1. stupeň povodňové aktivity, byla to suchá léta.
 - Stupně povodňové aktivity (metadata ČHMÚ): Děčín 400 / 490 / 560 cm, Ústí 450 / 530 / 600 cm.
 
+**Kontrola správnosti** (pá 19:45, ověřeno):
+- Data ČHMÚ jsou za 2024–2025 na hodinu i na centimetr stejná jako balíček od pořadatelů (Děčín, Ústí, Louny, 17 544 hodin, rozdíl 0, bez časového posunu).
+- Bilance vody sedí každý rok: Mělník = Vraňany + Kostelec (poměr 1,00), Ústí = 1,01–1,04 × (Mělník + Louny), Děčín = 1,04–1,08 × Ústí. Navíc přitékají menší přítoky (Bílina, Ploučnice). Žádná stanice nemá v některém roce průtok posunutý.
+- Měrná křivka se nemění: při průtoku 250–300 m³/s je hladina v Děčíně každý rok 204–214 cm, v Ústí 234–242 cm. V Děčíně za 20 let klesla asi o 5 cm, nejspíš kvůli dnu řeky (domněnka).
+- Časy sedí: voda z Ústí do Děčína dorazí každý rok za 4–5 h, z Prahy do Vraňan za 4–5 h. Vrchol povodně šel z Mělníka do Ústí za 17 h v letech 2006, 2009, 2013 i 2024. Při vyšší vodě se zpoždění Mělník → Ústí zkrátilo z 8–11 h (2006–2013) na 6–7 h (2021–2024). Posun času v datech to není, ten by byl skokový. Nejspíš jde o jezy (domněnka). Modely trénované do 2018 se proto na testu můžou o hodinu dvě splést v načasování.
+- Odlehlé hodnoty: jednohodinové výkyvy průtoku, které se hned vrátí, má Vraňany 35 hodin za 20 let, Mělník 3, Přelouč 2, Nymburk 1. Nejspíš manipulace na jezech. Vliv na modely je zanedbatelný, nechané.
+- Stejná hodnota déle než 3 dny: Sázava v zimě 8krát (nejdéle 18 dní v lednu 2009) a Louny 2krát, vždy při malém průtoku. Jsou to odhady ČHMÚ při ledu. Na povodně to vliv nemá, nechané.
+- Žádné nulové ani záporné hodnoty.
+
 **Povodně v Děčíně nad 3. stupněm:** 4/2006 (875 cm), 8/2010 (560), 1/2011 (730), 6/2013 (1 072), 12/2023 (624), 9/2024 (649).
 
 **Rozdělení** (`src/evaluate.py`, dělení v čase, ne náhodně):
