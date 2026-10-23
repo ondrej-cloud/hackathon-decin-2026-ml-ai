@@ -58,14 +58,14 @@ def graf(T):
                 ax.annotate(f"propásne {int(t.propasnuto[n])} z 24", (n, v), textcoords="offset points", xytext=(0, -14),
                             ha="center", fontsize=7, color=barva, style="italic")
     ax.axhline(JAKO_TED, color="black", ls="--", lw=1)
-    ax.text(LETA[0], JAKO_TED + 1, "„bude jako teď“ (44,3 cm, propásne všechny)", ha="left", fontsize=9)
+    ax.text(LETA[-1], JAKO_TED - 1, "„bude jako teď“ (44,3 cm, propásne všechny)", ha="right", va="top", fontsize=9)
     ax.set_xticks(LETA)
     ax.set_xlabel("roky historie v tréninku (před validací, 2019 − N až 2018)")
     ax.set_ylabel("chyba na povodních (cm, průměr 6 kombinací)")
     ax.set_title("Kolik let dat model potřebuje: víc stanic pomohlo víc než víc let")
     ax.set_ylim(0, max(JAKO_TED, T.prumer_povodne.max()) * 1.15)
     ax.grid(alpha=0.3)
-    ax.legend(loc="center right")
+    ax.legend(loc="lower left")
     fig.savefig(GRAF, dpi=150, bbox_inches="tight")
 
 
