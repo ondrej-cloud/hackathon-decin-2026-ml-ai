@@ -76,7 +76,11 @@ def spust(nazev, test=False, rychle=False):
 def prehled(cast="val"):
     posledni, stare = {}, set()
     for f in sorted(RESULTS.glob("*.json")):
-        z = json.loads(f.read_text(encoding="utf-8"))
+        b = f.read_bytes()
+        try:
+            z = json.loads(b.decode("utf-8"))
+        except UnicodeDecodeError:  # starší výsledky z Windows bez UTF-8
+            z = json.loads(b.decode("cp1250"))
         if z["cast"] != cast or z.get("rychle"):
             continue
         if z.get("verze") == verze():

@@ -14,7 +14,7 @@ poradi = df.groupby("model").mae_povodne.mean().sort_values(ascending=False).ind
 kombinace = [(c, h) for c in ("decin", "usti") for h in (12, 24, 36)]
 nazvy = {"decin": "Děčín", "usti": "Ústí"}
 MODELY = {"jako_ted": "„bude jako teď“", "fyzika": "fyzikální (Tobias)", "ridge": "lineární regrese (Honza)",
-          "lgbm_c": "LightGBM (Dan)", "mlp": "neuronová síť (Ondra)"}
+          "lgbm": "LightGBM (Dan)", "lgbm_c": "LightGBM (Dan)", "mlp": "neuronová síť (Ondra)"}
 
 fig, ax = plt.subplots(figsize=(10, 4.8))
 sirka = 0.8 / len(poradi)

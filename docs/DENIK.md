@@ -114,6 +114,17 @@ Následující záznamy jsou doplněné zpětně (pá 19:35) podle commitů, ať
 - Slabiny a co může být špatně: doby putování jsou jedno pevné číslo, ale při každé povodni jsou trochu jiné. Co ještě nikdo nezměřil, model považuje za neměnné, takže při stoupání podhodnocuje vrcholy, nejvíc na 36 h (38 cm). Před vrcholem 2006 krátce přestřelil o 50 cm. Povodeň z lokálních dešťů (srpen 2010) bez předpovědi srážek nevidí. Přítoky v kraji podle Ondry chybu nevysvětlují, dají jen 2–13 % vody.
 - Otázka poroty a odpověď: „Proč je fyzikální model horší než lineární regrese, když fyzika platí?“ Fyzika tu má zjednodušení: jednu dobu putování a předpoklad, že co nebylo změřeno, se nezmění. Lineární model se z dat naučí i to, že stoupající voda proti proudu ještě dál stoupá, a jakou váhu má která stanice. Fyzikální model je proto laťka a vysvětlení: ukazuje, že učený model nedělá nic magického, jen tuhle fyziku zpřesňuje.
 
+## pá 20:15 · Honza
+- Co: aplikace `app/app.py` běží s modelem Ridge. Obrazovka „Teď“: hladina teď, předpověď za 12 / 24 / 36 h, stupně povodňové aktivity barevně, věta pro laika (co teče Prahou a Mělníkem) a graf posledních 3 dnů s předpovědí. Obrazovka „Jak dobře to funguje“: validační povodeň, skutečnost proti modelu a „jako teď“, tabulka chyb z `results/`. Přehrávání historie, výchozí okamžik 15. 1. 2011 9:00.
+- Proč: kontrolní bod 21:00 chce celý řetězec od dat po aplikaci. Model se vybírá až ve 21:00, proto aplikace načítá kterýkoli `models/<model>_<cil>_<h>.joblib` a model se volí v menu; Ondrův finální model se jen přidá.
+- Co dál: 3D mapa povodí (`app/mapa.py`, zadání `docs/UKOL_APLIKACE.md` bod 8), odhad nejistoty předpovědi, screenshoty a záložní video.
+## pá 20:15 · Ondra · Rozbor: srovnání čtyř modelů
+- Co jsme udělali: každý z nás vyzkoušel jiný druh modelu na stejném úkolu. Nejlepší variantu každého jsme přepočítali na jednom počítači a na stejné verzi dat i vyhodnocení.
+- Jak to funguje, jednoduše: všechny modely dostanou stejné vstupy (hladiny v Děčíně a Ústí, průtoky 12 stanic proti proudu) a předpovídají hladinu za 12, 24 a 36 h. Hodnotíme je na 4 povodních, které při tréninku neviděly.
+- Výsledek a co znamená: chyba na povodních lineární regrese 17,1 cm, neuronová síť 17,8, LightGBM 23,1, fyzikální model 24,8, „jako teď“ 44,3. Žádný model nepropásl povodeň, „jako teď“ propásne všechny.
+- Návrh na finální model: lineární regrese (`src/models/ridge.py`). Je nejlepší, nejjednodušší, trénuje se za sekundu, nemá planý poplach a celá se vysvětlí na grafu vah. Síť je stejně dobrá jen v rámci náhody a hůř se vysvětluje. Čeká na potvrzení, finální test 2021–2025 se pustí jednou na vybraný model.
+- Slabiny a co může být špatně: validace má jen 4 povodně, všechny modely na povodních mírně podhodnocují (bias −5 až −8 cm) a na 36 h je chyba skoro dvojnásobná. Data ČHMÚ v archivu jsou zpětně ověřená, v provozu jsou průtoky při povodni předběžné, takže čísla jsou proti provozu optimistická.
+- Otázka poroty a odpověď: „Proč jste nevzali složitější model, když jste ho měli?“ Zkusili jsme čtyři přístupy na stejných datech. Neuronová síť ani LightGBM nebyly lepší, LightGBM navíc přestřeluje vrcholy, které jsou vyšší než všechno v tréninku. Jednodušší model, který umíme vysvětlit, vyhrál i v číslech.
 ## pá 20:05 · Dan
 - Co: LightGBM dělám přes Ondrovo společné rozdělení a `porovnej.py`, horizonty 12, 24 a 36 h. Varianta se srážkami nejde, srážky v tabulce nejsou a balíček pořadatelů s meteorologií má jen Ondra (`data/raw` není v Gitu). Externí data jsem nestahoval.
 - Proč: stejné vyhodnocení jako u ostatních, jinak by nešly výsledky srovnat.
@@ -135,3 +146,17 @@ Následující záznamy jsou doplněné zpětně (pá 19:35) podle commitů, ať
 - Návrh na finální model: lineární regrese (`src/models/ridge.py`). Je nejlepší, nejjednodušší, trénuje se za sekundu, nemá planý poplach a celá se vysvětlí na grafu vah. Síť je stejně dobrá jen v rámci náhody a hůř se vysvětluje. Čeká na potvrzení, finální test 2021–2025 se pustí jednou na vybraný model.
 - Slabiny a co může být špatně: validace má jen 4 povodně, všechny modely na povodních mírně podhodnocují (bias −5 až −8 cm) a na 36 h je chyba skoro dvojnásobná. Data ČHMÚ v archivu jsou zpětně ověřená, v provozu jsou průtoky při povodni předběžné, takže čísla jsou proti provozu optimistická.
 - Otázka poroty a odpověď: „Proč jste nevzali složitější model, když jste ho měli?“ Zkusili jsme čtyři přístupy na stejných datech. Neuronová síť ani LightGBM nebyly lepší, LightGBM navíc přestřeluje vrcholy, které jsou vyšší než všechno v tréninku. Jednodušší model, který umíme vysvětlit, vyhrál i v číslech.
+
+## pá 20:20 · Ondra
+- Co: Dan dokončil LightGBM, srovnání všech čtyř je finální (`docs/POROZUMENI.md`, sekce Jak číst výsledky, i v procentech). Lineární regrese 17,1 cm, síť 17,8, LightGBM 23,1, fyzikální 24,8, „jako teď“ 44,3.
+- Návrh: finální model je lineární regrese. Nejlepší a nejjednodušší, trénuje se za sekundu, nemá planý poplach a každou váhu vysvětlíme. Síť je stejná jen v rámci náhody a průměr obou nepomohl (16,9 cm).
+- Zjištění: čtyři různé modely skončily blízko sebe. Strop dělají vstupy, ne model. Další zlepšení by přinesly srážky v povodí, ne složitější model.
+- Problém: výsledky z Windows byly uložené v kódování cp1250. Převedli jsme je na UTF-8 a `porovnej.py` je teď ukládá i čte správně.
+
+## pá 20:20 · Honza
+- Co: aplikace má třetí záložku „Mapa povodí“: 3D terén (veřejné výškové dlaždice bez klíče, podklad OpenStreetMap) a na něm 12 stanic jako sloupce, výška = průtok, barva = stupeň povodňové aktivity (u stanic bez hladiny percentil průtoku, není to oficiální stupeň). Okamžik se řídí z levého menu stejně jako ostatní záložky. Modely pro aplikaci (`models/`) a předpovědi Ridge přepočítané na opraveném vyhodnocení: `results/2026-10-23_201351_ridge.json`, 17,1 cm, `bias_povodne` −1,5 (12 h) až −11,6 cm (36 h).
+- Proč: obrázek k větě „co teče Prahou teď, je zítra v Děčíně“. Staré výsledky nový `--prehled` ignoruje, proto přepočet.
+- Problém: dlaždice mapy se stahují z internetu. Na prezentaci je záloha `docs/grafy/app_mapa.png`, v sobotu přibude video.
+## pá 20:30 · Ondra
+- Co: sepsali jsme celkový přehled řešení `docs/PREHLED.md`: co předpovídáme, které vstupy každý model používá, co jsme nevzali a proč, rozdělení, výsledky a tabulku všech rozhodnutí s důvody.
+- Proč: rozhodnutí byla rozesetá po deníku, pokusech a datech. Pro prezentaci a otázky poroty je potřebujeme pohromadě.

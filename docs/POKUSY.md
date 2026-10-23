@@ -235,3 +235,19 @@ Následující pokusy jsou doplněné zpětně (pá 19:55). Všechny byly před 
 - Výsledek na val (`prumer_povodne`): „jako teď“ 44,3, trend 39,4, Ridge 17,1, LightGBM v1 66,8, v2 40,8, a 24,3, c 23,1 (stejně jako Ondrovi na Macu), zbytek po Ridge 18,7, list 200 hodin 22,1, regularizace 22,2, zastavení 22,2, 7 listů 23,0, monotónní 23,8, přímky v listech 97,8. Děčín, chyba na povodních +12 / +24 / +36 h: c 10,2 / 21,3 / 36,4 cm, Ridge 9,0 / 15,5 / 26,0, „jako teď“ 23,0 / 44,4 / 65,6.
 - Závěr: závěry platí. List 200 hodin je teď lepší o 0,97 cm (bez zaokrouhlení 23,08 → 22,11), tedy těsně pod hranicí 1 cm, a v Děčíně přidal plané poplachy před 1. a 3. stupněm, takže neprošel. Nejlepší LightGBM je c, na povodních o 6,0 cm horší než Ridge. Grafy `lgbm_c_povoden2011.png` a `lgbm_shap.png` jsou překreslené z nové verze.
 - Soubory: `results/2026-10-23_2004*` až `_2015*` (otisk verze v JSON). Moje starší `results/*.json` byly zapsané v kódování cp1250 a nový `porovnej.py` je nepřečetl, převedl jsem je do UTF-8 beze změny obsahu.
+## pá 20:00 · Dan · LightGBM finální varianta (lgbm = c), seedy a SHAP
+- Otázka: je výsledek c stabilní a podle čeho model rozhoduje?
+- Data a rozdělení: společné rozdělení, všech 6 kombinací; SHAP pro Děčín +24 h na validaci.
+- Vstupy: jako c.
+- Model a nastavení: `src/models/lgbm.py` je c (500 stromů, learning_rate 0,05, 31 listů), seedy 42, 43, 44.
+- Kde a jak dlouho: Dan, Yoga 7i, 5–7 s na model, SHAP pár sekund.
+- Výsledek na val: `prumer_povodne` 22,8 se všemi třemi seedy na desetinu stejně (bez náhodného výběru řádků a vstupů v LightGBM náhoda není). Regularizace se seedy 22,0–22,2, takže její zlepšení o 0,6–0,8 cm je skutečné, ale pod hranicí 1 cm. Chyba „jen při vysoké vodě“ (nad 1. stupněm, Děčín +12 / +24 / +36 h): 10,8 / 24,3 / 42,3 cm, Ridge 9,0 / 16,8 / 29,6, „jako teď“ 25,7 / 51,0 / 74,5. Varování před 1. stupněm (400 cm) nic nepropásl, předstih 8 / 21 / 46 h.
+- Závěr: SHAP ukazuje, že model dělá fyzikálně rozumnou věc. Pro Děčín za 24 h rozhoduje hlavně přírůstek průtoku v Praze (voda, která Prahou už protekla a do Děčína ještě nedotekla), při povodni 2011 v průměru 19 cm vlivu, pak Přelouč, Louny a Ústí. Za klidu rozhoduje hlavně stav v Děčíně za poslední hodiny. Graf povodně 2011 ukazuje slabinu: při rychlém stoupání LightGBM přestřelí asi o 70 cm (800 proti 730 cm) a skáče, Ridge jde hladce.
+- Soubory: `src/models/lgbm.py`, `results/2026-10-23_2000_lgbm.json`, `docs/grafy/lgbm_shap.png` (podle čeho rozhoduje, celá validace a povodeň 2011), `docs/grafy/lgbm_c_povoden2011.png` (skutečnost, „jako teď“, c, Ridge a zbytek po Ridge při povodni 2011, +24 h)
+
+## pá 20:20 · Ondra · finální srovnání čtyř modelů v procentech a průměr dvou nejlepších
+- Otázka: jak dopadne Danův finální LightGBM (`lgbm`) a pomůže zprůměrovat dva nejlepší modely?
+- Data a rozdělení: společné rozdělení, aktuální verze vyhodnocení, vše přepočítané na MacBooku M1.
+- Výsledek na val: `lgbm` 23,1 cm (stejné jako varianta c, ze které vychází). Pořadí: lineární regrese 17,1, síť 17,8, LightGBM 23,1, fyzikální 24,8, „jako teď“ 44,3. Do ±20 cm při vodě nad 1. stupněm: 72 / 67 / 61 / 55 / 29 %. Všechny čtyři modely zachytily 24 z 24 nástupů povodní. Průměr lineární regrese a sítě: 16,9 cm, 71 % do ±20 cm, tedy zlepšení o 0,2 cm, pod hranicí 1 cm.
+- Závěr: lineární regrese vede. Průměrování modelů nepomáhá a jen by přidalo složitost. Čtyři různé přístupy na stejných vstupech skončily blízko sebe, takže rezervu nemá model, ale vstupy (chybí srážky).
+- Soubory: `src/procenta.py`, `docs/grafy/srovnani_procenta.png`, `docs/grafy/srovnani_ctyr_modelu.png`, `results/*_lgbm.json`.
