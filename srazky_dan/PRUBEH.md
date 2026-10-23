@@ -22,4 +22,5 @@ Dan, větev `dan-srazky` (z `origin/dan-ridge`), worktree `hackathon-2026-srazky
 - 23:23 Ridge hotové: týmový CV 15,64 → 15,65, VAL Děčín +24 15,5 → 15,4, průměr 6 kombinací 17,08 → 17,05, začátek vzestupu VAL 35,4 → 33,5; Danův CV 14,16 → 14,10, VAL 17,8 → 18,1. Obojí beze změny.
 - 23:25 LOFO-CV přes 22 povodní (foldy převzaté z `stanice_vsem/lofo_foldy.csv`, `lofo_srazky.py`): týmový Ridge 15,29 → 15,32 (12 z 22 lepších), Danův 14,79 → 14,77 (13 z 22); zlepšení neplatí.
 - 23:30 Codex (b): stejné řádky a varianty potvrdil; dva střední nálezy (výběr stanic s roky 2019–2020, párování v souhrnu) zdůvodněny a opraveny, výběr stanic teď jen z let 2006–2018 (stejných 9 stanic, tabulka bajtově stejná).
-- 23:37 LightGBM pod zátěží druhé session (volné RAM ~0,6 GB) skoro stál, zastaven; seedy 42/43/44 dávají u tohoto LightGBM stejná čísla (bez náhodného výběru), proto běží seed 42 (CV, validace, pak LOFO) po jednom, 43/44 jen když zbude čas.
+- 23:35 LightGBM pod zátěží druhé session (volné RAM ~0,6 GB) skoro stál, zastaven; seedy 42/43/44 dávají u tohoto LightGBM stejná čísla (bez náhodného výběru), proto běží seed 42 (CV, validace, pak LOFO) po jednom, 43/44 jen když zbude čas.
+- 23:58 Zpráva `ZPRAVA_SRAZKY.md` s verdikty obou Ridge (beze změny); LightGBM se seedem 42 pod zátěží pořád běží, doplním.
