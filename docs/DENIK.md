@@ -135,3 +135,9 @@ Následující záznamy jsou doplněné zpětně (pá 19:35) podle commitů, ať
 - Výsledek a co znamená: chyba na povodních přes 6 kombinací: „jako teď“ 44,3 cm, trend 39,4, LightGBM na syrových vstupech 40,9, LightGBM s posunutými průtoky 22,8, Ridge 17,1. Nic nepropásl a nemá planý poplach. Stromy na povodních prohrávají s lineárním modelem o 5,7 cm.
 - Slabiny a co může být špatně: přeučení (na trénovacích povodních 5–10 cm, na validaci 10–36 cm), schody a přestřelení při rychlém stoupání (2011 asi o 70 cm), povodně 2006 a 2011 jsou vyšší než všechno v tréninku kromě 2013. Povodeň 9/2010 podhodnotí o 25 cm všechny modely, nejspíš déšť blízko kraje, a srážky nemáme. Ve validaci jsou jen 4 povodně.
 - Otázka poroty a odpověď: „Proč jste nevybrali LightGBM, když je na tabulková data obvykle nejlepší?“ Na povodních je o 5,7 cm horší než Ridge. Stromy umí předpovědět jen hodnoty, které viděly, a velká povodeň je v tréninku skoro jen jedna (2013). Vztah „víc vody, vyšší hladina“ je skoro přímka a lineární model ji prodlouží i nad to, co viděl. I když stromy jen opravovaly Ridge, výsledek zhoršily ze 17,1 na 18,9 cm.
+
+## pá 20:20 · Ondra
+- Co: Dan dokončil LightGBM, srovnání všech čtyř je finální (`docs/POROZUMENI.md`, sekce Jak číst výsledky, i v procentech). Lineární regrese 17,1 cm, síť 17,8, LightGBM 23,1, fyzikální 24,8, „jako teď“ 44,3.
+- Návrh: finální model je lineární regrese. Nejlepší a nejjednodušší, trénuje se za sekundu, nemá planý poplach a každou váhu vysvětlíme. Síť je stejná jen v rámci náhody a průměr obou nepomohl (16,9 cm).
+- Zjištění: čtyři různé modely skončily blízko sebe. Strop dělají vstupy, ne model. Další zlepšení by přinesly srážky v povodí, ne složitější model.
+- Problém: výsledky z Windows byly uložené v kódování cp1250. Převedli jsme je na UTF-8 a `porovnej.py` je teď ukládá i čte správně.

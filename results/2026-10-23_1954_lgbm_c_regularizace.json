@@ -4,7 +4,7 @@
  "model": "lgbm_c_regularizace",
  "cast": "val",
  "rychle": false,
- "popis": "LightGBM c se silnìjší regularizací: 15 listù, L2 10 a kadı strom vidí jen 70 % vstupù.",
+ "popis": "LightGBM c se silnÄ›jÅ¡Ã­ regularizacÃ­: 15 listÅ¯, L2 10 a kaÅ¾dÃ½ strom vidÃ­ jen 70 % vstupÅ¯.",
  "parametry": {
   "n_estimators": 500,
   "learning_rate": 0.05,

@@ -4,7 +4,7 @@
  "model": "lgbm_c_monotonni",
  "cast": "val",
  "rychle": false,
- "popis": "LightGBM c s monotónním omezením: víc pøitékající vody proti proudu nesmí znamenat menší vzestup.",
+ "popis": "LightGBM c s monotÃ³nnÃ­m omezenÃ­m: vÃ­c pÅ™itÃ©kajÃ­cÃ­ vody proti proudu nesmÃ­ znamenat menÅ¡Ã­ vzestup.",
  "parametry": {
   "n_estimators": 500,
   "learning_rate": 0.05,

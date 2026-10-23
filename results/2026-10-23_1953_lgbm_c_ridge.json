@@ -4,7 +4,7 @@
  "model": "lgbm_c_ridge",
  "cast": "val",
  "rychle": false,
- "popis": "LightGBM c na zbytku po Ridge: Ridge dá základ zmìny stavu, stromy jen opravují, co Ridge nezvládne.",
+ "popis": "LightGBM c na zbytku po Ridge: Ridge dÃ¡ zÃ¡klad zmÄ›ny stavu, stromy jen opravujÃ­, co Ridge nezvlÃ¡dne.",
  "parametry": {
   "n_estimators": 500,
   "learning_rate": 0.05,

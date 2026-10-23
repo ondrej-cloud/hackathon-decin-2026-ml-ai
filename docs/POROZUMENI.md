@@ -30,6 +30,34 @@ Co jsme zvolili, s čím jsme to srovnávali a proč jsme jiné možnosti nevzal
 
 Co znamená naše metrika, jaké číslo je dobré a proč, s čím ho srovnáváme.
 
+**Výsledky v procentech** (validace: 4 povodně, které modely neviděly, Děčín a Ústí, 12 / 24 / 36 h; `python src/procenta.py ridge mlp lgbm fyzika jako_ted`, graf `docs/grafy/srovnani_procenta.png`):
+
+| Model | Chyba na povodních | O kolik menší než „jako teď“ | Do ±10 cm | Do ±20 cm | Zachycené povodně | Plané poplachy |
+|---|---|---|---|---|---|---|
+| lineární regrese | 17,1 cm | 61 % | 46 % | 72 % | 100 % (24 z 24) | 0 |
+| neuronová síť | 17,8 cm | 60 % | 46 % | 67 % | 100 % (24 z 24) | 1 |
+| LightGBM | 23,1 cm | 49 % | 38 % | 61 % | 100 % (24 z 24) | 0 |
+| fyzikální | 24,8 cm | 44 % | 31 % | 55 % | 100 % (24 z 24) | 0 |
+| „bude jako teď“ | 44,3 cm | 0 % | 15 % | 29 % | 0 % (0 z 24) | 0 |
+
+Do ±20 cm podle horizontu (lineární regrese): za 12 h 88 %, za 24 h 76 %, za 36 h 51 %.
+
+Jak to číst:
+- „Do ±20 cm“ se počítá jen v hodinách, kdy je voda nad 1. stupněm povodňové aktivity. Na klidné řece je přesná i předpověď „jako teď“, proto ji nepočítáme.
+- „Zachycené povodně“: kolikrát model varoval před 2. stupněm dřív, než voda stupeň překročila. 24 = 4 povodně × 2 stanice × 3 horizonty.
+- Procenta nejsou „přesnost“ jako u klasifikace. Předpovídáme číslo v cm, takže úspěšnost vyjadřujeme tím, jak často se trefíme do ±20 cm a o kolik menší je chyba než u laťky.
+
+Jsou to dobré výsledky?
+- Proti laťce ano: chyba na povodních je o 61 % menší, žádná povodeň propásnutá, varování v průměru 17 h předem místo 0.
+- Na 12 h dobré (9 cm, 88 % do ±20 cm), na 24 h použitelné (16 cm), na 36 h slabé (26 cm, jen polovina do ±20 cm).
+- Proti profesionální předpovědi ČHMÚ to srovnat neumíme, jejich chyby nemáme. ČHMÚ navíc počítá se srážkami, my ne.
+- Validace má jen 4 povodně, rozdíly do 1–2 cm jsou náhoda.
+
+Proč jsou modely tak podobné a dá se to ještě zlepšit?
+- Čtyři úplně odlišné přístupy skončily na 17–25 cm. Strop tedy nedělá model, ale informace, kterou mu dáváme. Model, který vidí jen vodu, která už teče, víc nevymáčkne.
+- Zprůměrování dvou nejlepších modelů (lineární + síť) dalo 16,9 cm proti 17,1, tedy nic.
+- Zbytek chyby je hlavně na 36 h a u povodní z dešťů v kraji (9/2010). Tam voda ještě neteče žádnou naší stanicí. Pomohly by srážky v povodí (historie ČHMÚ a v provozu předpověď srážek), to je další krok, ne lepší model.
+
 ## Co model umí a co ne
 
 Limity, na jakých datech by selhal, co jsme nestihli.

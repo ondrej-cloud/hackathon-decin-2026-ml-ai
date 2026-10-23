@@ -4,7 +4,7 @@
  "model": "lgbm_a",
  "cast": "val",
  "rychle": false,
- "popis": "LightGBM a: zmìna stavu, jen stav v cíli a prùtoky proti proudu posunuté o dobu dobìhu.",
+ "popis": "LightGBM a: zmÄ›na stavu, jen stav v cÃ­li a prÅ¯toky proti proudu posunutÃ© o dobu dobÄ›hu.",
  "parametry": {
   "n_estimators": 500,
   "learning_rate": 0.05,

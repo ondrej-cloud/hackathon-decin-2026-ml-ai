@@ -4,7 +4,7 @@
  "model": "zaklad_trend",
  "cast": "val",
  "rychle": false,
- "popis": "Lineární trend: stav se bude dál mìnit stejnì rychle jako za posledních 6 h.",
+ "popis": "LineÃ¡rnÃ­ trend: stav se bude dÃ¡l mÄ›nit stejnÄ› rychle jako za poslednÃ­ch 6 h.",
  "parametry": {
   "okno_h": 6
  },

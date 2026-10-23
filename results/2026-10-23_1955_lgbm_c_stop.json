@@ -4,7 +4,7 @@
  "model": "lgbm_c_stop",
  "cast": "val",
  "rychle": false,
- "popis": "LightGBM c se zastavením tréninku podle let 2017–2018 z trénovací èásti (validace se nepouije).",
+ "popis": "LightGBM c se zastavenÃ­m trÃ©ninku podle let 2017â€“2018 z trÃ©novacÃ­ ÄÃ¡sti (validace se nepouÅ¾ije).",
  "parametry": {
   "n_estimators": 500,
   "learning_rate": 0.05,
@@ -12,7 +12,7 @@
   "random_state": 42,
   "num_threads": 4,
   "verbose": -1,
-  "zastaveni": "2017–2018, 50 stromù bez zlepšení MAE"
+  "zastaveni": "2017â€“2018, 50 stromÅ¯ bez zlepÅ¡enÃ­ MAE"
  },
  "vysledky": [
   {

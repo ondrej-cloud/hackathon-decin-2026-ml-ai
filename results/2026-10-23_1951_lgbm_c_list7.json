@@ -4,7 +4,7 @@
  "model": "lgbm_c_list7",
  "cast": "val",
  "rychle": false,
- "popis": "LightGBM c s menšími stromy (7 listù místo 31), aby si nepamatoval vzácné kombinace z nìkolika povodní v tréninku.",
+ "popis": "LightGBM c s menÅ¡Ã­mi stromy (7 listÅ¯ mÃ­sto 31), aby si nepamatoval vzÃ¡cnÃ© kombinace z nÄ›kolika povodnÃ­ v trÃ©ninku.",
  "parametry": {
   "n_estimators": 500,
   "learning_rate": 0.05,

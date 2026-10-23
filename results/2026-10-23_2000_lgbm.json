@@ -4,7 +4,7 @@
  "model": "lgbm",
  "cast": "val",
  "rychle": false,
- "popis": "LightGBM (nejlepší varianta c): zmìna stavu z prùtokù posunutıch o dobu dobìhu, roèní období a trend za 6 h.",
+ "popis": "LightGBM (nejlepÅ¡Ã­ varianta c): zmÄ›na stavu z prÅ¯tokÅ¯ posunutÃ½ch o dobu dobÄ›hu, roÄnÃ­ obdobÃ­ a trend za 6 h.",
  "parametry": {
   "n_estimators": 500,
   "learning_rate": 0.05,

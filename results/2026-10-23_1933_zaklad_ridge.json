@@ -4,10 +4,10 @@
  "model": "zaklad_ridge",
  "cast": "val",
  "rychle": false,
- "popis": "Ridge na zmìnu stavu, odmocnina prùtokù, alpha 1. Základ pro srovnání s LightGBM (hlavní lineární model je ridge.py).",
+ "popis": "Ridge na zmÄ›nu stavu, odmocnina prÅ¯tokÅ¯, alpha 1. ZÃ¡klad pro srovnÃ¡nÃ­ s LightGBM (hlavnÃ­ lineÃ¡rnÃ­ model je ridge.py).",
  "parametry": {
   "alpha": 1.0,
-  "cil": "zmìna stavu"
+  "cil": "zmÄ›na stavu"
  },
  "vysledky": [
   {

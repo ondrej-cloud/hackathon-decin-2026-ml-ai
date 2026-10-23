@@ -4,7 +4,7 @@
  "model": "lgbm_c",
  "cast": "val",
  "rychle": false,
- "popis": "LightGBM c: jako a, navíc roèní období (sin a cos dne v roce) a trend stavu za posledních 6 h, bez sráek.",
+ "popis": "LightGBM c: jako a, navÃ­c roÄnÃ­ obdobÃ­ (sin a cos dne v roce) a trend stavu za poslednÃ­ch 6 h, bez srÃ¡Å¾ek.",
  "parametry": {
   "n_estimators": 500,
   "learning_rate": 0.05,

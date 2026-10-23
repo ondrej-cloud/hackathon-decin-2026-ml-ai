@@ -4,7 +4,7 @@
  "model": "lgbm_v1",
  "cast": "val",
  "rychle": false,
- "popis": "LightGBM v1: cíl je stav, všech 98 vstupù bez úprav.",
+ "popis": "LightGBM v1: cÃ­l je stav, vÅ¡ech 98 vstupÅ¯ bez Ãºprav.",
  "parametry": {
   "n_estimators": 500,
   "learning_rate": 0.05,

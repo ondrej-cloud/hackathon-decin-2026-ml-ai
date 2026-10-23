@@ -4,7 +4,7 @@
  "model": "lgbm_c_list200",
  "cast": "val",
  "rychle": false,
- "popis": "LightGBM c, v listu stromu aspoò 200 hodin, aby si strom nezapamatoval jednu povodeò z tréninku.",
+ "popis": "LightGBM c, v listu stromu aspoÅˆ 200 hodin, aby si strom nezapamatoval jednu povodeÅˆ z trÃ©ninku.",
  "parametry": {
   "n_estimators": 500,
   "learning_rate": 0.05,

@@ -13,7 +13,7 @@ from porovnej import ROOT
 od, do, cil, h, *modely = sys.argv[1:]
 h = int(h)
 NAZVY = {"jako_ted": "„bude jako teď“", "fyzika": "fyzikální (Tobias)", "ridge": "lineární regrese (Honza)",
-         "lgbm_c": "LightGBM (Dan)", "mlp": "neuronová síť (Ondra)"}
+         "lgbm": "LightGBM (Dan)", "lgbm_c": "LightGBM (Dan)", "mlp": "neuronová síť (Ondra)"}
 fig, ax = plt.subplots(figsize=(10, 5))
 for i, m in enumerate(modely):
     P = pd.read_parquet(ROOT / "results/predpovedi" / f"{m}.parquet")

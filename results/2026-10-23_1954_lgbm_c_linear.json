@@ -4,7 +4,7 @@
  "model": "lgbm_c_linear",
  "cast": "val",
  "rychle": false,
- "popis": "LightGBM c s pøímkou v kadém listu (linear_tree), aby umìl pokraèovat i za to, co vidìl v tréninku.",
+ "popis": "LightGBM c s pÅ™Ã­mkou v kaÅ¾dÃ©m listu (linear_tree), aby umÄ›l pokraÄovat i za to, co vidÄ›l v trÃ©ninku.",
  "parametry": {
   "n_estimators": 500,
   "learning_rate": 0.05,
