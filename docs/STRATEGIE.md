@@ -1,6 +1,6 @@
 # Strategie na výhru
 
-Stav pá 21:00 (Honza). Podklad pro kontrolní bod o půlnoci a pro sobotní ráno. Body poroty jsou náš odhad, porota nic nezveřejnila. Čísla jsou z `docs/PREHLED.md` a `docs/POKUSY.md`, co jsem dnes večer ověřoval sám, je označené „ověřeno pá 20:45“.
+Stav pá 21:30 (Honza), už se srážkami (nepomohly), učicí křivkou a nejistotou v aplikaci. Podklad pro kontrolní bod o půlnoci a pro sobotní ráno. Body poroty jsou náš odhad, porota nic nezveřejnila. Čísla jsou z `docs/PREHLED.md` a `docs/POKUSY.md`, co jsem dnes večer ověřoval sám, je označené „ověřeno pá 20:45“.
 
 ## 1. Kde jsme podle kritérií poroty
 
@@ -8,7 +8,7 @@ Stav pá 21:00 (Honza). Podklad pro kontrolní bod o půlnoci a pro sobotní rá
 |---|---|---|---|
 | Splnění zadání (10) | 7 | 9 | Zadání chce v prezentaci 7 bodů (problém, data, příprava, vstupy, model, ověření, limity). Materiál máme na všechny, ale prezentace zatím neexistuje, v Gitu není ani osnova. Finální test 2021–2025 neběžel, a zadání výslovně chce model ověřit na datech, která neznal (validaci jsme použili k výběru modelu). Ve Stavu v `CLAUDE.md` je prázdné „Komu řešení pomáhá“. |
 | Postup řešení (10) | 8 | 9 | Postup je silný: dělení v čase, vynechané povodně, laťka „jako teď“, čtyři modely od nejjednoduššího, pravidla iterace, nezávislá kontrola úniku dat. Ztrácíme na tom, že validace má jen 4 povodně a test chybí. Když to v prezentaci odříkáme jako seznam, porota neuvidí, proč jsme co udělali. |
-| Odbornost (20) | 14 | 17 | Každý z nás umí svůj model, ale porota se ptá kohokoli na cokoli. Kdo neumí vysvětlit Ridge, rozdělení a metriku, bere body celému týmu. V `docs/POROZUMENI.md` jsou prázdné sekce „Úloha vlastními slovy“ a „Pojmy“, přesně to, na co se porota ptá jako první. Riziko: když po půlnoci narychlo přidáme srážky do finálního modelu, nebudeme ho umět obhájit. |
+| Odbornost (20) | 14 | 17 | Každý z nás umí svůj model, ale porota se ptá kohokoli na cokoli. Kdo neumí vysvětlit Ridge, rozdělení a metriku, bere body celému týmu. V `docs/POROZUMENI.md` jsou prázdné sekce „Úloha vlastními slovy“ a „Pojmy“, přesně to, na co se porota ptá jako první. Srážky jsme zkusili a nepomohly (17,1 → 17,4 cm). To je silná odpověď, ale jen když ji umí říct každý, ne jen Ondra. |
 | Prezentace (10) | 4 | 8 | Není prezentace, záložní video ani nácvik. Aplikace a 18 grafů existují, ale čísel je moc (4 modely × 2 stanice × 3 horizonty). 3D mapa potřebuje internet. |
 | **Celkem (50)** | **33** | **43** | |
 
@@ -22,7 +22,7 @@ Seřazené podle odhadu bodů za hodinu práce. Dělají je různí lidé, takž
 |---|---|---|---|---|---|---|
 | 1 | Za mentory se třemi otázkami | Ondra, Tobias | pá do 22:30, jinak so 8:00 | 0,3 | +1 | 3 |
 | 2 | Otázky poroty: každý umí celý řetězec | všichni, vede Ondra | pá 23:30 a so 9:30, po 30 min | 1 | +2 až 3 | 2,5 |
-| 3 | Finální test s předem zapsaným plánem | Ondra | pá 0:00 hned po výběru modelu | 1 | +1,5 | 1,5 |
+| 3 | Finální test s předem zapsaným plánem | Ondra | pá po 22:00, po Danově pokusu | 1 | +1,5 | 1,5 |
 | 4 | Prezentace podle 7 bodů zadání a nácvik | Tobias, čísla Ondra | osnova pá 23:30, slajdy so 10:00, nácvik 10:15 | 4 | +4 | 1 |
 | 5 | Záložní video dema a mapa bez internetu | Honza | so 9:30–10:30 | 1 | +0,8 (pojistka) | 0,8 |
 
@@ -36,7 +36,7 @@ Na zpoždění dat ČHMÚ se ptát nemusíme, ověřili jsme ho (sekce 4, živá
 **2. Otázky poroty.** Odbornost má 20 bodů a porota se ptá různých členů. Postup: 20 otázek ze sekce 5, každou dostane nejdřív ten, kdo danou věc nedělal (Ridge vysvětluje Tobias, fyzikální model Dan, LightGBM Honza), Ondra opravuje. Před prvním kolem doplnit do `docs/POROZUMENI.md` „Úlohu vlastními slovy“ (dvě věty) a „Pojmy“ (chyba na povodních, laťka, validace, přeučení, regularizace, měrná křivka, doba putování, stupeň povodňové aktivity, předstih, planý poplach, bias, SHAP). Ve druhém kole pustit `/porota` naostro. Riziko: únava o půlnoci. Proto druhé kolo ráno a krátké odpovědi, ne přednášky.
 
 **3. Finální test.** Bez testu stojí celé ověření na 4 povodních, ze kterých jsme vybírali model. Test v noci, ne ráno, ať je ráno čas na graf povodně 9/2024 a slajd. Postup:
-- V půlnoci rozhodnout finální model. Srážky jen tehdy, když zlepší `prumer_povodne` aspoň o 1 cm a každý je vysvětlí. Jinak Ridge.
+- Podle Ondrova plánu (deník pá 21:20): po 22:00, až doběhne Danův pokus s dobou putování podle průtoku. Finální je Ridge, Danova varianta jen při zlepšení aspoň o 1 cm. Ridge se natrénuje na všem do 2020 a pak jednou test.
 - Před spuštěním zapsat do `docs/DENIK.md`, co test rozhodne a co ne: „Pouštíme jednou, podle výsledku nic neladíme. Když vyjde hůř než validace, řekneme to a vysvětlíme proč.“ Vědci z FJFI tohle ocení víc než dobré číslo.
 - `--test` jednou, výsledek do `docs/POKUSY.md`, graf 9/2024 a 12/2023 do `docs/grafy/`.
 
@@ -47,15 +47,15 @@ Riziko: test vyjde hůř. Možný důvod máme v `docs/DATA.md`: vrchol z Měln�
 | Čas | Slajd | Co tam je | Graf | Kdo mluví |
 |---|---|---|---|---|
 | 0:00 | Problém a komu pomáhá | Děčín, povodně 2013 (1 072 cm) a 2024 (649 cm). Otázka: dá se den předem říct, jak vysoko bude Labe? Uživatel: povodňová komise města a lidé u řeky | | Tobias |
-| 1:00 | Data | balíček: 2024–2026, jediná povodeň, nejvýš Ústí (4 h před Děčínem). Proto archiv ČHMÚ 2006–2025, 12 stanic, za 2024–2025 shodný s balíčkem na centimetr | `app_mapa.png` | Ondra |
+| 1:00 | Data | balíček: 2024–2026, jediná povodeň, nejvýš Ústí (4 h před Děčínem). Jen se stanicemi z balíčku a dvěma roky by model nebyl lepší než „jako teď“ a propásl by polovinu povodní. Proto archiv ČHMÚ 2006–2025, 12 stanic, za 2024–2025 shodný s balíčkem na centimetr | `kolik_dat.png`, `app_mapa.png` | Ondra |
 | 2:30 | Příprava dat | kontrola: bilance vody mezi stanicemi, měrná křivka, chyba 1 019 cm v 2/2006 vyřazená. Dělení v čase, 4 povodně ve validaci, test 2021–2025 jednou | | Ondra |
 | 3:30 | Vstupy | „co teče v Praze, bude zítra v Děčíně“: doby putování (Ústí 4 h, Mělník 13 h, Praha 17 h, Beroun 23 h). Co jsme nevzali a proč | `fyzika_vetve.png` | Tobias |
-| 4:30 | Modely | čtyři přístupy na stejném úkolu, vyhrál nejjednodušší. Proč stromy neumí vrchol vyšší než v tréninku | `srovnani_procenta.png` | Dan |
+| 4:30 | Modely | čtyři přístupy na stejném úkolu, vyhrál nejjednodušší. Proč stromy neumí vrchol vyšší než v tréninku. Co nepomohlo: srážky a sníh z 25 stanic (17,1 → 17,4 cm), průměr dvou modelů | `srovnani_procenta.png` | Dan |
 | 6:00 | Jak model rozhoduje | váhy: průtok v Praze teď je hladina v Děčíně za 24 h, záporné váhy jsou trend | `ridge_vahy_decin.png` | Honza |
 | 7:00 | Ověření | chyba na povodních o 61 % menší než „jako teď“, 24 z 24 nástupů povodní zachycených, 0 planých poplachů, varování před 2. stupněm v průměru 17 h předem. Test 2021–2025 | `povoden_2011-01_decin_24h.png`, graf testu | Ondra |
 | 8:30 | Demo | „Teď“ na 15. 1. 2011, mapa s přehráním vlny, „Jak dobře to funguje“. Když něco selže, hned video | aplikace | Honza |
-| 11:00 | Limity | bez srážek nejvýš den a půl, 36 h slabé, povodeň z deště v kraji (9/2010) nevidí, data v provozu předběžná, validace jen 4 povodně, vrcholy mírně podhodnocuje | | Tobias |
-| 12:30 | Co dál | srážky (výsledek pokusu), doba putování podle průtoku, živá data ČHMÚ (ověřeno, že jsou) | | Dan |
+| 11:00 | Limity | dál než den a půl nevidíme (denní srážky ze stanic nepomohly), 36 h slabé, rozmezí u předpovědi na povodních sedí v 8 z 10 případů, povodeň z deště v kraji (9/2010) nevidí, data v provozu předběžná, validace jen 4 povodně, vrcholy mírně podhodnocuje | | Tobias |
+| 12:30 | Co dál | doba putování podle průtoku, živá data ČHMÚ (ověřeno, že jsou), hodinové srážky (ČHMÚ je má až od 2018) a víc povodní na ověření | | Dan |
 | 13:30 | Jedna věta na konec | „Z otevřených dat zdarma: o povodni v Děčíně den předem, s modelem, který se vejde na jeden obrázek.“ | | Tobias |
 
 Pravidla: na slajdu nejvýš jedno hlavní číslo. Čísla jen z tabulky v `docs/PREHLED.md`, ať se mezi slajdy neliší. Tabulky pro slajdy generovat na Macu nebo brát z `PREHLED.md`: na Windows ukazuje `porovnej.py --prehled` jen Ridge, ostatní výsledky mají kvůli koncům řádků jiný otisk verze (Dan to hlásil). Nácvik se stopkami v 10:15, aby se do 11:00 dalo ještě škrtat, další po 12:30 a v 13:15. Odevzdat ve 13:45, ne ve 13:59.
@@ -64,22 +64,23 @@ Riziko: Tobias má menší limit, a když vypadne, nemá prezentaci kdo dělat. 
 
 **5. Záložní video a mapa bez internetu.** Nahrát na Tobiasově Macu (na tom poběží demo) celou cestu dema podle slajdu 8, 2–3 minuty, až bude ve 9:30 finální model v aplikaci. Krátký výřez s mapou (vlna 1/2011 jde z Prahy do Děčína) dát rovnou do slajdu, ten je dobrý i bez výpadku. Mapa tahá dlaždice z internetu, záloha `docs/grafy/app_mapa.png` už je. Riziko: na starém notebooku se video seká, proto Mac. Po 11:00 nahrát znovu, jen když se změní aplikace.
 
+**Hotové a patří do slajdů:** graf `docs/grafy/kolik_dat.png` (proč nestačil balíček) a rozmezí „nejspíš od–do“ u každé předpovědi v aplikaci.
+
 **Když zbude čas** (nižší body za hodinu):
-- Graf „kolik let dat model potřebuje“ (Honza, zadání v `docs/UKOL_MODELY.md`, 1 h). Odpověď na otázku, proč nestačil balíček.
-- Slajd o anomáliích (Dan, 1 h, sekce 4).
-- Nejistota v aplikaci: „za 24 h 615 cm, ve 3 ze 4 případů do ±20 cm“ z validace (Honza, 1 h).
+- Slajd o anomáliích (Dan po 22:00, 1 h, sekce 4).
 - Živá data (sázka, sekce 4). Jen stahování přes noc, o funkci rozhodnout v 9:00.
 
-**Co nedělat:** nové modely, další ladění LightGBM a sítě, skládání modelů (průměr Ridge a sítě dal 16,9 cm, nic), srážky do finálního modelu po půlnoci, cokoli nového po 11:00.
+**Co nedělat:** nové modely, další ladění LightGBM a sítě, skládání modelů (průměr Ridge a sítě dal 16,9 cm, nic), další pokusy se srážkami, cokoli nového po 11:00.
 
 **Časová osa:**
 
 | Kdy | Co |
 |---|---|
-| pá 21:00–22:00 | Dan doba putování podle průtoku, Ondra srážky, Honza kolik let dat, Tobias osnova |
+| pá 21:30–22:00 | Dan doba putování podle průtoku, Ondra příprava testu, Honza screenshoty aplikace a případně stahování živých dat, Tobias osnova |
 | 22:00 | Ondra a Tobias za mentory |
+| 22:30–23:30 | finální model, plán testu do deníku, test (Ondra), Dan slajd o anomáliích |
 | 23:30 | osnova v Gitu, první kolo otázek poroty |
-| 0:00 | kontrolní bod: finální model, plán testu do deníku, test |
+| 0:00 | kontrolní bod: výsledek testu, plán na noc |
 | 0:30–7:30 | spánek ve směnách |
 | so 8:00 | výsledek testu, finální model v aplikaci, mentoři |
 | 8:00–10:00 | slajdy, graf testu |
@@ -108,7 +109,8 @@ Co nejspíš udělají (odhad):
 3. **Čtyři druhy modelů na stejném úkolu a vyhrál nejjednodušší.** Přesně to, co pořadatelé chtějí („radši jednodušší model, kterému rozumíte“), a máme to v číslech, ne jen jako názor.
 4. **Model jde vysvětlit fyzikou.** Váhy odpovídají době putování vody, fyzikální model ukazuje, že učený model nedělá nic magického.
 5. **Výstup pro uživatele:** stupně povodňové aktivity, předstih v hodinách, propásnuté povodně a plané poplachy. To povodňová komise použije, R² ne.
-6. **Poctivé limity a nalezené pasti:** interpolace brala hodnotu z budoucnosti, denní srážky s časem „den D 06:00“ jsou déšť za následující den. Porota z FJFI pozná tým, který únik dat hledal sám.
+6. **Faktory povodní jsme otestovali, ne odbyli.** Srážky, sníh a teplota z 25 stanic za 20 let nepomohly, ani dokonalá předpověď deště na den dopředu (o 0,8 cm), a víme proč: na 12–36 h je voda z deště už v řekách proti proudu.
+7. **Poctivé limity a nalezené pasti:** interpolace brala hodnotu z budoucnosti, denní srážky s časem „den D 06:00“ jsou déšť za následující den. Porota z FJFI pozná tým, který únik dat hledal sám.
 
 ## 4. Co z nabídky zadání neděláme a co se dá přidat
 
@@ -119,7 +121,7 @@ Co nejspíš udělají (odhad):
 | neobvyklé nebo rychlé změny | napůl, nepojmenované | kontrola dat (`DATA.md`), „proč nestačí, že voda stoupá“ (`NAPAD_LABE.md`) |
 | porovnání stanic | ano, nepojmenované | bilance vody, doby putování, podíl Vltavy na povodních |
 | změna výše po toku → níž | ano, jádro řešení | doby putování, váhy modelu, mapa |
-| počasí a řeka | pokus běží | Ondra, srážky a sníh z 25 stanic |
+| počasí a řeka | ano, nepomohlo | srážky, sníh a teplota z 25 stanic, 17,1 → 17,4 cm (`POKUSY.md`, pá 21:15) |
 | teplota vody | ne | |
 | včasné upozornění | ano | varování před 2. a 3. stupněm, předstih, plané poplachy |
 | aplikace se stavem a odhadem | ano, přehrávání historie | `app/app.py` |
@@ -151,20 +153,20 @@ V porotě čekáme vědce z FJFI (metoda a data), člověka z Datového centra �
 7. *Proč LightGBM prohrál, když je na tabulková data obvykle nejlepší?* (Dan) Strom umí předpovědět jen hodnoty, které viděl, a velká povodeň je v tréninku skoro jen jedna (2013). U povodně 1/2011 přestřelil asi o 60–70 cm. Vztah „víc vody, vyšší hladina“ je skoro přímka a lineární model ji prodlouží i nad to, co viděl.
 8. *Proč je fyzikální model horší, když fyzika platí?* (Tobias) Má jednu pevnou dobu putování, ale při povodni se vlna rozlije do nivy a zpomalí (Mělník → Ústí 8 h při malé vodě, 16 h nad 1 500 m³/s). A předpokládá, že co jsme ještě nezměřili, se nezmění. Je to laťka a vysvětlení, učený model tu fyziku jen zpřesňuje.
 9. *Validace má 4 povodně. Není rozdíl 17,1 proti 17,8 cm náhoda?* (Ondra) Je, proto ho tak bereme. Pravidla jsme si dali předem: jedna změna s důvodem, zlepšení aspoň o 1 cm, konec po třech neúspěších. Rozhodlo, že lineární model je jednodušší. Test na dalších dvou povodních pouštíme jen jednou.
-10. *Proč je předpověď na 36 h dvakrát horší než na 24 h?* (Tobias) Voda, která bude v Děčíně za 36 h, z velké části ještě neteče žádnou naší stanicí. Z nejvzdálenějších (Beroun, Sázava) teče do Děčína zhruba 23–25 h. Je v potocích nebo ještě nespadla. Na to by byly potřeba srážky.
+10. *Proč je předpověď na 36 h dvakrát horší než na 24 h?* (Tobias) Voda, která bude v Děčíně za 36 h, z velké části ještě neteče žádnou naší stanicí. Z nejvzdálenějších (Beroun, Sázava) teče do Děčína zhruba 23–25 h, zbytek musí model odhadnout. Srážky z 25 stanic jsme zkusili a nepomohly (17,1 → 17,4 cm), ani dokonalá předpověď deště na den dopředu by chybu nesnížila o víc než 0,8 cm. Denní průměr srážek za povodí je na to hrubý, hodinové má ČHMÚ až od 2018.
 11. *Model na povodních podhodnocuje. Proč to neopravíte?* (Ondra) Průměrně o 5 cm, hlavně vrcholy vyšší, než byly v tréninku. Opravu bychom museli naladit na 4 validačních povodních, to by bylo přeučení na validaci. Proto je to v limitech.
 12. *Jak dopadl test a proč se liší od validace?* (Ondra) Doplnit po testu. Připravené vysvětlení: po roce 2013 teče vrchol z Mělníka do Ústí rychleji (6–7 h místo 8–11 h), model trénovaný do 2018 se může o hodinu dvě splést v načasování. Podle testu jsme nic neladili.
 13. *Co když přijde povodeň větší než 2013?* (Tobias) Lineární model pokračuje přímkou, takže vrchol odhadne, jen spíš níž (2006: o 20 cm na 875 cm). Stromy by se zasekly na maximu z tréninku. Měrná křivka je nad 3 710 m³/s prodloužená přímkou, tam už je to odhad.
 
 **Praktické využití**
 
-14. *Komu to pomůže a co s tím udělá?* (Tobias) Povodňové komisi Děčína a lidem u řeky. O 2. stupni povodňové aktivity se dozví v průměru 17 h předem, „jako teď“ nevaruje nikdy dřív, než voda stupeň překročí. Na validaci 24 z 24 nástupů povodní zachycených a žádný planý poplach. (Doplnit, co řekne mentor.)
+14. *Komu to pomůže a co s tím udělá?* (Tobias) Povodňové komisi Děčína a lidem u řeky. O 2. stupni povodňové aktivity se dozví v průměru 17 h předem, „jako teď“ nevaruje nikdy dřív, než voda stupeň překročí. Na validaci 24 z 24 nástupů povodní zachycených a žádný planý poplach. U každé předpovědi ukazujeme rozmezí, na povodních se do něj skutečnost vešla v 8 z 10 případů. (Doplnit, co řekne mentor.)
 15. *ČHMÚ už předpovědi dělá. K čemu je váš model?* (Tobias) Srovnávat se s ČHMÚ neumíme, jejich historické předpovědi nemáme a počítají i se srážkami. Náš model je doplněk: z otevřených dat zdarma, průhledný na jednom obrázku a každý vidí, proč předpovídá, co předpovídá.
-16. *Proč jste nepoužili jen data z balíčku?* (Ondra) Balíček má 2024–2026, jedinou povodeň a nejvýš Ústí, odkud voda doteče za 4 h. Nešlo by předpovídat dál než pár hodin ani nic ověřit. Archiv ČHMÚ je stejný zdroj, za 2024–2025 shodný s balíčkem na centimetr. Stanice proti proudu pomohly víc než 20 let historie.
+16. *Proč jste nepoužili jen data z balíčku?* (Ondra) Balíček má 2024–2026, jedinou povodeň a nejvýš Ústí, odkud voda doteče za 4 h. Nešlo by předpovídat dál než pár hodin ani nic ověřit. Archiv ČHMÚ je stejný zdroj, za 2024–2025 shodný s balíčkem na centimetr. Ukazuje to graf `kolik_dat.png`: jen stanice z balíčku a dva roky (2017–2018) dají 44,6 cm, tedy totéž co „jako teď“, a propásnou 12 z 24 nástupů povodní. Víc stanic pomohlo víc než víc let.
 17. *A povodeň z deště přímo v kraji?* (Dan) Tu model nevidí, voda nepřitekla přes naše stanice. Všechny modely v 9/2010 podhodnotily asi o 25 cm. Umíme ale poznat, že se děje něco neobvyklého: odchylka od předpovědi nad 50 cm byla na celé validaci jen v září 2010.
 
 **Aplikace a provoz**
 
 18. *Šlo by to nasadit? Jak rychle chodí data?* (Honza) ČHMÚ zveřejňuje operativní data po 10 minutách se zpožděním asi 15 minut (ověřeno pá večer). Chybí v nich průtok v Nymburce a v Mělníku je jen občas, Mělník jde nahradit součtem Vraňan a Kostelce. Operativní data jsou předběžná, takže v provozu bude chyba spíš větší než naše čísla.
 19. *Jak náročný je provoz a co když na prezentaci nepůjde internet?* (Honza) Všech 6 modelů se natrénuje za sekundu na notebooku, předpověď je okamžitá, žádná grafika není potřeba. Aplikace je Streamlit, knihovny v `app/requirements.txt`. Bez internetu nejdou jen dlaždice mapy, na to máme screenshot a video.
-20. *Co jste nestihli a co byste dělali dál?* (Dan) Srážky a sníh v povodí (pokus, výsledek doplnit), dobu putování podle průtoku, živá data ČHMÚ s jejich předpovědí vedle naší a nejistotu u každé předpovědi. Jako druhou zkoušku modelů menší řeku v kraji (Kamenice).
+20. *Co jste nestihli a co byste dělali dál?* (Dan) Dobu putování podle průtoku (výsledek doplnit), živá data ČHMÚ s jejich předpovědí vedle naší, hodinové srážky, až jich bude víc let, a ověření na dalších povodních. Jako druhou zkoušku modelů menší řeku v kraji (Kamenice).
