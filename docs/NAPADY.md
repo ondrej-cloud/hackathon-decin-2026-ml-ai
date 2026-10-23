@@ -128,3 +128,18 @@ A je nejbezpečnější a nejefektnější, ale budeme jedni z mnoha. C je nejpo
 - Kde leží meteostanice (kódy `0-20000-0-114xx`)? Pro B by pomohl směr větru, pro A počasí.
 - Smíme přidat další otevřená data, třeba zprávy ČHMÚ o epizodách?
 - Je pro zadavatele zajímavější předpověď, vysvětlení příčin, nebo stav měřicí sítě?
+
+## Labe s daty nad krajem (ověřeno pá 17:40)
+
+ČHMÚ má v otevřených datech hodinové stavy a průtoky zpětně od let 2002–2006 až do 2025. Stahuje je `src/stahni_chmu_hydro.py`. Stanice: Praha-Chuchle a Vraňany na Vltavě, Kostelec nad Labem, Mělník, Ústí nad Labem a Děčín.
+
+- **Povodní je dost.** V Děčíně byl 1. stupeň povodňové aktivity (400 cm) překročen ve 13 letech. Maxima: 2006 1 019 cm, 2011 730 cm, 2013 1 072 cm, 2023 624 cm, 2024 649 cm.
+- **Doba, za kterou voda dorazí do Děčína** (podle největší korelace změn průtoku): z Ústí 4 h, z Kostelce 9 h, z Mělníka 12 h, z Vraňan 13 h, z Prahy 17 h.
+- **První jednoduchý model.** Lineární regrese: Děčín teď plus průtok v Mělníku teď a před 6–24 h plus Ústí. Trénink 2003–2016, test 2017–2025.
+
+  | Horizont | Celkově: model / „jako teď“ | Voda nad 1. SPA (1 061 h): model / „jako teď“ |
+  |---|---|---|
+  | +12 h | 7,8 / 8,0 cm | 12,0 / 22,5 cm |
+  | +24 h | 10,8 / 11,2 cm | 24,7 / 44,6 cm |
+
+  Za běžného stavu se řeka skoro nehýbe a „jako teď“ stačí. Při velké vodě, kdy na předpovědi záleží, má model zhruba poloviční chybu.
