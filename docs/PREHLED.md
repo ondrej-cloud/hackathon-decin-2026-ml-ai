@@ -83,13 +83,14 @@ Grafy: `docs/grafy/srovnani_procenta.png`, `srovnani_ctyr_modelu.png`, `povoden_
 | pá 20:00 | opravy vyhodnocení po nezávislé kontrole | povodeň vypadla z varování u 36 h, nadhodnocování zlepšovalo předstih, staré a nové výsledky se míchaly |
 | pá 20:00 | všechny modely přepočítat na jednom počítači | srovnání na stejné verzi kódu a dat |
 | pá 20:20 | průměr dvou modelů nepoužít | zlepšení 0,2 cm, jen složitost navíc |
-| pá 21:15 | srážky, sníh a teplotu do modelu nepřidávat | lineární regrese 17,1 → 17,4 cm, síť 17,8 → 21,2 cm; ani dokonalá předpověď srážek na den dopředu nepomůže o víc než 0,8 cm |
+| pá 20:44 | trénovat na celé historii a se všemi stanicemi (Honza) | 2 roky jen z kraje jako balíček: 44,6 cm a 12 z 24 propásnutých, stejně špatné jako „jako teď“; stanice proti proudu pomáhají víc než roky, historie s povodní 2013 odstraní propásnutá varování (`docs/grafy/kolik_dat.png`) |
+| pá 20:44 | srážky, sníh a teplotu do modelu nepřidávat | lineární regrese 17,1 → 17,4 cm, síť 17,8 → 21,2 cm; ani dokonalá předpověď srážek na den dopředu nepomůže o víc než 0,8 cm |
 | pá 20:20 | **návrh: finální model lineární regrese** (čeká na potvrzení) | nejlepší, nejjednodušší, bez planých poplachů, každá váha jde vysvětlit; síť je stejná jen v rámci náhody |
 
 ## Další kroky a otevřené otázky
 
 - Potvrdit finální model, pak jednou pustit test 2021–2025 (Ondra).
-- Srážky, sníh a teplota: vyzkoušeno, nepomohlo (pá 21:15). Dan zkouší dobu putování podle průtoku, Honza kolik let dat model potřebuje (do 22:00).
+- Srážky, sníh a teplota: vyzkoušeno, nepomohlo (pá 20:44). Honza: kolik let dat (hotovo, pá 20:44, `docs/grafy/kolik_dat.png`). Dan zkouší dobu putování podle průtoku (do 22:00).
 - Otázka pro mentory: s jakým zpožděním jsou hodinová data ČHMÚ v provozu dostupná? Zkrátil by se o něj předstih.
 - Limity do prezentace: bez srážek nejde dál než den a půl, povodně z dešťů v kraji (8/2010) model nevidí, archivní data jsou zpětně ověřená (v provozu předběžná), validace má jen 4 povodně.
 - Aplikace (Honza) a prezentace (Tobias) podle Stavu v `CLAUDE.md`.
