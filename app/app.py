@@ -15,6 +15,7 @@ import streamlit.components.v1 as components
 
 import aktualni
 import animace
+import pocasi
 from mapa import POHLEDY, deck as mapa_deck, mapbox_token
 from rozliv import n_leta_voda
 from predikce import (BARVY, HORIZONTY, KDE, NAZEV, ROOT, SPA, STUPNE, interval, modely, nacti, nacti_model, stupen,
@@ -157,6 +158,9 @@ with tab_ted:
         st.caption("Pro srovnání oficiální předpověď ČHMÚ na stejné hodiny: "
                    + ", ".join(f"za {h} h {v:.0f} cm" for h, v in DNES[cil]["chmu"].items() if v is not None)
                    + ". Náš model je jednodušší a nemá počasí, ČHMÚ má srážkovou předpověď.")
+    if DNES:
+        st.caption(pocasi.predpoved_srazek()["veta"] + " Srážky do modelu nevstupují, na 12 až 36 h nepomohly "
+                   "(voda z deště je už v řekách). Zdroj Open-Meteo (CC BY 4.0).")
 
     okno = H[cas - pd.Timedelta(hours=72): cas]
     fig = go.Figure()

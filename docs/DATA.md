@@ -116,6 +116,14 @@ Pro vrstvu rozlivu na 3D mapě (`app/rozliv.py`). Vlastní hydrauliku (výpočet
 
 Limity: polygony platí pro ustálený N-letý průtok, ne pro naši konkrétní povodeň (průběh vlny, led, protipovodňové stěny a stav koryta v nich nejsou). Podle VÚV je průběh jen orientační, závazný ho má správce toku. N-letou vodu pro celý úsek určujeme z jednoho vodočtu. Rozliv v Děčíně ovlivňuje i Ploučnice, která ústí kousek nad vodočtem; její vlastní záplavové území nebereme. Území jsou jen pro Q5, Q20 a Q100, takže mezi nimi nic jemnějšího neukážeme: při průtoku mezi Q5 a Q20 svítí území Q5 a Q20 je jen obrysem.
 
+### Předpověď srážek v aplikaci (ověřeno pá 23. 10. večer)
+
+V režimu Dnešek ukazujeme vedle předpovědi hladiny, kolik má v povodí pršet (`app/pocasi.py`, `predpoved_srazek()`). Je to jen kontext a upozornění, do modelu srážky nevstupují: na horizontech 12 až 36 h je voda z deště už v řekách a srážky z 25 stanic ČHMÚ na validaci nepomohly (17,1 → 17,4 cm, `docs/POKUSY.md`, pá 20:44). Proto je model nevidí a věta v aplikaci to říká.
+
+Zdroj je Open-Meteo Forecast API (https://api.open-meteo.com/v1/forecast, zdarma, bez klíče), hodinové srážky `precipitation` na 3 dny dopředu v UTC. Hodnota v čase t je součet za hodinu před t. Bereme 12 bodů v jednom dotazu: Vltava s Berounkou a Sázavou (Praha, Beroun, Příbram, Benešov, České Budějovice), horní Labe s Jizerou (Hradec Králové, Turnov, Pardubice, Vrchlabí) a Ohře (Karlovy Vary, Louny, Kadaň). Za každé povodí je průměr bodů za příštích 24 a 48 h od teď a nejvyšší úhrn jednoho bodu za 48 h. Nad 20 mm za 48 h v povodí aplikace varuje, že hladina za 36 h a dál může být vyšší, než model říká. Výsledek se drží v paměti 30 minut. Prahová hodnota 20 mm je odhad, ne vyzkoušená hranice (domněnka).
+
+Limity: jsou to předpovědní modely počasí, ne měření, a 12 bodů je hrubý průměr přes povodí, takže lokální bouřka mezi body se ztratí. Zdroj dat: Open-Meteo.com, licence CC BY 4.0, v aplikaci a v prezentaci ho uvést.
+
 ## Ovzduší
 
 Z doby, kdy jsme zvažovali úlohu Ovzduší. Týkají se jí všechny sekce níž.
