@@ -23,15 +23,15 @@ Nejvíc bodů je za odbornost a pořadatelé řekli rovnou: radši jednodušší
 
 - **Zadání:** pět úloh v `zadani/`, přehled v `zadani/README.md`. Vybraná úloha: nejspíš Labe (`zadani/ksi-3-labe.md`) s daty ČHMÚ ze stanic proti proudu. Nápad v `docs/NAPAD_LABE.md`, plán práce v `docs/POROVNANI_MODELU.md`. Celé zadání vybrané úlohy si přečti na začátku každé relace.
 - **Komu řešení pomáhá:**
-- **Data:** (kde leží v `data/raw/`, co obsahují, velikost)
-- **Metrika:** (jedna hlavní metrika a s jakým jednoduchým řešením se srovnáváme)
-- **Rozdělení a vyhodnocení:** (kde je společné rozdělení dat a jak se volá společné vyhodnocení)
+- **Data:** `data/external/labe_hodinove.parquet` (v Gitu): hodinové hladiny Děčín a Ústí a průtoky 12 stanic na Labi, Vltavě, Ohři a přítocích, 2006–2025, z otevřených dat ČHMÚ. Načíst přes `nacti()` ze `src/data.py`. Podrobnosti v `docs/DATA.md`, sekce Labe.
+- **Metrika:** průměrná chyba hladiny v cm během povodní (`mae_povodne`), k tomu předstih varování před 2. a 3. stupněm povodňové aktivity a plané poplachy. Srovnáváme s „bude jako teď“ (`src/models/jako_ted.py`), Děčín +24 h: 44,4 cm.
+- **Rozdělení a vyhodnocení:** `src/evaluate.py` (train 2006–2018, val 4 vynechané povodně a 2019–2020, test 2021–2025). Model je `src/models/<nazev>.py` s `fit(X, y, cil, horizont)`, která vrátí `predict(X)`. Spouští se `python src/porovnej.py <nazev>`, srovnání `--prehled`, `--test` jen Ondra. Zadání modelů pro všechny v `docs/UKOL_MODELY.md`.
 - **Propojení modelu a aplikace:** (co předpověď bere a vrací, kde je)
 - **Kdo teď na čem dělá:**
-    - Ondra:
-    - Dan:
-    - Honza:
-    - Tobias:
+    - Ondra: neuronová síť `src/models/mlp.py`, ve 21:00 srovnání a výběr
+    - Dan: LightGBM `src/models/lgbm.py`
+    - Honza: lineární regrese `src/models/ridge.py`, po 21:00 aplikace
+    - Tobias: fyzikální model `src/models/fyzika.py`
 - **Smějí data do cloudu (Kaggle, Colab, jazykové modely)?** Úlohy KSI (obce, ovzduší, Labe) mají otevřená data, ta můžou. Data ÚFP (ekvilibrium, ubíhající elektrony) se nesmí zveřejnit ani zpřístupnit nikomu mimo účastníky. Na Kaggle jen se svolením mentora z ÚFP, do té doby jen lokálně.
 
 ## Tým

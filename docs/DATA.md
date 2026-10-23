@@ -2,6 +2,38 @@
 
 Co víme o datech. Kdo něco zjistí, doplní nebo opraví příslušnou sekci. U každého tvrzení, jestli je ověřené, nebo jen domněnka.
 
+## Labe (vybraná úloha)
+
+**Společná tabulka:** `data/external/labe_hodinove.parquet` (4,8 MB, v Gitu). Hodinově 2006–2025 (UTC), 175 320 hodin. Postaví ji `python src/data.py` ze surových dat ČHMÚ (`src/stahni_chmu_hydro.py`, asi 280 MB). Ostatní kód čte jen ji.
+
+| Sloupce | Stanice |
+|---|---|
+| hladina (cm) i průtok (m³/s) | Děčín, Ústí nad Labem (cíle) |
+| jen průtok | Louny (Ohře), Mělník, Vraňany (Vltava), Kostelec n. L., Praha-Chuchle, Nymburk, Předměřice (Jizera), Beroun (Berounka), Nespeky (Sázava), Přelouč |
+
+Ověřeno:
+- Začínáme rokem 2006, protože průtok v Kostelci, Mělníku a Nymburku za rok 2005 chybí celý.
+- Chyba měření: 5.–7. 2. 2006 je v Děčíně hladina až 1 019 cm při průtoku kolem 120 m³/s, skoky o 1–3 m za hodinu. Vyřazeno (66 hodin chybí).
+- Díry do 6 hodin doplněné lineárně. Jinak chybí jen tyhle 3 dny.
+- Skoky v Ústí o 50–65 cm za hodinu (2007, 2014, 2019, 2023) jsou skutečné, průtok jde s nimi. Nechané.
+- Hladina v Nymburce chybí z třetiny, proto u stanic proti proudu bereme jen průtok.
+- Mezi lety 2016 a 2020 nepřekročilo Labe v Děčíně ani 1. stupeň povodňové aktivity, byla to suchá léta.
+- Stupně povodňové aktivity (metadata ČHMÚ): Děčín 400 / 490 / 560 cm, Ústí 450 / 530 / 600 cm.
+
+**Povodně v Děčíně nad 3. stupněm:** 4/2006 (875 cm), 8/2010 (560), 1/2011 (730), 6/2013 (1 072), 12/2023 (624), 9/2024 (649).
+
+**Rozdělení** (`src/evaluate.py`, dělení v čase, ne náhodně):
+- train: 2006–2018 bez validačních povodní a 20 dní kolem nich,
+- val: povodně 4/2006, 3/2009, 9/2010 a 1/2011 (14 dní před vrcholem až 5 dní po něm) a klidné roky 2019–2020,
+- test: 2021–2025, povodně 12/2023 a 9/2024,
+- řádek, jehož vstupy (36 h zpět) nebo cíl (t + horizont) zasahují do jiné části, se vynechá.
+
+Proč takhle: mezi 2016 a 2020 povodeň nebyla, validace na pozdějších letech by nic neřekla. V tréninku zůstává největší povodeň 2013, ve validaci jsou dvě velké a dvě menší.
+
+## Ovzduší
+
+Z doby, kdy jsme zvažovali úlohu Ovzduší. Týkají se jí všechny sekce níž.
+
 ## Soubory
 
 Balíček úlohy Ovzduší je rozbalený v `data/raw/ovzdusi/uloha_2/` (není v Gitu).

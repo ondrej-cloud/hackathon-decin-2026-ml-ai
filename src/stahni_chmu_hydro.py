@@ -1,7 +1,8 @@
-"""Stáhne z otevřených dat ČHMÚ hodinové vodní stavy a průtoky pro Labe a Vltavu nad Děčínem.
+"""Stáhne z otevřených dat ČHMÚ hodinové vodní stavy a průtoky pro Labe nad Děčínem, přítoky a malé řeky v kraji.
 
 Zdroj: https://opendata.chmi.cz/hydrology/historical/data/hourly/
-Soubory jdou do data/raw/chmu_hydro/ (62 MB, není v Gitu). Už stažené soubory přeskočí.
+Soubory jdou do data/raw/chmu_hydro/ (asi 280 MB, není v Gitu). Už stažené soubory přeskočí.
+Potřebuje to jen ten, kdo přestavuje data/external/labe_hodinove.parquet (src/data.py).
 """
 import re
 import urllib.request
@@ -52,7 +53,9 @@ names = sorted(set(re.findall(r"H_0-203-1-(?:%s)_HQ_\d{4}\.json" % "|".join(STAT
 def download(name):
     path = OUT / name
     if not path.exists():
-        urllib.request.urlretrieve(URL + name, path)
+        # přes dočasný soubor, ať po přerušeném stahování nezůstane useknutý soubor
+        urllib.request.urlretrieve(URL + name, path.with_suffix(".part"))
+        path.with_suffix(".part").rename(path)
 
 
 with ThreadPoolExecutor(8) as pool:

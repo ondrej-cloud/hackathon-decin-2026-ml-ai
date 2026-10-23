@@ -5,7 +5,7 @@ Každý natrénuje jiný druh modelu na svém počítači a výsledky porovnáme
 ## Úkol
 
 - **Cíl:** výška hladiny v Děčíně (a v Ústí) za 12, 24 a 36 h.
-- **Vstupy:** stejná tabulka pro všechny. Stav a průtok v Děčíně a Ústí za posledních 24 h a průtoky ze stanic proti proudu (brány) se zpožděním 0, 6, 12, 24 a 36 h, jako odmocnina. Podrobnosti v `docs/NAPAD_LABE.md`.
+- **Vstupy:** stejná tabulka pro všechny (`src/features.py`). Hladina v Děčíně a Ústí za posledních 24 h a průtoky 12 stanic se zpožděním 0–36 h. Hodnoty jsou syrové, odmocninu a škálování si dělá každý model sám.
 - **Data:** `python src/stahni_chmu_hydro.py` (ČHMÚ 2002–2025) a balíček (2024–2026).
 
 ## Proč ne nejdřív na malých řekách
@@ -47,9 +47,10 @@ Bez toho srovnání neplatí:
    - varování před 3. stupněm: planý poplach, propásnuto, předstih v hodinách,
    - doba tréninku a předpovědi.
 4. **Rozdělení:**
-   - validace: vynechané povodně do roku 2016 (2006, 2010, 2011, 2013), na nich se ladí,
-   - test: 2023 a 2024 a období 2021–2025. Pustí se jednou na konci, rozhoduje Ondra.
-5. Každý model je soubor `src/models/<nazev>.py` se dvěma funkcemi: `fit(X, y)` a `predict(X)`. Skript `src/porovnej.py` pustí všechny modely na všech rozděleních a uloží výsledky do `results/`.
+   - validace: vynechané povodně 4/2006, 3/2009, 9/2010, 1/2011 a klidné roky 2019–2020, na nich se ladí. Povodeň 2013 zůstává v tréninku, jinak by v něm žádná velká nebyla,
+   - test: 2021–2025 s povodněmi 12/2023 a 9/2024. Pustí se jednou na konci, rozhoduje Ondra.
+   - Hotové, podrobnosti v `docs/DATA.md` a zadání pro každého v `docs/UKOL_MODELY.md`.
+5. Každý model je soubor `src/models/<nazev>.py` s funkcí `fit(X, y, cil, horizont)`, která vrátí funkci `predict(X)`. Skript `src/porovnej.py` pustí všechny modely na všech rozděleních a uloží výsledky do `results/`.
 
 ## Pravidla
 
