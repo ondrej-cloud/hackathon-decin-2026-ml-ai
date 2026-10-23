@@ -29,3 +29,19 @@ Nahrát z aplikace na Macu: `streamlit run app/app.py`, záložka s mapou, pohle
 ## Otázky, které po 7 minutách přijdou
 
 Odpovědi jsou v `docs/POROZUMENI.md` (sekce Otázky, které čekáme od poroty) a celá cesta modelu v `docs/CESTA_MODELU.md`. Nejpravděpodobnější: proč jen lineární regrese, proč ne srážky, nepřeučil se model, není výsledek náhoda, co znamená „bude jako teď“, proč jste brali data mimo balíček.
+
+## Grafy
+
+V hlavní části nejvýš jeden nebo dva grafy na slajd, celkem šest. Všechny jsou v jednotném stylu ve `docs/grafy/slajdy/`.
+
+| Slajd | Graf | Co z něj má porota pochopit |
+|---|---|---|
+| 1 | video rozlivu Borise | co aplikace umí, bez jediného čísla |
+| 3 | `mapbox_povodi.png` | odkud data jsou: 12 stanic na třech větvích |
+| 3 | `slajdy/kolik_dat.png` | proč jsme sáhli mimo balíček: s balíčkem 44,6 cm a 12 propásnutých povodní, stejně špatně jako „jako teď“ |
+| 5 | `slajdy/srovnani_modelu.png` | čtyři modely, vyhrál nejjednodušší |
+| 5 | `slajdy/vahy_decin_24h.png` | model rozumíme: největší váhu má Praha teď, voda z Prahy je v Děčíně za den |
+| 6 | `slajdy/test_2021_2025.png` | ověření na povodních, které model neviděl: o 55 % menší chyba |
+| 6 | `slajdy/boris_2024.png` | nejsrozumitelnější graf celé prezentace: předpověď vydaná den předem jde se skutečností, „jako teď“ je o den pozadu |
+
+Záložní slajdy za poděkováním, jen když se porota zeptá: `krizova_validace.png` (není to náhoda), `jako_ted_vysvetleni.png` (co je „bude jako teď“), `boris_dest_prutoky_decin.png` (proč nepotřebujeme srážky), `slajdy/co_jsme_zkouseli.png` (co nepomohlo), `slajdy/nejistota.png` (jak moc se pleteme), `test_chybovost.png` (chyba po stanicích a horizontech). Ty první tři nejsou ve stylu slajdů, před použitím je překreslit.
