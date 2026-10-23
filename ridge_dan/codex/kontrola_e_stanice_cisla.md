@@ -1,0 +1,3 @@
+- **Nízká — [ridge_dan/STANICE_VSEM.md:54](/C:/Users/danie/Documents/hackathon-2026-ridge/ridge_dan/STANICE_VSEM.md:54):** Ridge +18 má „CV vzestup“ **28,8**, ale poslední platný záznam (`vysledky.jsonl:30`) obsahuje 28,7470936; správné zaokrouhlení je **28,7 cm**. Návrh: opravit hodnotu v tabulce.
+
+Ostatní kontrolované metriky včetně stability souhlasí, odhad nových doběhů díky desetidenní mezeře nečerpá z drženého bloku, varianty LightGBM se liší jen stanicemi a závěr „pomáhají některým“ odpovídá hranici 1 cm podle zvolené CV, s již přiznaným omezením společných pevných dob.

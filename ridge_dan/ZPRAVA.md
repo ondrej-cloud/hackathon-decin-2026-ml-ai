@@ -87,7 +87,7 @@ stažených adres v `STAZENO.csv` (787 souborů včetně metadat a seznamů, lic
 | | můj Ridge, 30 stanic | týmový Ridge | „jako teď“ |
 |---|---|---|---|
 | CV v tréninku: povodně (18 povodní) | **14,2** | 15,6 | |
-| CV: rychlé stoupání | **28,8** | 33,8 | |
+| CV: rychlé stoupání | **28,7** | 33,8 | |
 | **VAL: chyba na povodních** (`mae_povodne`) | 17,8 | **15,5** | 44,4 |
 | VAL: chyba celkem | **6,9** | 7,5 | 12,7 |
 | VAL: klid 2019–2020 | **6,1** | 6,9 | 10,4 |

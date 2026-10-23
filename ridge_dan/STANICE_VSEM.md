@@ -1,6 +1,6 @@
 # Pomůže 18 nových stanic všem týmovým modelům?
 
-Dan, větev `dan-ridge`, pá 23. 10. 2026 22:25–23:10. Kód `ridge_dan/stanice_vsem/` (společný základ `spolecne.py`,
+Dan, větev `dan-ridge`, pá 23. 10. 2026 22:25–23:09. Kód `ridge_dan/stanice_vsem/` (společný základ `spolecne.py`,
 obaly `ridge_stanice.py`, `lgbm_stanice.py`, `fyzika_stanice.py`, běh `spust.py`, tabulka `souhrn.py`), záznam
 všech běhů `stanice_vsem/vysledky.jsonl`. Test 2021–2025 se nespouštěl.
 
@@ -51,7 +51,7 @@ CV a podrobnosti pro Děčín +24 h, validace `prumer_povodne` a poplachy přes 
 | Model | varianta | CV povodně | CV vzestup | VAL prumer_povodne | VAL Děčín +24 | VAL začátek vzestupu | VAL 2006 (přestřelení na stoupání) | 2./3. SPA propásnuto | 2./3. SPA plané | 2./3. SPA předstih h |
 |---|---|---|---|---|---|---|---|---|---|---|
 | Ridge | beze změny | 15,64 | 33,8 | **17,08** | **15,5** | 35,4 | **16,0** (57) | 0/0 | 0/0 | 17,4/15,8 |
-| Ridge | + 18 stanic | **14,17** | **28,8** | 18,48 | 17,8 | **28,1** | 24,7 (68) | 0/0 | 0/0 | **19,0/18,6** |
+| Ridge | + 18 stanic | **14,17** | **28,7** | 18,48 | 17,8 | **28,1** | 24,7 (68) | 0/0 | 0/0 | **19,0/18,6** |
 | LightGBM | beze změny | 18,05 | 37,2 | 23,07 | 21,3 | 36,3 | 29,4 (111) | 0/0 | **0**/0 | 14,2/15,1 |
 | LightGBM | + 18 stanic | **16,01** | **32,4** | **22,08** | **20,4** | **28,1** | 29,4 (**99**) | 0/0 | 3/0 | **16,9/16,8** |
 | fyzika | beze změny | 18,53 | 39,4 | 24,75 | 22,5 | 37,1 | 26,4 (**55**) | 0/0 | 0/2 | 16,2/15,7 |

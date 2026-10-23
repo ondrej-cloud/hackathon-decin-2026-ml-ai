@@ -44,3 +44,4 @@
 - pá 22:56 · Codex (d): 1 vysoký nález (únik doby doběhu do CV u LightGBM), opravuji a přepočítávám CV všech variant s opravenou metrikou přestřelení.
 - pá 23:04 · přepočet po opravě: LightGBM s dobou doběhu jen z trénovací části foldu CV 16,01 (bylo 16,20), val 22,08; CV všech variant s opravenou metrikou přestřelení.
 - pá 23:08 · STANICE_VSEM.md hotová: nové stanice pomáhají podle CV Ridge a LightGBM, fyzice pod hranicí 1 cm, všem na začátku vzestupu; síť zvlášť na Kaggle.
+- pá 23:09 · Codex (e) na čísla ve STANICE_VSEM.md: sedí, jen zaokrouhlení 28,8 → 28,7 opraveno; úkol uzavřený, test se nespouštěl.

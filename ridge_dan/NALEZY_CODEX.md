@@ -46,3 +46,8 @@ spojení podle času bez budoucích vstupů a strom fyzikálního modelu bez zje
 | 1. LightGBM: doby doběhu nových stanic odhadnuté z celého tréninku včetně drženého bloku CV, cache sdílená mezi foldy | vysoká | Opraveno: doby se odhadují uvnitř `fit()` jen z hodin, na kterých se model učí (v CV z trénovací části foldu). CV i validace `lgbm_30` přepočítané. Týmové pevné doby `lgbm_a.DOBA` jsou z celého tréninku taky, to je vlastnost týmového modelu a nechávám ji (v CV tedy obě varianty mají u týmových stanic stejnou drobnou výhodu). |
 | 2. `cv_max_prestreleni` byl průměr maxim po povodních, slibovaný 95. percentil chyběl | střední | Opraveno: `cv_prumer_max_prestreleni`, `cv_p95_prestreleni` (přes všechny hodiny oken) a `cv_max_prestreleni` (největší vůbec); CV všech variant přepočítaná. |
 | 3. Seedy 42/43/44 u LightGBM dávají totožné výsledky, nejsou to tři nezávislá ověření | nízká | Souhlasím: týmový LightGBM nemá náhodný výběr řádků ani vstupů, takže seed nic nemění. Dál jen seed 42, ve zprávě uvedeno „rozptyl 0, model je deterministický“. |
+
+## (e) kontrola čísel ve STANICE_VSEM.md, pá 23:06–23:07 (`codex/kontrola_e_stanice_cisla.md`)
+Celkově: čísla včetně stability sedí, oprava doby doběhu u LightGBM nečerpá z drženého bloku, varianty se liší jen
+stanicemi, závěr odpovídá hranici 1 cm. Jediný nález (nízký): CV vzestup Ridge s 30 stanicemi je 28,747, tedy
+28,7, ne 28,8 (zaokrouhlené dvakrát). Opraveno ve STANICE_VSEM.md a ZPRAVA.md.
