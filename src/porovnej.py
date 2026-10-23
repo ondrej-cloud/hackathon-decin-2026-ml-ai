@@ -91,4 +91,8 @@ if __name__ == "__main__":
     if a.prehled:
         tisk(prehled("test" if a.test else "val"))
     else:
-        tisk(pd.concat([spust(m, test=a.test, rychle=a.rychle) for m in a.modely]))
+        df = pd.concat([spust(m, test=a.test, rychle=a.rychle) for m in a.modely])
+        tisk(df)
+        if not a.rychle:
+            print("\nprumer_povodne (průměr mae_povodne přes všech 6 kombinací):")
+            print(df.groupby("model").mae_povodne.mean().round(1).sort_values().to_string())
