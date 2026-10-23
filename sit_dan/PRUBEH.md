@@ -1,0 +1,14 @@
+# Průběh: týmová neuronová síť s novými vstupy na Kaggle
+
+Dan, větev `dan-sit` (z `origin/main` 5fef911), worktree `hackathon-2026-sit`, vše v `sit_dan/`. Čas a jedna dvě věty, co a proč.
+
+- 22:53 Worktree `hackathon-2026-sit` s větví `dan-sit` z `origin/main`. Upstream přenastavený na `origin/dan-sit`, jinak by holé `git push` šlo do main.
+- 22:55 Společný modul zkopírovaný beze změny: `spolecne.py` z `hackathon-2026-ridge/ridge_dan/stanice_vsem/` a jeho závislosti `hodnoceni.py`, `stanice.py`, `data_ridge.py`. Tabulka `labe_ridge.parquet` zkopírovaná do `sit_dan/tabulka/` (md5 0afaca07…, shodná s originálem, není v Gitu). Ze složek ridge a srazky jen čtu.
+- 22:56 Týmové číslo sítě pro kontrolu: `results/2026-10-23_195305_mlp.json` (Ondra, verze dat 9a31181e, stejná jako teď v main), seed 42, `prumer_povodne` 17,83 cm (9,3 / 18,4 / 25,7 / 9,0 / 16,5 / 28,1).
+- Rozhodnutí: síť je scikit-learn `MLPRegressor` (128-64, alpha 1, early stopping), ta počítá jen na procesoru. Na Kaggle ji pouštím beze změny (4 jádra, víc RAM než notebook). GPU T4 je zapnuté, jak Dan chtěl, ale síť ho nevyužije. Přepis do PyTorch by byla jiná síť a týmové číslo by se nedalo ověřit.
+- Rozhodnutí: každý trénink je samostatná úloha, 4 souběžně po jednom vlákně. Varianta × seed = 6 tréninků na validaci (všech 6 kombinací cíle a horizontu) a 6 bloků CV (Děčín +24 h, `hodnoceni.bloky_cv`, stejné jako `ridge_dan/pokus.py` a `stanice_vsem`). Kernel ukládá jen předpovědi, metriky se z nich počítají společným modulem.
+- Rozhodnutí: první jde validace varianty a se seedem 42, aby byla reprodukce týmového čísla v logu hned. Když nesedí, běh zastavím.
+- Rozhodnutí: nové stanice dostanou stejné zpracování jako ostatní stanice v síti. Sloupce `<stanice>_Q_<zpoždění>` se zpožděními 0–36 h ze `spolecne.data`, síť na ně sama dá odmocninu a škálování (`mlp.odmocnina_prutoku` bere všechny sloupce `_Q_`).
+- Rozhodnutí: varianta c (srážky) zatím ne, `srazky_6h.parquet` ještě není (`srazky_dan/PRUBEH.md` 22:50: vybírají se stanice). Až bude, pustím a, b a c znovu na společných řádcích.
+- 23:00 Lokální zkouška celého řetězce (3 epochy, Děčín +24 h, CV i validace, oba vstupy) prošla za 4 min. Čísla jsou se 3 epochami bez významu.
+- 23:03 Soukromý dataset `midaxal/labe-sit-dan` (kód sítě, týmová tabulka, tabulka nových stanic, 13 MB) a soukromý kernel `midaxal/labe-sit-dan-beh` na T4 s limitem 2 h. Data jsou otevřená data ČHMÚ, do cloudu smějí (CLAUDE.md).

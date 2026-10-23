@@ -1,0 +1,195 @@
+"""Týmová neuronová síť (src/models/mlp.py, beze změny) s různými vstupy: CV v tréninku a validace. Test 2021–2025 ne.
+
+python beh_sit.py --prace 4 --vystup DIR               natrénuje všechno a vyhodnotí (na Kaggle)
+python beh_sit.py --jen-vyhodnot --vystup DIR          jen vyhodnotí stažené předpovědi
+python beh_sit.py --zkouska --prace 1 --vystup DIR     rychlá zkouška celého řetězce (3 epochy, Děčín +24 h)
+
+Varianty se liší jen vstupy, řádky jsou pro všechny stejné (spolecne.data). Každý trénink je samostatná úloha,
+uloží jen předpověď (pred_<varianta>_<seed>_<cast>_<cil>_<h>[_<blok>].parquet), metriky se z nich počítají potom.
+Pořadí úloh: nejdřív validace varianty a se seedem 42, aby byla reprodukce týmového čísla (17,83 cm) vidět hned.
+"""
+import os
+
+for k in ("OMP_NUM_THREADS", "OPENBLAS_NUM_THREADS", "MKL_NUM_THREADS"):
+    os.environ[k] = "1"  # několik tréninků souběžně, každý na jednom jádře
+
+import argparse  # noqa: E402
+import json  # noqa: E402
+import time  # noqa: E402
+import warnings  # noqa: E402
+from functools import cache  # noqa: E402
+from multiprocessing import Pool  # noqa: E402
+from pathlib import Path  # noqa: E402
+
+import numpy as np  # noqa: E402
+import pandas as pd  # noqa: E402
+
+import spolecne as S  # noqa: E402
+import data_ridge  # noqa: E402
+from evaluate import povodne  # noqa: E402
+from models import mlp  # noqa: E402
+
+warnings.filterwarnings("ignore")
+SEEDY = (42, 43, 44)
+VARIANTY = {"a": "beze změny (98 týmových vstupů)", "b": "+ průtoky 18 nových stanic (224 vstupů)"}
+TYM_42 = 17.83  # results/2026-10-23_195305_mlp.json, Ondra, verze 9a31181e
+ZKOUSKA = False
+
+
+@cache
+def data(cil, h):
+    return S.data(cil, h)
+
+
+def vstupy(varianta, cil, h):
+    X, Xn, y, c = data(cil, h)
+    return {"a": X, "b": Xn}[varianta], y, c
+
+
+def ulohy(varianty, seedy, kombinace=S.VSE, bloky=range(6)):
+    prvni = [(varianty[0], seedy[0], "val", cil, h, None) for cil, h in kombinace]
+    ostatni = [(v, s, "val", cil, h, None) for v in varianty for s in seedy for cil, h in kombinace]
+    ostatni += [(v, s, "cv", "decin", 24, k) for v in varianty for s in seedy for k in bloky]
+    return prvni + [u for u in ostatni if u not in prvni]
+
+
+def soubor(adresar, u):
+    v, s, cast, cil, h, k = u
+    return Path(adresar) / f"pred_{v}_{s}_{cast}_{cil}_{h}{'' if k is None else f'_{k}'}.parquet"
+
+
+def trenuj(u, adresar):
+    v, s, cast, cil, h, k = u
+    if soubor(adresar, u).exists():
+        return u, 0.0
+    if ZKOUSKA:
+        mlp.PARAMETRY["max_iter"] = 3
+    A, y, c = vstupy(v, cil, h)
+    t = time.time()
+    if cast == "val":
+        tr, ev = c == "train", c == "val"
+        pred, idx = mlp.fit(A[tr], y[tr], cil, h, seed=s)(A[ev]), A.index[ev]
+    else:
+        tr = c == "train"
+        At, yt = A[tr], y[tr]
+        _, f_tr, f_drz = S.Hd.bloky_cv(At.index)[k]
+        pred, idx = mlp.fit(At[f_tr], yt[f_tr], cil, h, seed=s)(At[f_drz]), At.index[f_drz]
+    pred = np.asarray(pred, dtype=float)
+    assert np.isfinite(pred).all(), u
+    pd.DataFrame({"pred": pred}, index=idx).to_parquet(soubor(adresar, u))
+    return u, round(time.time() - t, 1)
+
+
+def _trenuj(arg):
+    return trenuj(*arg)
+
+
+def _nastav(zkouska):
+    global ZKOUSKA
+    ZKOUSKA = zkouska
+
+
+def nacti_pred(adresar, u, index):
+    p = pd.read_parquet(soubor(adresar, u)).pred
+    assert p.index.equals(index), u
+    return p
+
+
+def povoden(y, pred, mesic):
+    """Stejné jako spolecne.povoden_2006, pro libovolnou validační povodeň nad 2. SPA (např. '2010-09')."""
+    v = next(v for v in povodne(y, 490) if f"{v:%Y-%m}" == mesic)
+    okno = (y.index >= v - S.Hd.E.PRED) & (y.index <= v + S.Hd.E.PO)
+    stoupa = okno & (y.index < v - pd.Timedelta(hours=24))
+    d = pred - y
+    r = mesic[:4]
+    return {f"mae_{r}": round(float(d[okno].abs().mean()), 1), f"mae_{r}_stoupani": round(float(d[stoupa].abs().mean()), 1),
+            f"max_prestreleni_{r}": round(float(d[stoupa].max()), 1), f"bias_{r}": round(float(d[okno].mean()), 1)}
+
+
+def vyhodnot_val(adresar, v, s, kombinace=S.VSE):
+    H = data_ridge.nacti()["decin_H"]
+    radky, d24 = [], {}
+    for cil, h in kombinace:
+        A, y, c = vstupy(v, cil, h)
+        ye = y[c == "val"]
+        pred = nacti_pred(adresar, (v, s, "val", cil, h, None), ye.index)
+        radky.append(dict(cil=cil, horizont=h, **S.vyhodnot(ye, pred, cil, h)))
+        if (cil, h) == ("decin", 24):
+            d24 = S.Hd.metriky(ye, pred, H, cil, h) | S.povoden_2006(ye, pred, H) | povoden(ye, pred, "2010-09")
+            assert d24["mae_2006"] == povoden(ye, pred, "2006-04")["mae_2006"]
+    df = pd.DataFrame(radky)
+    return dict(prumer_povodne=round(df.mae_povodne.mean(), 2), prumer_mae=round(df.mae.mean(), 2),
+                spa2_propasnuto=int(df.spa2_propasnuto.sum()), spa2_plane=int(df.spa2_plane_poplachy.sum()),
+                spa3_propasnuto=int(df.spa3_propasnuto.sum()), spa3_plane=int(df.spa3_plane_poplachy.sum()),
+                spa2_predstih_h=round(df.spa2_predstih_h.mean(), 1), spa3_predstih_h=round(df.spa3_predstih_h.mean(), 1),
+                decin24=d24, kombinace=radky)
+
+
+def vyhodnot_cv(adresar, v, s, bloky=range(6)):
+    A, y, c = vstupy(v, "decin", 24)
+    yt = y[c == "train"]
+    casti = []
+    for k in bloky:
+        _, _, f_drz = S.Hd.bloky_cv(yt.index)[k]
+        casti.append(nacti_pred(adresar, (v, s, "cv", "decin", 24, k), yt.index[f_drz]))
+    pred = pd.concat(casti).reindex(yt.index)
+    assert pred.notna().all()
+    return S.cv_skore(yt, pred, A.loc[yt.index, "decin_H_0"])
+
+
+def vyhodnot(adresar, varianty, seedy, kombinace=S.VSE, bloky=range(6)):
+    vysledky = []
+    for v in varianty:
+        for s in seedy:
+            z = dict(varianta=v, popis=VARIANTY[v], seed=s, vstupu=vstupy(v, "decin", 24)[0].shape[1],
+                     radku_val_decin24=int((vstupy(v, "decin", 24)[2] == "val").sum()))
+            z |= {"val": vyhodnot_val(adresar, v, s, kombinace), "cv": vyhodnot_cv(adresar, v, s, bloky)}
+            vysledky.append(z)
+            d = z["val"]["decin24"]
+            print(f"{v} seed {s}: CV povodně {z['cv']['cv_povodne']:.2f}, VAL prumer_povodne {z['val']['prumer_povodne']}, "
+                  f"začátek vzestupu {d['mae_zacatek']}, 2006 {d['mae_2006']}, 2010 {d['mae_2010']}, "
+                  f"2. SPA propásnuto/plané {z['val']['spa2_propasnuto']}/{z['val']['spa2_plane']}", flush=True)
+    with open(Path(adresar) / "vysledky_sit.json", "w", encoding="utf-8") as f:
+        json.dump(vysledky, f, ensure_ascii=False, indent=1, default=float)
+    return vysledky
+
+
+def kontrola_radku():
+    """Všechny varianty mají stejné řádky a varianta a stejné jako týmová tabulka (features.tabulka)."""
+    for cil, h in S.VSE:
+        X, Xn, y, c = data(cil, h)
+        Xt, _ = S.tabulka(cil, h)
+        assert X.index.equals(Xn.index) and len(X) == len(Xt) and X.equals(Xt[X.columns].loc[X.index]), (cil, h)
+        print(f"řádky {cil} +{h} h: {len(X)} (stejně jako týmová tabulka), vstupy a {X.shape[1]}, b {Xn.shape[1]}, "
+              f"train {int((c == 'train').sum())}, val {int((c == 'val').sum())}", flush=True)
+
+
+if __name__ == "__main__":
+    p = argparse.ArgumentParser()
+    p.add_argument("--vystup", required=True)
+    p.add_argument("--prace", type=int, default=4)
+    p.add_argument("--varianty", default=",".join(VARIANTY))
+    p.add_argument("--jen-vyhodnot", action="store_true")
+    p.add_argument("--zkouska", action="store_true")
+    a = p.parse_args()
+    ZKOUSKA = a.zkouska
+    varianty = a.varianty.split(",")
+    kombinace, bloky, seedy = (([("decin", 24)], range(6), (42,)) if a.zkouska else (S.VSE, range(6), SEEDY))
+    Path(a.vystup).mkdir(parents=True, exist_ok=True)
+    if not a.zkouska:
+        kontrola_radku()
+    if not a.jen_vyhodnot:
+        seznam = ulohy(varianty, seedy, kombinace, bloky)
+        print(f"{len(seznam)} tréninků, {a.prace} souběžně", flush=True)
+        t0, hotovo, prvni = time.time(), 0, {}
+        with Pool(a.prace, initializer=_nastav, initargs=(ZKOUSKA,)) as pool:
+            for u, sekund in pool.imap_unordered(_trenuj, [(u, a.vystup) for u in seznam]):
+                hotovo += 1
+                print(f"[{hotovo}/{len(seznam)} {time.time() - t0:.0f} s] {u} {sekund} s", flush=True)
+                if u[:3] == (varianty[0], seedy[0], "val"):
+                    prvni[u[3:5]] = u
+                    if len(prvni) == len(kombinace):
+                        z = vyhodnot_val(a.vystup, varianty[0], seedy[0], kombinace)
+                        print(f"REPRODUKCE: {varianty[0]} seed {seedy[0]} prumer_povodne {z['prumer_povodne']} "
+                              f"(tým {TYM_42}), po kombinacích {[r['mae_povodne'] for r in z['kombinace']]}", flush=True)
+    vyhodnot(a.vystup, varianty, seedy, kombinace, bloky)

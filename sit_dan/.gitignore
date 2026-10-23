@@ -1,0 +1,5 @@
+tabulka/
+kaggle/dataset/
+kaggle/vystup/*/
+*.parquet
+__pycache__/
