@@ -26,3 +26,4 @@ Dan, větev `dan-srazky` (z `origin/dan-ridge`), worktree `hackathon-2026-srazky
 - 23:58 Zpráva `ZPRAVA_SRAZKY.md` s verdikty obou Ridge (beze změny); LightGBM se seedem 42 pod zátěží pořád běží, doplním.
 - 00:25 LightGBM seed 42 hotový: CV povodně 17,77 → 16,81 (−0,96), VAL Děčín +24 20,8 → 20,3, průměr 6 kombinací 23,03 → 21,85, začátek vzestupu 36,4 → 31,8, ale 9/2010 21,1 → 22,9 a 4 plané poplachy 3. SPA navíc (jedna epizoda v Děčíně a Ústí +24/+36 h), chyba vrcholu Děčín +24 22 → 31; LOFO LightGBM běží.
 - 00:32 LOFO LightGBM seed 42: 16,73 → 16,21 (−0,52), zlepšeno 13 z 22 povodní, nejhorší +3,9 (tání 4/2006), začátek vzestupu 43,2 → 39,3, plané 2. SPA 6 → 3; zlepšení neplatí. Verdikt LightGBM beze změny (náznak na začátku vzestupu, ale přestřelení 9/2010). Seedy 43 a 44 běží jen pro kontrolu rozptylu.
+- 00:48 Seedy 43 a 44 LightGBM: CV, validace i LOFO na setinu stejné jako seed 42 (rozptyl 0). Souhrn `vysledky/tabulka.md`, hotovo.

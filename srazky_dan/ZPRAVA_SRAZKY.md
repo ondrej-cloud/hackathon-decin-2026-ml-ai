@@ -1,6 +1,6 @@
 # Šestihodinové srážky ze synoptických stanic pro Labe v Děčíně: zpráva
 
-Dan, větev `dan-srazky` (z `dan-ridge`), pá 23. 10. 2026 22:47 – so 0:35. Průběh v `PRUBEH.md`, nálezy Codexu
+Dan, větev `dan-srazky` (z `dan-ridge`), pá 23. 10. 2026 22:47 – so 0:55. Průběh v `PRUBEH.md`, nálezy Codexu
 v `NALEZY_CODEX.md`, všechny běhy ve `vysledky/srazky.jsonl` (CV a validace) a `vysledky/lofo.jsonl` (LOFO).
 Test 2021–2025 jsem nespouštěl.
 
@@ -101,7 +101,7 @@ Rozdíl = + srážky − beze změny, záporný = menší chyba.
 | Ridge Danův (30 stanic) | beze změny | 14,16 | 28,95 | 17,8 | – | 28,1 | 20,7 | 24,6 | 0 / 0 | 14,79 | 34,1 | |
 | | + srážky | 14,10 | 29,03 | 18,1 | – | 28,4 | 21,0 | 25,4 | 0 / 0 | 14,77 | 34,1 | 13 z 22 |
 | | rozdíl | −0,07 | +0,08 | +0,3 | – | +0,3 | +0,3 | +0,8 | 0 / 0 | −0,03 | 0,0 | p = 0,52 |
-| LightGBM (seed 42) | beze změny | 17,77 | 36,40 | 20,8 | 23,03 | 36,4 | 21,1 | 28,9 | 0 / 0 | 16,73 | 43,2 | |
+| LightGBM (seedy 42/43/44, rozptyl 0) | beze změny | 17,77 | 36,40 | 20,8 | 23,03 | 36,4 | 21,1 | 28,9 | 0 / 0 | 16,73 | 43,2 | |
 | | + srážky | 16,81 | 35,54 | 20,3 | 21,85 | 31,8 | 22,9 | 28,1 | 0 / 4 | 16,21 | 39,3 | 13 z 22 |
 | | rozdíl | −0,96 | −0,86 | −0,5 | −1,18 | −4,6 | +1,8 | −0,8 | 0 / +4 | −0,52 | −3,9 | p = 0,52 |
 
@@ -112,8 +112,9 @@ v LOFO (2. / 3. SPA):
 - LightGBM 6 / 1 → 3 / 1.
 
 Na validaci má LightGBM se srážkami 4 plané poplachy 3. SPA. Je to jedna epizoda, povodeň 9/2010, viditelná
-v Děčíně i Ústí +24 a +36 h. U LightGBM jsou čísla zatím jen pro seed 42; tento LightGBM nemá náhodný výběr
-řádků ani vstupů, takže seedy 42/43/44 dávají stejná čísla (`docs/POKUSY.md`, pá 20:00, a `stanice_vsem`).
+v Děčíně i Ústí +24 a +36 h. LightGBM je spočítaný se seedy 42, 43 a 44: CV, validace i LOFO vyšly u všech tří
+na setinu stejně (průměr = hodnota v tabulce, směrodatná odchylka 0), protože tento LightGBM nemá náhodný výběr
+řádků ani vstupů (stejně jako v `docs/POKUSY.md`, pá 20:00).
 
 LOFO po povodních:
 - **Ridge:** týmový má rozdíly od −0,7 (8/2010) do +1,3 cm (6/2013), Danův od −0,4 do +0,5 cm. Ani jedna
