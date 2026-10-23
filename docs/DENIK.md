@@ -168,3 +168,8 @@ Následující záznamy jsou doplněné zpětně (pá 19:35) podle commitů, ať
 - Co: srážky, sníh a teplotu z 25 stanic v povodí do modelu nepřidáváme. Na validaci nepomohly (lineární regrese 17,1 → 17,4 cm, síť 17,8 → 21,2 cm) a ani dokonalá předpověď srážek na den dopředu by nepomohla o víc než 0,8 cm.
 - Proč: otestovali jsme názor, že přesnější model potřebuje všechny faktory povodní. Na horizontu 12–36 h je ale voda z deště a tání už v řekách a model ji vidí v průtocích proti proudu. Faktory, které se nemění (sklon, půda, tvar povodí), jsou už ve změřené době putování a měrné křivce. Víc vstupů při stejném počtu povodní znamená hlavně riziko přeučení (síť se zhoršila o 3,4 cm).
 - Pro porotu: „Zkoušeli jste srážky?“ Ano, z 25 stanic za 20 let, a nepomohly, ani kdybychom znali déšť den dopředu. Proto zůstáváme u jednoduššího modelu.
+
+## pá 21:20 · Ondra
+- Co: vlastní model na předpověď deště dělat nebudeme.
+- Proč: myšlenkový pokus ukázal, že ani dokonalá předpověď srážek na den dopředu by nezlepšila chybu o víc než 0,8 cm (`docs/POKUSY.md`, pá 21:15). Náš vlastní model deště by byl horší než dokonalý, takže by přinesl ještě méně. Předpověď počasí navíc potřebuje modely atmosféry (tlakové pole, družice), které z dat ze stanic za večer neuděláme.
+- Plán k finálnímu modelu: lineární regrese je hotová, ladění skončilo podle pravidel. Počkáme na Danův pokus s dobou putování podle průtoku (do 22:00), protože může změnit finální model. Pak finální model natrénujeme na všem do 2020 a jednou pustíme test 2021–2025 (`python src/porovnej.py jako_ted <model> --test`). Po testu přetrénovat model pro aplikaci na všech datech do 2025 (`src/uloz_model.py` zatím trénuje jen na train).
