@@ -75,3 +75,8 @@ Následující záznamy jsou doplněné zpětně (pá 19:55) podle commitů, ať
 ## pá 18:52 · Ondra
 - Co: rozhodli jsme, že začneme rovnou na Labi, ne na malých řekách. Každý vyzkouší jiný model, malé řeky budou jen druhá zkouška.
 - Proč: na malých řekách voda doteče za 0–7 h a rozhoduje déšť, je to jiný problém. Model vybraný tam by se pro Labe musel vybírat znovu.
+
+## pá 20:05 · Ondra
+- Co: ověřili jsme, jestli do modelu nepatří přítoky Labe v kraji (Bílina, Ploučnice). Nepatří, na validaci nepomohly (`docs/POKUSY.md`).
+- Proč: přidají jen 2–13 % vody při vrcholu a doteče z nich za pár hodin. Velké přítoky nad krajem (Vltava s Berounkou a Sázavou, Jizera, horní Labe, Ohře) v modelu jsou.
+- Limit pro prezentaci: povodeň z lokálních dešťů v kraji, jako v srpnu 2010, model bez srážek dopředu nevidí.
