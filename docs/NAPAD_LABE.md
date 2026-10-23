@@ -14,7 +14,7 @@ Všechna čísla níž jsou spočítaná z dat (pá 17:50). Co je jen domněnka,
 | | Co obsahuje | Co z toho jde |
 |---|---|---|
 | **Balíček od pořadatelů** | 28 stanic v kraji, 2024–9/2026. Jen 4 na Labi: Litoměřice, Ústí, Děčín, Hřensko. Do 2025 po hodinách, 2026 po 10 minutách | Předpověď jen na 4–5 h (nejvýš proti proudu je Ústí). Jediná povodeň (9/2024). Teplota vody, přítoky |
-| **Přidané otevřené data ČHMÚ** (zdarma, staženo, `src/stahni_chmu_hydro.py`) | hodinový stav a průtok 2002–2025: Praha-Chuchle a Vraňany (Vltava), Kostelec nad Labem, Mělník, Ústí, Děčín | předpověď na 12–24 h, povodně ve 13 letech, test na povodni, kterou model neviděl, vývoj za 20 let |
+| **Přidaná otevřená data ČHMÚ** (zdarma, staženo, `src/stahni_chmu_hydro.py`) | hodinový stav a průtok 2002–2025: Praha-Chuchle a Vraňany (Vltava), Kostelec nad Labem, Mělník, Ústí, Děčín | předpověď na 12–24 h, povodně ve 13 letech, test na povodni, kterou model neviděl, vývoj za 20 let |
 | **Co by ještě pomohlo** (neověřeno, jestli je volně) | srážky v povodí a jejich předpověď, vypouštění přehrad na Vltavě (Orlík, Slapy), historie oficiálních předpovědí ČHMÚ | předpověď dál než den a srovnání s ČHMÚ |
 
 Kupovat se nemusí nic. Bez srážek ale nejde předpovídat dál než zhruba den: voda, která do Děčína přijde za dva dny, ještě nespadla nebo je v potocích, které neměříme.
