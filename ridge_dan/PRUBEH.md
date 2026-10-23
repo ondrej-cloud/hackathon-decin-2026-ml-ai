@@ -63,3 +63,6 @@
 - so 01:14 · Codex (i): rozhraní v pořádku, bez pohledu do budoucnosti; 3 střední nálezy, oprava přísného odhadu doby doběhu pro G3, zbytek zdůvodněn (NALEZY_CODEX.md).
 - so 01:17 · běh `python src/krizova_validace.py ridge lgbm ridge30 g3` (síť a fyzika z Ondrova uloženého CSV), odhad ~50 min.
 - so 01:41 · vícenásobná validace hotová: G3 19,6 ± 7,1 cm proti Ridge 20,1 ± 7,7 (−0,5 cm, lepší v 6 z 8 povodní, nejlepší v 5 z 8, horší u tání 2006 a 2011); jako_ted, ridge a lgbm přesně shodné s Ondrovým během; VALIDACE_ONDRA.md.
+- so 01:47 · noční úkol: bod 1 hotový (VALIDACE_ONDRA.md, c53a491). G3 v Ondrově validaci −0,5 cm proti Ridge (pod 1 cm) → G3 nevyhrává; dál ověřuji Ridge 30 na 36 h.
+- so 01:52 · Ridge 30 na 36 h v Ondrově validaci: Děčín −0,71, Ústí −1,00 (ze zaokrouhlených chyb), dohromady −0,86 cm, 5 z 8 povodní → hranice 1 cm nesplněná, (a)–(d) se nedělají; ROZHODNUTI_G3.md: doporučení nechat týmový Ridge.
+- so 01:53 · PŘEDEM ZAPSÁNO (bod 3, průzkumné): H30 = ridge30 + ukazatel útlumu v nivě přesně jako v ZLEPSENI.md (Kostelec − (Nymburk + Jizera), Mělník − (Vraňany + Kostelec), Ústí − (Mělník + Louny), zpoždění 0/6/12/24 h, m³/s, alpha 1), pro Děčín i Ústí stejně; vedle H12 = týmový Ridge + týž ukazatel (druhá předem zapsaná varianta z 23:37). Jen Ondrova validace, žádné ladění, výsledek průzkumný.
