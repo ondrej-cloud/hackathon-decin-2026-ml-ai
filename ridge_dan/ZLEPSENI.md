@@ -6,7 +6,15 @@ Test 2021–2025 je spotřebovaný, nespouštěl se a nic se podle něj nerozhod
 
 ## Verdikt
 
-**Děčín +24 h: žádná varianta přísné pravidlo průkazně nesplní.** Číselně ho splní jen **H30 = Ridge 30 stanic
+**Děčín +24 h: přísné pravidlo průkazně splní směs G3 = ½ Ridge 30 stanic + ½ LightGBM 30 stanic** (pevná
+váha, nic se nevybírá, byla předem v zadání): LOFO 13,94 proti 15,29 cm, **−1,35 cm, lepší 20 z 22 povodní**
+(znaménkový test p = 0,0001), nejhorší zhoršení +8,2 cm. Dopočteno v 00:28, až po kontrole Codexu (h), ta ji
+neviděla. Cena: v oknech povodní 6 planých poplachů 2. SPA proti 4 u týmového Ridge, povodeň 2006 25,0 proti 16,7,
+na validaci 18,2 proti 15,5 (0 planých, začátek vzestupu 27,8 proti 35,4). Každý z obou modelů sám je slabší
+(Ridge 30 −0,49, LightGBM 30 +0,78), zisk dělá to, že chybují jinak. Vnořeně zvolená váha (G4, jen přibližně
+vnořená) vychází 0,6 pro Ridge ve 21 z 22 foldů a dává totéž (−1,33, 20 z 22).
+
+Dál číselně splní jen **H30 = Ridge 30 stanic
 + ukazatel útlumu v nivě** (LOFO 14,15 proti 15,29 cm týmového Ridge, −1,13 cm, lepší 18 z 22 povodní, znaménkový
 test p = 0,004, nejhorší zhoršení +5,9 cm; Codex výsledek nezávisle přepočítal). Je to ale **průzkumný výsledek**:
 nápad vznikl z rozboru povodně 2006, která je mezi 22 hodnocenými (a ve validaci), takže návrh modelu z hodnocených
@@ -25,14 +33,18 @@ nepřidají. Na validaci 26,6 proti 26,0, rozdíl zase dělá povodeň 2006.
 Ve všech variantách s novými stanicemi se výrazně zlepší začátek vzestupu (LOFO 41,9 → 33–37 cm) a zhorší se
 povodeň 2006. Přestřelení 2006 vzniká útlumem vlny v nivě Polabí, ne chybou dat (rozbor A).
 
-**Doporučení pro Ondru:** hlavní předpověď Děčín +24 h nechat na týmovém Ridge. Pro +36 h je Ridge s 30 stanicemi
+**Doporučení pro Ondru:** jediný přísně ověřený kandidát pro +24 h je G3 (průměr Ridge 30 a LightGBM 30): v LOFO
+jasně lepší (20 z 22 povodní), ale na validaci horší než týmový Ridge (18,2 / 15,5), s víc planými poplachy
+v oknech povodní, složitější (dva modely) a bez nezávislého testu. Když chce tým jednoduchost a validaci, zůstat
+u týmového Ridge; když věří širšímu LOFO, G3. Já bych pro finále nechal týmový Ridge a G3 ukázal jako ověřené
+zlepšení, protože pravidlo „radši jednodušší model“ a horší validace převažují. Pro +36 h je Ridge s 30 stanicemi
 přísně ověřené zlepšení (−2,4 cm, 17 z 22 povodní); když se horizont 36 h v aplikaci ukazuje, dává smysl ho použít,
 s poznámkou, že na validaci je kvůli 2006 o 0,6 cm horší. Do prezentace jako zjištění: nové stanice spolehlivě
 zlepšují začátek vzestupu, přestřelení velkých povodní je fyzika rozlivu do nivy a ukazatel útlumu (schodek průtoku
 v úseku) je slibný průzkumný nápad (24 h −1,1 cm v LOFO), ne ověřený model.
 
-**Nedoběhlo do 00:30** (volná RAM ~0,5 GB, sdílená se session srážek a sítě): LOFO předpovědi LightGBM, a tím
-směsi G3 (Ridge 30 + LightGBM 30) a G4; Huber s 30 stanicemi (F30); opravený přepočet vnořených B, D a G2 po nálezu
+**Nedoběhlo do 00:30** (volná RAM ~0,5 GB, sdílená se session srážek a sítě): LightGBM 12 (srovnání LightGBM 30
+proti 12); Huber s 30 stanicemi (F30); opravený přepočet vnořených B, D a G2 po nálezu
 Codexu (h). U těch tří to závěr nemění: chyba ve vnitřním hodnocení mohla vnořený výběr jen přikrášlit
 (výběr viděl část hodin blízké držené povodně), a i tak žádná z nich hranici nedosáhla.
 
@@ -76,7 +88,9 @@ Ridge s 30 stanicemi tedy přísné pravidlo nesplní: zlepšení 0,49 cm je pod
 | F | Huber, 30 stanic | nedoběhlo | | | | | | | | | |
 | G | G1 ½ Ridge 12 + ½ Ridge 30 | 14,65 | −0,64 | 17 | +2,4 | 0,017 | ne | 16,0 | 37,5 | 19,1 | 3 |
 | G | G2 váha Ridge 12/30 striktně vnořeně | 14,73 | −0,56 | 17 | +4,6 | 0,017 | ne | | 36,6 | 21,4 | 3 |
-| G | G3/G4 Ridge 30 + LightGBM 30 | nedoběhlo | | | | | | | | | |
+| G | LightGBM 30 sám | 16,06 | +0,78 | 11 | +12,1 | 1,0 | ne | 20,4 | 37,9 | 28,9 | 7 |
+| G | **G3 ½ Ridge 30 + ½ LightGBM 30 (pevně)** | **13,94** | **−1,35** | **20** | +8,2 | 0,0001 | **ano** | 18,2 | 34,5 | 25,0 | 6 |
+| G | G4 váha přibližně vnořeně (0,6 Ridge) | 13,95 | −1,33 | 20 | +7,6 | 0,0001 | ano | | 34,4 | 24,3 | 5 |
 | G | síť beze změny | 15,07 | −0,22 | 14 | +6,4 | 0,29 | ne | | 39,2 | 15,6 | 3 |
 | G | síť + 18 stanic | 16,05 | +0,76 | 12 | +7,7 | 0,83 | ne | | 34,1 | 23,4 | 1 |
 | G | G5 ½ Ridge 30 + ½ síť + 18 | 14,65 | −0,64 | 16 | +5,7 | 0,05 | ne | | 33,6 | 22,4 | 0 |
@@ -93,7 +107,7 @@ varianta těsně nad hranicí (H30, −1,13) vyjít i náhodou, proto výhrady v
 
 ## Pokusy
 
-*(hotovo A, B včetně validace, C, D, E, F12, H, směsi G1, G2, G5, G6 a síť; nedoběhlo: F30, LightGBM a směsi s ním G3–G4, opravený přepočet B/D/G2)*
+*(hotovo A, B, C, D, E, F12, H, LightGBM 30, směsi G1–G6 a síť; nedoběhlo: F30, LightGBM 12, opravený přepočet B/D/G2)*
 
 ### Pokus C: součty po dílčích povodích místo jednotlivých nových stanic
 
