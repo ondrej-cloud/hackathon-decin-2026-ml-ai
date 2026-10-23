@@ -13,7 +13,7 @@ Data z balíčku nezahazujeme. Děčín, Ústí a Louny v balíčku jsou stejné
 | průtok (m³/s) | Mělník, Vraňany, Kostelec, Praha, Nymburk, Jizera, Beroun, Sázava, Přelouč | 2006–2025 | archiv ČHMÚ (v balíčku nejsou) | voda, která teprve přiteče, bez nich vidíme jen 4 h dopředu |
 | prahy povodňových stupňů | Děčín, Ústí | | balíček (metadata) | kdy vyhlásit varování |
 | polohy stanic | 12 stanic | | balíček (metadata) | mapa v aplikaci |
-| srážky, sníh, teplota (pokus) | 25 meteostanic v povodí | 2006–2025, denně | archiv ČHMÚ | déšť, který v řece ještě není |
+| srážky, sníh, teplota (vyzkoušeno, **nepomohlo**, v modelu nejsou) | 25 meteostanic v povodí | 2006–2025, denně | archiv ČHMÚ | déšť, který v řece ještě není. Na 12–36 h je ale voda z deště už v řekách a model ji vidí v průtocích (`docs/POKUSY.md`, pá 21:15) |
 
 | Z balíčku nepoužíváme | Proč |
 |---|---|
@@ -27,7 +27,7 @@ Data z balíčku nezahazujeme. Děčín, Ústí a Louny v balíčku jsou stejné
 
 - **Z balíčku od pořadatelů** používáme přímo metadata stanic: stupně povodňové aktivity a polohy stanic pro mapu. Hladiny a průtoky Děčína, Ústí a Loun z balíčku slouží jako kontrola. Za 2024–2025 jsou na hodinu i na centimetr stejné jako archiv ČHMÚ, ze kterého trénujeme.
 - **Trénujeme na archivu ČHMÚ** (stejný zdroj jako balíček): 12 stanic, 2006–2025, 175 320 hodin. Balíček má jen 2024–2026, jedinou povodeň a žádné stanice proti proudu. Na tom by nešlo ani předpovídat dál než pár hodin, ani nic ověřit.
-- **Přidáváme meteorologii ČHMÚ** (denní srážky, sníh, teplota z 25 stanic v povodí). Zatím jako pokus, do modelu půjde jen tehdy, když pomůže.
+- **Meteorologii ČHMÚ jsme vyzkoušeli** (denní srážky, sníh, teplota z 25 stanic v povodí). Nepomohla, ani kdybychom déšť znali den dopředu, proto v modelu není.
 
 ## 1. Balíček od pořadatelů (`data/raw/labe/uloha_3/`, není v Gitu)
 
@@ -47,7 +47,7 @@ Data z balíčku nezahazujeme. Děčín, Ústí a Louny v balíčku jsou stejné
 | Zdroj | Co | Staženo | Používáme | Soubor |
 |---|---|---|---|---|
 | ČHMÚ, archiv hodinové hydrologie, https://opendata.chmi.cz/hydrology/historical/data/hourly/ | hladina a průtok | 26 stanic, 2002–2025, 276 MB (`src/stahni_chmu_hydro.py`) | **12 stanic, 2006–2025** (hladina Děčín a Ústí, průtok všech 12), 175 320 hodin. Bílina a Ploučnice jen v pokusu. Malé řeky na druhou zkoušku | `data/external/labe_hodinove.parquet` (4,8 MB, v Gitu), `src/data.py` |
-| ČHMÚ, archiv denní meteorologie, https://opendata.chmi.cz/meteorology/climate/historical/data/daily/ | srážky, výška sněhu, teplota, index předchozích srážek (API30) | 25 stanic v povodí Vltavy, horního Labe a Ohře, 1,5 GB (`src/stahni_chmu_meteo.py`) | **pokus** (pá 21:00) | zatím ve scratchpadu, do Gitu po výsledku |
+| ČHMÚ, archiv denní meteorologie, https://opendata.chmi.cz/meteorology/climate/historical/data/daily/ | srážky, výška sněhu, teplota, index předchozích srážek (API30) | 25 stanic v povodí Vltavy, horního Labe a Ohře, 1,5 GB (`src/stahni_chmu_meteo.py`) | **vyzkoušeno, nepomohlo** (17,1 → 17,4 cm) | `data/external/labe_meteo.parquet` (1,9 MB), `src/meteo.py`, `src/pokus_meteo.py` |
 | ČHMÚ, metadata meteostanic | polohy a nadmořské výšky | `data/external/chmu_meteo_meta1-20261023.json` | výběr stanic v povodí | |
 | ČHMÚ, hodinová meteorologie Praha-Ruzyně 5–7/2020 | hodinové srážky | 3 měsíce | jen kontrola, ke kterým 24 hodinám patří denní úhrn | |
 
@@ -74,7 +74,7 @@ Data z balíčku nezahazujeme. Děčín, Ústí a Louny v balíčku jsou stejné
 | LightGBM | průtok, který dorazí za h hodin (posunutý o dobu doběhu každé stanice), jeho změna, roční období (sin a cos dne v roce), trend hladiny za 6 h, cíl jako změna hladiny |
 | fyzikální | doby putování ze tří bran, měrná křivka průtok → hladina |
 
-**V pokusu** (zatím ne ve společných vstupech): pro každou větev (Vltava, horní Labe, Ohře) srážky za poslední den a 3 dny, index předchozích srážek API30, výška sněhu, změna sněhu za 3 dny a průměrná teplota. Celkem 18 sloupců. Dan zkouší dobu doběhu podle průtoku.
+**Vyzkoušeno a nepřidáno:** pro každou větev (Vltava, horní Labe, Ohře) srážky za poslední den a 3 dny, index předchozích srážek API30, výška sněhu, změna sněhu za 3 dny a průměrná teplota, celkem 18 sloupců. Nepomohly. Dan zkouší dobu doběhu podle průtoku, Honza kolik let dat model potřebuje.
 
 ## 4. Kolik dat je v které části (Děčín +24 h)
 

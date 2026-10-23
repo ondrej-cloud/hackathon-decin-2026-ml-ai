@@ -234,6 +234,14 @@ Následující pokusy jsou doplněné zpětně (pá 19:55). Všechny byly před 
 - Závěr: lineární regrese vede. Průměrování modelů nepomáhá a jen by přidalo složitost. Čtyři různé přístupy na stejných vstupech skončily blízko sebe, takže rezervu nemá model, ale vstupy (chybí srážky).
 - Soubory: `src/procenta.py`, `docs/grafy/srovnani_procenta.png`, `docs/grafy/srovnani_ctyr_modelu.png`, `results/*_lgbm.json`.
 
+## pá 21:15 · Ondra · srážky, sníh a teplota z 25 stanic v povodí
+- Otázka: pomůže modelu informace o vodě, která v řece ještě není (déšť, sníh, tání)?
+- Data a rozdělení: denní archiv ČHMÚ, 25 stanic (10 Vltava, 9 horní Labe, 6 Ohře), 2006–2025. Pro každou větev průměr stanic: srážky za poslední den a 3 dny, index předchozích srážek API30, výška sněhu, změna sněhu za 3 dny, průměrná teplota. 18 sloupců, každá hodnota až od chvíle, kdy byla změřená (denní úhrn s časem D 06:00 je déšť do D+1 06:00, bereme ho od D+1 07:00; ověřeno na hodinových srážkách v Praze). Společné rozdělení.
+- Model a nastavení: `ridge` a `mlp` beze změn, jen s 18 sloupci navíc.
+- Výsledek na val (`prumer_povodne`): lineární regrese bez meteo 17,1 cm, se vším 17,4, jen srážky 17,1, jen sníh a teplota 17,3. Neuronová síť bez meteo 17,8, se vším 21,2 (přeučila se, na 36 h 25,7 → 31,7 cm a přibyly 3 chyby ve varování).
+- Myšlenkový pokus, jako bychom srážky znali o den dřív (dokonalá předpověď na zítřek, do modelu se nesmí): lineární regrese 16,3 cm, zlepšení jen o 0,8 cm.
+- Závěr: nepomohlo, do společných vstupů meteo nepřidáváme. Většinu vlivu deště a sněhu už model vidí v průtocích proti proudu, protože na horizontech 12–36 h je voda z velkých dešťů už v řekách. Denní srážky jako průměr za povodí jsou navíc hrubé. Ani dokonalá předpověď na den dopředu nepřekročí naši hranici 1 cm. Síť s víc vstupy a stejným počtem povodní se přeučí. Pomoct by mohly hodinové srážky (ČHMÚ je má až od 2018, na trénink málo) a víc povodní.
+- Soubory: `src/stahni_chmu_meteo.py`, `src/meteo.py`, `src/pokus_meteo.py`, `data/external/labe_meteo.parquet`, `data/external/labe_meteo_o_den_driv.parquet` (jen myšlenkový pokus).
 ## pá 20:40 · Honza · odhad nejistoty předpovědi
 - Otázka: jak široké rozmezí máme k předpovědi říkat, aby se do něj skutečnost většinou vešla?
 - Data a rozdělení: společné. Chyby Ridge na trénovací části podle pásma hladiny teď (0–300, 300–450, 450–600, nad 600 cm), 5. a 95. percentil. Pokrytí ověřeno na validaci, kterou při odhadu rozmezí model nevidí.
@@ -263,3 +271,17 @@ Následující pokusy jsou doplněné zpětně (pá 19:55). Všechny byly před 
 - Slabiny: 8 let proti 13 zlepšilo chybu jen o 0,47 cm, pod naší hranicí 1 cm; finální model ani délku jeho tréninku podle toho neměníme. Počet let zároveň mění zastoupení povodní, nejde o čistý účinek počtu hodin. Validace má jen čtyři vynechané povodně, které mohou být starší než trénink; jde o retrospektivní srovnání, ne dopředný test ani důkaz, že všude stačí osm let. Krátké modely mají na tréninku celkovou chybu 4,9–11,6 cm a na celé validaci 5,2–17,2 cm; tyto převážně klidné hodiny samy neříkají, jak dopadnou povodně.
 - Ověření: nezávislá kontrola masek všech 36 kombinací okna/cíle/horizontu, stejné indexy validace, 13 let přesně odpovídá celému train a reprodukuje Ridge 17,1 cm. Společné moduly i model zůstaly beze změn. Verze vyhodnocení na Windows `69a6db32`; JSON navíc ukládá otisky zdrojů se sjednocenými konci řádků.
 - Soubory: `src/kolik_dat.py`, `docs/grafy/kolik_dat.png`, `results/kolik_dat/2026-10-23_204319_kolik_dat.json` a `.csv`, kontrola `results/2026-10-23_204140_jako_ted.json`. Spuštění `python src/kolik_dat.py`; samotný graf z uloženého výsledku přes `--graf-ze <JSON>`. Výsledky pokusu jsou v podsložce, aby nepřepsaly oficiální Ridge v `porovnej.py --prehled`.
+## pá 20:55 · Honza · kolik let dat model potřebuje (učicí křivka)
+- Otázka: proč nestačil balíček pořadatelů (2 roky, jen kraj)? Jak se chyba mění s délkou historie a sadou stanic?
+- Data a rozdělení: společné; trénink omezený na posledních N let před validací (2019 − N až 2018), N = 1, 2, 3, 5, 8, 13; validace stejná. Dvě sady vstupů: jen kraj (Děčín, Ústí, Louny, 35 sloupců) a všechny stanice (98 sloupců).
+- Model a nastavení: `ridge.fit` beze změn (odmocnina průtoků, StandardScaler, Ridge alpha 1).
+- Kde a jak dlouho: notebook, 72 tréninků za minutu.
+- Výsledek na val (`prumer_povodne` v cm, v závorce propásnuté nástupy povodní u 2. stupně z 24): jen kraj: 1 rok 39,2 (9), 2 roky 45,1 (12), 3 roky 35,6 (9), 5 let 34,2 (10), 8 let 27,2 (0), 13 let 27,8 (0). Všechny stanice: 1 rok 28,3 (2), 2 roky 26,9 (4), 3 roky 24,8 (3), 5 let 21,0 (3), 8 let 16,6 (0), 13 let 17,1 (0). „Jako teď“ 44,3.
+- Závěr: 1) Stanice proti proudu pomohly víc než roky: 2 roky se všemi stanicemi (26,9) jsou lepší než 13 let jen s krajem (27,8). 2) Rozhoduje, jestli je v tréninku velká povodeň: v letech 2014–2018 žádná nad 2. stupněm nebyla, modely z 1–5 let proto propásnou 2–12 nástupů z 24; jakmile je v tréninku povodeň 2013 (8 let, 409 hodin nad 2. stupněm v Děčíně), propásnuté klesnou na 0. 3) Balíček (2 roky, jen kraj) by dal 45 cm, tedy nic lepšího než „jako teď“, a propásl polovinu povodní. 4) 8 let (16,6) a 13 let (17,1) je totéž v rámci náhody. Potvrzuje zjištění z NAPAD_LABE na společném rozdělení.
+- Soubory: `src/kolik_dat.py`, `docs/grafy/kolik_dat.png`.
+
+## pá 20:46 · Honza · sjednocení dvou běhů učicí křivky
+- Při synchronizaci se sešly dva nezávislé běhy stejného úkolu. Verze v záznamu „20:55“ omezila rok vydání předpovědi, takže u 1, 2, 3 a 5 let ještě prvních 36 řádků čerpalo z předchozího roku. Verze v tabulce „20:44“ hlídá i nejstarší vstup a tyto řádky vynechává; tu používá výsledný skript a graf. Žádná z verzí netrénovala na validaci ani testu.
+- Proto se krátká okna mírně liší: dva roky jen kraje 45,1 → 44,6 cm, jeden rok všech stanic 28,3 → 29,2 cm. U 8 a 13 let jsou výsledky stejné a počet propásnutí je stejný všude. Ve výsledném grafu zůstávají i popisky propásnutých varování ze souběžné verze.
+- Upřesnění závěru pro porotu: 26,9 proti 27,8 cm je rozdíl pod 1 cm, takže říkáme „podobná chyba“, nikoli jasné vítězství. Hodnota 44,6 cm patří krajským stanicím v letech 2017–2018, ne skutečnému balíčku 2024–2026; z tohoto pokusu nelze tvrdit, jak by dopadlo učení na samotném balíčku. Delší historie nám také dovoluje ověřovat na více povodních.
+- Uloženy jsou všechny metriky a otisky pro opakování pokusu v `results/kolik_dat/2026-10-23_204319_kolik_dat.json`; graf lze překreslit bez trénování. Společný model zůstává beze změny.

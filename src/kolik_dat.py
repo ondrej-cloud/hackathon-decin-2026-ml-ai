@@ -131,6 +131,10 @@ def graf(zaznam):
             ax.annotate(f"{bod.prumer_povodne:.1f}".replace(".", ","),
                         (bod.let, bod.prumer_povodne), xytext=(0, 9),
                         textcoords="offset points", ha="center", color=barva, fontsize=10)
+            if bod.spa2_propasnuto:
+                ax.annotate(f"propásne {bod.spa2_propasnuto} z {bod.spa2_povodni}",
+                            (bod.let, bod.prumer_povodne), xytext=(0, -16),
+                            textcoords="offset points", ha="center", color=barva, fontsize=8)
     baseline = zaznam["zaklad_prumer_povodne"]
     ax.axhline(baseline, color="#666666", linestyle="--", linewidth=1.5,
                label=f"Bude jako teď ({baseline:.1f} cm)".replace(".", ","))
