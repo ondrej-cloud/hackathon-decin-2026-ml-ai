@@ -58,10 +58,11 @@ def _cislo(hodnota):
     return "chybí měření" if pd.isna(hodnota) else f"{hodnota:,.0f}".replace(",", " ")
 
 
-def _stanice(cas, predpovedi=None):
-    """predpovedi: {klic: (horizont, hladina_cm)} z modelu, přidá se k popisku Děčína a Ústí."""
+def _stanice(cas, predpovedi=None, tabulka=None):
+    """predpovedi: {klic: (horizont, hladina_cm)} z modelu, přidá se k popisku Děčína a Ústí.
+    tabulka: hodinová tabulka se sloupci jako data.nacti() místo archivu (živá data ČHMÚ pro dnešek)."""
     metadata, percentily = _podklady()
-    radek = nacti().loc[_cas_utc(cas)]
+    radek = (nacti() if tabulka is None else tabulka).loc[_cas_utc(cas)]
     body = []
     for stanice in metadata.itertuples(index=False):
         klic = stanice.klic
@@ -113,9 +114,9 @@ POHLEDY = {  # (šířka, délka, zoom); celé povodí, nebo přiblížení na m
     "celé povodí": (50.30, 14.65, 8.15), "Děčín": (50.775, 14.205, 12.6), "Ústí nad Labem": (50.655, 14.05, 12.6)}
 
 
-def deck(cas: pd.Timestamp, predpovedi=None, pohled="celé povodí") -> pdk.Deck:
-    """Mapa měření v dané hodině; čas bez pásma se bere jako český čas. predpovedi viz _stanice, pohled viz POHLEDY."""
-    body = _stanice(cas, predpovedi)
+def deck(cas: pd.Timestamp, predpovedi=None, pohled="celé povodí", tabulka=None) -> pdk.Deck:
+    """Mapa měření v dané hodině; čas bez pásma se bere jako český čas. predpovedi a tabulka viz _stanice, pohled viz POHLEDY."""
+    body = _stanice(cas, predpovedi, tabulka)
     lat, lon, zoom = POHLEDY[pohled]
     mesto = pohled != "celé povodí"  # v pohledu na město menší a nižší sloupce, jinak zakryjí údolí
     token = mapbox_token()

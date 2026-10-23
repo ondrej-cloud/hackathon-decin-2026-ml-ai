@@ -253,18 +253,19 @@ with tab_mapa:
                       help="Přiblížení na město ukáže oficiální záplavové území podle předpovědi.")
     misto = st.empty()
     if DNES:
-        st.info("Pro dnešek mapa ukazuje poslední hodinu z archivu, ne živá data: průtoky v Mělníku a Nymburce ČHMÚ "
-                "operativně nezveřejňuje, pro předpověď jsou dopočtené z bilance vody.")
-        cas_mapa = vstupy_c(cil).index[-1]
+        st.caption("Dnešek: sloupce jsou z živých dat ČHMÚ. Průtoky v Mělníku a Nymburce ČHMÚ operativně nezveřejňuje, "
+                   "jsou dopočtené z bilance vody.")
+        tabulka_mapy = DNES["tabulka"]
+        pred_mapy = {c: (24, DNES[c]["predpoved"][24]) for c in KDE}
     else:
-        cas_mapa = cas
+        tabulka_mapy, pred_mapy = None, predpovedi_pro_mapu(cas)
     if st.button("Přehrát povodeň 1/2011 (8. až 24. 1., po 6 hodinách, asi 40 s)"):
         for t in pd.date_range("2011-01-08", "2011-01-24 18:00", freq="6h", tz=TZ):
             t = t.tz_convert("UTC")
             misto.pydeck_chart(mapa_deck(t, predpovedi_pro_mapu(t), pohled), height=650)
             cas_modul.sleep(0.6)
     else:
-        misto.pydeck_chart(mapa_deck(cas_mapa, predpovedi_pro_mapu(cas_mapa), pohled), height=650)
+        misto.pydeck_chart(mapa_deck(cas, pred_mapy, pohled, tabulka=tabulka_mapy), height=650)
         voda = n_leta_voda(cil, pred[24])
         st.markdown(f"**Co předpověď znamená pro {jmeno(cil)}:** {voda['popis']} "
                     + (f"Na mapě je vyplněné oficiální záplavové území pro {voda['N']}letou vodu (DIBAVOD), ostatní "

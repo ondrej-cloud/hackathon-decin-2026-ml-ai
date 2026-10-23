@@ -137,7 +137,8 @@ def predpoved_dnes(nazev="ridge"):
                    upozorneni=(f"Nejnovější úplná data ČHMÚ jsou z {cesky:%d. %m. %H:%M}, tedy {stari:.0f} h stará."
                                if stari > 3 else None),
                    chybi=[_jmeno(c) for c in D.attrs["chybi"]],
-                   dopocteno=[_jmeno(c) for c in dopocteno], hladiny=D[[f"{k}_H" for k in CILE]])
+                   dopocteno=[_jmeno(c) for c in dopocteno], hladiny=D[[f"{k}_H" for k in CILE]],
+                   tabulka=D2)  # hodinová tabulka jako data.nacti(), s dopočtenými stanicemi, pro mapu
         for cil in CILE:
             X = radek(D2, cil)
             ted = float(X[f"{cil}_H_0"].iloc[0])
