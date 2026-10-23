@@ -54,6 +54,19 @@ Do ±20 cm podle horizontu (lineární regrese): za 12 h 88 %, za 24 h 76 %, za 
 
 Chyba v procentech výšky hladiny při vodě nad 1. stupněm (lineární regrese / „jako teď“): za 12 h 1,6 / 4,5 %, za 24 h 2,9 / 8,8 %, za 36 h 5,3 / 12,8 %. Do ±30 cm: 96 / 85 / 71 %. Pozor, procenta z výšky hladiny vypadají malá, protože hladina je při povodni 4–9 m. Poctivější je chyba v cm a podíl do ±20 cm.
 
+**Je chyba 9 / 16 / 26 cm hodně?** Ta čísla jsou chyba během povodní, ne v běžné dny. Děčín, validace, lineární regrese:
+
+| | Horizont | Průměrná hladina | O kolik se voda za tu dobu skutečně změní (průměr / nejvíc) | Chyba modelu |
+|---|---|---|---|---|
+| klidná voda 2019–2020 | 12 h | 168 cm | 7,5 / 75 cm | 4,9 cm |
+| | 24 h | 168 cm | 10,4 / 93 cm | 6,9 cm |
+| | 36 h | 168 cm | 13,3 / 126 cm | 9,6 cm |
+| povodně | 12 h | 425 cm | 18,7 / 122 cm | 7,6 cm |
+| | 24 h | 430 cm | 35,1 / 172 cm | 13,6 cm |
+| | 36 h | 435 cm | 51,4 / 242 cm | 23,1 cm |
+
+Při povodni voda za 36 h stoupne až o 2,4 m a model se v průměru splete o 23 cm. Stupně povodňové aktivity v Děčíně jsou od sebe 90 a 70 cm (400 / 490 / 560 cm), takže chyba 14 cm na 24 h je menší než vzdálenost mezi stupni. I v klidu se hladina mění o 7–13 cm (jezy, vypouštění přehrad), model se plete o 5–10 cm. (Čísla se trochu liší od `mae_povodne`, tady jsou celá validační okna a jen Děčín.)
+
 Jak to číst:
 - „Do ±20 cm“ se počítá jen v hodinách, kdy je voda nad 1. stupněm povodňové aktivity. Na klidné řece je přesná i předpověď „jako teď“, proto ji nepočítáme.
 - „Zachycené povodně“: kolikrát model varoval před 2. stupněm dřív, než voda stupeň překročila. 24 = 4 povodně × 2 stanice × 3 horizonty.
