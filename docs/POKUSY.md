@@ -343,3 +343,12 @@ Následující pokusy jsou doplněné zpětně (pá 19:55). Všechny byly před 
 - Povodeň Boris 9/2024, Děčín: 3. stupeň překročen 15. 9. 12:00 UTC, model varoval 10 h (předpověď na 12 h), 27 h (24 h) a 30 h (36 h) předem. Vrchol 649 cm předpověděl 24 h předem na 611 cm. Vánoce 2023: 3. stupeň varován 13 / 21 / 29 h předem, vrchol 624 cm předpovězen na 614 cm.
 - Závěr: na testu je chyba o 5 cm větší než na validaci (22,4 proti 17,1 cm), ale i „jako teď“ je na testu horší (50,2 proti 44,3), testové povodně stoupaly rychleji. Zlepšení proti laťce je podobné (55 % proti 61 %), model tedy na nových povodních funguje. Síť vyšla na testu o 1,1 cm lépe než lineární regrese, na validaci o 0,7 cm hůř. Rozdíl mezi nimi je náhoda, výběr neměníme. Všechny modely na testu podhodnocují vrcholy (bias −3 až −27 cm), nejvíc na 36 h.
 - Soubory: `results/*_test.json`, `results/predpovedi/*_test.parquet`, `docs/grafy/srovnani_procenta_test.png`, `docs/grafy/povoden_2024-09_decin_24h.png`, `docs/grafy/povoden_2023-12_decin_24h.png`.
+
+## pá 22:29 · Ondra · dokonalá předpověď deště po horizontech
+- Otázka: pomohla by předpověď srážek aspoň na delším horizontu, kde chyba roste nejvíc? Pokus z pá 20:44 jsme měli jen jako průměr.
+- Data a rozdělení: stejné jako pá 20:44, `data/external/labe_meteo_o_den_driv.parquet` (srážky o den dřív, než je známe, tedy jako dokonalá předpověď na zítřek, do modelu se nesmí). Jen validace, test se nepouštěl.
+- Model a nastavení: `ridge` beze změny, `python src/pokus_meteo.py --o-den-driv --jen-ridge`.
+- Kde a jak dlouho: MacBook M1, pár sekund.
+- Výsledek na val (chyba na povodních, bez meteo → s dokonalými srážkami): Děčín +12 h 9,0 → 8,7, +24 h 15,5 → 14,6, +36 h 26,0 → 24,9 cm; Ústí 9,6 → 9,4, 15,7 → 14,8, 26,7 → 25,6 cm. Sníh a teplota s dokonalou znalostí model zhoršily o 0,0–0,5 cm.
+- Závěr: i na 36 h by dokonalá předpověď deště ubrala jen 1,1 cm z 26 cm (4 %). Déšť, který spadne zítra, dorazí do Děčína většinou až za víc než 36 h, protože musí stéct do potoků a pak 1–2 dny téct po Labi a Vltavě. První nárůst vody model vidí v průtocích proti proudu (Beroun, Praha, Přelouč) 12–40 h předem. Vlastní předpověď deště by byla horší než dokonalá, takže by přinesla ještě méně. Srážky by pomohly na předpověď na 2–5 dní a na malých řekách v kraji.
+- Soubory: `src/pokus_meteo.py`, `data/external/labe_meteo_o_den_driv.parquet`
