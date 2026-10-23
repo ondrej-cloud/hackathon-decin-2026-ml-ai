@@ -121,6 +121,25 @@ Začneme jen s tím, co jsme dostali, ukážeme, kde to nestačí, a přidávám
 - Průtoky jdou do modelu jako odmocnina. Výška hladiny neroste s průtokem rovnoměrně, protože se řeka při velké vodě rozlije do šířky. Bez odmocniny Mělník a Praha na 12 h chybu zhoršily (model při velké vodě přestřeloval).
 - **Pozor:** odmocninu jsme zatím vybrali podle stejných povodní, na kterých ji měříme. Ve finále ji vybrat na validačních povodních (do 2016) a testovat jen na 2023 a 2024.
 
+## Proč nestačí „když stoupá voda, bude povodeň“
+
+Porota se zeptá, proč nestačí sledovat, jestli voda stoupá. Pravidlo jsme změřili stejně jako model (+24 h, test 2017–2025, model se učil na 2003–2016):
+
+| Předpověď výšky (hodiny s vodou nad 300 cm) | Chyba |
+|---|---|
+| „bude jako teď“ | 27,3 cm |
+| „stoupá, bude stoupat dál stejně rychle“ | 33,0 cm, horší než nedělat nic |
+| model se stanicemi proti proudu | 16,9 cm |
+
+| Varování „za 24 h bude nad 1. stupněm“ (nastalo v 1 061 h) | Planý poplach | Propásnuto |
+|---|---|---|
+| voda stoupla za 6 h o víc než 20 cm | 91 % | 85 % |
+| voda stoupla za 6 h o víc než 40 cm | 85 % | 97 % |
+| model | 10 % | 11 % |
+
+- Voda v Děčíně stoupla o víc než 40 cm za 6 h celkem 197krát, ale povodeň přišla jen 31krát. Pravidlo „stoupá, takže bude povodeň“ se tedy plete pětkrát z šesti.
+- Když voda stoupá v Děčíně, už je pozdě. Model vidí vodu, která do Děčína teprve teče, a proto pozná, které stoupání skončí povodní a jak vysokou.
+
 ## Přidaná hodnota
 
 Porota se nejspíš zeptá: „ČHMÚ už předpovědi dělá, k čemu je váš model?“ Odpověď:
