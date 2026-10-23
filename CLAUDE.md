@@ -21,7 +21,7 @@ Nejvíc bodů je za odbornost a pořadatelé řekli rovnou: radši jednodušší
 
 ## Stav (aktualizuje kdokoli, kdo má novou informaci)
 
-- **Zadání:** pět úloh v `zadani/`, přehled v `zadani/README.md`. Vybraná úloha: nejspíš Labe (`zadani/ksi-3-labe.md`) s daty ČHMÚ ze stanic proti proudu. Nápad v `docs/NAPAD_LABE.md`, plán práce v `docs/POROVNANI_MODELU.md`. Celé zadání vybrané úlohy si přečti na začátku každé relace.
+- **Zadání:** pět úloh v `zadani/`, přehled v `zadani/README.md`. Vybraná úloha: nejspíš Labe (`zadani/ksi-3-labe.md`) s daty ČHMÚ ze stanic proti proudu. Celkový přehled (vstupy, rozhodnutí, výsledky) v `docs/PREHLED.md`. Nápad v `docs/NAPAD_LABE.md`, plán práce v `docs/POROVNANI_MODELU.md`. Celé zadání vybrané úlohy si přečti na začátku každé relace.
 - **Komu řešení pomáhá:**
 - **Data:** `data/external/labe_hodinove.parquet` (v Gitu): hodinové hladiny Děčín a Ústí a průtoky 12 stanic na Labi, Vltavě, Ohři a přítocích, 2006–2025, z otevřených dat ČHMÚ. Načíst přes `nacti()` ze `src/data.py`. Podrobnosti v `docs/DATA.md`, sekce Labe.
 - **Metrika:** průměrná chyba hladiny v cm během povodní (`mae_povodne`), k tomu předstih varování před 2. a 3. stupněm povodňové aktivity a plané poplachy. Srovnáváme s „bude jako teď“ (`src/models/jako_ted.py`), Děčín +24 h: 44,4 cm.
