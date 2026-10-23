@@ -10,7 +10,7 @@ Pracovní název prezentace: „Co teče v Praze, bude zítra v Děčíně“.
 
 ## Data
 
-Otevřená data ČHMÚ, hodinová hladina a průtok, 2006–2025, 12 stanic (`data/external/labe_hodinove.parquet`, podrobně `docs/DATA.md`, sekce Labe). Za 2024–2025 jsou na hodinu i na centimetr stejná jako balíček od pořadatelů. Balíček sám nestačí: nejvýš proti proudu má Ústí (4 h před Děčínem) a jedinou povodeň.
+Otevřená data ČHMÚ, hodinová hladina a průtok, 2006–2025, 12 stanic (`data/external/labe_hodinove.parquet`, podrobně `docs/DATA.md`, sekce Labe). Inventura všech dat, co z balíčku používáme a proč: `docs/ZDROJE_DAT.md`. Za 2024–2025 jsou na hodinu i na centimetr stejná jako balíček od pořadatelů. Balíček sám nestačí: nejvýš proti proudu má Ústí (4 h před Děčínem) a jedinou povodeň.
 
 ## Vstupy modelů (faktory)
 

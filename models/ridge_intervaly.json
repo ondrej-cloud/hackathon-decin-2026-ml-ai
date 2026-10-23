@@ -1,0 +1,152 @@
+{
+ "decin_12": {
+  "pasma": [
+   0,
+   300,
+   450,
+   600,
+   10000
+  ],
+  "dolni": [
+   -11,
+   -13,
+   -17,
+   -20
+  ],
+  "horni": [
+   13,
+   12,
+   13,
+   25
+  ],
+  "pokryti_val": 0.921,
+  "pokryti_povodne": 0.867,
+  "sirka_povodne_cm": 33,
+  "radku_povodne": 1156
+ },
+ "decin_24": {
+  "pasma": [
+   0,
+   300,
+   450,
+   600,
+   10000
+  ],
+  "dolni": [
+   -14,
+   -19,
+   -37,
+   -26
+  ],
+  "horni": [
+   17,
+   19,
+   9,
+   56
+  ],
+  "pokryti_val": 0.903,
+  "pokryti_povodne": 0.792,
+  "sirka_povodne_cm": 53,
+  "radku_povodne": 1156
+ },
+ "decin_36": {
+  "pasma": [
+   0,
+   300,
+   450,
+   600,
+   10000
+  ],
+  "dolni": [
+   -19,
+   -30,
+   -49,
+   -37
+  ],
+  "horni": [
+   23,
+   33,
+   11,
+   71
+  ],
+  "pokryti_val": 0.891,
+  "pokryti_povodne": 0.756,
+  "sirka_povodne_cm": 72,
+  "radku_povodne": 1156
+ },
+ "usti_12": {
+  "pasma": [
+   0,
+   300,
+   450,
+   600,
+   10000
+  ],
+  "dolni": [
+   -12,
+   -14,
+   -17,
+   -83
+  ],
+  "horni": [
+   15,
+   13,
+   16,
+   42
+  ],
+  "pokryti_val": 0.917,
+  "pokryti_povodne": 0.877,
+  "sirka_povodne_cm": 61,
+  "radku_povodne": 1156
+ },
+ "usti_24": {
+  "pasma": [
+   0,
+   300,
+   450,
+   600,
+   10000
+  ],
+  "dolni": [
+   -16,
+   -21,
+   -27,
+   -91
+  ],
+  "horni": [
+   19,
+   21,
+   18,
+   58
+  ],
+  "pokryti_val": 0.903,
+  "pokryti_povodne": 0.836,
+  "sirka_povodne_cm": 77,
+  "radku_povodne": 1156
+ },
+ "usti_36": {
+  "pasma": [
+   0,
+   300,
+   450,
+   600,
+   10000
+  ],
+  "dolni": [
+   -20,
+   -30,
+   -43,
+   -53
+  ],
+  "horni": [
+   25,
+   35,
+   23,
+   72
+  ],
+  "pokryti_val": 0.892,
+  "pokryti_povodne": 0.782,
+  "sirka_povodne_cm": 82,
+  "radku_povodne": 1156
+ }
+}

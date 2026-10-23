@@ -13,8 +13,8 @@ import plotly.graph_objects as go
 import streamlit as st
 
 from mapa import deck as mapa_deck, mapbox_token
-from predikce import (BARVY, HORIZONTY, KDE, NAZEV, ROOT, SPA, STUPNE, modely, nacti, nacti_model, stupen, vstupy,
-                      vysvetleni)
+from predikce import (BARVY, HORIZONTY, KDE, NAZEV, ROOT, SPA, STUPNE, interval, modely, nacti, nacti_model, stupen,
+                      vstupy, vysvetleni)
 
 POVODNE = {"4/2006": ("2006-03-25", "2006-04-10"), "3/2009": ("2009-02-26", "2009-03-14"),
            "9/2010": ("2010-09-20", "2010-10-06"), "1/2011": ("2011-01-08", "2011-01-24")}
@@ -106,16 +106,26 @@ with tab_ted:
     sloupce = st.columns(4)
     sloupce[0].metric("Hladina teď", f"{ted:.0f} cm")
     sloupce[0].markdown(odznak(cil, ted), unsafe_allow_html=True)
+    rozmezi = {h: interval(nazev, cil, h, ted, pred[h]) for h in HORIZONTY}
     for c, h in zip(sloupce[1:], HORIZONTY):
         c.metric(f"Za {h} h", f"{pred[h]:.0f} cm", delta=f"{pred[h] - ted:+.0f} cm", delta_color="inverse")
         c.markdown(odznak(cil, pred[h]), unsafe_allow_html=True)
+        if rozmezi[h]:
+            c.caption(f"nejspíš {rozmezi[h][0]:.0f} až {rozmezi[h][1]:.0f} cm")
     st.info(vysvetleni(cil, 24, ted, pred[24], radek))
 
     okno = H[cas - pd.Timedelta(hours=72): cas]
     fig = go.Figure()
     fig.add_scatter(x=cesky(okno.index), y=okno.values, mode="lines", name="hladina (změřeno)",
                     line=dict(color="black", width=2))
-    fig.add_scatter(x=[cesky(cas + pd.Timedelta(hours=h)) for h in (0,) + HORIZONTY],
+    casy = [cesky(cas + pd.Timedelta(hours=h)) for h in (0,) + HORIZONTY]
+    if all(rozmezi.values()):
+        fig.add_scatter(x=casy, y=[ted] + [rozmezi[h][1] for h in HORIZONTY], line=dict(width=0),
+                        showlegend=False, hoverinfo="skip")
+        fig.add_scatter(x=casy, y=[ted] + [rozmezi[h][0] for h in HORIZONTY], fill="tonexty",
+                        fillcolor="rgba(31,119,180,0.15)", line=dict(width=0), name="rozmezí (90 % chyb)",
+                        hoverinfo="skip")
+    fig.add_scatter(x=casy,
                     y=[ted] + [pred[h] for h in HORIZONTY], mode="markers+lines", name="předpověď",
                     line=dict(color=MODRA, dash="dash"), marker=dict(size=[6, 11, 11, 11]),
                     text=["teď"] + [f"za {h} h" for h in HORIZONTY])
@@ -125,7 +135,9 @@ with tab_ted:
     fig.update_xaxes(tickformat="%d. %m.\n%H:%M")
     st.plotly_chart(fig, width="stretch")
     st.caption("Černá čára je, co se změřilo do zvoleného okamžiku. Modré body jsou předpověď vydaná v tomhle "
-               "okamžiku na 12, 24 a 36 hodin dopředu. Tečkované čáry jsou stupně povodňové aktivity.")
+               "okamžiku na 12, 24 a 36 hodin dopředu. Modrý pás je rozmezí, do kterého se vešlo 90 % chyb modelu "
+               "na tréninku; na povodních, které model neviděl, to bylo asi 8 z 10 případů. Tečkované čáry jsou "
+               "stupně povodňové aktivity.")
 
 with tab_kvalita:
     st.markdown("Model jsme zkoušeli na čtyřech povodních, které při učení neviděl (učil se na letech 2006–2018 "

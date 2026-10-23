@@ -181,3 +181,18 @@ Nad 1 500 m³/s je málo hodin (hlavně povodně 2006, 2011, 2013), čísla jsou
 5. Do 22:00 zapiš výsledek do `docs/POKUSY.md` (i když nepomůže), rozbor do `docs/DENIK.md` a `/sync main`.
 
 Proč: fyzikálně je to transformace povodňové vlny (rozliv do nivy, drsnost a sklon koryta). Když to pomůže, máme pro porotu silný a vysvětlitelný krok. Když ne, víme proč.
+
+## Další úkol (pá 21:00): Honza, kolik let dat model potřebuje
+
+Porota se zeptá, proč jsme nevystačili s daty z balíčku (2 roky). Odpovíme grafem: jak se chyba lineární regrese mění podle toho, kolik let historie a které stanice má k dispozici. Trénink trvá sekundu, zvládne to i starší notebook, takže to jde dělat vedle aplikace.
+
+1. Vezmi `ridge.fit` beze změn. Trénovací data omez na posledních N let před validací: roky 2019 − N až 2018 z části `train`, pro N = 1, 2, 3, 5, 8 a 13 (13 = celý train). Validace zůstává stejná.
+2. Dvě sady vstupů:
+   - **jen kraj:** sloupce `decin_*`, `usti_*`, `louny_*`, tedy jako balíček,
+   - **všechny stanice:** všech 98 sloupců.
+3. Pro každou kombinaci spočítej `prumer_povodne` (průměr `mae_povodne` přes 6 kombinací cíle a horizontu) a počet propásnutých povodní u 2. stupně. Použij `vyhodnot` z `src/evaluate.py`, nic v něm neměň.
+4. Pozor: v letech 2014–2018 nebyla žádná povodeň nad 2. stupněm. Krátká okna tedy povodeň v tréninku nemají, stejně jako balíček. To je na tom to zajímavé, napiš to k výsledku.
+5. Graf `docs/grafy/kolik_dat.png`: na ose x počet let, na ose y chyba na povodních, dvě čáry (jen kraj, všechny stanice) a vodorovná čára „bude jako teď“ (44,3 cm). Skript `src/kolik_dat.py`.
+6. Zápis do `docs/POKUSY.md` a krátký rozbor do `docs/DENIK.md`, pak `/sync main`. Hotovo do 22:00, aplikace má přednost, když se něco rozbije.
+
+Ve srovnání pátečních pokusů (`docs/NAPAD_LABE.md`, sekce Čas proti prostoru) vyšlo, že stanice proti proudu pomohly víc než historie. Tenhle graf to buď potvrdí na společném rozdělení, nebo ukáže, že to bylo jinak.
