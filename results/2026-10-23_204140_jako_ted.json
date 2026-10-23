@@ -1,0 +1,39 @@
+{
+ "autor": "Honza",
+ "cas": "2026-10-23T20:41:40",
+ "verze": "69a6db32",
+ "model": "jako_ted",
+ "cast": "val",
+ "rychle": true,
+ "popis": "Bude jako teď: stav za h hodin je stejný jako stav teď. Základ, se kterým se všechno srovnává.",
+ "parametry": {},
+ "vysledky": [
+  {
+   "model": "jako_ted",
+   "cil": "decin",
+   "horizont": 24,
+   "mae": 12.7,
+   "mae_povodne": 44.4,
+   "bias_povodne": -14.0,
+   "mae_nad_1spa": 51.0,
+   "chyba_vrcholu": 38.5,
+   "vrcholy_o_kolik": [
+    -35,
+    -49,
+    -38,
+    -32
+   ],
+   "radku": 19264,
+   "spa2_povodni": 4,
+   "spa2_predstih_h": 0.0,
+   "spa2_propasnuto": 4,
+   "spa2_plane_poplachy": 0,
+   "spa3_povodni": 2,
+   "spa3_predstih_h": 0.0,
+   "spa3_propasnuto": 2,
+   "spa3_plane_poplachy": 0,
+   "trenink_s": 0.1,
+   "predpoved_s": 0.11
+  }
+ ]
+}

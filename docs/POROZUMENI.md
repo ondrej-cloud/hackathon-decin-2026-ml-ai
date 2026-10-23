@@ -26,6 +26,7 @@ Co jsme zvolili, s čím jsme to srovnávali a proč jsme jiné možnosti nevzal
 - Faktory, které se v čase nemění (plocha a tvar povodí, sklon, půda, geologie, krajinný pokryv, tvar koryta, drsnost), se model nemůže naučit. Na jedné řece se stejnými stanicemi jsou pořád stejné a už jsou ve váhách modelu a v měrné křivce. Měrná křivka je změřená hydraulika vodočtu, totéž, co by Manningova rovnice počítala z tvaru koryta. Hodily by se, kdybychom předpovídali na řece bez měření.
 - Už v datech jsou: výchozí průtoky a nasycenost povodí (základní průtok), manipulace na přehradách (měříme odtok pod nimi), soutoky a skládání vln (každá větev zvlášť), zploštění vlny rozlivem (model se ho učí ze zpoždění).
 - Chybí a pomohlo by: srážky, sníh a teplota. To, co právě spadlo nebo leží na horách, ještě v řece není. Proto je chyba na 36 h skoro dvojnásobná a povodeň z deště v kraji (8/2010) model nevidí. ČHMÚ má denní srážky, výšku sněhu a index předchozích srážek (API30) od 1946 na asi 1 500 stanicích, hodinové až od 2018 (ověřeno).
+- Vyzkoušeli jsme to (pá 21:15): denní srážky, sníh a teplota z 25 stanic za 20 let model nezlepšily (17,1 → 17,4 cm). Ani kdybychom déšť znali den dopředu, zlepšení by bylo jen 0,8 cm. Na 12–36 h je voda z velkých dešťů už v řekách a model ji vidí v průtocích proti proudu.
 - Nemáme a nedá se rozumně získat: vodní hodnota sněhu, plánované manipulace na přehradách, ledové zátarasy, protržení hrází, ucpání mostů. Poslední tři jsou vzácné a z dat nepředvídatelné, patří do limitů.
 - Vzorce SCS-CN a racionální metoda počítají odtok z deště na malých povodích bez měření. Racionální metoda platí pro malá povodí, Labe nad Děčínem má přes 50 tisíc km² a průtok máme změřený.
 - Povodně na Labi v Děčíně jsou regionální a sněhové (2006 tání, 2011 tání s deštěm, 2013 a 2024 dlouhé deště). Rozhoduje u nich objem vody z celého povodí, a ten měříme. Přívalové povodně jsou na malých tocích, ne na Labi.
@@ -50,6 +51,21 @@ Co znamená naše metrika, jaké číslo je dobré a proč, s čím ho srovnáv�
 | „bude jako teď“ | 44,3 cm | 0 % | 15 % | 29 % | 0 % (0 z 24) | 0 |
 
 Do ±20 cm podle horizontu (lineární regrese): za 12 h 88 %, za 24 h 76 %, za 36 h 51 %.
+
+Chyba v procentech výšky hladiny při vodě nad 1. stupněm (lineární regrese / „jako teď“): za 12 h 1,6 / 4,5 %, za 24 h 2,9 / 8,8 %, za 36 h 5,3 / 12,8 %. Do ±30 cm: 96 / 85 / 71 %. Pozor, procenta z výšky hladiny vypadají malá, protože hladina je při povodni 4–9 m. Poctivější je chyba v cm a podíl do ±20 cm.
+
+**Je chyba 9 / 16 / 26 cm hodně?** Ta čísla jsou chyba během povodní, ne v běžné dny. Děčín, validace, lineární regrese:
+
+| | Horizont | Průměrná hladina | O kolik se voda za tu dobu skutečně změní (průměr / nejvíc) | Chyba modelu |
+|---|---|---|---|---|
+| klidná voda 2019–2020 | 12 h | 168 cm | 7,5 / 75 cm | 4,9 cm |
+| | 24 h | 168 cm | 10,4 / 93 cm | 6,9 cm |
+| | 36 h | 168 cm | 13,3 / 126 cm | 9,6 cm |
+| povodně | 12 h | 425 cm | 18,7 / 122 cm | 7,6 cm |
+| | 24 h | 430 cm | 35,1 / 172 cm | 13,6 cm |
+| | 36 h | 435 cm | 51,4 / 242 cm | 23,1 cm |
+
+Při povodni voda za 36 h stoupne až o 2,4 m a model se v průměru splete o 23 cm. Stupně povodňové aktivity v Děčíně jsou od sebe 90 a 70 cm (400 / 490 / 560 cm), takže chyba 14 cm na 24 h je menší než vzdálenost mezi stupni. I v klidu se hladina mění o 7–13 cm (jezy, vypouštění přehrad), model se plete o 5–10 cm. (Čísla se trochu liší od `mae_povodne`, tady jsou celá validační okna a jen Děčín.)
 
 Jak to číst:
 - „Do ±20 cm“ se počítá jen v hodinách, kdy je voda nad 1. stupněm povodňové aktivity. Na klidné řece je přesná i předpověď „jako teď“, proto ji nepočítáme.

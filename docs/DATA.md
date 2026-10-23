@@ -88,6 +88,12 @@ Ověřeno:
 
 Proč takhle: mezi 2016 a 2020 povodeň nebyla, validace na pozdějších letech by nic neřekla. V tréninku zůstává největší povodeň 2013, ve validaci jsou dvě velké a dvě menší.
 
+### Kolik historie a které stanice (ověřeno pá 20:44)
+
+V letech 2014–2018 nebyl v Děčíně ani v Ústí dosažen 2. stupeň: maxima hladin jsou 465 proti prahu 490 cm a 490 proti prahu 530 cm. Okna 1, 2, 3 a 5 let končící rokem 2018 proto neobsahují povodeň na tomto stupni. Okna 8 a 13 let už zahrnují povodeň 2013; množství historie tedy zároveň mění zastoupení vysoké vody.
+
+Na stejné validaci dává nezměněný Ridge se všemi stanicemi při 2 / 5 / 8 / 13 letech chybu na povodních 26,9 / 21,0 / 16,6 / 17,1 cm proti 44,3 cm u „bude jako teď“. Propásnutá varování jsou 4 / 3 / 0 / 0 z 24 případů. Dva roky se všemi stanicemi mají podobnou chybu jako 13 let jen z kraje (27,8 cm), ale slabší varování. Osm a třináct let se v chybě liší jen o 0,47 cm; obecný minimální počet let z toho určit nejde. Podrobnosti a všechny varianty v `docs/POKUSY.md`, graf `docs/grafy/kolik_dat.png`.
+
 ## Ovzduší
 
 Z doby, kdy jsme zvažovali úlohu Ovzduší. Týkají se jí všechny sekce níž.
