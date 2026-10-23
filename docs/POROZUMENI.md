@@ -52,6 +52,8 @@ Co znamená naše metrika, jaké číslo je dobré a proč, s čím ho srovnáv�
 
 Do ±20 cm podle horizontu (lineární regrese): za 12 h 88 %, za 24 h 76 %, za 36 h 51 %.
 
+Chyba v procentech výšky hladiny při vodě nad 1. stupněm (lineární regrese / „jako teď“): za 12 h 1,6 / 4,5 %, za 24 h 2,9 / 8,8 %, za 36 h 5,3 / 12,8 %. Do ±30 cm: 96 / 85 / 71 %. Pozor, procenta z výšky hladiny vypadají malá, protože hladina je při povodni 4–9 m. Poctivější je chyba v cm a podíl do ±20 cm.
+
 Jak to číst:
 - „Do ±20 cm“ se počítá jen v hodinách, kdy je voda nad 1. stupněm povodňové aktivity. Na klidné řece je přesná i předpověď „jako teď“, proto ji nepočítáme.
 - „Zachycené povodně“: kolikrát model varoval před 2. stupněm dřív, než voda stupeň překročila. 24 = 4 povodně × 2 stanice × 3 horizonty.

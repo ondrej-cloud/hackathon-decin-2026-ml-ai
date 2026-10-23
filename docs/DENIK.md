@@ -187,3 +187,7 @@ Následující záznamy jsou doplněné zpětně (pá 19:35) podle commitů, ať
 - Co: zachovali jsme oba záznamy souběžných pokusů; výsledný `src/kolik_dat.py` ukládá metriky a hlídá, aby z vybraného období pocházelo i všech 36 hodin historie. Graf obsahuje chybu i počty propásnutí.
 - Proč se čísla trochu lišila: starší maska připouštěla u krátkých oken prvních 36 řádků se vstupy z předchozího roku. Oprava mění jen krátká okna (kraj a dva roky 45,1 → 44,6 cm), ne 8 a 13 let ani počty propásnutí.
 - Pro porotu: dva roky všech stanic dávají podobnou chybu jako 13 let jen kraje, nikoli průkazně lepší. „Dva roky“ jsou zde 2017–2018; výsledek není měřením skutečného balíčku 2024–2026. Nevyvozujeme obecné minimum osmi let.
+## pá 21:20 · Ondra
+- Co: vlastní model na předpověď deště dělat nebudeme.
+- Proč: myšlenkový pokus ukázal, že ani dokonalá předpověď srážek na den dopředu by nezlepšila chybu o víc než 0,8 cm (`docs/POKUSY.md`, pá 21:15). Náš vlastní model deště by byl horší než dokonalý, takže by přinesl ještě méně. Předpověď počasí navíc potřebuje modely atmosféry (tlakové pole, družice), které z dat ze stanic za večer neuděláme.
+- Plán k finálnímu modelu: lineární regrese je hotová, ladění skončilo podle pravidel. Počkáme na Danův pokus s dobou putování podle průtoku (do 22:00), protože může změnit finální model. Pak finální model natrénujeme na všem do 2020 a jednou pustíme test 2021–2025 (`python src/porovnej.py jako_ted <model> --test`). Po testu přetrénovat model pro aplikaci na všech datech do 2025 (`src/uloz_model.py` zatím trénuje jen na train).
