@@ -1,5 +1,6 @@
 """Povodeň v lednu 2011 na 3D mapě Labe a přítoků."""
 
+import os
 import sys
 from datetime import datetime, timedelta
 from functools import cache
@@ -26,6 +27,17 @@ VYSKY = {
     "vranany": 163, "kostelec": 165, "praha": 191, "nymburk": 182,
     "jizera": 180, "beroun": 219, "sazava": 279, "prelouc": 208,
 }
+
+
+def mapbox_token():
+    """Veřejný token Mapboxu z proměnné MAPBOX_TOKEN nebo z .env v kořeni repa; bez něj OpenStreetMap."""
+    token = os.environ.get("MAPBOX_TOKEN")
+    env = ROOT / ".env"
+    if not token and env.exists():
+        for radek in env.read_text(encoding="utf-8").splitlines():
+            if radek.startswith("MAPBOX_TOKEN="):
+                token = radek.split("=", 1)[1].strip().strip('"')
+    return token or None
 
 
 @cache
@@ -100,13 +112,21 @@ def _stanice(cas, predpovedi=None):
 def deck(cas: pd.Timestamp, predpovedi=None) -> pdk.Deck:
     """Mapa měření v dané hodině; čas bez pásma se bere jako český čas. predpovedi viz _stanice."""
     body = _stanice(cas, predpovedi)
-    # TerrainLayer nemá elevationScale, násobíme celý dekodér včetně offsetu.
-    dekoder = {"rScaler": 256, "gScaler": 1, "bScaler": 1 / 256, "offset": -32768}
+    token = mapbox_token()
+    if token:
+        vysky = f"https://api.mapbox.com/v4/mapbox.terrain-rgb/{{z}}/{{x}}/{{y}}.pngraw?access_token={token}"
+        povrch = f"https://api.mapbox.com/v4/mapbox.satellite/{{z}}/{{x}}/{{y}}@2x.png?access_token={token}"
+        dekoder = {"rScaler": 6553.6, "gScaler": 25.6, "bScaler": 0.1, "offset": -10000}
+    else:
+        vysky = "https://s3.amazonaws.com/elevation-tiles-prod/terrarium/{z}/{x}/{y}.png"
+        povrch = "https://tile.openstreetmap.org/{z}/{x}/{y}.png"
+        dekoder = {"rScaler": 256, "gScaler": 1, "bScaler": 1 / 256, "offset": -32768}
     teren = pdk.Layer(
         "TerrainLayer",
         id="teren",
-        elevation_data="https://s3.amazonaws.com/elevation-tiles-prod/terrarium/{z}/{x}/{y}.png",
-        texture="https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+        elevation_data=vysky,
+        texture=povrch,
+        # TerrainLayer nemá elevationScale, násobíme celý dekodér včetně offsetu.
         elevation_decoder={k: v * PREHANI for k, v in dekoder.items()},
         tile_size=256,
         min_zoom=0,
@@ -138,12 +158,13 @@ def deck(cas: pd.Timestamp, predpovedi=None) -> pdk.Deck:
         get_text="popisek",
         get_size=14,
         font_weight=600,
-        get_color=[25, 35, 45],
+        # na satelitním snímku bílý text s tmavým obrysem, na mapě naopak
+        get_color=[255, 255, 255] if token else [25, 35, 45],
         get_pixel_offset=[0, -12],
         get_text_anchor="'middle'",
         get_alignment_baseline="'bottom'",
-        outline_width=1.5,
-        outline_color=[255, 255, 255, 230],
+        outline_width=2 if token else 1.5,
+        outline_color=[15, 25, 35, 240] if token else [255, 255, 255, 230],
         font_settings={"sdf": True},
         character_set="'auto'",
         pickable=True,

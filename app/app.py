@@ -12,7 +12,7 @@ import pandas as pd
 import plotly.graph_objects as go
 import streamlit as st
 
-from mapa import deck as mapa_deck
+from mapa import deck as mapa_deck, mapbox_token
 from predikce import (BARVY, HORIZONTY, KDE, NAZEV, ROOT, SPA, STUPNE, modely, nacti, nacti_model, stupen, vstupy,
                       vysvetleni)
 
@@ -195,5 +195,7 @@ with tab_mapa:
         misto.pydeck_chart(mapa_deck(cas, predpovedi_pro_mapu(cas)), height=650)
     st.caption("Děčín a Ústí: barva podle hladiny a stupňů povodňové aktivity. Ostatní stanice: zelená pod 95. "
                "percentilem průtoku z let 2006–2018, žlutá do 99., červená nad ním; nejde o oficiální stupně. "
-               "Kolečkem přiblížíte, tažením posunete, Shift a tažením natočíte. Podklad © OpenStreetMap, výšky "
-               "Mapzen / AWS Terrain Tiles, měření ČHMÚ. Dlaždice se stahují z internetu.")
+               "Kolečkem přiblížíte, tažením posunete, Shift a tažením natočíte. "
+               + ("Snímky a výšky © Mapbox, © Maxar. " if mapbox_token() else
+                  "Podklad © OpenStreetMap, výšky Mapzen / AWS Terrain Tiles. ")
+               + "Měření ČHMÚ. Dlaždice se stahují z internetu.")
