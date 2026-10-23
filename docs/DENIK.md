@@ -178,7 +178,6 @@ Následující záznamy jsou doplněné zpětně (pá 19:35) podle commitů, ať
 - Výsledek a co znamená: nepomohlo to. LightGBM 23,1 cm stejně jako bez pásem, lineární model se stejnými vstupy o 0,4 cm lépe, pod hranicí 1 cm. Zpomalení vlny při velké povodni se z trénovacích dat změřit nedá, nad 1 500 m³/s je tam jen červen 2013.
 - Slabiny a co může být špatně: doby nad 1 500 m³/s by šly změřit s validačními povodněmi, to ale nesmíme. Pásma podle průtoku v Ústí jsou hrubá a zpoždění v X jsou jen po 3–12 h, takže rozdíl 1–2 h se po zaokrouhlení ztratí. Ondrova tabulka se s mou shoduje, jen Louny nad 1 500 m³/s vychází 10 h místo 23 h, což je stejně jen jedna povodeň.
 - Otázka poroty a odpověď: „Když víte, že se vlna při povodni zpomalí, proč to model nepoužívá?“ Zkusili jsme to a na validaci to nepomohlo. Na trénovacích datech je nad 1 500 m³/s jediná povodeň, takže zpomalení neumíme spolehlivě změřit. Lineární model si dobu doběhu stejně najde sám z vah přes všechna zpoždění 0–36 h, proto mu ruční doba nic nepřidá.
-## pá 21:00 · Ondra
 ## pá 20:38 · Ondra
 - Co: Honza dostal vedle aplikace úkol „kolik let dat model potřebuje“ (učicí křivka lineární regrese, jen kraj proti všem stanicím, zadání v `docs/UKOL_MODELY.md`). Sepsali jsme inventuru všech dat `docs/ZDROJE_DAT.md`: co je v balíčku, kolik z toho používáme a proč, co jsme přidali a jaké parametry modely dostávají.
 - Zjištění: denní úhrn srážek ČHMÚ s časem „den D 06:00“ je déšť za následujících 24 h, ne za předchozích (ověřeno na hodinových srážkách v Praze 5–7/2020). Kdybychom ho brali od jeho časové značky, model by viděl den deště z budoucnosti. Bereme ho až od D+1 07:00.
@@ -215,3 +214,9 @@ Následující záznamy jsou doplněné zpětně (pá 19:35) podle commitů, ať
 ## pá 20:55 · Dan
 - Co: odpověď na otázku poroty k době doběhu podle průtoku, jak ji budeme říkat. Zapsaná i do `docs/POROZUMENI.md`, sekce Otázky, které čekáme od poroty.
 - Otázka poroty a odpověď: „Když víte, že se vlna při povodni zpomalí, proč to model nepoužívá?“ Zkusili jsme to a nepomohlo to (21,8 vs 22,2 cm, pod hranicí 1 cm). Lineární model má 98 zpožděných hodnot (z každé stanice 7 zpoždění 0–36 h) a dobu doběhu včetně roztažení vlny si z vah najde sám. Zpomalení při velkých povodních nejde spolehlivě změřit – nad 1 500 m³/s je v tréninku jen jedna povodeň (6/2013, 227 h).
+
+## pá 21:00 · Ondra · Rozhodnutí: finální model
+- Co: finální model je lineární regrese `src/models/ridge.py` (alpha 1, odmocnina průtoků, všech 98 vstupů). Rozhodnuto před spuštěním testu, test se pouští jednou.
+- Proč: na validaci nejlepší (17,1 cm na povodních, 61 % méně než „jako teď“), nic nepropásl, žádný planý poplach, trénink za sekundu a každá váha jde vysvětlit. Všechny pokusy o zlepšení skončily pod hranicí 1 cm nebo horší: síť 17,8, průměr ridge a sítě 16,9, srážky a sníh 17,4, doba putování podle průtoku (Dan) 21,8, větší váha povodní (Honza) 17,2, kratší historie (Honza) 16,6 při 8 letech, rozdíl pod 1 cm.
+- Test: finální model se natrénuje na všem do konce 2020 (train i validace) a vyhodnotí na 2021–2025 (`python src/porovnej.py jako_ted ridge --test`). Pro srovnání pustíme na test i ostatní tři přístupy, výběr je už uzavřený a podle testu se nemění.
+- Čekáme: výsledek na testu může být jiný než na validaci, jsou to jiné povodně (12/2023 a 9/2024 jsou menší než 2006 a 2011) a model má víc tréninkových dat.
