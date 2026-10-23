@@ -70,7 +70,7 @@ Pracuješ s člověkem, jehož jméno je nahoře. Postupuj krok za krokem a kaž
 4. **Načti kontext.** Přečti `docs/NAPAD_LABE.md` (hlavně sekce Brány proti proudu), `src/features.py`, `src/evaluate.py` a níž zadání pro tohoto člověka. Člověku řekni ve třech větách, co bude dělat a proč.
 5. **Model.** Napiš `src/models/<soubor>.py` podle zadání. Model je funkce `fit(X, y, cil, horizont)`, která vrátí funkci `predict(X)` (vzor je `src/models/jako_ted.py`). Funguje pro oba cíle (`decin`, `usti`) a všechny horizonty (12, 24, 36). První řádek docstringu je popis, který se uloží k výsledku. Nastavení dej do slovníku `PARAMETRY`.
 6. **Běh.** Nejdřív `python src/porovnej.py <soubor bez .py> --rychle` (jen Děčín za 24 h), když to dává smysl, tak bez `--rychle` (všech 6 kombinací). Výsledek se uloží do `results/` a předpovědi do `results/predpovedi/`. Srovnání s ostatními ukáže `python src/porovnej.py --prehled`.
-7. **Varianty.** Projdi pokusy ze zadání. Každou variantu, kterou chceš mít ve srovnání, ulož jako `src/models/<soubor>_<co>.py`. Nejlepší varianta se nakonec jmenuje `<soubor>.py`. Ke každému pokusu přidej záznam do `docs/POKUSY.md`, i k nepovedenému: co se zkoušelo, proč, výsledek proti „jako teď“ a závěr.
+7. **Varianty.** Projdi pokusy ze zadání a pak iteruj podle pravidel níž (Jak dlouho iterovat). Každou variantu, kterou chceš mít ve srovnání, ulož jako `src/models/<soubor>_<co>.py`. Nejlepší varianta se nakonec jmenuje `<soubor>.py`. Ke každému pokusu přidej záznam do `docs/POKUSY.md`, i k nepovedenému: co se zkoušelo, proč, výsledek proti „jako teď“ a závěr.
 8. **Vysvětlení.** U nejlepší varianty ukaž, podle čeho model rozhoduje, podle zadání níž. Graf ulož do `docs/grafy/<soubor>_<co>.png` a jednou větou ho popiš v `docs/POKUSY.md`.
 9. **Co se nesmí.**
    - Nikdy nespouštěj `--test`, to dělá jen Ondra.
@@ -78,6 +78,18 @@ Pracuješ s člověkem, jehož jméno je nahoře. Postupuj krok za krokem a kaž
    - Neladí se na tom, co vyjde v `--prehled` u ostatních, jen na vlastní validaci.
    - Podezřele dobrý výsledek (na povodních pod 5 cm za 24 h) dej zkontrolovat subagentu `kontrolor`.
 10. **Odevzdání.** Rozbor podle vzoru z `CLAUDE.md` napiš člověku do chatu i do `docs/DENIK.md`. Pak `/sync main`: commitni jen svůj model, výsledky v `results/` a své zápisy v `docs/`. Polož člověku otázku poroty z rozboru.
+
+### Jak dlouho iterovat
+
+Zlepšuj model v cyklu: natrénovat, vyhodnotit, zjistit, kde chybuje, upravit a znovu. Pravidla:
+
+- **Hlavní číslo** je `prumer_povodne`, který `porovnej.py` vypíše na konci plného běhu: průměr `mae_povodne` přes všech 6 kombinací cíle a horizontu. Nehoň zlepšení jen u jedné kombinace.
+- **Každá varianta má důvod.** Nejdřív se podívej, kde model chybuje (která povodeň, stoupání nebo vrchol, který horizont), a z toho odvoď jednu změnu. Měň vždycky jen jednu věc. Žádné slepé zkoušení stovek nastavení.
+- **Zlepšení se počítá od 1 cm** v `prumer_povodne`. Menší rozdíl je u 4 povodní jen náhoda.
+- **Zlepšení nesmí zhoršit varování**: víc propásnutých povodní nebo planých poplachů znamená, že varianta neprošla.
+- **Konec:** když 3 varianty po sobě nezlepší `prumer_povodne` aspoň o 1 cm, nebo po 10 variantách, nebo ve 20:50. Pak napiš rozbor.
+
+Proč ne do nekonečna: validace má jen 4 povodně. Kdo zkusí sto variant, najde nějakou, která na těch čtyřech povodních náhodou vyjde dobře, a na testu pak propadne. Tomu se říká přeučení na validaci. Porota navíc ocení, že každý krok umíme zdůvodnit.
 
 **Časy:** první výsledek (`--rychle`) do 20:15, hotová nejlepší varianta s vysvětlením a `/sync main` do 21:00. Ve 21:00 porovnáváme.
 
