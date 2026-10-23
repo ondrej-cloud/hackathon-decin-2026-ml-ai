@@ -22,13 +22,13 @@ Po každém dokončeném kusu práce rozbor, aby ho pochopil i ten, kdo u toho n
 - Otázka poroty a odpověď:
 ```
 
-## pá 19:30 · Ondra
+## pá 19:20 · Ondra
 - Co: jdeme rovnou na Labe, ne na malé řeky. Každý zkusí jiný model na stejném úkolu: Tobias fyzikální model, Honza lineární regresi, Dan LightGBM, Ondra neuronovou síť. Zadání pro všechny je v `docs/UKOL_MODELY.md`, srovnání ve 21:00.
 - Proč: výsledek, který ukážeme, je na Labi, a model vybraný na malé řece by se pro Labe musel vybírat znovu. Srovnání čtyř přístupů je samo o sobě obsah prezentace.
 - Společný základ je hotový: tabulka 2006–2025 (`data/external/labe_hodinove.parquet`), vstupy (`src/features.py`), rozdělení a vyhodnocení (`src/evaluate.py`), spouštění (`src/porovnej.py`), základ „bude jako teď“.
 - Problém: mezi 2016 a 2020 nebyla povodeň, takže validace nemůže být jen poslední roky před testem. Validujeme na čtyřech vynechaných povodních a klidných letech 2019–2020.
 
-## pá 19:30 · Ondra · Rozbor: společný základ a první srovnání
+## pá 19:20 · Ondra · Rozbor: společný základ a první srovnání
 - Co jsme udělali: jedna tabulka pro všechny, stejné rozdělení a vyhodnocení, základ „bude jako teď“ a rychlá kontrola celého řetězce lineárním modelem.
 - Jak to funguje, jednoduše: v každé hodině vezmeme hladiny v Děčíně a Ústí a průtoky na 12 stanicích teď a před pár hodinami a model z nich odhadne hladinu za 12, 24 a 36 h.
 - Proč tak a ne jinak: hodnotíme hlavně chybu během povodní a varování před 2. a 3. stupněm, protože na klidné řece je skoro dokonalá i předpověď „bude jako teď“.

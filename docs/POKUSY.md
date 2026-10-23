@@ -14,7 +14,7 @@ Každý trénink a pokus, i nepovedený, jako nový záznam na konec souboru. Ni
 - Soubory: results/…, src/… nebo notebook
 ```
 
-## pá 19:25 · Ondra · základ „bude jako teď“ a kontrola řetězce
+## pá 19:15 · Ondra · základ „bude jako teď“ a kontrola řetězce
 - Otázka: funguje společné rozdělení a vyhodnocení a jakou laťku musí modely překonat?
 - Data a rozdělení: `data/external/labe_hodinove.parquet`, rozdělení z `src/evaluate.py` (train 2006–2018, val 4 povodně + 2019–2020), asi 108 tisíc řádků train, 18 tisíc val.
 - Vstupy: 98 sloupců z `src/features.py` (hladiny Děčín a Ústí, průtoky 12 stanic se zpožděním 0–36 h).

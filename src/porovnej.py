@@ -55,9 +55,10 @@ def spust(nazev, test=False, rychle=False):
     RESULTS.mkdir(exist_ok=True)
     soubor = RESULTS / f"{cas:%Y-%m-%d_%H%M}_{nazev}{'_test' if test else ''}.json"
     soubor.write_text(json.dumps(zaznam, ensure_ascii=False, indent=1))
-    (RESULTS / "predpovedi").mkdir(exist_ok=True)
-    pd.concat(predpovedi).rename_axis("cas_vydani").to_parquet(
-        RESULTS / "predpovedi" / f"{nazev}{'_test' if test else ''}.parquet")
+    if not rychle:
+        (RESULTS / "predpovedi").mkdir(exist_ok=True)
+        pd.concat(predpovedi).rename_axis("cas_vydani").to_parquet(
+            RESULTS / "predpovedi" / f"{nazev}{'_test' if test else ''}.parquet")
     print(f"uloženo {soubor.relative_to(ROOT)}")
     return pd.DataFrame(radky)
 
