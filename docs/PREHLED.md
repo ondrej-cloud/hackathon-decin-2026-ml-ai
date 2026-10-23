@@ -81,6 +81,8 @@ Hlavní číslo je průměrná chyba hladiny během povodní (`mae_povodne`, pr�
 | Ústí | 24 h | 24,0 cm | 56,2 cm | 57 % | 8,1 cm | 34 / 63 / 80 % | 3,6 % | −13,2 cm | 22,1 cm | 3 z 3, 19 h, 0 | 3 z 3, 19 h |
 | Ústí | 36 h | 38,1 cm | 81,8 cm | 53 % | 11,1 cm | 23 / 40 / 55 % | 6,2 % | −26,6 cm | 25,0 cm | 3 z 3, 21 h, 1 | 3 z 3, 22 h |
 
+Graf: `docs/grafy/test_chybovost.png` (`python src/graf_test.py ridge`).
+
 Vrcholy testových povodní na 24 h (Děčín 2/2024, 12/2023, 9/2024): o 10, 17 a 38 cm níž. Propásnutý 2. stupeň v Děčíně je únor 2024 (vrchol 496 cm, hranice 490), v Ústí Vánoce 2023 o 2 cm.
 
 Povodeň Boris 9/2024 v Děčíně: 3. stupeň hlášen 27 h předem (předpověď na 24 h), vrchol 649 cm předpovězen na 611 cm. Grafy `docs/grafy/srovnani_procenta_test.png`, `povoden_2024-09_decin_24h.png`, `povoden_2023-12_decin_24h.png`.
