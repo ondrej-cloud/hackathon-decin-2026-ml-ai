@@ -420,3 +420,12 @@ Následující pokusy jsou doplněné zpětně (pá 19:55). Všechny byly před 
 - Proč modely zaostávají: v tréninku po vzestupu Děčína aspoň o 30 cm za 6 h stoupla voda za dalších 24 h o víc než 50 cm jen ve 22 % případů a v 51 % začala klesat. Model se učí průměr, takže na začátku vzestupu sází na mírné pokračování. Na začátku povodně navíc část vody ještě neteče žádnou naší stanicí (déšť, malé přítoky). Všechny čtyři typy modelů zaostávají na stejných místech, takže chybí informace ve vstupech, ne tvar modelu.
 - Závěr: „ještě prudší“ pomáhá jen málo (1 cm při náběhu, pod hranicí 1 cm na hlavní metrice) a model neměníme. Dřívější varování jde koupit planými poplachy: dvoustupňové varování, předběžná výstraha podle horní meze a varování podle předpovědi. Aplikace interval už ukazuje. Víc by pomohla jen informace o vodě, která v řekách ještě není (srážky).
 - Soubory: `src/pokus_nabeh.py`
+
+## so 0:19 · Ondra · další stanice proti proudu (horní Ohře, Zbraslav)
+- Otázka: pomohou stanice, které máme stažené, ale model je nebere? Dan na své větvi `dan-ridge` s 30 stanicemi vyšel na své validaci uvnitř tréninku a na testu lépe, na naší validaci hůř.
+- Data a rozdělení: hodinový archiv ČHMÚ v `data/raw/chmu_hydro/`, průtok v Karlových Varech a Žatci (horní Ohře) a na Zbraslavi (Vltava). Kadaň a Postoloprty mají v 2006–2025 díry 5 a 7 let, vyřazené. Stejná zpoždění jako u ostatních stanic, všechny varianty na stejných řádcích. Validace a vícenásobná validace přes 8 povodní, test ne.
+- Model a nastavení: `ridge` beze změny, 98 + 14 nebo 21 vstupů.
+- Kde a jak dlouho: MacBook M1, asi 2 minuty.
+- Výsledek: validace (`prumer_povodne`) 12 stanic 17,1, s horní Ohří 17,4, i se Zbraslaví 17,4 cm, varování bez chyb. Vícenásobná validace 20,1 ± 7,7, s horní Ohří 19,7 ± 8,2, i se Zbraslaví 19,9 ± 8,1 cm; s horní Ohří lepší na 5 povodních z 8 (nejvíc 6/2006 15,6 → 13,6 a 8/2010 28,6 → 26,6), horší na 9/2010, 1/2011 a 6/2013.
+- Závěr: další stanice dávají smíšený výsledek pod 1 cm, stejně jako u Dana (lepší v jedné validaci, horší v druhé). Model neměníme. Rezerva v dalších stanicích proti proudu je malá, víc než 1–1,5 cm nečekáme.
+- Soubory: `src/pokus_dalsi_stanice.py`
