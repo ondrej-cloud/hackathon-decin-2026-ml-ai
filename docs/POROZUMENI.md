@@ -21,6 +21,15 @@ Co jsme zvolili, s čím jsme to srovnávali a proč jsme jiné možnosti nevzal
 - Proč nejvýš 36 h dopředu: voda, která do Děčína přijde za víc než 40 h, ještě neprotekla žádnou naší stanicí. Je v potocích nebo ještě nespadla. Na to by byly potřeba srážky.
 - Pro horizont h pomáhá hlavně stanice, odkud voda teče déle než h. Proto čím dál dopředu, tím dál proti proudu se musíme dívat.
 
+**Proč jen hladina a průtok, a ne srážky, půda, tvar povodí a další faktory povodní:**
+- Většina faktorů z učebnice popisuje, jak se z deště stane voda v řece (srážky, nasycenost půdy, půda, les, tvar povodí, metoda SCS-CN). My předpovídáme až další krok, jak voda, která už v řece teče, doteče do Děčína. Průtok změřený v Praze, Mělníku nebo Lounech je výsledek všech těch dějů nad stanicí, déšť, půda i přehrady jsou v něm už započítané. Pro předpověď kratší, než je doba putování (do zhruba 1,5 dne), proto stačí.
+- Faktory, které se v čase nemění (plocha a tvar povodí, sklon, půda, geologie, krajinný pokryv, tvar koryta, drsnost), se model nemůže naučit. Na jedné řece se stejnými stanicemi jsou pořád stejné a už jsou ve váhách modelu a v měrné křivce. Měrná křivka je změřená hydraulika vodočtu, totéž, co by Manningova rovnice počítala z tvaru koryta. Hodily by se, kdybychom předpovídali na řece bez měření.
+- Už v datech jsou: výchozí průtoky a nasycenost povodí (základní průtok), manipulace na přehradách (měříme odtok pod nimi), soutoky a skládání vln (každá větev zvlášť), zploštění vlny rozlivem (model se ho učí ze zpoždění).
+- Chybí a pomohlo by: srážky, sníh a teplota. To, co právě spadlo nebo leží na horách, ještě v řece není. Proto je chyba na 36 h skoro dvojnásobná a povodeň z deště v kraji (8/2010) model nevidí. ČHMÚ má denní srážky, výšku sněhu a index předchozích srážek (API30) od 1946 na asi 1 500 stanicích, hodinové až od 2018 (ověřeno).
+- Nemáme a nedá se rozumně získat: vodní hodnota sněhu, plánované manipulace na přehradách, ledové zátarasy, protržení hrází, ucpání mostů. Poslední tři jsou vzácné a z dat nepředvídatelné, patří do limitů.
+- Vzorce SCS-CN a racionální metoda počítají odtok z deště na malých povodích bez měření. Racionální metoda platí pro malá povodí, Labe nad Děčínem má přes 50 tisíc km² a průtok máme změřený.
+- Povodně na Labi v Děčíně jsou regionální a sněhové (2006 tání, 2011 tání s deštěm, 2013 a 2024 dlouhé deště). Rozhoduje u nich objem vody z celého povodí, a ten měříme. Přívalové povodně jsou na malých tocích, ne na Labi.
+
 **Proč lineární regrese (Ridge)** (Honza):
 - Předpověď je vážený součet vstupů, každá stanice a zpoždění má jednu váhu. Vybrali jsme ji, protože na vynechaných povodních vyšla nejlíp a celá se dá ukázat na jednom obrázku (`docs/grafy/ridge_vahy_decin.png`). „Ridge“ znamená, že se velké váhy mírně penalizují; na našich datech na tom nezáleží (alpha 0,1 až 10 dává stejný výsledek).
 - Odmocnina z průtoků: hladina roste s průtokem zhruba jako odmocnina (měrná křivka), takže lineárnímu modelu odmocnina průtoku sedí lépe. Na hladinu ji nedáváme, zkazila vrchol 2006 o metr.

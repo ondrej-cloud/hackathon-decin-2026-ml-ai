@@ -34,7 +34,7 @@ Otevřená data ČHMÚ, hodinová hladina a průtok, 2006–2025, 12 stanic (`da
 
 | Nevzali jsme | Proč |
 |---|---|
-| srážky, teplota, sníh | balíček má počasí jen 2024–2026, na 20 let nestačí. Největší rezerva, viz Další kroky |
+| srážky, teplota, sníh | balíček má počasí jen 2024–2026. ČHMÚ má denní srážky, výšku sněhu a API30 od 1946 (ověřeno), hodinové až od 2018. Největší rezerva, viz Další kroky. Proč nestačí zbytek učebnicových faktorů: `docs/POROZUMENI.md` |
 | přítoky v kraji (Bílina, Ploučnice) | vyzkoušeno, na validaci nepomohly (o 0,2–0,5 cm horší). Doteče z nich za pár hodin a přidají 2–13 % vody |
 | hladiny stanic proti proudu | hladina je místní (koryto, jezy), průtok se mezi stanicemi sčítá |
 | Zbraslav, Žatec, Kadaň, Karlovy Vary, Litoměřice, Hřensko | skoro totéž co jiná stanice, data až od 2017, nebo leží pod Děčínem |

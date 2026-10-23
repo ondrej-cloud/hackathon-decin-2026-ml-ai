@@ -1,5 +1,6 @@
 """Povodeň v lednu 2011 na 3D mapě Labe a přítoků."""
 
+import os
 import sys
 from datetime import datetime, timedelta
 from functools import cache
@@ -28,6 +29,17 @@ VYSKY = {
 }
 
 
+def mapbox_token():
+    """Veřejný token Mapboxu z proměnné MAPBOX_TOKEN nebo z .env v kořeni repa; bez něj OpenStreetMap."""
+    token = os.environ.get("MAPBOX_TOKEN")
+    env = ROOT / ".env"
+    if not token and env.exists():
+        for radek in env.read_text(encoding="utf-8").splitlines():
+            if radek.startswith("MAPBOX_TOKEN="):
+                token = radek.split("=", 1)[1].strip().strip('"')
+    return token or None
+
+
 @cache
 def _podklady():
     stanice = pd.read_csv(ROOT / "data/external/stanice_hydro.csv")
@@ -46,7 +58,8 @@ def _cislo(hodnota):
     return "chybí měření" if pd.isna(hodnota) else f"{hodnota:,.0f}".replace(",", " ")
 
 
-def _stanice(cas):
+def _stanice(cas, predpovedi=None):
+    """predpovedi: {klic: (horizont, hladina_cm)} z modelu, přidá se k popisku Děčína a Ústí."""
     metadata, percentily = _podklady()
     radek = nacti().loc[_cas_utc(cas)]
     body = []
@@ -55,6 +68,7 @@ def _stanice(cas):
         q = radek[f"{klic}_Q"]
         barva = SEDA
         tooltip = f"{stanice.stanice} · {stanice.tok}\nPrůtok: {_cislo(q)}"
+        predpoved = ""
         if pd.notna(q):
             tooltip += " m³/s"
         if klic in SPA:
@@ -66,6 +80,11 @@ def _stanice(cas):
             barva = SEDA if stupen is None else BARVY[stupen]
             tooltip += f"\nHladina: {_cislo(h)}" + (" cm" if pd.notna(h) else "")
             tooltip += f"\n{stav}"
+            if predpovedi and klic in predpovedi:
+                hor, cm = predpovedi[klic]
+                s = sum(cm >= mez for mez in SPA[klic])
+                predpoved = f"\nza {hor} h: {cm:.0f} cm" + (f", {s}. stupeň" if s else "")
+                tooltip += f"\nPředpověď modelu{predpoved}"
         else:
             p95, p99 = percentily[f"{klic}_Q"]
             if pd.notna(q):
@@ -84,22 +103,30 @@ def _stanice(cas):
             "vrchol": [stanice.lon, stanice.lat, z + vyska * MERITKO_PRUTOKU],
             "prutok": vyska,
             "barva": barva,
-            "popisek": f"{stanice.stanice}\n{_cislo(q)}" + (" m³/s" if pd.notna(q) else ""),
+            "popisek": f"{stanice.stanice}\n{_cislo(q)}" + (" m³/s" if pd.notna(q) else "") + predpoved,
             "tooltip": tooltip,
         })
     return body
 
 
-def deck(cas: pd.Timestamp) -> pdk.Deck:
-    """Mapa měření v dané hodině; čas bez pásma se bere jako český čas."""
-    body = _stanice(cas)
-    # TerrainLayer nemá elevationScale, násobíme celý dekodér včetně offsetu.
-    dekoder = {"rScaler": 256, "gScaler": 1, "bScaler": 1 / 256, "offset": -32768}
+def deck(cas: pd.Timestamp, predpovedi=None) -> pdk.Deck:
+    """Mapa měření v dané hodině; čas bez pásma se bere jako český čas. predpovedi viz _stanice."""
+    body = _stanice(cas, predpovedi)
+    token = mapbox_token()
+    if token:
+        vysky = f"https://api.mapbox.com/v4/mapbox.terrain-rgb/{{z}}/{{x}}/{{y}}.pngraw?access_token={token}"
+        povrch = f"https://api.mapbox.com/v4/mapbox.satellite/{{z}}/{{x}}/{{y}}@2x.png?access_token={token}"
+        dekoder = {"rScaler": 6553.6, "gScaler": 25.6, "bScaler": 0.1, "offset": -10000}
+    else:
+        vysky = "https://s3.amazonaws.com/elevation-tiles-prod/terrarium/{z}/{x}/{y}.png"
+        povrch = "https://tile.openstreetmap.org/{z}/{x}/{y}.png"
+        dekoder = {"rScaler": 256, "gScaler": 1, "bScaler": 1 / 256, "offset": -32768}
     teren = pdk.Layer(
         "TerrainLayer",
         id="teren",
-        elevation_data="https://s3.amazonaws.com/elevation-tiles-prod/terrarium/{z}/{x}/{y}.png",
-        texture="https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+        elevation_data=vysky,
+        texture=povrch,
+        # TerrainLayer nemá elevationScale, násobíme celý dekodér včetně offsetu.
         elevation_decoder={k: v * PREHANI for k, v in dekoder.items()},
         tile_size=256,
         min_zoom=0,
@@ -131,12 +158,13 @@ def deck(cas: pd.Timestamp) -> pdk.Deck:
         get_text="popisek",
         get_size=14,
         font_weight=600,
-        get_color=[25, 35, 45],
+        # na satelitním snímku bílý text s tmavým obrysem, na mapě naopak
+        get_color=[255, 255, 255] if token else [25, 35, 45],
         get_pixel_offset=[0, -12],
         get_text_anchor="'middle'",
         get_alignment_baseline="'bottom'",
-        outline_width=1.5,
-        outline_color=[255, 255, 255, 230],
+        outline_width=2 if token else 1.5,
+        outline_color=[15, 25, 35, 240] if token else [255, 255, 255, 230],
         font_settings={"sdf": True},
         character_set="'auto'",
         pickable=True,

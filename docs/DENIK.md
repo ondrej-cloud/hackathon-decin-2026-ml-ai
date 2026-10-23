@@ -166,3 +166,7 @@ Následující záznamy jsou doplněné zpětně (pá 19:35) podle commitů, ať
 - Problém: otisk verze v `porovnej.py` vychází na Windows jinak než na Macu (u mě 69a6db32, u Ondry 9a31181e), i když data a kód jsou stejné. Git na Windows (`core.autocrlf=true`) ukládá `.py` soubory s konci řádků CRLF a `verze()` je hashuje i s nimi. Po převodu `.py` na LF vyjde přesně 9a31181e. Následek: `--prehled` na Macu schová výsledky z Windows (Dan, Honza) jako „starou verzi“ a na Windows zase chybí výsledky z Maců. Čísla jdou srovnat, jen je přehled neukáže vedle sebe.
 - Návrh pro Ondru: v `verze()` u `.py` souborů před hashováním nahradit `\r\n` za `\n`, nebo do `.gitattributes` přidat `*.py text eol=lf`. Je to Ondrův soubor, neměnil jsem ho.
 - Problém: Python na Windows zapisuje text v cp1250, pokud se nezadá kódování. Moje starší výsledky tak nešly v novém `porovnej.py` přečíst. Ondra i já jsme je převedli do UTF-8, nový `porovnej.py` už zapisuje UTF-8.
+## pá 20:45 · Ondra
+- Co: zjistili jsme, že doba putování vody závisí na průtoku. Při povodni se vlna zpomalí (Mělník → Ústí 8 h při malé vodě, 16 h nad 1 500 m³/s), protože se rozlije do nivy. Modely zatím počítají s jednou dobou na stanici.
+- Kdo co: Dan zkusí dobu putování podle průtoku (zadání v `docs/UKOL_MODELY.md`, sekce Další úkol), Ondra srážky, sníh a teplotu z 25 stanic ČHMÚ v povodí.
+- Proč: čtyři modely skončily blízko sebe, strop dělají vstupy. Oba pokusy přidávají informaci, kterou modely zatím nemají. Sklon a vzdálenost samotné se nemění, jejich vliv je už ve změřené době putování.
