@@ -1,6 +1,6 @@
 # Šestihodinové srážky ze synoptických stanic pro Labe v Děčíně: zpráva
 
-Dan, větev `dan-srazky` (z `dan-ridge`), pá 23. 10. 2026 22:47–0:00. Průběh v `PRUBEH.md`, nálezy Codexu
+Dan, větev `dan-srazky` (z `dan-ridge`), pá 23. 10. 2026 22:47 – so 0:35. Průběh v `PRUBEH.md`, nálezy Codexu
 v `NALEZY_CODEX.md`, všechny běhy ve `vysledky/srazky.jsonl` (CV a validace) a `vysledky/lofo.jsonl` (LOFO).
 Test 2021–2025 jsem nespouštěl.
 
@@ -8,9 +8,13 @@ Test 2021–2025 jsem nespouštěl.
 
 - Otázka: denní srážky ČHMÚ nepomohly, protože úhrn smí do modelu až další den v 07:00 UTC. Šestihodinové úhrny
   ze zpráv SYNOP (NOAA ISD) jsou k dispozici hodinu po konci období, tedy se zpožděním 1–6 h.
-- **Verdikt: srážky nepomohly ani jednomu z obou Ridge, oba jsou „beze změny“** (LightGBM ještě běží) (zlepšení ani zhoršení
-  od 1 cm na hlavních číslech CV povodně a validace Děčín +24 h). Přísnější LOFO přes 22 povodní to potvrzuje:
-  rozdíl do 0,1 cm a zlepšená zhruba polovina povodní.
+- **Verdikt: všechny tři modely „beze změny“** (zlepšení ani zhoršení od 1 cm na hlavních číslech CV povodně
+  a validace Děčín +24 h). Přísnější LOFO přes 22 povodní to potvrzuje: oba Ridge do 0,1 cm, LightGBM −0,5 cm
+  při 13 zlepšených z 22 povodní, takže ani jeden nesplní „≥ 1 cm a většina povodní“.
+- LightGBM jako jediný ukazuje náznak: CV −0,96 cm, průměr 6 kombinací na validaci −1,2 cm, začátek vzestupu
+  −3,9 až −4,6 cm. Platí za to ale přestřelením: na dešťové povodni 9/2010 předpověděl 575 cm místo 526
+  (bez srážek 555) a dal 4 plané poplachy 3. stupně (Děčín a Ústí +24/+36 h). V LOFO zhoršil tání 4/2006
+  o 3,9 cm. Do týmového LightGBM bych srážky nedával.
 - Jediný stálý, ale malý efekt je u týmového Ridge na začátku vzestupu: CV −0,9 cm, validace −1,9 cm, LOFO −0,9 cm.
   Na celkovou chybu na povodních to nestačí a u Danova Ridge s 30 stanicemi efekt není: horní stanice ukážou
   vlnu dřív, než by to uměly srážky ze 2 + 7 bodů.
@@ -97,15 +101,26 @@ Rozdíl = + srážky − beze změny, záporný = menší chyba.
 | Ridge Danův (30 stanic) | beze změny | 14,16 | 28,95 | 17,8 | – | 28,1 | 20,7 | 24,6 | 0 / 0 | 14,79 | 34,1 | |
 | | + srážky | 14,10 | 29,03 | 18,1 | – | 28,4 | 21,0 | 25,4 | 0 / 0 | 14,77 | 34,1 | 13 z 22 |
 | | rozdíl | −0,07 | +0,08 | +0,3 | – | +0,3 | +0,3 | +0,8 | 0 / 0 | −0,03 | 0,0 | p = 0,52 |
-| LightGBM (seed 42) | beze změny | 17,77 | 36,40 | běží | běží | běží | běží | běží | běží | běží | běží | |
-| | + srážky | běží | | | | | | | | | | |
+| LightGBM (seed 42) | beze změny | 17,77 | 36,40 | 20,8 | 23,03 | 36,4 | 21,1 | 28,9 | 0 / 0 | 16,73 | 43,2 | |
+| | + srážky | 16,81 | 35,54 | 20,3 | 21,85 | 31,8 | 22,9 | 28,1 | 0 / 4 | 16,21 | 39,3 | 13 z 22 |
+| | rozdíl | −0,96 | −0,86 | −0,5 | −1,18 | −4,6 | +1,8 | −0,8 | 0 / +4 | −0,52 | −3,9 | p = 0,52 |
 
 Propásnuto nebylo nic u žádného modelu ani varianty: validace 2. i 3. SPA, LOFO 2. i 3. SPA. Plané poplachy
-v LOFO jsou u obou variant stejné: týmový Ridge 4 / 1 (2. / 3. SPA), Danův Ridge 3 / 1.
+v LOFO (2. / 3. SPA):
+- týmový Ridge 4 / 1 u obou variant;
+- Danův Ridge 3 / 1 u obou variant;
+- LightGBM 6 / 1 → 3 / 1.
 
-LOFO po povodních: týmový Ridge má rozdíly od −0,7 (8/2010) do +1,3 cm (6/2013), Danův od −0,4 do +0,5 cm.
-Povodeň 9/2010 (místní déšť) je −0,4 a +0,2, 4/2006 (tání) +0,1 a +0,5. Ani jedna povodeň se nezlepšila
-aspoň o 1 cm.
+Na validaci má LightGBM se srážkami 4 plané poplachy 3. SPA. Je to jedna epizoda, povodeň 9/2010, viditelná
+v Děčíně i Ústí +24 a +36 h. U LightGBM jsou čísla zatím jen pro seed 42; tento LightGBM nemá náhodný výběr
+řádků ani vstupů, takže seedy 42/43/44 dávají stejná čísla (`docs/POKUSY.md`, pá 20:00, a `stanice_vsem`).
+
+LOFO po povodních:
+- **Ridge:** týmový má rozdíly od −0,7 (8/2010) do +1,3 cm (6/2013), Danův od −0,4 do +0,5 cm. Ani jedna
+  povodeň se nezlepšila aspoň o 1 cm. Povodeň 9/2010 (místní déšť) je −0,4 a +0,2, 4/2006 (tání) +0,1 a +0,5.
+- **LightGBM:** rozdíly od −3,6 (6/2013) do +3,9 cm (4/2006). Lepší jsou letní a dešťové povodně (5/2006 −1,9,
+  7/2006 −3,0, 12/2012 −2,9, 1/2011 −2,7, 6/2013 −3,6). Horší je tání 4/2006 (+3,9), 3/2012 (+2,0) a obě
+  povodně 2010 (8/2010 +1,1, 9/2010 +0,6).
 
 Citlivostní sada (blízko + 4 dílčí povodí, 25 sloupců) dopadla stejně:
 - týmový Ridge: CV povodně 15,64 → 15,66, validace Děčín +24 h 15,5 → 15,3, začátek vzestupu na validaci
@@ -120,7 +135,7 @@ Ani jemnější rozdělení povodí tedy nepomůže.
 |---|---|---|
 | Ridge týmový | **beze změny** | CV +0,01, VAL −0,1, LOFO +0,04 cm (12 z 22 povodní lepších); jen začátek vzestupu o 0,9–1,9 cm lepší, pod hranicí nebo jen na validaci |
 | Ridge Danův (30 stanic) | **beze změny** | CV −0,07, VAL +0,3, LOFO −0,03 cm (13 z 22); horní vodoměry nesou totéž co srážky, dřív |
-| LightGBM | **zatím bez verdiktu** | běh pod zátěží druhé session (volná RAM ~0,5 GB) jde 4× pomaleji, výsledek doplním |
+| LightGBM | **beze změny** (náznak zlepšení, ale přestřeluje) | CV −0,96, VAL Děčín +24 −0,5, průměr 6 kombinací −1,18, LOFO −0,52 (13 z 22, p = 0,52); začátek vzestupu −3,9 až −4,6, ale 9/2010 +1,8 a 4 plané poplachy 3. SPA navíc, LOFO 4/2006 +3,9 |
 
 ## Nálezy Codexu
 
