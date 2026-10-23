@@ -234,7 +234,7 @@ Následující pokusy jsou doplněné zpětně (pá 19:55). Všechny byly před 
 - Závěr: lineární regrese vede. Průměrování modelů nepomáhá a jen by přidalo složitost. Čtyři různé přístupy na stejných vstupech skončily blízko sebe, takže rezervu nemá model, ale vstupy (chybí srážky).
 - Soubory: `src/procenta.py`, `docs/grafy/srovnani_procenta.png`, `docs/grafy/srovnani_ctyr_modelu.png`, `results/*_lgbm.json`.
 
-## pá 21:15 · Ondra · srážky, sníh a teplota z 25 stanic v povodí
+## pá 20:44 · Ondra · srážky, sníh a teplota z 25 stanic v povodí
 - Otázka: pomůže modelu informace o vodě, která v řece ještě není (déšť, sníh, tání)?
 - Data a rozdělení: denní archiv ČHMÚ, 25 stanic (10 Vltava, 9 horní Labe, 6 Ohře), 2006–2025. Pro každou větev průměr stanic: srážky za poslední den a 3 dny, index předchozích srážek API30, výška sněhu, změna sněhu za 3 dny, průměrná teplota. 18 sloupců, každá hodnota až od chvíle, kdy byla změřená (denní úhrn s časem D 06:00 je déšť do D+1 06:00, bereme ho od D+1 07:00; ověřeno na hodinových srážkách v Praze). Společné rozdělení.
 - Model a nastavení: `ridge` a `mlp` beze změn, jen s 18 sloupci navíc.

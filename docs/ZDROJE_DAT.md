@@ -1,6 +1,6 @@
 # Zdroje dat: co máme, co z toho používáme a proč
 
-Stav pá 21:00. Kdo přidá nebo vyřadí data, upraví tabulku a zapíše důvod do `docs/DENIK.md`.
+Stav pá 20:38. Kdo přidá nebo vyřadí data, upraví tabulku a zapíše důvod do `docs/DENIK.md`.
 
 ## Jednoduše: co model používá
 
@@ -13,7 +13,7 @@ Data z balíčku nezahazujeme. Děčín, Ústí a Louny v balíčku jsou stejné
 | průtok (m³/s) | Mělník, Vraňany, Kostelec, Praha, Nymburk, Jizera, Beroun, Sázava, Přelouč | 2006–2025 | archiv ČHMÚ (v balíčku nejsou) | voda, která teprve přiteče, bez nich vidíme jen 4 h dopředu |
 | prahy povodňových stupňů | Děčín, Ústí | | balíček (metadata) | kdy vyhlásit varování |
 | polohy stanic | 12 stanic | | balíček (metadata) | mapa v aplikaci |
-| srážky, sníh, teplota (vyzkoušeno, **nepomohlo**, v modelu nejsou) | 25 meteostanic v povodí | 2006–2025, denně | archiv ČHMÚ | déšť, který v řece ještě není. Na 12–36 h je ale voda z deště už v řekách a model ji vidí v průtocích (`docs/POKUSY.md`, pá 21:15) |
+| srážky, sníh, teplota (vyzkoušeno, **nepomohlo**, v modelu nejsou) | 25 meteostanic v povodí | 2006–2025, denně | archiv ČHMÚ | déšť, který v řece ještě není. Na 12–36 h je ale voda z deště už v řekách a model ji vidí v průtocích (`docs/POKUSY.md`, pá 20:44) |
 
 | Z balíčku nepoužíváme | Proč |
 |---|---|
