@@ -25,6 +25,15 @@ Každý trénink a pokus, i nepovedený, jako nový záznam na konec souboru. Ni
 - Soubory: `results/2026-10-23_1913_jako_ted.json`, `src/models/jako_ted.py`; Ridge a LightGBM jen jako kontrola, nejsou uložené, udělají je Honza a Dan.
 
 Následující pokusy jsou doplněné zpětně (pá 19:35). Všechny byly před společným rozdělením, čísla proto nejdou přímo srovnat s výsledky v `results/`. Podrobnosti v `docs/NAPAD_LABE.md`.
+## pá 19:35 · Dan · základy pro LightGBM: lineární trend a Ridge na změnu stavu
+- Otázka: jak dopadnou jednoduché základy, se kterými budu LightGBM srovnávat, a funguje u mě řetězec stejně jako u Ondry?
+- Data a rozdělení: společná tabulka a rozdělení z `src/evaluate.py`, všech 6 kombinací (Děčín a Ústí, +12 / +24 / +36 h).
+- Vstupy: trend jen stav v cíli teď a před 6 h. Ridge všech 98 sloupců, průtoky pod odmocninou.
+- Model a nastavení: `zaklad_trend` (stav se dál mění stejně rychle jako za posledních 6 h). `zaklad_ridge` (StandardScaler + Ridge alpha 1, cíl je změna stavu proti teď).
+- Kde a jak dlouho: Dan, Yoga 7i, do 2 s.
+- Výsledek na val (chyba na povodních, Děčín +12 / +24 / +36 h): „jako teď“ 23,0 / 44,4 / 65,6 cm, trend 18,0 / 36,1 / 60,0 cm, Ridge 9,0 / 15,5 / 26,0 cm. `prumer_povodne`: „jako teď“ 44,3, trend 39,4, Ridge 17,1. Trend nic nepropásl, ale má plané poplachy před 2. stupněm (Děčín 2 / 5 / 16), Ridge žádné.
+- Závěr: Ridge na změnu stavu dává na cm stejná čísla jako Ondrův Ridge na stav, řetězec u mě běží stejně. Trend je lepší než „jako teď“ jen díky tomu, že zachytí začínající stoupání, ale přestřeluje a dělá plané poplachy. Laťka pro LightGBM je Ridge se 17,1 cm.
+- Soubory: `src/models/zaklad_trend.py`, `src/models/zaklad_ridge.py`, `results/2026-10-23_1933_zaklad_trend.json`, `results/2026-10-23_1933_zaklad_ridge.json`, `results/predpovedi/zaklad_*.parquet`
 ## pá 19:28 · Tobias · doby putování vody pro fyzikální model
 - Otázka: za kolik hodin se změna průtoku na stanici proti proudu projeví v Ústí a v Děčíně?
 - Data a rozdělení: `labe_hodinove.parquet`, jen train z `src/evaluate.py` (2006–2018 bez validačních povodní).
@@ -82,6 +91,35 @@ Následující pokusy jsou doplněné zpětně (pá 19:55). Všechny byly před 
 - Závěr: všechno lokálně, Kaggle by jen zdržel nahráváním a frontou.
 
 ## pá 19:40 · Ondra · přítoky v kraji (Bílina, Ploučnice)
+## pá 19:45 · Dan · LightGBM v1 a v2 ze zadání: stav proti změně stavu
+- Otázka: jak dopadne LightGBM na všech 98 vstupech, když se učí stav (v1) a když změnu stavu proti teď (v2)?
+- Data a rozdělení: společné rozdělení, všech 6 kombinací.
+- Vstupy: všech 98 sloupců bez úprav.
+- Model a nastavení: LGBMRegressor(n_estimators 500, learning_rate 0,05, num_leaves 31), seed 42, num_threads 4.
+- Kde a jak dlouho: Dan, Yoga 7i, 15–20 s na model.
+- Výsledek na val (chyba na povodních, Děčín +12 / +24 / +36 h): v1 57,7 / 69,6 / 73,7 cm, v2 27,8 / 49,4 / 55,6 cm, „jako teď“ 23,0 / 44,4 / 65,6. `prumer_povodne` v1 66,1, v2 40,9, „jako teď“ 44,3. Vrchol povodně 2006 (875 cm) obě přestřelily, v1 o 128–152 cm, v2 o 69–110 cm. v2 propásla před 2. stupněm 1–3 povodně.
+- Závěr: obě jsou na povodních horší nebo stejné jako „jako teď“, Ondrova kontrola řetězce (28 / 50 / 56 cm) sedí. Na trénovacích povodních má v2 chybu jen 4,7 / 6,3 / 8,1 cm, na validaci 6× větší: stromy si pamatují povodně z tréninku (hlavně 2013) a na syrových průtocích je pak přenesou na jinou povodeň, kde neplatí.
+- Soubory: `src/models/lgbm_v1.py`, `src/models/lgbm_v2.py`, `results/2026-10-23_1938_lgbm_v1.json`, `results/2026-10-23_1940_lgbm_v2.json`
+
+## pá 19:45 · Dan · LightGBM a a c: průtoky posunuté o dobu doběhu
+- Otázka: pomůže stromům, když místo 98 syrových sloupců dostanou fyzikálně připravené vstupy?
+- Data a rozdělení: společné rozdělení, všech 6 kombinací.
+- Vstupy: a) stav v cíli (teď až 24 h zpět) a ke každé stanici proti proudu průtok, který do cíle doteče za horizont (zpoždění doba doběhu − horizont, když je záporné, tak poslední známý), a rozdíl proti průtoku, který do cíle dotéká teď. Doby doběhu z `src/doba_dobehu.py`, zaokrouhlené na zpoždění v X. Průtok v cíli záměrně ne, hladina stačí. c) navíc sin a cos dne v roce a trend stavu za 6 h. Varianta b) se srážkami nejde, srážky v datech nemáme (balíček pořadatelů je jen u Ondry).
+- Model a nastavení: stejné jako v2, cíl je změna stavu.
+- Kde a jak dlouho: Dan, Yoga 7i, 5–7 s na model.
+- Výsledek na val (Děčín +12 / +24 / +36 h): a 10,6 / 22,0 / 37,5 cm, c 10,4 / 21,7 / 36,4 cm. `prumer_povodne` a 24,0, c 22,8 (Ridge 17,1, „jako teď“ 44,3). c nic nepropásl a nemá planý poplach, a měl 1 planý poplach před 2. stupněm na 24 a 36 h.
+- Závěr: připravené vstupy chybu na povodních skoro půlí (40,9 → 24,0) a c je o 1,2 cm lepší než a, nejlepší LightGBM zatím. Pořád je ale o 5,7 cm horší než Ridge. Přeučení zůstává: na trénovacích povodních 5,1 / 6,5 / 8,7 cm, na validaci 2–4× víc. Ridge má na tréninku i validaci skoro stejně. Nejvíc ztrácí na povodních 2006 a 2011, které jsou vyšší než všechno v tréninku kromě 2013 (Děčín +24 h: 2006 31 cm proti 16 u Ridge, 2011 23 proti 15). Při stoupání v průměru nepodhodnocuje, chyba je skákání předpovědi, ne soustavný posun. Povodeň 9/2010 podhodnotí o 25 cm všechny modely včetně Ridge, voda nejspíš přišla z deště blízko kraje.
+- Soubory: `src/models/lgbm_a.py`, `src/models/lgbm_c.py`, `results/2026-10-23_1941_lgbm_a.json`, `results/2026-10-23_1942_lgbm_c.json` (po úpravě kódu znovu `_1947_`, stejná čísla), `src/rozbor_lgbm.py` (tabulka, trénink proti validaci)
+
+## pá 19:52 · Dan · LightGBM c: proti přeučení list 200 hodin, monotónní omezení, menší stromy
+- Otázka: zmenší se přeučení c, když stromy zjednoduším? Vždy jen jedna změna proti c.
+- Data a rozdělení: společné rozdělení, všech 6 kombinací.
+- Vstupy: jako c.
+- Model a nastavení: c + `min_child_samples` 200 (list aspoň 200 hodin, jedna povodeň se do něj nevejde); c + monotónní omezení (víc přitékající vody nesmí dát menší vzestup, ze zadání); c + `num_leaves` 7.
+- Kde a jak dlouho: Dan, Yoga 7i, 4–10 s na model.
+- Výsledek na val (`prumer_povodne`, c 22,8): list 200 hodin 22,2, monotónní 23,8, 7 listů 23,4 (a 2 plané poplachy před 2. stupněm na 24 h).
+- Závěr: nic neprošlo. List 200 hodin je lepší jen o 0,6 cm, pod hranicí 1 cm. Monotónní omezení a menší stromy jsou horší. Zjednodušení stromů nestačí, problém je spíš v tom, že strom dává schody a nad tím, co viděl, neumí pokračovat.
+- Soubory: `src/models/lgbm_c_list200.py`, `src/models/lgbm_c_monotonni.py`, `src/models/lgbm_c_list7.py`, `results/2026-10-23_1948_lgbm_c_list200.json`, `results/2026-10-23_1950_lgbm_c_monotonni.json`, `results/2026-10-23_1951_lgbm_c_list7.json`
 ## pá 19:36 · Tobias · fyzikální model, všech 6 kombinací a třetí vrstva stanic
 - Otázka: proč model podhodnocuje vrcholy a pomůže víc stanic proti proudu?
 - Data a rozdělení: společné z `src/evaluate.py`, všech 6 kombinací.
@@ -148,6 +186,15 @@ Následující pokusy jsou doplněné zpětně (pá 19:55). Všechny byly před 
   - stabilita v3, seedy 42 / 43 / 44: 18,1 / 19,0 / 18,3 cm (před opravou vyhodnocení), rozptyl 0,9 cm.
 - Závěr: hlavní byl boj s přeučením, regularizace pomohla nejvíc. v2 a v3 jsou v rámci náhody stejné. Jako hlavní necháváme v3, protože má méně chyb ve varování a menší podhodnocení na 36 h. v2 je rovnocenná jednodušší záloha. Po dvou variantách bez zlepšení konec ladění. Síť nejvíc používá hladinu v Děčíně a Ústí a průtok v Praze, Vraňanech, Lounech, Mělníku a Kostelci, vzdálené přítoky málo (`docs/grafy/mlp_dulezitost_stanic.png`). Graf povodně 1/2011 (`docs/grafy/mlp_povoden_2011.png`): síť stoupání předbíhá o 24 h, „jako teď“ je o 24 h pozadu.
 - Soubory: `src/models/mlp.py`, `mlp_v1.py`, `mlp_alpha1.py`, `mlp_vahy.py`, `src/vysvetli_mlp.py`, `results/*_mlp*.json`.
+## pá 19:56 · Dan · LightGBM c: zbytek po Ridge, přímky v listech, regularizace, zastavení tréninku
+- Otázka: dá se přeučení a neschopnost stromů jít nad to, co viděly, obejít jinak než zjednodušením stromů?
+- Data a rozdělení: společné rozdělení, všech 6 kombinací. Zastavení tréninku jen na letech 2017–2018 z trénovací části, validace se na něj nepoužije.
+- Vstupy: jako c.
+- Model a nastavení: (1) stromy se učí jen opravu Ridge, cíl = skutečnost − předpověď `zaklad_ridge`; (2) `linear_tree=True`, v listu přímka místo čísla; (3) 15 listů, `reg_lambda` 10, `colsample_bytree` 0,7; (4) zastavení, když se MAE na 2017–2018 nezlepší 50 stromů. Seed 42.
+- Kde a jak dlouho: Dan, Yoga 7i, 2–8 s na model.
+- Výsledek na val (`prumer_povodne`, c 22,8, Ridge 17,1): zbytek po Ridge 18,9, přímky v listech 111,8, regularizace 22,2, zastavení 22,4 (zastaveno po 63–212 stromech). Zbytek po Ridge má proti c navíc 2 plané poplachy před 2. stupněm (Děčín 24 a 36 h) a 1 propásnutou povodeň (Ústí 36 h).
+- Závěr: neprošlo nic. Nejzajímavější je zbytek po Ridge: proti c pomohl o 3,9 cm, ale samotný Ridge zhoršil o 1,8 cm a přidal plané poplachy. Opravy, které se stromy naučí na povodních z tréninku, na jiné povodně nesedí. Přímky v listech při velké vodě ujely až o 3 m, protože přímka naučená na úzkém kousku dat se za jeho hranou nekontrolovaně prodlouží. Regularizace a zastavení pomohly jen o 0,4–0,6 cm, pod hranicí 1 cm. Zastavení se navíc řídí suchými roky 2017–2018 bez povodně, takže o povodních nic neví. Podle pravidel tady ladění končí, nejlepší LightGBM zůstává c.
+- Soubory: `src/models/lgbm_c_ridge.py`, `src/models/lgbm_c_linear.py`, `src/models/lgbm_c_regularizace.py`, `src/models/lgbm_c_stop.py`, `results/2026-10-23_1953_lgbm_c_ridge.json`, `results/2026-10-23_1954_lgbm_c_linear.json`, `results/2026-10-23_1954_lgbm_c_regularizace.json`, `results/2026-10-23_1955_lgbm_c_stop.json`
 ## pá 19:48 · Tobias · fyzikální model, finální varianta a grafy
 - Nejlepší varianta (3 vrstvy stanic) je teď `src/models/fyzika.py`, první verze se dvěma vrstvami zůstává pro srovnání jako `src/models/fyzika_dve_vrstvy.py`. Po přejmenování znovu spuštěno: `prumer_povodne` 24,8 a 26,6 cm, stejně jako předtím.
 - `docs/grafy/fyzika_merna_krivka.png`: měrná křivka Děčína se stupni povodňové aktivity. Body z povodní leží přesně na křivce, nad 3 710 m³/s (nejvyšší průtok v tréninku) je křivka prodloužená přímkou.
@@ -170,3 +217,12 @@ Následující pokusy jsou doplněné zpětně (pá 19:55). Všechny byly před 
   Podíl předpovědí do ±20 cm při vodě nad 1. stupněm (+12 / +24 / +36 h): lineární 88 / 76 / 51 %, síť 90 / 64 / 49 %, LightGBM 85 / 61 / 37 %, fyzikální 76 / 53 / 35 %, „jako teď“ 51 / 23 / 13 %.
 - Závěr: všechny čtyři modely jsou na povodních zhruba o polovinu lepší než „jako teď“ a žádný nepropásl povodeň. Lineární regrese a síť jsou v rámci náhody stejné (rozdíl 0,7 cm, rozptyl sítě mezi seedy 0,9 cm). Lineární regrese je ale nejjednodušší, nejrychlejší, nemá planý poplach a každou váhu vysvětlíme. LightGBM přestřeluje vrcholy nad rámec tréninku (1/2011 o 60 cm na 24 h, `docs/grafy/povoden_2011-01_decin_24h.png`). Fyzikální model ukazuje, že učené modely nedělají nic magického, jen fyziku zpřesňují. Na 36 h jsou všechny výrazně horší, bez srážek dál nevidíme.
 - Soubory: `results/*.json` (otisk verze v JSON), `docs/grafy/srovnani_ctyr_modelu.png`, `docs/grafy/povoden_2011-01_decin_24h.png`, `docs/grafy/povoden_2006-03_decin_36h.png`, skripty `src/graf_srovnani.py` a `src/graf_povoden.py`.
+## pá 20:00 · Dan · LightGBM finální varianta (lgbm = c), seedy a SHAP
+- Otázka: je výsledek c stabilní a podle čeho model rozhoduje?
+- Data a rozdělení: společné rozdělení, všech 6 kombinací; SHAP pro Děčín +24 h na validaci.
+- Vstupy: jako c.
+- Model a nastavení: `src/models/lgbm.py` je c (500 stromů, learning_rate 0,05, 31 listů), seedy 42, 43, 44.
+- Kde a jak dlouho: Dan, Yoga 7i, 5–7 s na model, SHAP pár sekund.
+- Výsledek na val: `prumer_povodne` 22,8 se všemi třemi seedy na desetinu stejně (bez náhodného výběru řádků a vstupů v LightGBM náhoda není). Regularizace se seedy 22,0–22,2, takže její zlepšení o 0,6–0,8 cm je skutečné, ale pod hranicí 1 cm. Chyba „jen při vysoké vodě“ (nad 1. stupněm, Děčín +12 / +24 / +36 h): 10,8 / 24,3 / 42,3 cm, Ridge 9,0 / 16,8 / 29,6, „jako teď“ 25,7 / 51,0 / 74,5. Varování před 1. stupněm (400 cm) nic nepropásl, předstih 8 / 21 / 46 h.
+- Závěr: SHAP ukazuje, že model dělá fyzikálně rozumnou věc. Pro Děčín za 24 h rozhoduje hlavně přírůstek průtoku v Praze (voda, která Prahou už protekla a do Děčína ještě nedotekla), při povodni 2011 v průměru 19 cm vlivu, pak Přelouč, Louny a Ústí. Za klidu rozhoduje hlavně stav v Děčíně za poslední hodiny. Graf povodně 2011 ukazuje slabinu: při rychlém stoupání LightGBM přestřelí asi o 70 cm (800 proti 730 cm) a skáče, Ridge jde hladce.
+- Soubory: `src/models/lgbm.py`, `results/2026-10-23_2000_lgbm.json`, `docs/grafy/lgbm_shap.png` (podle čeho rozhoduje, celá validace a povodeň 2011), `docs/grafy/lgbm_c_povoden2011.png` (skutečnost, „jako teď“, c, Ridge a zbytek po Ridge při povodni 2011, +24 h)

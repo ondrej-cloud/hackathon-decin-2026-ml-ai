@@ -78,6 +78,8 @@ Ověřeno:
 
 **Povodně v Děčíně nad 3. stupněm:** 4/2006 (875 cm), 8/2010 (560), 1/2011 (730), 6/2013 (1 072), 12/2023 (624), 9/2024 (649).
 
+**Doba doběhu do Děčína** (ověřeno, `src/doba_dobehu.py`): posun s největší korelací změn průtoku za 6 h, jen trénovací část. Ústí 4 h (korelace 0,93), Kostelec 10 h, Nymburk 10 h, Mělník 13 h, Vraňany 13 h, Louny 16 h, Praha-Chuchle 17 h, Předměřice a Přelouč 18 h, Beroun 23 h, Nespeky 25 h. Při velké vodě (Děčín nad 300 cm) vychází skoro stejně, jen korelace je silnější (Mělník 0,76 místo 0,51). Do Ústí je to o 3–4 h méně (Mělník 9 h, Praha 13 h). Z Lounů a vzdálených stanic je korelace slabá (0,2–0,3), doba je tam jen přibližná.
+
 **Rozdělení** (`src/evaluate.py`, dělení v čase, ne náhodně):
 - train: 2006–2018 bez validačních povodní a 20 dní kolem nich,
 - val: povodně 4/2006, 3/2009, 9/2010 a 1/2011 (14 dní před vrcholem až 5 dní po něm) a klidné roky 2019–2020,
