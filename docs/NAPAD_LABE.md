@@ -121,6 +121,33 @@ Začneme jen s tím, co jsme dostali, ukážeme, kde to nestačí, a přidávám
 - Průtoky jdou do modelu jako odmocnina. Výška hladiny neroste s průtokem rovnoměrně, protože se řeka při velké vodě rozlije do šířky. Bez odmocniny Mělník a Praha na 12 h chybu zhoršily (model při velké vodě přestřeloval).
 - **Pozor:** odmocninu jsme zatím vybrali podle stejných povodní, na kterých ji měříme. Ve finále ji vybrat na validačních povodních (do 2016) a testovat jen na 2023 a 2024.
 
+## Brány proti proudu: předpověď pro celý kraj
+
+Labe do kraje přitéká z Vltavy (s Berounkou a Sázavou), z horního Labe (s Jizerou) a z Ohře. Na každé větvi bereme stanice v několika vzdálenostech, „branách“. Stahuje je `src/stahni_chmu_hydro.py` (16 stanic, hodinově zhruba 2002–2025, 168 MB).
+
+| Brána | Stanice | Vrchol povodně dorazí do Ústí zhruba za |
+|---|---|---|
+| v kraji | Děčín (cíl), Ústí (cíl), Louny na Ohři (cíl) | Ústí → Děčín 4 h (1–6 h) |
+| blízké | Mělník, Vraňany (Vltava), Kostelec (Labe) | 9–14 h |
+| střední | Praha-Chuchle (Vltava), Nymburk (Labe), Předměřice (Jizera) | asi 15–25 h |
+| vzdálené | Beroun (Berounka), Nespeky (Sázava), Přelouč (Labe), Karlovy Vary a Žatec (Ohře) | asi den a víc |
+
+Doby jsou jen přibližné, rozptyl mezi povodněmi je velký. Vrchol v Ústí se skládá z vln z několika řek a ty nepřijdou najednou. Model proto přesné doby nepotřebuje: dostane od každé stanice zpoždění 0, 6, 12, 24 a 36 h a sám najde, které je nejdůležitější. Váhy modelu pak dobu putování ukážou.
+
+**Ústí, chyba předpovědi** (průměr přes 5 povodní nad 3. stupněm, které model neviděl; průtoky jako odmocnina):
+
+| Co model ví | +12 h | +24 h | +36 h |
+|---|---|---|---|
+| „bude jako teď“ | 30,9 cm | 59,4 cm | 86,3 cm |
+| jen Ústí, vlastní historie | 26,8 | 49,9 | 74,2 |
+| + blízké brány | **17,0** | 31,4 | 51,6 |
+| + střední brány | 21,0 | 31,9 | 44,3 |
+| + vzdálené brány | 18,0 | **26,9** | **36,8** |
+
+**Hlavní zjištění:** čím dál dopředu chceme předpovídat, tím dál proti proudu se musíme dívat. Na 12 h stačí blízké brány a vzdálené jen přidají šum, protože voda z nich za 12 h ještě nedoteče. Na 36 h pomáhá každá další vrstva.
+
+Pro každý horizont proto budeme mít jiný model s jinými branami. Platí stejná výhrada: výběr odmocniny a skupin bran udělat na validačních povodních, test nechat stranou.
+
 ## Proč nestačí „když stoupá voda, bude povodeň“
 
 Porota se zeptá, proč nestačí sledovat, jestli voda stoupá. Pravidlo jsme změřili stejně jako model (+24 h, test 2017–2025, model se učil na 2003–2016):
