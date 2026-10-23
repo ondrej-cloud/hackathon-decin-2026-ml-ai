@@ -1,6 +1,6 @@
 # Vlastní Ridge pro Labe v Děčíně za 24 h: zpráva
 
-Dan, větev `dan-ridge`, pá 23. 10. 2026 20:28–21:56. Průběh po krocích v `PRUBEH.md`, všechny pokusy v
+Dan, větev `dan-ridge`, pá 23. 10. 2026 20:28–21:53. Průběh po krocích v `PRUBEH.md`, všechny pokusy v
 `POKUSY_RIDGE.md` a `vysledky/pokusy.jsonl`, nálezy Codexu v `NALEZY_CODEX.md`.
 
 ## Shrnutí
