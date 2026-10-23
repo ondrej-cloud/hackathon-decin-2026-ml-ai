@@ -59,3 +59,11 @@ Následující pokusy jsou doplněné zpětně (pá 19:55). Všechny byly před 
 - Otázka: stačí počítače, nebo je potřeba Kaggle?
 - Výsledek (MacBook M1, Děčín +24 h, 108 tisíc řádků): lineární regrese 0,2 s, LightGBM asi 7 s, MLP (64, 32) 17 s (82 epoch).
 - Závěr: všechno lokálně, Kaggle by jen zdržel nahráváním a frontou.
+
+## pá 20:05 · Ondra · přítoky v kraji (Bílina, Ploučnice)
+- Otázka: pomůže modelu průtok přítoků, které do Labe ústí mezi Ústím a Děčínem?
+- Data a rozdělení: společné rozdělení (`src/evaluate.py`), navíc průtok Bílina-Trmice a Ploučnice-Benešov z ČHMÚ, zpoždění 0, 3, 6 a 12 h.
+- Model a nastavení: Ridge(alpha=1), odmocnina průtoků, StandardScaler, seed 42 (stejný jako kontrola řetězce).
+- Výsledek na val (chyba na povodních bez / s přítoky): Děčín +6 h 4,6 / 4,8 cm, +12 h 9,0 / 9,5, +24 h 15,5 / 16,0; Ústí +6 h 7,3 / 7,5, +12 h 9,6 / 10,1, +24 h 15,7 / 16,2. Při vrcholech povodní přidaly přítoky 2–13 % vody, nejvíc v 8/2010.
+- Závěr: nepomohly, do společných vstupů je nepřidáváme. Jejich voda doteče za pár hodin a na delší horizont rozhoduje déšť. Limit: povodeň z lokálních dešťů v kraji (jako 8/2010) model bez srážek dopředu nevidí.
+- Soubory: jen kontrola, model není uložený.
