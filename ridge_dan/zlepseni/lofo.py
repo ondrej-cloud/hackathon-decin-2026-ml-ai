@@ -265,3 +265,36 @@ def kontrola_sklearn(horizont=24):
     tr = ~m.pov[k]["mezera"]
     p_sk = np.asarray(ridge.fit(X[tr], y[tr], CIL, horizont)(X[m.pov[k]["okno"]]))
     return float(np.abs(p_rych - p_sk).max())
+
+
+def cekej_na_ram(mb=1500, max_min=20):
+    """Před těžkým výpočtem počká, až bude volné RAM aspoň mb (víc běhů najednou se tak samo rozloží)."""
+    import subprocess
+    import time
+    for _ in range(max_min * 4):
+        out = subprocess.run(["powershell", "-NoProfile", "-Command",
+                              "[int]((Get-CimInstance Win32_OperatingSystem).FreePhysicalMemory/1024)"],
+                             capture_output=True, text=True).stdout.strip()
+        if out.isdigit() and int(out) >= mb:
+            return int(out)
+        time.sleep(15)
+    return None
+
+
+def vnitrni_val(A, y, tr, horizont=24):
+    """Pro vnořený výběr na týmovém splitu (validace): vnitřní LOFO přes tréninkové povodně (okno celé v tréninku).
+    Vrací [(standardizované součty bez mezery j, vstupy okna j, y okna j)]."""
+    yv = np.asarray(y, dtype=np.float64)
+    S_tr = soucty(A, yv, tr)
+    out = []
+    for p in povodne_lofo(horizont):
+        okno = p["okno"] & tr
+        if okno.sum() < 0.9 * p["okno"].sum():
+            continue  # validační povodně (mimo trénink)
+        out.append((standardizuj(minus(S_tr, soucty(A, yv, tr & p["mezera"]))), A[okno], yv[okno]))
+    return out
+
+
+def skore_vnitrni_val(vnitrni, alpha=1.0, pen=None, sloupce=None):
+    return float(np.mean([np.abs(predikuj(ridge_z_souctu(St, alpha, pen, sloupce), Ao) - yo).mean()
+                          for St, Ao, yo in vnitrni]))

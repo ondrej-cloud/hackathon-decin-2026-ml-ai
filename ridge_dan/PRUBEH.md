@@ -45,3 +45,6 @@
 - pá 23:04 · přepočet po opravě: LightGBM s dobou doběhu jen z trénovací části foldu CV 16,01 (bylo 16,20), val 22,08; CV všech variant s opravenou metrikou přestřelení.
 - pá 23:08 · STANICE_VSEM.md hotová: nové stanice pomáhají podle CV Ridge a LightGBM, fyzice pod hranicí 1 cm, všem na začátku vzestupu; síť zvlášť na Kaggle.
 - pá 23:09 · Codex (e) na čísla ve STANICE_VSEM.md: sedí, jen zaokrouhlení 28,8 → 28,7 opraveno; úkol uzavřený, test se nespouštěl.
+- pá 23:15 · nový úkol: zlepšení ze stanic přes přísné hodnocení (LOFO-CV 22 povodní, mezera ±20 dní, pravidlo ≥ 1 cm + většina povodní + žádná horší o > 10 cm), uzávěrka posunutá na 00:30.
+- pá 23:19 · motor `zlepseni/lofo.py` (rychlý Ridge ze součtů, shoda se sklearn 5e-5 cm) a foldy `stanice_vsem/lofo_foldy.csv` pushnuté jako první (09db53c); laťky: týmový Ridge 15,29, Ridge 30 stanic 14,79 (−0,49, lepší 15 z 22) → pravidlo nesplní.
+- pá 23:21 · najednou spuštěno 7 subagentů (A rozbor 2006, B penalizace nových stanic, C součty po povodích, D vnořený výběr stanic, E delší zpoždění pro 36 h, F Huber, příprava LOFO předpovědí LightGBM) a Codex jako experimentátor směsí G (zápis jen do `ridge_dan/smesi/`); běhy čekají na volnou RAM ≥ 1,5 GB.

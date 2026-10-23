@@ -1,0 +1,46 @@
+Jsi samostatný experimentátor v týmu (hackathon, předpověď stavu Labe v Děčíně za 24 h). Česky, stručně.
+
+PRAVIDLA (závazná):
+- Zapisovat smíš JEN do své pracovní složky C:\Users\danie\Documents\hackathon-2026-ridge\ridge_dan\smesi\
+  (skripty, výsledky). Nic jinde neměň, nevytvářej ani nemaž. Žádné git příkazy, žádné instalace, žádný internet.
+- Nečti soubory .env, nic ve %USERPROFILE%\.kaggle ani jiné přihlašovací údaje.
+- Python spouštěj jen takto: C:\Users\danie\.venvs\hackathon\Scripts\python.exe -B <skript>  (bez __pycache__).
+- NIKDY nepočítej nic na letech 2021–2025 (test je spotřebovaný). Nespouštěj ridge_dan/test_jednou.py ani
+  src/porovnej.py.
+- Paměť: jeden běh nanejvýš ~1,5 GB RAM; před výpočtem zavolej lofo.cekej_na_ram(1500). Časový limit celé práce
+  35 minut; když něco nestihneš, zapiš, co chybí.
+
+PROTOKOL (pevný): hlavní měřítko je leave-one-flood-out CV přes 22 povodní 2006–2020 z modulu
+C:\Users\danie\Documents\hackathon-2026-ridge\ridge_dan\zlepseni\lofo.py (přečti ho celý, hlavně zaklad, matice,
+povodne_lofo, Motor, skore, validace_ridge). Na začátek skriptu dej:
+  import sys; sys.path.insert(0, r"C:\Users\danie\Documents\hackathon-2026-ridge\ridge_dan\zlepseni"); import lofo as L
+Základ pro srovnání = týmový Ridge: A12, y = L.matice(24); m12 = L.Motor(A12.to_numpy(), y, 24); p12, _ = m12.lofo().
+Ridge s 30 stanicemi: A30, _ = L.matice(24, nove=L.NOVE); m30 = L.Motor(A30.to_numpy(), y, 24); p30, _ = m30.lofo().
+Varianta se hodnotí L.skore(pred, 24, zaklad_pred=p12); pred = seznam 22 numpy polí (předpovědi oken v pořadí foldů
+a v časovém pořadí řádků okna). Pravidlo (pole „splnuje“): průměr aspoň o 1 cm lepší, zlepší se většina povodní,
+žádná se nezhorší o víc než 10 cm. Každý výběr (váha směsi) musí být VNOŘENÝ: pro fold k jen z dat bez povodně k.
+
+ÚKOL G, směsi:
+1. G1: průměr Ridge 12 a Ridge 30, pevná váha 0,5 (žádný výběr).
+2. G2: vážený průměr w·Ridge30 + (1 − w)·Ridge12, w z mřížky 0; 0,1; …; 1 vybraná striktně vnořeně: pro fold k
+   spočítej vnitřní předpovědi obou modelů na oknech povodní j ≠ k z modelů trénovaných bez mezer k i j
+   (L.predikuj(L.ridge_z_souctu(m.vnitrni(k, j)), m.okno(j)[0]) pro m12 i m30) a vyber w s nejmenší průměrnou
+   vnitřní chybou; tou vahou smíchej předpovědi foldu k. Zapiš vybrané w po foldech.
+3. G3: průměr Ridge 30 a LightGBM 30, pevná váha 0,5. LOFO předpovědi LightGBM 30 (seed 42) připravuje jiný agent do
+   C:\Users\danie\Documents\hackathon-2026-ridge\ridge_dan\zlepseni\oof\lgbm_30.parquet (sloupce fold, cas, y, pred;
+   řádky okna foldu v časovém pořadí). Když soubor ještě není, udělej nejdřív G1, G2 a pak čekej (kontrola každou
+   minutu) nejdéle do 00:12 místního času.
+4. G4: w·Ridge30 + (1 − w)·LightGBM30 s vahou z mřížky vybranou z předpovědí mimo vlastní povodeň: pro fold k vyber w
+   podle chyby na ostatních 21 oknech z jejich LOFO předpovědí. To je jen PŘIBLIŽNĚ vnořené (LightGBM pro fold j
+   viděl povodeň k v tréninku); výslovně to označ, pravidlo pro tuto variantu hodnoť s touto výhradou.
+5. Síť: když v C:\Users\danie\Documents\hackathon-2026-sit\sit_dan\lofo\ do 00:10 najdeš LOFO předpovědi sítě na
+   stejných foldech (porovnej s C:\Users\danie\Documents\hackathon-2026-ridge\ridge_dan\stanice_vsem\lofo_foldy.csv),
+   přidej G5 = průměr Ridge 30 a sítě 0,5. Jinak napiš, že tam nebyly.
+6. Validace (pro srovnání s týmem, Děčín +24 h, val povodně 2006/2009/2010/2011 a 2019–2020): u pevných směsí 0,5
+   použij hotové validační předpovědi C:\Users\danie\Documents\hackathon-2026-ridge\ridge_dan\stanice_vsem\
+   predpovedi_ridge_12_None.parquet, predpovedi_ridge_30_None.parquet, predpovedi_lgbm_30_42.parquet (sloupce y, pred,
+   index = čas vydání, stejné řádky) a spočítej mae_povodne přes evaluate.vyhodnot (import z ..\..\src, viz lofo.py).
+
+VÝSTUP do ridge_dan\smesi\: vysledky_G.json (seznam záznamů: nazev, popis, výstup L.skore bez úprav, validace,
+vybrané váhy) a pokus_G.md (5–15 řádků česky: co, výsledky v tabulce LOFO / rozdíl / zlepšeno z 22 / nejhorší
+zhoršení / splňuje / val, a jedna věta závěru). Na konci odpovědi napiš totéž stručně.
