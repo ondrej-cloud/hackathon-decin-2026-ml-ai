@@ -68,3 +68,33 @@ Následující pokusy jsou doplněné zpětně (pá 19:55). Všechny byly před 
 - Otázka: stačí počítače, nebo je potřeba Kaggle?
 - Výsledek (MacBook M1, Děčín +24 h, 108 tisíc řádků): lineární regrese 0,2 s, LightGBM asi 7 s, MLP (64, 32) 17 s (82 epoch).
 - Závěr: všechno lokálně, Kaggle by jen zdržel nahráváním a frontou.
+
+## pá 19:45 · Dan · LightGBM v1 a v2 ze zadání: stav proti změně stavu
+- Otázka: jak dopadne LightGBM na všech 98 vstupech, když se učí stav (v1) a když změnu stavu proti teď (v2)?
+- Data a rozdělení: společné rozdělení, všech 6 kombinací.
+- Vstupy: všech 98 sloupců bez úprav.
+- Model a nastavení: LGBMRegressor(n_estimators 500, learning_rate 0,05, num_leaves 31), seed 42, num_threads 4.
+- Kde a jak dlouho: Dan, Yoga 7i, 15–20 s na model.
+- Výsledek na val (chyba na povodních, Děčín +12 / +24 / +36 h): v1 57,7 / 69,6 / 73,7 cm, v2 27,8 / 49,4 / 55,6 cm, „jako teď“ 23,0 / 44,4 / 65,6. `prumer_povodne` v1 66,1, v2 40,9, „jako teď“ 44,3. Vrchol povodně 2006 (875 cm) obě přestřelily, v1 o 128–152 cm, v2 o 69–110 cm. v2 propásla před 2. stupněm 1–3 povodně.
+- Závěr: obě jsou na povodních horší nebo stejné jako „jako teď“, Ondrova kontrola řetězce (28 / 50 / 56 cm) sedí. Na trénovacích povodních má v2 chybu jen 4,7 / 6,3 / 8,1 cm, na validaci 6× větší: stromy si pamatují povodně z tréninku (hlavně 2013) a na syrových průtocích je pak přenesou na jinou povodeň, kde neplatí.
+- Soubory: `src/models/lgbm_v1.py`, `src/models/lgbm_v2.py`, `results/2026-10-23_1938_lgbm_v1.json`, `results/2026-10-23_1940_lgbm_v2.json`
+
+## pá 19:45 · Dan · LightGBM a a c: průtoky posunuté o dobu doběhu
+- Otázka: pomůže stromům, když místo 98 syrových sloupců dostanou fyzikálně připravené vstupy?
+- Data a rozdělení: společné rozdělení, všech 6 kombinací.
+- Vstupy: a) stav v cíli (teď až 24 h zpět) a ke každé stanici proti proudu průtok, který do cíle doteče za horizont (zpoždění doba doběhu − horizont, když je záporné, tak poslední známý), a rozdíl proti průtoku, který do cíle dotéká teď. Doby doběhu z `src/doba_dobehu.py`, zaokrouhlené na zpoždění v X. Průtok v cíli záměrně ne, hladina stačí. c) navíc sin a cos dne v roce a trend stavu za 6 h. Varianta b) se srážkami nejde, srážky v datech nemáme (balíček pořadatelů je jen u Ondry).
+- Model a nastavení: stejné jako v2, cíl je změna stavu.
+- Kde a jak dlouho: Dan, Yoga 7i, 5–7 s na model.
+- Výsledek na val (Děčín +12 / +24 / +36 h): a 10,6 / 22,0 / 37,5 cm, c 10,4 / 21,7 / 36,4 cm. `prumer_povodne` a 24,0, c 22,8 (Ridge 17,1, „jako teď“ 44,3). c nic nepropásl a nemá planý poplach, a měl 1 planý poplach před 2. stupněm na 24 a 36 h.
+- Závěr: připravené vstupy chybu na povodních skoro půlí (40,9 → 24,0) a c je o 1,2 cm lepší než a, nejlepší LightGBM zatím. Pořád je ale o 5,7 cm horší než Ridge. Přeučení zůstává: na trénovacích povodních 5,1 / 6,5 / 8,7 cm, na validaci 2–4× víc. Ridge má na tréninku i validaci skoro stejně. Nejvíc ztrácí na povodních 2006 a 2011, které jsou vyšší než všechno v tréninku kromě 2013 (Děčín +24 h: 2006 31 cm proti 16 u Ridge, 2011 23 proti 15). Při stoupání v průměru nepodhodnocuje, chyba je skákání předpovědi, ne soustavný posun. Povodeň 9/2010 podhodnotí o 25 cm všechny modely včetně Ridge, voda nejspíš přišla z deště blízko kraje.
+- Soubory: `src/models/lgbm_a.py`, `src/models/lgbm_c.py`, `results/2026-10-23_1941_lgbm_a.json`, `results/2026-10-23_1942_lgbm_c.json` (po úpravě kódu znovu `_1947_`, stejná čísla), `src/rozbor_lgbm.py` (tabulka, trénink proti validaci)
+
+## pá 19:52 · Dan · LightGBM c: proti přeučení list 200 hodin, monotónní omezení, menší stromy
+- Otázka: zmenší se přeučení c, když stromy zjednoduším? Vždy jen jedna změna proti c.
+- Data a rozdělení: společné rozdělení, všech 6 kombinací.
+- Vstupy: jako c.
+- Model a nastavení: c + `min_child_samples` 200 (list aspoň 200 hodin, jedna povodeň se do něj nevejde); c + monotónní omezení (víc přitékající vody nesmí dát menší vzestup, ze zadání); c + `num_leaves` 7.
+- Kde a jak dlouho: Dan, Yoga 7i, 4–10 s na model.
+- Výsledek na val (`prumer_povodne`, c 22,8): list 200 hodin 22,2, monotónní 23,8, 7 listů 23,4 (a 2 plané poplachy před 2. stupněm na 24 h).
+- Závěr: nic neprošlo. List 200 hodin je lepší jen o 0,6 cm, pod hranicí 1 cm. Monotónní omezení a menší stromy jsou horší. Zjednodušení stromů nestačí, problém je spíš v tom, že strom dává schody a nad tím, co viděl, neumí pokračovat.
+- Soubory: `src/models/lgbm_c_list200.py`, `src/models/lgbm_c_monotonni.py`, `src/models/lgbm_c_list7.py`, `results/2026-10-23_1948_lgbm_c_list200.json`, `results/2026-10-23_1950_lgbm_c_monotonni.json`, `results/2026-10-23_1951_lgbm_c_list7.json`
