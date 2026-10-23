@@ -30,7 +30,7 @@ Nejvíc bodů je za odbornost a pořadatelé řekli rovnou: radši jednodušší
 - **Kdo teď na čem dělá:**
     - Ondra: neuronová síť hotová (17,8 cm). Srovnání všech čtyř hotové (`docs/POKUSY.md`, pá 20:15): lineární regrese 17,1 cm vede, návrh na finální model. Vyhodnocení opravené po nezávislé kontrole, starší výsledky je potřeba pustit znovu.
     - Dan: LightGBM `src/models/lgbm.py`
-    - Honza: lineární regrese `src/models/ridge.py` hotová (val `prumer_povodne` 17,1 cm proti 44,3 u „jako teď“, varianty v `docs/POKUSY.md`, grafy v `docs/grafy/`), teď aplikace
+    - Honza: lineární regrese `src/models/ridge.py` hotová (val `prumer_povodne` 17,1 cm proti 44,3 u „jako teď“, varianty v `docs/POKUSY.md`, grafy v `docs/grafy/`). Aplikace `app/app.py` běží (`streamlit run app/app.py`, obrazovky „Teď“ a „Jak dobře to funguje“, model se volí v menu). Teď 3D mapa a doplňky podle `docs/UKOL_APLIKACE.md`
     - Tobias: fyzikální model `src/models/fyzika.py`
 - **Smějí data do cloudu (Kaggle, Colab, jazykové modely)?** Úlohy KSI (obce, ovzduší, Labe) mají otevřená data, ta můžou. Data ÚFP (ekvilibrium, ubíhající elektrony) se nesmí zveřejnit ani zpřístupnit nikomu mimo účastníky. Na Kaggle jen se svolením mentora z ÚFP, do té doby jen lokálně.
 
