@@ -285,3 +285,19 @@ Následující pokusy jsou doplněné zpětně (pá 19:55). Všechny byly před 
 - Proto se krátká okna mírně liší: dva roky jen kraje 45,1 → 44,6 cm, jeden rok všech stanic 28,3 → 29,2 cm. U 8 a 13 let jsou výsledky stejné a počet propásnutí je stejný všude. Ve výsledném grafu zůstávají i popisky propásnutých varování ze souběžné verze.
 - Upřesnění závěru pro porotu: 26,9 proti 27,8 cm je rozdíl pod 1 cm, takže říkáme „podobná chyba“, nikoli jasné vítězství. Hodnota 44,6 cm patří krajským stanicím v letech 2017–2018, ne skutečnému balíčku 2024–2026; z tohoto pokusu nelze tvrdit, jak by dopadlo učení na samotném balíčku. Delší historie nám také dovoluje ověřovat na více povodních.
 - Uloženy jsou všechny metriky a otisky pro opakování pokusu v `results/kolik_dat/2026-10-23_204319_kolik_dat.json`; graf lze překreslit bez trénování. Společný model zůstává beze změny.
+
+## pá 20:50 · Honza · Ridge s větší váhou povodňových hodin
+- Otázka: hodnotíme chybu na povodních, ale model se učí na všech hodinách a nad 1. stupněm povodňové aktivity je v tréninku jen 2,2 % hodin (Děčín) a 1,5 % (Ústí). Pomůže, když jim při tréninku dáme větší váhu?
+- Data a rozdělení: společné rozdělení, všech 6 kombinací, verze vyhodnocení `69a6db32`.
+- Vstupy: 98 sloupců jako `ridge`.
+- Model a nastavení: postup z `ridge.py` (odmocnina průtoků, StandardScaler, Ridge alpha 1), Ridge navíc dostane váhy řádků (`sample_weight`): 1, když je hladina teď pod 1. stupněm (Děčín 400 cm, Ústí 450 cm), jinak 5 (`ridge_vahy`) nebo 20 (`ridge_vahy20`). Škálování se váhami neřídí.
+- Kde a jak dlouho: Honzův notebook, pod sekundu na model.
+- Výsledek na val (chyba na povodních, Děčín +12 / +24 / +36 h, Ústí +12 / +24 / +36 h):
+  - `ridge`: 9,0 / 15,5 / 26,0, Ústí 9,6 / 15,7 / 26,7; `prumer_povodne` 17,1 cm, `mae` 8,2 cm, bias na povodních −5,1 cm
+  - váha 5: 8,9 / 15,2 / 26,9, Ústí 9,3 / 15,3 / 27,4; 17,2 cm, `mae` 8,4 cm (o 0,2 horší), bias −8,1 cm
+  - váha 20: 9,7 / 16,3 / 29,5, Ústí 9,9 / 16,4 / 29,4; 18,5 cm, `mae` 8,9 cm (o 0,7 horší), bias −11,2 cm
+  - varování: obě varianty 0 propásnutých povodní a 0 planých poplachů jako `ridge`, ale předstih 2. stupně 16,8 a 16,4 h místo 17,4 h a chyba vrcholu 11,8 a 15,8 cm místo 10,0 cm. „Jako teď“ 44,3 cm.
+- Proč to nepomohlo (ověřeno): hodiny s vysokou hladinou teď jsou hlavně kolem vrcholu a při opadání. V tréninku z nich hladina v Děčíně za 24 h v 71 % případů klesne (průměrně o 12 cm), za 36 h v 76 % (o 22 cm). Váha model naučí „vysoká voda teď, bude klesat“ a posune předpovědi na povodních dolů o 2–5 cm. Při opadání to trochu pomůže, při stoupání podhodnocuje ještě víc: Děčín +24 h bias při stoupání −7 cm u `ridge`, −12 cm s váhou 5.
+- Kde dělá chybu (váha 5, u `ridge` skoro stejně): největší díl chyby na povodních má povodeň 9/2010 (33 %, průměrná chyba 22 cm), pak 1/2011 (25 %, 17 cm), 4/2006 (24 %, 17 cm) a 3/2009 (18 %, 12 cm). V 9/2010 model soustavně podhodnocuje (Děčín +24 h o 18 cm, +36 h o 31 cm), nejspíš déšť blízko kraje, který stanice proti proudu nevidí (domněnka). Podle horizontu dělá 36 h 53 % chyby, 24 h 30 % a 12 h 18 %. Váha 5 pomohla jen povodni 4/2006 (17,7 → 16,6 cm), ostatním mírně uškodila.
+- Závěr: neprošlo. Váha 5 je proti `ridge` v rámci náhody stejná (+0,1 cm), váha 20 je horší o 1,4 cm a obě zhoršily klidnou vodu, předstih a vrcholy. Finální zůstává `ridge`. Kdyby se to zkoušelo znovu, váha by se dala odvodit od skutečné hladiny za h hodin místo hladiny teď, pak by se zvýraznilo i stoupání (nezkoušeno).
+- Soubory: `src/models/ridge_vahy.py`, `src/models/ridge_vahy20.py`, `results/2026-10-23_204657_ridge_vahy.json`, `results/2026-10-23_204702_ridge_vahy20.json`, `results/predpovedi/ridge_vahy.parquet`, `results/predpovedi/ridge_vahy20.parquet`.
