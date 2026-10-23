@@ -19,7 +19,8 @@ from predikce import (BARVY, HORIZONTY, KDE, NAZEV, ROOT, SPA, STUPNE, interval,
                       vstupy, vysvetleni)
 
 POVODNE = {"4/2006": ("2006-03-25", "2006-04-10"), "3/2009": ("2009-02-26", "2009-03-14"),
-           "9/2010": ("2010-09-20", "2010-10-06"), "1/2011": ("2011-01-08", "2011-01-24")}
+           "9/2010": ("2010-09-20", "2010-10-06"), "1/2011": ("2011-01-08", "2011-01-24"),
+           "9/2024 Boris (test)": ("2024-09-08", "2024-09-24")}
 TZ = "Europe/Prague"
 MODRA = "#1f77b4"
 
@@ -42,8 +43,8 @@ def model_c(nazev, cil, h):
 
 
 @st.cache_data
-def predpovedi_val(nazev):
-    return pd.read_parquet(ROOT / "results/predpovedi" / f"{nazev}.parquet")
+def predpovedi_val(nazev, cast="val"):
+    return pd.read_parquet(ROOT / "results/predpovedi" / f"{nazev}{'_test' if cast == 'test' else ''}.parquet")
 
 
 @st.cache_data
@@ -53,11 +54,11 @@ def animace_html(povoden, nazev):
 
 
 @st.cache_data
-def metriky(nazev):
-    """Poslední plný výsledek modelu na validaci z results/."""
-    for f in sorted((ROOT / "results").glob(f"*_{nazev}.json"), reverse=True):
+def metriky(nazev, cast="val"):
+    """Poslední plný výsledek modelu na validaci (nebo testu) z results/."""
+    for f in sorted((ROOT / "results").glob(f"*_{nazev}{'_test' if cast == 'test' else ''}.json"), reverse=True):
         z = json.loads(f.read_text(encoding="utf-8"))
-        if z["cast"] == "val" and not z.get("rychle"):
+        if z["cast"] == cast and not z.get("rychle"):
             return pd.DataFrame(z["vysledky"])
     return pd.DataFrame()
 
@@ -155,12 +156,16 @@ with tab_kvalita:
     povoden = a.selectbox("Povodeň", list(POVODNE), index=3)
     h = b.radio("Předpověď vydaná ... hodin předem", HORIZONTY, index=1, horizontal=True)
     od, do = POVODNE[povoden]
+    cast = "test" if "test" in povoden else "val"
+    if cast == "test":
+        st.info("Povodeň Boris 9/2024 je z testovací části (2021–2025), kterou model nikdy neviděl a která se pustila "
+                "jednou na konci na finální model. Předpovědi jsou z modelu učeného do roku 2018.")
     try:
-        P = predpovedi_val(nazev)
+        P = predpovedi_val(nazev, cast)
     except FileNotFoundError:
         P = None
-        st.warning(f"Pro model {nazev} zatím nejsou uložené předpovědi na validaci (results/predpovedi/{nazev}.parquet).")
-    J = predpovedi_val("jako_ted")
+        st.warning(f"Pro model {nazev} zatím nejsou uložené předpovědi ({cast}) v results/predpovedi/.")
+    J = predpovedi_val("jako_ted", cast)
     J = J[(J.cil == cil) & (J.horizont == h)][od:do]
     fig = go.Figure()
     fig.add_scatter(x=cesky(J.index + pd.Timedelta(hours=h)), y=J.skutecnost, name="skutečná hladina",
@@ -179,7 +184,7 @@ with tab_kvalita:
     st.caption("Každý bod modré čáry je samostatná předpověď vydaná o zvolený počet hodin dřív. "
                "„Bude jako teď“ je stejná křivka posunutá o ten počet hodin, proto je vždycky pozadu.")
 
-    M, MJ = metriky(nazev), metriky("jako_ted")
+    M, MJ = metriky(nazev, cast), metriky("jako_ted", cast)
     if not M.empty:
         tab = pd.concat([M.assign(model=nazev), MJ.assign(model="bude jako teď")])
         tab = tab[tab.cil == cil][["model", "horizont", "mae_povodne", "spa2_predstih_h", "spa2_propasnuto",
