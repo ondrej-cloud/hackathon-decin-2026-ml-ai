@@ -43,7 +43,8 @@ U stanic proti proudu bereme jen **průtok**, ne hladinu. Průtok se mezi stanic
 - **Žatec, Kadaň, Karlovy Vary (Ohře):** Ohři reguluje přehrada Nechranice a informaci z nich z velké části nese Louny. Dají se přidat, kdyby Ohře modelu chyběla.
 - **Litoměřice:** data až od 2017.
 - **Hřensko (Labe):** leží pod Děčínem, pro předpověď nepomůže.
-- **Malé řeky v kraji** (Kamenice, Bílina, Ploučnice, Mandava, Chomutovka): voda z nich do Labe doteče za 0–7 h a k Děčínu přidají jen pár procent (Děčín má o 4–8 % víc vody než Ústí). Stažené jsou na pozdější druhou zkoušku modelů.
+- **Přítoky v kraji** (Bílina a Ploučnice mezi Ústím a Děčínem, menší potoky): voda z nich do Labe doteče za 0–7 h. V průměru dají 12 m³/s, Děčín má proti Ústí o 4–8 % víc vody. Při vrcholu povodně přidaly 2–13 %: nejvíc v srpnu 2010 (188 m³/s, lokální deště), při povodni 2013 jen 2 %, v září 2024 jen 15 m³/s. Zkusili jsme je přidat do lineárního modelu (průtok Trmice a Benešov nad Ploučnicí, zpoždění 0–12 h) a na validaci nepomohly: chyba se zhoršila o 0,2–0,5 cm na 6, 12 i 24 h. Jejich vodu za 12 h a víc ještě nikdo nezměřil, záleží na dešti. Co už přiteklo, je vidět v hladině Děčína. Nechané mimo model.
+- **Kamenice, Mandava, Chomutovka:** Kamenice ústí pod Děčínem, Chomutovka do Ohře nad Louny a Mandava do Lužické Nisy. Pro Děčín nepomůžou, stažené jsou na pozdější druhou zkoušku modelů.
 - **Roky 2002–2005:** Kostelec a průtok v Mělníku a Nymburku chybí do konce 2005. Povodeň 2002 proto nemáme (Děčín má data až od 2003).
 - **Rok 2026 z balíčku:** stanice proti proudu za 2026 nemáme, proto tabulka končí rokem 2025.
 - **Srážky a počasí:** balíček má meteorologii jen 2024–2026, na 20 let nestačí. Bez srážek nejde předpovídat dál než zhruba den a půl. Možné rozšíření.

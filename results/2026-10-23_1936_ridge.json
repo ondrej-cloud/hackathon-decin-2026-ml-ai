@@ -1,0 +1,41 @@
+{
+ "autor": "Honza",
+ "cas": "2026-10-23T19:36",
+ "model": "ridge",
+ "cast": "val",
+ "rychle": true,
+ "popis": "Lineární regrese (Ridge): odmocnina z průtoků, škálování, Ridge(alpha=1). Cíl je hladina za h hodin.",
+ "parametry": {
+  "alpha": 1.0,
+  "odmocnina": "jen průtoky",
+  "cil": "hladina"
+ },
+ "vysledky": [
+  {
+   "model": "ridge",
+   "cil": "decin",
+   "horizont": 24,
+   "mae": 7.5,
+   "mae_povodne": 15.5,
+   "mae_nad_1spa": 16.8,
+   "chyba_vrcholu": 14.4,
+   "vrcholy_o_kolik": [
+    -22,
+    9,
+    19,
+    -7
+   ],
+   "radku": 19072,
+   "spa2_povodni": 4,
+   "spa2_predstih_h": 15.5,
+   "spa2_propasnuto": 0,
+   "spa2_plane_poplachy": 0,
+   "spa3_povodni": 2,
+   "spa3_predstih_h": 19.0,
+   "spa3_propasnuto": 0,
+   "spa3_plane_poplachy": 0,
+   "trenink_s": 0.6,
+   "predpoved_s": 0.07
+  }
+ ]
+}

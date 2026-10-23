@@ -25,12 +25,12 @@ Nejvíc bodů je za odbornost a pořadatelé řekli rovnou: radši jednodušší
 - **Komu řešení pomáhá:**
 - **Data:** `data/external/labe_hodinove.parquet` (v Gitu): hodinové hladiny Děčín a Ústí a průtoky 12 stanic na Labi, Vltavě, Ohři a přítocích, 2006–2025, z otevřených dat ČHMÚ. Načíst přes `nacti()` ze `src/data.py`. Podrobnosti v `docs/DATA.md`, sekce Labe.
 - **Metrika:** průměrná chyba hladiny v cm během povodní (`mae_povodne`), k tomu předstih varování před 2. a 3. stupněm povodňové aktivity a plané poplachy. Srovnáváme s „bude jako teď“ (`src/models/jako_ted.py`), Děčín +24 h: 44,4 cm.
-- **Rozdělení a vyhodnocení:** `src/evaluate.py` (train 2006–2018, val 4 vynechané povodně a 2019–2020, test 2021–2025). Model je `src/models/<nazev>.py` s `fit(X, y, cil, horizont)`, která vrátí `predict(X)`. Spouští se `python src/porovnej.py <nazev>`, srovnání `--prehled`, `--test` jen Ondra. Zadání modelů pro všechny v `docs/UKOL_MODELY.md`.
+- **Rozdělení a vyhodnocení:** `src/evaluate.py` (train 2006–2018, val 4 vynechané povodně a 2019–2020, test 2021–2025). Model je `src/models/<nazev>.py` s `fit(X, y, cil, horizont)`, která vrátí `predict(X)`. Spouští se `python src/porovnej.py <nazev>`, srovnání `--prehled`, `--test` jen Ondra. Na Windows před tím `$env:PYTHONUTF8=1`, jinak spadne zápis JSON na kódování. Zadání modelů pro všechny v `docs/UKOL_MODELY.md`.
 - **Propojení modelu a aplikace:** (co předpověď bere a vrací, kde je)
 - **Kdo teď na čem dělá:**
     - Ondra: neuronová síť `src/models/mlp.py`, ve 21:00 srovnání a výběr
     - Dan: LightGBM `src/models/lgbm.py`
-    - Honza: lineární regrese `src/models/ridge.py`, po 21:00 aplikace
+    - Honza: lineární regrese `src/models/ridge.py` hotová (val `prumer_povodne` 17,1 cm proti 44,3 u „jako teď“, varianty v `docs/POKUSY.md`, grafy v `docs/grafy/`), teď aplikace
     - Tobias: fyzikální model `src/models/fyzika.py`
 - **Smějí data do cloudu (Kaggle, Colab, jazykové modely)?** Úlohy KSI (obce, ovzduší, Labe) mají otevřená data, ta můžou. Data ÚFP (ekvilibrium, ubíhající elektrony) se nesmí zveřejnit ani zpřístupnit nikomu mimo účastníky. Na Kaggle jen se svolením mentora z ÚFP, do té doby jen lokálně.
 
