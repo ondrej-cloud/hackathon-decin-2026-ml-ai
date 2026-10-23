@@ -24,7 +24,7 @@ Každý trénink a pokus, i nepovedený, jako nový záznam na konec souboru. Ni
 - Závěr: řetězec funguje. Lineární model je zatím jasně nejlepší, LightGBM je za 24 h dokonce horší než „jako teď“, Dan zjistí proč. Odmocnina se smí dávat jen na průtoky, na hladině zkazila vrchol 2006 o metr.
 - Soubory: `results/2026-10-23_1913_jako_ted.json`, `src/models/jako_ted.py`; Ridge a LightGBM jen jako kontrola, nejsou uložené, udělají je Honza a Dan.
 
-## pá 19:35 · Tobias · doby putování vody pro fyzikální model
+## pá 19:28 · Tobias · doby putování vody pro fyzikální model
 - Otázka: za kolik hodin se změna průtoku na stanici proti proudu projeví v Ústí a v Děčíně?
 - Data a rozdělení: `labe_hodinove.parquet`, jen train z `src/evaluate.py` (2006–2018 bez validačních povodní).
 - Vstupy: průtoky vyhlazené klouzavým průměrem 12 h, z nich změna za 6 h. Pro každou dvojici stanic posun 0–48 h s největší korelací změn. Zvlášť pro celý train a pro vysokou vodu (průtok v Ústí nad 75. percentilem).
@@ -34,7 +34,7 @@ Každý trénink a pokus, i nepovedený, jako nový záznam na konec souboru. Ni
 - Závěr: bez vyhlazení vycházely korelace jen 0,2–0,46 a Nymburk dokonce rychlejší než Kostelec pod ním, to ruší hodinové kolísání (nejspíš elektrárny na Vltavě). Po vyhlazení časy dávají smysl a sedí na dolní hranu odhadů ze zadání. Ohře má nejslabší vztah, je nejdál a mezi Louny a Ústím ještě něco přitéká. Tyhle časy použije `src/models/fyzika.py`.
 - Soubory: zatím jen tenhle zápis, výpočet bude v `src/models/fyzika.py`.
 
-## pá 19:50 · Tobias · fyzikální model, první běh a měrná křivka
+## pá 19:31 · Tobias · fyzikální model, první běh a měrná křivka
 - Otázka: kolik umí samotná fyzika bez učení, jen doby putování a měrná křivka?
 - Data a rozdělení: společné z `src/evaluate.py`, Děčín +24 h (`--rychle`).
 - Vstupy: průtok v cíli teď, průtoky bran Vraňany, Kostelec, Louny a nad nimi Praha, Nymburk, Jizera v zpožděních z `features.py`, hladina v cíli teď.
@@ -80,7 +80,7 @@ Následující pokusy jsou doplněné zpětně (pá 19:55). Všechny byly před 
 - Výsledek (MacBook M1, Děčín +24 h, 108 tisíc řádků): lineární regrese 0,2 s, LightGBM asi 7 s, MLP (64, 32) 17 s (82 epoch).
 - Závěr: všechno lokálně, Kaggle by jen zdržel nahráváním a frontou.
 
-## pá 20:05 · Tobias · fyzikální model, všech 6 kombinací a třetí vrstva stanic
+## pá 19:36 · Tobias · fyzikální model, všech 6 kombinací a třetí vrstva stanic
 - Otázka: proč model podhodnocuje vrcholy a pomůže víc stanic proti proudu?
 - Data a rozdělení: společné z `src/evaluate.py`, všech 6 kombinací.
 - Úprava podle nových pravidel: doby putování se měří s vyhlazením jen z minulosti (dřív vycentrované, ovlivňovalo jen odhad doby putování na trénovacích datech). Výsledek se nezměnil.
