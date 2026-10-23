@@ -101,6 +101,26 @@ Povodeň 3/2005 nejde otestovat, chybí data ze stanic nad krajem.
 - Na přesnost u extrémních povodní (nad 8 m) máme jen 2013, tam je závěr nejistý.
 - ČHMÚ s profesionálními modely a srážkami nepřekonáme a netvrdíme to.
 
+## Příběh: co přinesla přidaná data
+
+Začneme jen s tím, co jsme dostali, ukážeme, kde to nestačí, a přidáváme data krok za krokem. U každého kroku změříme, o kolik pomohl. Přidaná hodnota je pak číslo, ne tvrzení.
+
+**Krok 0, jen balíček:** 2024–9/2026 a jediná povodeň (9/2024). Model na povodni nejde ani natrénovat, ani ověřit. Proto jsme hledali víc.
+
+**Další kroky** (+24 h a +12 h, průměr přes 6 velkých povodní, které model při tréninku neviděl, lineární regrese):
+
+| Krok | Co model ví | Chyba +12 h | Chyba +24 h | Varování před 3. stupněm (+24 h) |
+|---|---|---|---|---|
+| „bude jako teď“ | nic | 30,5 cm | 58,7 cm | 0 h |
+| 1 | Děčín, vlastní historie 20 let | 24,6 cm | 47,5 cm | 10 h předem |
+| 2 | + Ústí (stanice z balíčku, 20 let) | 20,1 cm | 41,5 cm | 14 h předem |
+| 3 | + Mělník (navíc z ČHMÚ) | 13,9 cm | 32,9 cm | 17 h předem |
+| 4 | + Praha-Chuchle (navíc z ČHMÚ) | 13,8 cm | 29,6 cm | 21 h předem |
+
+- Přidaná data přinesla dvě věci: **čas** (20 let historie, tedy povodně na učení i test) a **prostor** (stanice proti proudu, tedy delší předstih).
+- Průtoky jdou do modelu jako odmocnina. Výška hladiny neroste s průtokem rovnoměrně, protože se řeka při velké vodě rozlije do šířky. Bez odmocniny Mělník a Praha na 12 h chybu zhoršily (model při velké vodě přestřeloval).
+- **Pozor:** odmocninu jsme zatím vybrali podle stejných povodní, na kterých ji měříme. Ve finále ji vybrat na validačních povodních (do 2016) a testovat jen na 2023 a 2024.
+
 ## Přidaná hodnota
 
 Porota se nejspíš zeptá: „ČHMÚ už předpovědi dělá, k čemu je váš model?“ Odpověď:
@@ -133,13 +153,14 @@ Porota se nejspíš zeptá: „ČHMÚ už předpovědi dělá, k čemu je váš 
 
 1. Děčín a povodně 2002, 2013, 2024 (fotka, výška hladiny).
 2. Otázka: dá se den dopředu říct, co přijde?
-3. Data: co bylo v balíčku a proč nestačilo (jedna povodeň, žádné stanice nad krajem). Co jsme přidali a odkud.
+3. Data z balíčku: jedna povodeň, nejvýš Ústí. Model nejde ani ověřit.
 4. Fyzika: voda putuje, Praha 17 h, Mělník 12 h, Ústí 4 h.
-5. Model a výsledky. Za běžného stavu nic moc, při povodni poloviční chyba, 2013 varování 18 h předem.
-6. Odkud povodně přicházejí (2013 80 % Vltava).
-7. Sucho a záhada klesající hladiny při stejném průtoku.
-8. Demo: přehrání 2013.
-9. Limity: bez srážek ne dál než den, vrchol přestřelí, ČHMÚ je lepší.
+5. Krok za krokem: přidáváme historii a stanice proti proudu, chyba na 24 h klesá z 59 na 30 cm a varování z 0 na 21 h předem (tabulka výš).
+6. Za běžného stavu se řeka skoro nehýbe a model nic moc nepřidá. Při povodni má poloviční chybu.
+7. Odkud povodně přicházejí (2013 80 % Vltava).
+8. Sucho a záhada klesající hladiny při stejném průtoku.
+9. Demo: přehrání 2013.
+10. Limity: bez srážek ne dál než den, vrchol přestřelí, ČHMÚ je lepší.
 
 ## Rozdělení práce (návrh)
 
