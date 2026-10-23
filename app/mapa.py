@@ -46,7 +46,8 @@ def _cislo(hodnota):
     return "chybí měření" if pd.isna(hodnota) else f"{hodnota:,.0f}".replace(",", " ")
 
 
-def _stanice(cas):
+def _stanice(cas, predpovedi=None):
+    """predpovedi: {klic: (horizont, hladina_cm)} z modelu, přidá se k popisku Děčína a Ústí."""
     metadata, percentily = _podklady()
     radek = nacti().loc[_cas_utc(cas)]
     body = []
@@ -55,6 +56,7 @@ def _stanice(cas):
         q = radek[f"{klic}_Q"]
         barva = SEDA
         tooltip = f"{stanice.stanice} · {stanice.tok}\nPrůtok: {_cislo(q)}"
+        predpoved = ""
         if pd.notna(q):
             tooltip += " m³/s"
         if klic in SPA:
@@ -66,6 +68,11 @@ def _stanice(cas):
             barva = SEDA if stupen is None else BARVY[stupen]
             tooltip += f"\nHladina: {_cislo(h)}" + (" cm" if pd.notna(h) else "")
             tooltip += f"\n{stav}"
+            if predpovedi and klic in predpovedi:
+                hor, cm = predpovedi[klic]
+                s = sum(cm >= mez for mez in SPA[klic])
+                predpoved = f"\nza {hor} h: {cm:.0f} cm" + (f", {s}. stupeň" if s else "")
+                tooltip += f"\nPředpověď modelu{predpoved}"
         else:
             p95, p99 = percentily[f"{klic}_Q"]
             if pd.notna(q):
@@ -84,15 +91,15 @@ def _stanice(cas):
             "vrchol": [stanice.lon, stanice.lat, z + vyska * MERITKO_PRUTOKU],
             "prutok": vyska,
             "barva": barva,
-            "popisek": f"{stanice.stanice}\n{_cislo(q)}" + (" m³/s" if pd.notna(q) else ""),
+            "popisek": f"{stanice.stanice}\n{_cislo(q)}" + (" m³/s" if pd.notna(q) else "") + predpoved,
             "tooltip": tooltip,
         })
     return body
 
 
-def deck(cas: pd.Timestamp) -> pdk.Deck:
-    """Mapa měření v dané hodině; čas bez pásma se bere jako český čas."""
-    body = _stanice(cas)
+def deck(cas: pd.Timestamp, predpovedi=None) -> pdk.Deck:
+    """Mapa měření v dané hodině; čas bez pásma se bere jako český čas. predpovedi viz _stanice."""
+    body = _stanice(cas, predpovedi)
     # TerrainLayer nemá elevationScale, násobíme celý dekodér včetně offsetu.
     dekoder = {"rScaler": 256, "gScaler": 1, "bScaler": 1 / 256, "offset": -32768}
     teren = pdk.Layer(
