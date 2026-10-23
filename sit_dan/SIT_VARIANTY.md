@@ -8,6 +8,18 @@ Test 2021–2025 se nespouštěl.
 **Reprodukce:** varianta a se seedem 42 dává na Kaggle 17,83 cm (po kombinacích 9,3 / 18,4 / 25,7 / 9,0 / 16,5 / 28,1),
 na desetinu stejně jako týmový výsledek (`results/2026-10-23_195305_mlp.json`).
 
+## Souhrn
+
+CV = časová CV v tréninku (Děčín +24 h), validace = průměr přes 6 kombinací, začátek vzestupu a povodně 2006 a 2010
+z validace (Děčín +24 h), LOFO = 22 povodní, Děčín +24 h. Všechno v cm, průměr přes seedy 42–44 (LOFO jen seed 42).
+Rozdíly proti a jsou párové na stejných řádcích. Zlepšení se počítá až od 1 cm v CV a bez horších varování.
+
+| varianta | CV povodně | validace | začátek vzestupu | 2006 | 2010 | plané poplachy / propásnuto (2.+3. st.) | LOFO +24 h | verdikt |
+|---|---|---|---|---|---|---|---|---|
+| a: beze změny | 16,05 | 19,01 | 32,4 | 22,2 | 23,0 | 0,3 / 0,3 | 15,07 | základ |
+| b: + 18 stanic | −0,52 | +2,12 | −5,7 | +7,9 | −1,5 | −0,3 / +1,3 | +0,98 | beze změny (na validaci horší) |
+| c: + srážky (jiné řádky, proti a na nich) | +0,38 | +0,90 | −2,9 | +4,2 | +1,7 | 0,0 / −0,3 | nepočítáno | beze změny |
+
 ## 1. Beze změny proti + 18 stanic: CV v tréninku a validace
 
 Seedy 42, 43, 44, průměr ± rozptyl (směrodatná odchylka přes seedy). CV = časová CV v tréninku po blocích let
@@ -69,10 +81,34 @@ seedy víc, než jsou tyhle rozdíly, proto to beru jen jako směr.
 
 ## 3. + srážky
 
-Doplním po přepočtu (běh na 4 kernelech doběhl, stahuje se).
+Druhý běh: varianty a, b, c na stejných řádcích, jen hodiny, kde srážky nechybí (162 219 řádků Děčín +24 h místo
+175 130, hranice částí s nejstarším srážkovým měřením t − 78 h jako v session srážek). Srážky jsou ze
+`srazky_dan/data/srazky_6h.parquet`, verze s otiskem 0fa9e49a, 10 sloupců `sr_blizko_*` a `sr_dal_*` (6–72 h, surové mm,
+síť je jen škáluje). 108 tréninků na 4 kernelech, seedy 42–44 (`souhrn_srazky.md`).
+
+| varianta | CV povodně | CV vzestup | validace povodně | začátek vzestupu | povodeň 2006 | povodeň 2010 | plané poplachy 2.+3. st. | propásnuto 2.+3. st. |
+|---|---|---|---|---|---|---|---|---|
+| a: beze změny | 16,15 ± 0,44 | 32,57 ± 0,59 | 18,59 ± 0,55 | 32,23 ± 0,69 | 21,63 ± 0,34 | 22,20 ± 0,64 | 0,3 | 0,7 |
+| b: + 18 stanic | 15,56 ± 0,73 | 27,89 ± 0,80 | 21,34 ± 0,28 | 27,47 ± 0,66 | 28,90 ± 2,84 | 22,70 ± 2,02 | 0,3 | 2,7 |
+| c: + srážky | 16,54 ± 0,95 | 31,65 ± 0,42 | 19,49 ± 0,21 | 29,33 ± 0,66 | 25,80 ± 2,94 | 23,87 ± 1,61 | 0,3 | 0,3 |
+| **c − a** (párově) | **+0,38 ± 1,27** | −0,92 ± 0,66 | +0,90 ± 0,45 | −2,90 ± 0,08 | +4,17 ± 3,06 | +1,67 ± 2,21 | 0,0 | −0,3 |
+| b − a (párově) | −0,59 ± 0,98 | −4,69 ± 0,42 | +2,75 ± 0,81 | −4,77 ± 1,30 | +7,27 ± 3,10 | +0,50 ± 1,70 | 0,0 | +2,0 |
+
+Verdikt: **+ srážky beze změny.** CV se nezlepší (+0,4 cm, rozptyl mezi seedy 1,3 cm), validace je o 0,9 cm horší.
+Pomůže jen začátek vzestupu (o 2,9 cm, u všech seedů), propásnuté povodně se nezhorší. Povodně 2006 a 2010 jsou
+se srážkami horší (o 4 a 2 cm). Jarní povodeň 2006 byla z tání, tu srážky nevysvětlí. U 2010 to nesedí s čekáním,
+že tam déšť pomůže, ale rozptyl mezi seedy je stejně velký jako rozdíl. Na stejných řádcích se zopakovalo i srovnání
++ 18 stanic: CV −0,6 cm, validace +2,8 cm, víc propásnutých povodní, stejný obraz jako v prvním běhu.
 
 ## Celkově
 
-Pro síť 18 nových stanic nepomohly: CV i LOFO beze změny (pod 1 cm), na validaci spíš horší a s víc propásnutými
+Pro týmovou síť nepomohly ani nové stanice, ani srážky. Žádná varianta nezlepší CV aspoň o 1 cm a LOFO
+(počítané jen pro a a b) je taky beze změny. Obě přidané sady zlepší jen začátek vzestupu (stanice o 5–6 cm, srážky o 3 cm).
+
+18 nových stanic: CV i LOFO beze změny (pod 1 cm), na validaci spíš horší a s víc propásnutými
 povodněmi. Jediné, co pomáhá soustavně, je začátek vzestupu. U Ridge a LightGBM vyšly nové stanice v CV lépe
 (o 1,5 a 2,0 cm, session ridge). Domněnka: síť s 224 vstupy a jen pár povodněmi v tréninku z nich vytáhne víc šumu než užitku.
+
+Co chybí: LOFO pro variantu se srážkami (nestihlo se, 5 CPU kernelů zabíralo LOFO a/b), LOFO jen se seedem 42,
+test 2021–2025 záměrně ne. Out-of-fold předpovědi a/b pro směsi: `lofo/sit_lofo_oof.parquet` (mimo Git).
+Výsledky v JSON: `vysledky/beh1_a_b.json`, `vysledky/beh2_a_b_c_srazky.json`, `vysledky/lofo_a_b.json`.
