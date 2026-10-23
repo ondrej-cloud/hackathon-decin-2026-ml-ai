@@ -90,6 +90,7 @@ Test zůstal stranou. Ověřovali jsme, jestli výběr nebyla náhoda, a zkouše
 | 0:01 | „při prudkém vzestupu ještě prudší“ | 17,0, při náběhu o 1 cm lépe | většina vzestupů nepokračuje (jen 22 %), model rozumně sází na průměr |
 | 0:01 | varování podle horní meze nejistoty | o 3–4 h dřív, ale 4 plané poplachy | hodí se jako předběžná výstraha, ne jako předpověď |
 | 0:19 | další stanice (horní Ohře, Zbraslav) | validace 17,4, vícenásobná 19,7 | smíšeně, pod 1 cm |
+| 0:43 | spojení všech malých zlepšení (zrychlení, horní Ohře, srážky, průměr se sítí) | validace 17,2, vícenásobná 19,3, na 4 povodních bez výběru 21,5 proti 23,1 | sečte se jen zčásti, 0,8–1,6 cm, ne 5; na validaci nic |
 
 Dan na vlastní větvi (`dan-ridge`) postavil regresi s 30 stanicemi. Pro Děčín +24 h vyšla na jeho validaci uvnitř tréninku 14,2 proti 15,6, na testu 16,1 proti 17,5, na naší validaci 17,8 proti 15,5 (kvůli jarní povodni 2006). Je to nejslibnější směr, ale výsledek je zatím smíšený.
 
@@ -99,7 +100,7 @@ Dan na vlastní větvi (`dan-ridge`) postavil regresi s 30 stanicemi. Pro Děč�
 - Velkých povodní je málo (v tréninku dvě nad 3. stupněm). Model s 98 vahami se z nich nepřeučí, síť s 21 tisíci vahami a stromy ano.
 - Umí předpovědět výš, než kdy viděla. Stromy ne, polynom se ohne špatně.
 - Ověřeno třemi způsoby a pokaždé o 55–61 % lepší než „jako teď“: validace, vícenásobná validace přes 8 povodní, test.
-- Devět pokusů o zlepšení po testu skončilo pod 1 cm. Rezervu nemá model, ale vstupy: voda, která v řekách ještě není.
+- Deset pokusů o zlepšení po testu skončilo pod 1 cm, i když jsme ta malá zlepšení spojili dohromady. Rezervu nemá model, ale vstupy: voda, která v řekách ještě není.
 - Porota chce model, kterému rozumíme. Tenhle se vejde na jeden obrázek (`docs/grafy/ridge_vahy_decin.png`).
 
 ## 8. Co by model posunulo (co dál)

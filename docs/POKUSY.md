@@ -448,3 +448,12 @@ Následující pokusy jsou doplněné zpětně (pá 19:55). Všechny byly před 
 - Výsledek: validace (`prumer_povodne`) 12 stanic 17,1, s horní Ohří 17,4, i se Zbraslaví 17,4 cm, varování bez chyb. Vícenásobná validace 20,1 ± 7,7, s horní Ohří 19,7 ± 8,2, i se Zbraslaví 19,9 ± 8,1 cm; s horní Ohří lepší na 5 povodních z 8 (nejvíc 6/2006 15,6 → 13,6 a 8/2010 28,6 → 26,6), horší na 9/2010, 1/2011 a 6/2013.
 - Závěr: další stanice dávají smíšený výsledek pod 1 cm, stejně jako u Dana (lepší v jedné validaci, horší v druhé). Model neměníme. Rezerva v dalších stanicích proti proudu je malá, víc než 1–1,5 cm nečekáme.
 - Soubory: `src/pokus_dalsi_stanice.py`
+
+## so 0:43 · Ondra · spojení všech malých zlepšení
+- Otázka: když dáme dohromady všechno, co aspoň trochu pomohlo, sečte se to třeba na 5 cm?
+- Data a rozdělení: společné. Validace, vícenásobná validace přes 8 povodní a zvlášť 4 povodně, podle kterých jsme nikdy nic nevybírali (6/2006, 8/2010, 2/2013, 6/2013 byly vždycky jen v tréninku). Všechny varianty na stejných řádcích. Test ne.
+- Vstupy a modely: `ridge`; `zrychleni` (so 0:01); `horni_ohre` (Karlovy Vary a Žatec, so 0:19); `kombinace` = obojí; `kombinace_srazky` = navíc naměřené srážky a API30; `ridge_a_sit` a `kombinace_a_sit` = průměr s neuronovou sítí `mlp`.
+- Kde a jak dlouho: MacBook M1, asi 12 minut (síť se učí 54×).
+- Výsledek (chyba na povodních v cm; validace / vícenásobná 8 povodní / jen 4 nové povodně / na kolika z 8 lepší než ridge): ridge 17,1 / 20,1 / 23,1 / –; zrychleni 17,0 / 19,6 / 22,1 / 6; horni_ohre 17,4 / 19,7 / 22,1 / 5; kombinace 17,2 / 19,3 / 21,5 / 5; kombinace_srazky 17,2 / 19,3 / 21,5 / 5; ridge_a_sit 16,9 / 20,1 / 23,0 / 4; kombinace_a_sit 16,7 / 19,5 / 22,0 / 6 (1 chyba ve varování navíc).
+- Závěr: nesečte se to na 5 cm. Spojení dvou nejlepších úprav dá ve vícenásobné validaci 0,8 cm (4 %) a na 4 nových povodních 1,6 cm (7 %), na validaci nic. Každá úprava zvlášť dá na nových povodních 1,0 cm, spolu 1,6, takže se z části překrývají (řeší stejnou vodu, která přichází brzy). Srážky a průměr se sítí nic nepřidají. Zlepšení je skutečné, ale malé a na validaci nulové, takže podle pravidla 1 cm neprošlo. Finální model zůstává, kombinaci uvádíme jako zjištění po testu.
+- Soubory: `src/pokus_kombinace.py` (z `src/pokus_nabeh.py` a `src/pokus_dalsi_stanice.py` jdou funkce importovat)
