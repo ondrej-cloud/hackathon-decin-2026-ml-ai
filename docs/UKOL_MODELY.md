@@ -91,6 +91,19 @@ Zlepšuj model v cyklu: natrénovat, vyhodnotit, zjistit, kde chybuje, upravit a
 
 Proč ne do nekonečna: validace má jen 4 povodně. Kdo zkusí sto variant, najde nějakou, která na těch čtyřech povodních náhodou vyjde dobře, a na testu pak propadne. Tomu se říká přeučení na validaci. Porota navíc ocení, že každý krok umíme zdůvodnit.
 
+### Na co si dát pozor
+
+Projdi u každé varianty, než ji vyhlásíš za lepší:
+
+- **Povodně nejsou odlehlé hodnoty.** Data jsou zkontrolovaná (`docs/DATA.md`, sekce Labe) a jediná chyba (2/2006) je vyřazená. Nic dalšího nemaž, neořezávej ani nevyhlazuj, hlavně ne vysoké hodnoty, kvůli nim to celé děláme. Když narazíš na něco podezřelého v datech, řekni to člověku, ať to předá Ondrovi.
+- **Žádné informace z budoucnosti.** Používej jen sloupce z X a nic nepočítej z y ani z pozdějších řádků. Žádné klouzavé průměry vycentrované kolem t, žádné míchání řádků a žádné náhodné dělení dat. Škálování a další úpravy se učí jen na trénovacích datech uvnitř `fit`, nejlíp přes `Pipeline`.
+- **Přeučení.** U každé varianty porovnej chybu na trénovacích datech a na validaci. Když je na tréninku výrazně menší, třeba poloviční, model se učí nazpaměť. Pak ho zjednoduš: menší síť, méně listů, silnější regularizace. Týká se hlavně LightGBM a sítě.
+- **Vrcholy nad rámec tréninku.** Validační povodně 2006 (875 cm) a 2011 (730 cm) jsou vyšší než všechno v tréninku kromě 2013. Sleduj `vrcholy_o_kolik` v JSONu: když model vrcholy soustavně podhodnocuje, neumí předpovědět víc, než viděl.
+- **Rozumné předpovědi.** Předpověď nesmí být záporná, nesmí skákat o metr z hodiny na hodinu a při klidné vodě má být blízko „jako teď“. Nakresli jednu validační povodeň (skutečnost, „jako teď“ a tvůj model). Graf ukáže víc než tabulka, třeba jestli model stoupání předbíhá, nebo se opožďuje.
+- **Náhoda.** Seed je 42. U sítě a LightGBM pusť nejlepší variantu i se seedy 43 a 44. Rozdíl menší, než jaký dělá změna seedu, není zlepšení.
+- **Jednotky a čas.** Hladina je v cm, průtok v m³/s a čas v UTC. Číslo na konci názvu sloupce znamená, kolik hodin zpátky, ne dopředu.
+- **Co nevíme, nehádej.** Když si nejsi jistý, jestli je něco únik informací, nebo chyba, zastav se a zeptej se. Radši jedna otázka navíc než výsledek, který na testu propadne.
+
 **Časy:** první výsledek (`--rychle`) do 20:15, hotová nejlepší varianta s vysvětlením a `/sync main` do 21:00. Ve 21:00 porovnáváme.
 
 ## Zadání: Tobias, fyzikální model (`fyzika.py`)

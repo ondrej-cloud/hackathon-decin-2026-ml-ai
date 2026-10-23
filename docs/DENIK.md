@@ -40,3 +40,38 @@ Po každém dokončeném kusu práce rozbor, aby ho pochopil i ten, kdo u toho n
 - Co: zkontroloval jsem správnost dat (shoda s balíčkem pořadatelů, bilance vody mezi stanicemi, měrné křivky, časy, odlehlé hodnoty). Data jsou v pořádku, nic se neměnilo. Podrobnosti v `docs/DATA.md`, sekce Labe.
 - Co: do zadání modelů přibyla pravidla, jak dlouho iterovat (jedna změna s důvodem, zlepšení aspoň o 1 cm v `prumer_povodne`, konec po 3 neúspěšných variantách, 10 variantách nebo ve 20:50).
 - Proč: validace má jen 4 povodně, nekonečné ladění by našlo variantu, která na nich vyjde náhodou dobře.
+
+Následující záznamy jsou doplněné zpětně (pá 19:55) podle commitů, ať je vidět celý postup od výběru úlohy.
+
+## pá 17:10 · Ondra
+- Co: zvažovali jsme úlohu Ovzduší, sepsali tři pojetí (předpověď znečištění, otisky zdrojů, měřicí síť) a spárovali stanice ovzduší s meteostanicemi ČHMÚ.
+- Zjištění: inverze zhruba zdvojnásobí PM10 v Ústí. Labe a ovzduší v Děčíně spolu nesouvisejí, společná příčina je roční období a počasí (`docs/DATA.md`, sekce Ovzduší).
+
+## pá 17:33 · Ondra
+- Co: zkusili jsme Labe s historickými daty ČHMÚ ze stanic nad krajem. První lineární model předpovídá hladinu v Děčíně na 12 a 24 h.
+- Proč: balíček má nejvýš Ústí (4 h před Děčínem) a jedinou povodeň. Bez dat proti proudu a bez historie nejde předpovídat dál než pár hodin a nejde nic ověřit.
+- Problém: v Děčíně je 5.–7. 2. 2006 chybná hladina (1 019 cm při 120 m³/s). Vyřazeno.
+
+## pá 17:46 · Ondra
+- Co: model otestovaný na šesti velkých povodních, každá vynechaná z tréninku i s 20 dny kolem. Chyba zhruba poloviční proti „jako teď“ a varování před 3. stupněm 12–29 h předem.
+- Rozhodnutí: lineární model místo LightGBM. LightGBM u povodně 2013 předpověděl vrchol 823 cm místo 1 072, protože stromy neumí víc, než viděly.
+- Co: ukázali jsme, proč nestačí pravidlo „stoupající voda = povodeň“: dává plané poplachy.
+
+## pá 18:00 · Ondra
+- Co: vybrali jsme úlohu Labe místo Ovzduší.
+- Proč: měřitelný přínos (chyba poloviční, varování o den dřív), fyzikálně vysvětlitelný model a jasný uživatel (město a lidé u řeky). U Ovzduší jsme podobně silný a ověřitelný výsledek neměli.
+
+## pá 18:20 · Ondra
+- Problém: při stahování dat ČHMÚ došlo místo na disku, 13 souborů zůstalo useknutých. Smazali jsme je a stáhli znovu. Stahování teď jde přes dočasný soubor, takže se to nemůže opakovat.
+
+## pá 18:36 · Ondra
+- Co: přidali jsme stanice na všech třech větvích, které do kraje přitékají (Vltava, horní Labe, Ohře), v několika vzdálenostech.
+- Zjištění: čím dál dopředu chceme předpovídat, tím dál proti proudu se musíme dívat. Na 12 h stačí blízké stanice, na 36 h pomáhá každá další vrstva.
+
+## pá 18:44 · Ondra
+- Co: porovnali jsme, jestli stačí jen data z kraje (jako balíček), nebo je potřeba stanice proti proudu a historie.
+- Zjištění: samotný balíček funguje (43 proti 58 cm), ale nedá se na něm ověřit. Stanice proti proudu pomohly víc než 20 let historie. Nejlepší je obojí (24 cm).
+
+## pá 18:52 · Ondra
+- Co: rozhodli jsme, že začneme rovnou na Labi, ne na malých řekách. Každý vyzkouší jiný model, malé řeky budou jen druhá zkouška.
+- Proč: na malých řekách voda doteče za 0–7 h a rozhoduje déšť, je to jiný problém. Model vybraný tam by se pro Labe musel vybírat znovu.
