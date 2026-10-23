@@ -26,6 +26,10 @@ if sklearn.__version__ != "1.9.1":
 subprocess.run([sys.executable, "-c", "import sys, sklearn, pandas, numpy; "
                 "print('verze:', sys.version.split()[0], sklearn.__version__, pandas.__version__, numpy.__version__)"])
 
-r = subprocess.run([sys.executable, "beh_sit.py", "--prace", str(os.cpu_count()), "--vystup", "/kaggle/working/vystup"],
-                   cwd="/tmp/repo/sit_dan")
+prikaz = [sys.executable, "beh_sit.py", "--prace", str(os.cpu_count()), "--vystup", "/kaggle/working/vystup"]
+srazky = Path("/tmp/repo/sit_dan/tabulka/srazky_6h.parquet")
+if srazky.exists():  # v datasetu je i tabulka srážek: varianty a, b, c na společných hodinách se srážkami
+    prikaz += ["--srazky", str(srazky)]
+print(" ".join(prikaz), flush=True)
+r = subprocess.run(prikaz, cwd="/tmp/repo/sit_dan")
 sys.exit(r.returncode)
