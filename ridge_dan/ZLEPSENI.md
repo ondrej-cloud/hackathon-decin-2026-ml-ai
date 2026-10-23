@@ -44,7 +44,7 @@ Ridge s 30 stanicemi tedy přísné pravidlo nesplní: zlepšení 0,49 cm je pod
 
 ## Pokusy
 
-*(průběžně doplňováno; hotovo A, B (pevná f), C, D, E, H, směsi G1–G2; běží B vnořeně, F, LightGBM, směsi G3–G4)*
+*(průběžně doplňováno; hotovo A, B (pevná f), C, D, E, F12, H, směsi G1, G2, G5, G6 a síť; nedoběhlo: B vnořeně, F30, LightGBM a směsi s ním G3–G4)*
 
 ### Pokus C: součty po dílčích povodích místo jednotlivých nových stanic
 
@@ -204,3 +204,45 @@ G1/G3/G5 pevně 0,5; G2 striktně vnořené bez mezer k i j; váhy po foldech js
 Chybí externí LOFO: LOFO LightGBM30 zatím nedodáno.; V C:\Users\danie\Documents\hackathon-2026-sit\sit_dan\lofo nebyly nalezeny použitelné LOFO předpovědi sítě (2026-10-23 23:32:02). Čekání pokračuje v limitu 35 minut.
 Závěr: Žádná dostupná striktně hodnocená směs nesplňuje celé stanovené pravidlo.
 
+
+### Pokus F: Ridge s Huberovou ztrátou (IRLS)
+
+- Co: místo součtu čtverců Huberova ztráta přes IRLS. StandardScaler bez vah (μ, sd z tréninku foldu jako týmová
+  pipeline), pak vážený Ridge(alpha 1) jako sklearn `Ridge(sample_weight=w)`. Váhy w = min(1, δ/|r|),
+  δ = 1,345 · 1,4826 · MAD reziduí (asi 9,8 cm, přepočítané v každé iteraci), start z obyčejného Ridge, 10 iterací.
+  Nic se neladí (δ je standardní volba), takže není co vnořovat.
+- Proč: menší vliv extrémů (velké chyby na povodních táhnou čtvercovou ztrátu).
+- Kontrola (fold 0, 12 stanic): start IRLS = obyčejný Ridge z motoru (rozdíl 2e-9 cm), vážený Ridge = sklearn se
+  stejnými vahami (4e-9 cm). Ztráta „srazí“ váhu asi 22 % tréninkových hodin.
+
+| Varianta | LOFO 22 | rozdíl proti týmu | zlepšeno z 22 | nejhorší zhoršení | splňuje | val Děčín +24 | začátek vzestupu (LOFO) | 2006 (LOFO) | plané 2. SPA (LOFO) |
+|---|---|---|---|---|---|---|---|---|---|
+| týmový Ridge (základ) | 15,29 | | | | | 15,5 | 41,9 | 16,7 | 4 |
+| F12 Huber, 12 stanic | 15,91 | +0,62 | 3 (19 horší) | 5,2 | ne | 17,4 | 44,5 | 22,0 | 4 |
+| F30 Huber, 30 stanic | nedoběhlo do 00:05 | | | | | | | | |
+
+- F12 na validaci: začátek vzestupu 37,6 (tým 35,4), 2006 21,8 (tým 16,0), přestřelení na stoupání 2006 43 cm
+  (tým 57), plané 2./3. SPA 0/0.
+- Závěr: Huber týmovému Ridge škodí (horší 19 z 22 povodní, znaménkový test p = 0,0009). Povodně jsou přesně ty
+  „extrémy“, které Huber potlačuje, takže se model učí hlavně klid a na povodních podhodnocuje. Méně přestřelí
+  v roce 2006, ale za cenu horší chyby. F30 nedoběhl: počítač byl v souběhu s dalšími 6 agenty a session se sítí
+  bez volné RAM (pod 0,5 GB volno), výpočet `pokus_F.py` dál běží a výsledek F30 připíše do `vysledky_F.json`.
+  Vzhledem k F12 se neočekává, že by F30 pravidlo splnil.
+- Soubory: `pokus_F.py`, `vysledky_F.json` (F12), `pokus_F_beh1_float64.log` (první úplný běh F12 s kontrolou).
+
+
+### Síť a směsi se sítí (G5, G6; počítáno zde, LOFO předpovědi sítě ze session se sítí)
+
+Síť (týmová `mlp`, seed 42) dodala LOFO předpovědi na stejných foldech v 00:03 (`hackathon-2026-sit/sit_dan/lofo/`),
+řádky ověřené proti oknům (stejné časy i skutečnost). Směsi s pevnou vahou 0,5 předem zapsané (PRUBEH 00:05),
+nic se nevybírá. Skript `zlepseni/pokus_G5.py`, čísla `zlepseni/vysledky_G5.json`.
+
+| Varianta | LOFO 22 | rozdíl proti týmovému Ridge | zlepšeno z 22 | nejhorší zhoršení | znam. p | splňuje | začátek (LOFO) | 2006 (LOFO) | plané 2. SPA (LOFO) |
+|---|---|---|---|---|---|---|---|---|---|
+| síť beze změny | 15,07 | −0,22 | 14 | +6,4 | 0,29 | ne | 39,2 | 15,6 | 3 |
+| síť + 18 stanic | 16,05 | +0,76 | 12 | +7,7 | 0,83 | ne | 34,1 | 23,4 | 1 |
+| G5 = ½ Ridge 30 + ½ síť + 18 | 14,65 | −0,64 | 16 | +5,7 | 0,053 | ne | 33,6 | 22,4 | **0** |
+| G6 = ½ Ridge 12 + ½ síť beze změny | 14,72 | −0,56 | 16 | +2,8 | 0,053 | ne | 40,2 | 15,4 | 3 |
+
+Síť s novými stanicemi je proti síti beze změny horší (+0,98 cm, lepší jen 8 z 22 povodní): síť nové vstupy
+nevyužije, jen se víc přeučí. Směsi zmenší rozptyl, ale hranici 1 cm nedosáhnou.
