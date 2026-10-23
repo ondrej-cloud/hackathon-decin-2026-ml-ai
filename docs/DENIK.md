@@ -255,3 +255,8 @@ Následující záznamy jsou doplněné zpětně (pá 19:35) podle commitů, ať
 - Proč tak a ne jinak: Ondra ověřil, že srážky, sníh ani teplota z 25 stanic modelu nepomohly (17,1 → 17,4 cm) a ani dokonalá předpověď deště na den dopředu nedá víc než 0,8 cm. Na 12–36 h je voda z velkých dešťů už v řekách proti proudu. Vlastní model na předpověď srážek by byl nesmysl, to dělají meteorologické modely. Historické předpovědi počasí z let 2006–2013 nemáme, takže by se vliv nedal poctivě ověřit.
 - Slabiny a co může být špatně: hranice 20 mm („hodně“) a 5 mm („skoro nic“) jsou odhad, ne výpočet. Open-Meteo není ČHMÚ. Déšť rozhoduje od zhruba 48 h dál, tam naše předpověď nesahá.
 - Otázka poroty a odpověď: „A co když zaprší?“ Na dnešek a zítřek to model nepotřebuje, voda z deště teče řekami den a víc. Na pozítří by to potřeboval, proto předpověď srážek ukazujeme vedle a říkáme, že za 36 h a dál může být hladina vyšší, než model říká.
+
+## pá 22:20 · Honza
+- Co: grafy do prezentace v jednom stylu jsou v `docs/grafy/slajdy/` (vyrábí `src/grafy_slajdy.py` jen z uložených výsledků): srovnání modelů (61 % méně), test 2021–2025 (55 % méně, Boris 27 h předem), učicí křivka, váhy Děčín +24 h, Boris 2024, povodeň 2011, co jsme zkoušeli a nepomohlo, pokrytí rozmezí nejistoty. 16:9, nadpis jako tvrzení, zdroj a podmínky pod grafem, šedá = jako teď, modrá = lineární regrese, oranžová = ostatní.
+- Proč: slajdy mají působit jako jeden celek; dosud byly grafy ve třech stylech. Tobias bere do prezentace tyhle.
+- Pozor: balíček 2 roky jen kraj je v grafech 44,6 cm (opravená verze učicí křivky), ne 45,1 z prvního běhu; LightGBM je „o 48 % méně“ (podíl průměrů), v PREHLED.md 49 % (průměr procent); povodeň 2011 hlásil model 15 h předem, ne „den“.
