@@ -240,3 +240,26 @@ Následující pokusy jsou doplněné zpětně (pá 19:55). Všechny byly před 
 - Výsledek na val: do rozmezí se vešlo 89–92 % hodnot celkem, na povodních 76–88 % (12 h 87–88 %, 24 h 79–84 %, 36 h 76–78 %). Šířka rozmezí na povodních: Děčín 33 / 53 / 72 cm, Ústí 61 / 77 / 82 cm. Pásmo nad 600 cm v Ústí má v tréninku málo řádků (hlavně 2013), proto je tam dolní mez −83 až −91 cm.
 - Závěr: na klidné vodě rozmezí sedí (9 z 10), na povodních je o něco užší, než by mělo (8 z 10), protože validační povodně jsou vyšší než trénovací. Tak to i říkáme. V aplikaci „nejspíš od–do“ u každé předpovědi a modrý pás v grafu.
 - Soubory: `src/nejistota.py`, `models/ridge_intervaly.json`, `app/predikce.py` (`interval`).
+
+## pá 20:44 · Honza · kolik let dat a které stanice potřebuje Ridge
+- Otázka: stačí dvě léta a tři stanice z kraje, nebo pomůže delší historie a stanice proti proudu?
+- Data a rozdělení: společná tabulka a `casti`, stejná validace pro všech 12 variant (4 vynechané povodně 2006–2011 a klid 2019–2020). Trénink posledních 1, 2, 3, 5, 8 a 13 let do konce 2018, vždy jen část `train`. Do okna musí vejít i nejstarší vstup 36 h zpět a cílová hladina; u krátkých oken proto vypadne prvních 36 hodin. Test 2021–2025 nepoužit.
+- Vstupy: jen kraj = Děčín, Ústí, Louny (35 sloupců); všechny stanice = 98 sloupců. Úplné řádky i validace jsou pro obě sady stejné. Dva roky jsou 2017–2018, nikoli skutečný balíček 2024–2026.
+- Model a nastavení: nezměněný `ridge.fit`, odmocnina průtoků, StandardScaler a Ridge(alpha=1), přímá předpověď hladiny. Bez ladění parametrů, seed 42 (Ridge je zde deterministický).
+- Kde a jak dlouho: Honzův Windows notebook, 72 tréninků, celý běh včetně vyhodnocení 17,4 s.
+- Výsledek na val: chyba je průměr `mae_povodne` přes 6 kombinací cíle a horizontu; varování jsou součty pro 2. stupeň.
+
+  | Let | Trénovací roky | Jen kraj, cm | Všechny stanice, cm | Propásnuto kraj / všechny | Plané poplachy kraj / všechny |
+  |---|---|---|---|---|---|
+  | 1 | 2018 | 39,1 | 29,2 | 9 / 2 | 0 / 0 |
+  | 2 | 2017–2018 | 44,6 | 26,9 | 12 / 4 | 0 / 0 |
+  | 3 | 2016–2018 | 35,6 | 25,0 | 9 / 3 | 1 / 0 |
+  | 5 | 2014–2018 | 34,2 | 21,0 | 10 / 3 | 1 / 0 |
+  | 8 | 2011–2018 | 27,2 | 16,6 | 0 / 0 | 2 / 0 |
+  | 13 | 2006–2018 | 27,8 | 17,1 | 0 / 0 | 2 / 0 |
+
+  „Bude jako teď“: 44,3 cm, propásne 24 z 24 případů, žádný planý poplach. Jmenovatel 24 znamená 4 povodně × 2 cíle × 3 horizonty, nikoli 24 různých povodní. Kontrola `jako_ted --rychle`: Děčín +24 h 44,4 cm, jak má být.
+- Závěr: dva roky všech stanic mají podobnou chybu jako 13 let jen z kraje (26,9 proti 27,8 cm, rozdíl pod 1 cm), ale ještě propásnou 4 varování. Stanice proti proudu tedy pomáhají výrazně; dlouhá historie navíc přináší zkušenost s vysokou vodou. Všechna okna do pěti let nemají v tréninku ani jednu hodinu na 2. stupni, osmileté a třináctileté okno zahrnuje povodeň 2013. Se všemi stanicemi má 8 i 13 let nulová propásnutí i plané poplachy, proti základu je chyba menší zhruba o 62 %.
+- Slabiny: 8 let proti 13 zlepšilo chybu jen o 0,47 cm, pod naší hranicí 1 cm; finální model ani délku jeho tréninku podle toho neměníme. Počet let zároveň mění zastoupení povodní, nejde o čistý účinek počtu hodin. Validace má jen čtyři vynechané povodně, které mohou být starší než trénink; jde o retrospektivní srovnání, ne dopředný test ani důkaz, že všude stačí osm let. Krátké modely mají na tréninku celkovou chybu 4,9–11,6 cm a na celé validaci 5,2–17,2 cm; tyto převážně klidné hodiny samy neříkají, jak dopadnou povodně.
+- Ověření: nezávislá kontrola masek všech 36 kombinací okna/cíle/horizontu, stejné indexy validace, 13 let přesně odpovídá celému train a reprodukuje Ridge 17,1 cm. Společné moduly i model zůstaly beze změn. Verze vyhodnocení na Windows `69a6db32`; JSON navíc ukládá otisky zdrojů se sjednocenými konci řádků.
+- Soubory: `src/kolik_dat.py`, `docs/grafy/kolik_dat.png`, `results/kolik_dat/2026-10-23_204319_kolik_dat.json` a `.csv`, kontrola `results/2026-10-23_204140_jako_ted.json`. Spuštění `python src/kolik_dat.py`; samotný graf z uloženého výsledku přes `--graf-ze <JSON>`. Výsledky pokusu jsou v podsložce, aby nepřepsaly oficiální Ridge v `porovnej.py --prehled`.
