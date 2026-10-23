@@ -37,6 +37,7 @@ Limity, na jakých datech by selhal, co jsme nestihli.
 - Umí předpovědět na 12 až 24 h z vody, která už teče proti proudu. Neumí déšť, který teprve spadne: proto je 36 h dvakrát horší než 24 h a dál než den a půl by to bez srážek nešlo.
 - Vrcholy vyšší, než jaké viděl v tréninku, podhodnocuje (2006: o 20 cm na 875 cm). Lineární model aspoň extrapoluje, stromy ne.
 - Doba putování vody se mezi povodněmi mění (Mělník → Ústí 6 až 11 h), model má jednu průměrnou.
+- Archivní data ČHMÚ jsou zpětně ověřená. V provozu jsou průtoky při povodni předběžné a chodí se zpožděním, takže naše čísla jsou proti provozu spíš optimistická. Srovnání modelů mezi sebou to neovlivní.
 
 ## Otázky pro mentory a odpovědi
 

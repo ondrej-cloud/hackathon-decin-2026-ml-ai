@@ -88,10 +88,6 @@ Následující záznamy jsou doplněné zpětně (pá 19:35) podle commitů, ať
 - Slabiny a co může být špatně: 36 h je skoro dvakrát horší než 24 h, protože ta voda ještě neteče ani Prahou a srážky nemáme. Vrcholy nad rámec tréninku (2006, 875 cm) model podhodnotí o 20 cm. Model pro Ústí hodně používá hladinu v Děčíně, který je po proudu: je to druhé měření téže vody, ne únik z budoucnosti, ale porota se zeptá. Vstup z času t bereme jako známý v čase t; ČHMÚ ale zveřejňuje hodinové průměry se zpožděním, v provozu by model měl vstupy asi o hodinu starší, čísla na validaci se nemění, jen by se zkrátil předstih.
 - Otázka pro mentory: s jakým zpožděním jsou hodinová data ČHMÚ v provozu dostupná?
 - Otázka poroty a odpověď: „Proč lineární model a ne něco chytřejšího?“ Protože na povodních, které model neviděl, vyhrál (15,5 cm proti 50 cm u stromů v kontrole řetězce), nemá se na čem přeučit a každou váhu umíme vysvětlit fyzikálně: průtok v Praze teď je hladina v Děčíně za den.
-## pá 20:05 · Ondra
-- Co: ověřili jsme, jestli do modelu nepatří přítoky Labe v kraji (Bílina, Ploučnice). Nepatří, na validaci nepomohly (`docs/POKUSY.md`).
-- Proč: přidají jen 2–13 % vody při vrcholu a doteče z nich za pár hodin. Velké přítoky nad krajem (Vltava s Berounkou a Sázavou, Jizera, horní Labe, Ohře) v modelu jsou.
-- Limit pro prezentaci: povodeň z lokálních dešťů v kraji, jako v srpnu 2010, model bez srážek dopředu nevidí.
 
 ## pá 20:00 · Ondra
 - Co: nezávislá kontrola společného řetězce (únik dat, rozdělení, vyhodnocení, data proti surovým souborům) dopadla „platí“. Opravili jsme, co našla:
@@ -117,3 +113,11 @@ Následující záznamy jsou doplněné zpětně (pá 19:35) podle commitů, ať
 - Výsledek a co znamená: `prumer_povodne` 24,8 cm proti zhruba 44 cm u „jako teď“, Děčín +24 h 22,5 cm. Žádná propásnutá povodeň, žádný planý poplach, před 2. stupněm varuje 11–23 h předem. Třetí vrstva stanic (Beroun, Sázava, Přelouč) zlepšila 36 h o 4 cm. Lineární modely jsou lepší (Dan Ridge 17,1 cm).
 - Slabiny a co může být špatně: doby putování jsou jedno pevné číslo, ale při každé povodni jsou trochu jiné. Co ještě nikdo nezměřil, model považuje za neměnné, takže při stoupání podhodnocuje vrcholy, nejvíc na 36 h (38 cm). Před vrcholem 2006 krátce přestřelil o 50 cm. Povodeň z lokálních dešťů (srpen 2010) bez předpovědi srážek nevidí. Přítoky v kraji podle Ondry chybu nevysvětlují, dají jen 2–13 % vody.
 - Otázka poroty a odpověď: „Proč je fyzikální model horší než lineární regrese, když fyzika platí?“ Fyzika tu má zjednodušení: jednu dobu putování a předpoklad, že co nebylo změřeno, se nezmění. Lineární model se z dat naučí i to, že stoupající voda proti proudu ještě dál stoupá, a jakou váhu má která stanice. Fyzikální model je proto laťka a vysvětlení: ukazuje, že učený model nedělá nic magického, jen tuhle fyziku zpřesňuje.
+
+## pá 20:15 · Ondra · Rozbor: srovnání čtyř modelů
+- Co jsme udělali: každý z nás vyzkoušel jiný druh modelu na stejném úkolu. Nejlepší variantu každého jsme přepočítali na jednom počítači a na stejné verzi dat i vyhodnocení.
+- Jak to funguje, jednoduše: všechny modely dostanou stejné vstupy (hladiny v Děčíně a Ústí, průtoky 12 stanic proti proudu) a předpovídají hladinu za 12, 24 a 36 h. Hodnotíme je na 4 povodních, které při tréninku neviděly.
+- Výsledek a co znamená: chyba na povodních lineární regrese 17,1 cm, neuronová síť 17,8, LightGBM 23,1, fyzikální model 24,8, „jako teď“ 44,3. Žádný model nepropásl povodeň, „jako teď“ propásne všechny.
+- Návrh na finální model: lineární regrese (`src/models/ridge.py`). Je nejlepší, nejjednodušší, trénuje se za sekundu, nemá planý poplach a celá se vysvětlí na grafu vah. Síť je stejně dobrá jen v rámci náhody a hůř se vysvětluje. Čeká na potvrzení, finální test 2021–2025 se pustí jednou na vybraný model.
+- Slabiny a co může být špatně: validace má jen 4 povodně, všechny modely na povodních mírně podhodnocují (bias −5 až −8 cm) a na 36 h je chyba skoro dvojnásobná. Data ČHMÚ v archivu jsou zpětně ověřená, v provozu jsou průtoky při povodni předběžné, takže čísla jsou proti provozu optimistická.
+- Otázka poroty a odpověď: „Proč jste nevzali složitější model, když jste ho měli?“ Zkusili jsme čtyři přístupy na stejných datech. Neuronová síť ani LightGBM nebyly lepší, LightGBM navíc přestřeluje vrcholy, které jsou vyšší než všechno v tréninku. Jednodušší model, který umíme vysvětlit, vyhrál i v číslech.

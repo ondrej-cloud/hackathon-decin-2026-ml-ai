@@ -132,13 +132,6 @@ Následující pokusy jsou doplněné zpětně (pá 19:55). Všechny byly před 
   - Průtok a hladina na téže stanici mají opačná znaménka (Děčín hladina +88, průtok −11): nesou skoro stejnou informaci (měrná křivka) a model si je navzájem dorovnává. Jednotlivé váhy se proto nečtou samostatně, jen jako celek.
 - Graf `docs/grafy/ridge_povodne_decin_24h.png`: povodně 4/2006 a 1/2011 v Děčíně, skutečnost, „jako teď“ a předpověď vydaná 24 h předem. Model kopíruje stoupání i vrchol, „jako teď“ je o den pozadu. V 2011 se model na prudkém stoupání 14.–15. 1. opožďuje o několik hodin a vrchol 2006 (875 cm) má o 20 cm níž; 3. stupeň přesto hlásí den předem.
 - Soubory: `src/grafy_ridge.py` (pustit `python src/grafy_ridge.py`), `docs/grafy/`.
-## pá 20:05 · Ondra · přítoky v kraji (Bílina, Ploučnice)
-- Otázka: pomůže modelu průtok přítoků, které do Labe ústí mezi Ústím a Děčínem?
-- Data a rozdělení: společné rozdělení (`src/evaluate.py`), navíc průtok Bílina-Trmice a Ploučnice-Benešov z ČHMÚ, zpoždění 0, 3, 6 a 12 h.
-- Model a nastavení: Ridge(alpha=1), odmocnina průtoků, StandardScaler, seed 42 (stejný jako kontrola řetězce).
-- Výsledek na val (chyba na povodních bez / s přítoky): Děčín +6 h 4,6 / 4,8 cm, +12 h 9,0 / 9,5, +24 h 15,5 / 16,0; Ústí +6 h 7,3 / 7,5, +12 h 9,6 / 10,1, +24 h 15,7 / 16,2. Při vrcholech povodní přidaly přítoky 2–13 % vody, nejvíc v 8/2010.
-- Závěr: nepomohly, do společných vstupů je nepřidáváme. Jejich voda doteče za pár hodin a na delší horizont rozhoduje déšť. Limit: povodeň z lokálních dešťů v kraji (jako 8/2010) model bez srážek dopředu nevidí.
-- Soubory: jen kontrola, model není uložený.
 
 ## pá 20:00 · Ondra · neuronová síť (MLP), varianty v1–v4
 - Otázka: přidá neuronová síť něco, co lineární model neumí?
@@ -160,3 +153,20 @@ Následující pokusy jsou doplněné zpětně (pá 19:55). Všechny byly před 
 - `docs/grafy/fyzika_merna_krivka.png`: měrná křivka Děčína se stupni povodňové aktivity. Body z povodní leží přesně na křivce, nad 3 710 m³/s (nejvyšší průtok v tréninku) je křivka prodloužená přímkou.
 - `docs/grafy/fyzika_vetve.png`: tři větve (Vltava, Labe, Ohře) s dobami putování mezi stanicemi a do Děčína. Nejdál dopředu vidí Beroun a Přelouč, 24 h.
 - `docs/grafy/fyzika_povoden_2006.png`: validační povodeň 2006, Děčín +24 h. Při stoupání model sleduje skutečnost, „jako teď“ se opožďuje o celý den. Těsně před vrcholem model krátce přestřelí asi o 50 cm, při opadání se opožďuje.
+
+## pá 20:15 · Ondra · srovnání čtyř modelů na jednom počítači
+- Otázka: který ze čtyř přístupů předpovídá hladinu na povodních nejlíp?
+- Data a rozdělení: společné rozdělení, opravená verze vyhodnocení. Nejlepší varianta každého přepočítaná na MacBooku M1 z kódu v Gitu: `ridge` (Honza), `mlp` (Ondra), `lgbm_c` (Dan), `fyzika` (Tobias), `jako_ted`.
+- Výsledek na val (průměr přes 6 kombinací cíle a horizontu; propásnuto a plané poplachy jsou součet u 2. stupně):
+
+  | Model | Chyba na povodních | Chyba celkem | Bias na povodních | Propásnuto | Plané poplachy | Předstih 2. stupně | Trénink všech 6 |
+  |---|---|---|---|---|---|---|---|
+  | lineární regrese | 17,1 cm | 8,2 cm | −5,1 cm | 0 | 0 | 17,4 h | 1 s |
+  | neuronová síť | 17,8 | 8,3 | −7,5 | 0 | 1 | 19,5 h | 99 s |
+  | LightGBM | 23,1 | 9,4 | −6,2 | 0 | 0 | 14,2 h | 21 s |
+  | fyzikální | 24,8 | 11,9 | −5,0 | 0 | 0 | 16,2 h | 3 s |
+  | „jako teď“ | 44,3 | 12,8 | −14,7 | 24 z 24 | 0 | 0 h | 0 s |
+
+  Podíl předpovědí do ±20 cm při vodě nad 1. stupněm (+12 / +24 / +36 h): lineární 88 / 76 / 51 %, síť 90 / 64 / 49 %, LightGBM 85 / 61 / 37 %, fyzikální 76 / 53 / 35 %, „jako teď“ 51 / 23 / 13 %.
+- Závěr: všechny čtyři modely jsou na povodních zhruba o polovinu lepší než „jako teď“ a žádný nepropásl povodeň. Lineární regrese a síť jsou v rámci náhody stejné (rozdíl 0,7 cm, rozptyl sítě mezi seedy 0,9 cm). Lineární regrese je ale nejjednodušší, nejrychlejší, nemá planý poplach a každou váhu vysvětlíme. LightGBM přestřeluje vrcholy nad rámec tréninku (1/2011 o 60 cm na 24 h, `docs/grafy/povoden_2011-01_decin_24h.png`). Fyzikální model ukazuje, že učené modely nedělají nic magického, jen fyziku zpřesňují. Na 36 h jsou všechny výrazně horší, bez srážek dál nevidíme.
+- Soubory: `results/*.json` (otisk verze v JSON), `docs/grafy/srovnani_ctyr_modelu.png`, `docs/grafy/povoden_2011-01_decin_24h.png`, `docs/grafy/povoden_2006-03_decin_36h.png`, skripty `src/graf_srovnani.py` a `src/graf_povoden.py`.

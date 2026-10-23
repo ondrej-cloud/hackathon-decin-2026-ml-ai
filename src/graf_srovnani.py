@@ -13,6 +13,8 @@ if modely:
 poradi = df.groupby("model").mae_povodne.mean().sort_values(ascending=False).index
 kombinace = [(c, h) for c in ("decin", "usti") for h in (12, 24, 36)]
 nazvy = {"decin": "Děčín", "usti": "Ústí"}
+MODELY = {"jako_ted": "„bude jako teď“", "fyzika": "fyzikální (Tobias)", "ridge": "lineární regrese (Honza)",
+          "lgbm_c": "LightGBM (Dan)", "mlp": "neuronová síť (Ondra)"}
 
 fig, ax = plt.subplots(figsize=(10, 4.8))
 sirka = 0.8 / len(poradi)
@@ -21,7 +23,7 @@ for i, (m, barva) in enumerate(zip(poradi, barvy)):
     r = df[df.model == m].set_index(["cil", "horizont"]).mae_povodne
     hodnoty = [r.get(k, np.nan) for k in kombinace]
     x = np.arange(len(kombinace)) + (i - (len(poradi) - 1) / 2) * sirka
-    ax.bar(x, hodnoty, sirka, label=f"{m} (průměr {np.nanmean(hodnoty):.1f} cm)",
+    ax.bar(x, hodnoty, sirka, label=f"{MODELY.get(m, m)}: průměr {np.nanmean(hodnoty):.1f} cm",
            color="#999999" if m == "jako_ted" else barva)
 ax.set_xticks(np.arange(len(kombinace)), [f"{nazvy[c]} +{h} h" for c, h in kombinace])
 ax.set_ylabel("průměrná chyba na povodních (cm)")

@@ -64,7 +64,7 @@ def spust(nazev, test=False, rychle=False):
                   parametry=getattr(model, "PARAMETRY", {}), vysledky=radky)
     RESULTS.mkdir(exist_ok=True)
     soubor = RESULTS / f"{cas:%Y-%m-%d_%H%M%S}_{nazev}{'_test' if test else ''}.json"
-    soubor.write_text(json.dumps(zaznam, ensure_ascii=False, indent=1))
+    soubor.write_text(json.dumps(zaznam, ensure_ascii=False, indent=1), encoding="utf-8")
     if not rychle:
         (RESULTS / "predpovedi").mkdir(exist_ok=True)
         pd.concat(predpovedi).rename_axis("cas_vydani").to_parquet(
@@ -76,7 +76,7 @@ def spust(nazev, test=False, rychle=False):
 def prehled(cast="val"):
     posledni, stare = {}, set()
     for f in sorted(RESULTS.glob("*.json")):
-        z = json.loads(f.read_text())
+        z = json.loads(f.read_text(encoding="utf-8"))
         if z["cast"] != cast or z.get("rychle"):
             continue
         if z.get("verze") == verze():
