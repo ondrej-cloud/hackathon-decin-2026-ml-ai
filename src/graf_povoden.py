@@ -23,12 +23,13 @@ for i, m in enumerate(modely):
     if i == 0:
         ax.plot(P.index, P.skutecnost, color="black", lw=2.5, label="skutečnost")
     ax.plot(P.index, P.predpoved, lw=1.3, ls="--" if m == "jako_ted" else "-",
-            color="#999999" if m == "jako_ted" else None, label=NAZVY.get(m, m))
+            color="#999999" if m.startswith("jako_ted") else None, label=NAZVY.get(m.removesuffix("_test"), m))
 for n, prah in enumerate(SPA[cil], 1):
     ax.axhline(prah, color="#3b6ea5", lw=0.8, alpha=0.5)
-    ax.text(pd.Timestamp(od, tz="UTC"), prah + 5, f"{n}. stupeň", color="#3b6ea5", fontsize=8)
+    ax.text(pd.Timestamp(do, tz="UTC"), prah + 5, f"{n}. stupeň", color="#3b6ea5", fontsize=8, ha="right")
 ax.set_ylabel(f"hladina {'v Děčíně' if cil == 'decin' else 'v Ústí'} (cm)")
-ax.set_title(f"Povodeň {pd.Timestamp(od):%m/%Y}, předpověď {h} h předem (model ji při tréninku neviděl)")
+ax.set_title(f"Povodeň {pd.Timestamp(od):%m/%Y}, předpověď {h} h předem (model ji při tréninku neviděl)"
+             + (", test" if modely[0].endswith("_test") else ""))
 ax.legend(fontsize=8, loc="upper left")
 fig.tight_layout()
 soubor = ROOT / "docs/grafy" / f"povoden_{od[:7]}_{cil}_{h}h.png"

@@ -158,3 +158,41 @@ Zjišťujeme, jestli složitější model přidá něco, co lineární regrese n
 4. **Vysvětlení:** permutační důležitost vstupů (`sklearn.inspection.permutation_importance`) na validaci a srovnání s vahami lineárního modelu.
 
 Ondra navíc: ve 21:00 `python src/porovnej.py --prehled`, porovnat všechny čtyři modely na povodních, vybrat finální model a zapsat to do `docs/DENIK.md`. Finální test (`--test`) jednou v sobotu ráno.
+
+## Další úkol (pá 20:45): Dan, doba putování podle průtoku
+
+Doba, za kterou voda doteče do cíle, není stálá. Při povodni se vlna rozlije do nivy a zpomalí se. Na trénovacích datech 2006–2018 (největší korelace změn průtoku za 6 h, podle průtoku v Ústí):
+
+| Odkud → kam | pod 300 m³/s | 300–800 | 800–1500 | nad 1500 |
+|---|---|---|---|---|
+| Mělník → Ústí | 8 h | 9 h | 10 h | 16 h |
+| Praha → Ústí | 13 h | 13 h | 14 h | 39 h |
+| Louny → Ústí | 13 h | 12 h | 14 h | 23 h |
+| Ústí → Děčín | 5 h | 4 h | 3 h | 3 h |
+
+Nad 1 500 m³/s je málo hodin (hlavně povodně 2006, 2011, 2013), čísla jsou proto jen orientační. Ověř to.
+
+Úkol: v `lgbm_a.vstupy` je pro každou stanici jedna doba doběhu (`DOBA`). Udělej variantu, kde doba závisí na průtoku, který je v čase předpovědi známý (třeba v cíli nebo na té stanici teď):
+
+1. Na trénovacích datech změř dobu doběhu každé stanice zvlášť pro 3–4 pásma průtoku. Málo dat v pásmu = vezmi sousední pásmo, nic nevymýšlej.
+2. Vstupy „průtok, který dorazí za h hodin“ počítej s dobou podle pásma. Zpoždění zaokrouhli na ta, která jsou v X.
+3. Vyzkoušej to v LightGBM (`lgbm_doba.py`). Když to pomůže, zkus stejné vstupy i v lineární regresi (`ridge_doba.py`, odmocnina průtoků jako v `ridge.py`), ať víme, jestli to platí obecně.
+4. Platí pravidla iterace a „Na co si dát pozor“. Doby měř jen na trénovacích datech, nikdy na validaci.
+5. Do 22:00 zapiš výsledek do `docs/POKUSY.md` (i když nepomůže), rozbor do `docs/DENIK.md` a `/sync main`.
+
+Proč: fyzikálně je to transformace povodňové vlny (rozliv do nivy, drsnost a sklon koryta). Když to pomůže, máme pro porotu silný a vysvětlitelný krok. Když ne, víme proč.
+
+## Další úkol (pá 21:00): Honza, kolik let dat model potřebuje
+
+Porota se zeptá, proč jsme nevystačili s daty z balíčku (2 roky). Odpovíme grafem: jak se chyba lineární regrese mění podle toho, kolik let historie a které stanice má k dispozici. Trénink trvá sekundu, zvládne to i starší notebook, takže to jde dělat vedle aplikace.
+
+1. Vezmi `ridge.fit` beze změn. Trénovací data omez na posledních N let před validací: roky 2019 − N až 2018 z části `train`, pro N = 1, 2, 3, 5, 8 a 13 (13 = celý train). Validace zůstává stejná.
+2. Dvě sady vstupů:
+   - **jen kraj:** sloupce `decin_*`, `usti_*`, `louny_*`, tedy jako balíček,
+   - **všechny stanice:** všech 98 sloupců.
+3. Pro každou kombinaci spočítej `prumer_povodne` (průměr `mae_povodne` přes 6 kombinací cíle a horizontu) a počet propásnutých povodní u 2. stupně. Použij `vyhodnot` z `src/evaluate.py`, nic v něm neměň.
+4. Pozor: v letech 2014–2018 nebyla žádná povodeň nad 2. stupněm. Krátká okna tedy povodeň v tréninku nemají, stejně jako balíček. To je na tom to zajímavé, napiš to k výsledku.
+5. Graf `docs/grafy/kolik_dat.png`: na ose x počet let, na ose y chyba na povodních, dvě čáry (jen kraj, všechny stanice) a vodorovná čára „bude jako teď“ (44,3 cm). Skript `src/kolik_dat.py`.
+6. Zápis do `docs/POKUSY.md` a krátký rozbor do `docs/DENIK.md`, pak `/sync main`. Hotovo do 22:00, aplikace má přednost, když se něco rozbije.
+
+Ve srovnání pátečních pokusů (`docs/NAPAD_LABE.md`, sekce Čas proti prostoru) vyšlo, že stanice proti proudu pomohly víc než historie. Tenhle graf to buď potvrdí na společném rozdělení, nebo ukáže, že to bylo jinak.

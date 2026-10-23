@@ -56,7 +56,7 @@ U stanic proti proudu bereme jen **průtok**, ne hladinu. Průtok se mezi stanic
 - Ústí: na 12 h stačí blízké brány (17 cm), na 36 h pomáhá každá další vrstva (37 cm se všemi, 52 cm jen s blízkými).
 - Se společným rozdělením (`src/evaluate.py`): lineární model Děčín +24 h 15,5 cm na povodních proti 44,4 cm u „jako teď“.
 
-**Limity:** neznáme srážky, takže předpověď dál než den a půl nejde. Doba putování se mezi povodněmi mění. V tréninku je jen jedna opravdu velká povodeň (2013). Jestli jde v aplikaci brát aktuální data ČHMÚ v reálném čase, je neověřené.
+**Limity:** neznáme srážky, takže předpověď dál než den a půl nejde. Doba putování se mezi povodněmi mění. V tréninku je jen jedna opravdu velká povodeň (2013). Aktuální data ČHMÚ v aplikaci brát jdou (odstavec „Aktuální data“ níže), jen Mělník a Nymburk se musí dopočítat.
 
 Ověřeno:
 - Začínáme rokem 2006, protože průtok v Kostelci, Mělníku a Nymburku za rok 2005 chybí celý.
@@ -87,6 +87,34 @@ Ověřeno:
 - řádek, jehož vstupy (36 h zpět) nebo cíl (t + horizont) zasahují do jiné části, se vynechá.
 
 Proč takhle: mezi 2016 a 2020 povodeň nebyla, validace na pozdějších letech by nic neřekla. V tréninku zůstává největší povodeň 2013, ve validaci jsou dvě velké a dvě menší.
+
+### Kolik historie a které stanice (ověřeno pá 20:44)
+
+V letech 2014–2018 nebyl v Děčíně ani v Ústí dosažen 2. stupeň: maxima hladin jsou 465 proti prahu 490 cm a 490 proti prahu 530 cm. Okna 1, 2, 3 a 5 let končící rokem 2018 proto neobsahují povodeň na tomto stupni. Okna 8 a 13 let už zahrnují povodeň 2013; množství historie tedy zároveň mění zastoupení vysoké vody.
+
+Na stejné validaci dává nezměněný Ridge se všemi stanicemi při 2 / 5 / 8 / 13 letech chybu na povodních 26,9 / 21,0 / 16,6 / 17,1 cm proti 44,3 cm u „bude jako teď“. Propásnutá varování jsou 4 / 3 / 0 / 0 z 24 případů. Dva roky se všemi stanicemi mají podobnou chybu jako 13 let jen z kraje (27,8 cm), ale slabší varování. Osm a třináct let se v chybě liší jen o 0,47 cm; obecný minimální počet let z toho určit nejde. Podrobnosti a všechny varianty v `docs/POKUSY.md`, graf `docs/grafy/kolik_dat.png`.
+
+### Aktuální data (ověřeno pá 23. 10. večer)
+
+Operativní data ČHMÚ pro předpověď na teď existují, jsou otevřená a bez registrace. Načítá je `app/aktualni.py` (`predpoved_dnes()`), stažené soubory jdou do `data/raw/chmu_aktualni/` (není v Gitu).
+
+- **Odkud:** dnešek od 0:00 UTC po 10 minutách je v `https://opendata.chmi.cz/hydrology/now/data/0-203-1-<číslo stanice>.json`. Soubor se obnovuje zhruba každých 20 minut (viděno 18:20, 19:00 a 19:20 UTC), poslední hodnota je 10–30 minut stará. Předchozí dny jsou po jednom souboru na den v `https://opendata.chmi.cz/hydrology/recent/data/<RRRRMMDD>_0-203-1-<číslo stanice>.json`, od 1. 1. 2026 do včerejška; včerejšek se objeví kolem 0:20 UTC. Model potřebuje 37 hodin zpátky, bereme dnešek a tři předchozí dny (72–96 h), aby to šlo i těsně po půlnoci.
+- **Formát:** JSON, `objList[0].tsList`, řady `H` (cm), `Q` (m³/s), `TH` (teplota vody) a k tomu předpověď ČHMÚ `H_F` a `Q_F` po hodinách na 3 dny dopředu. Data jsou nevalidovaná (popis `hydrologicka_data_now_a_recent_popis.pdf` na stejném serveru).
+- **Čas je UTC**, i když popis píše SEČ a SELČ. Děčín 18:50 v JSON ukazuje hydro.chmi.cz/hpps jako 20:50 se stejnou hodnotou 90 cm a 85,2 m³/s a den přechodu na letní čas (29. 3. 2026) má všech 144 hodnot.
+- **Z 10 minut na hodinu:** hodinové hodnoty v archivu, ze kterého se modely učily, jsou podle ČHMÚ „průměrné hodinové hodnoty“. Na Děčíně 2025 jsme je porovnali s 10minutovými okamžitými stavy: hodina t je průměr t:00 až t:50, po zaokrouhlení sedí v 90 % hodin (průměrná odchylka 0,3 cm). Hodnota přesně v celou hodinu sedí jen v 56 % (0,7 cm), průměr předchozí hodiny ve 43 % (1,1 cm). Aplikace proto počítá stejný průměr a hodinu bere, až když je u stanice celá. Čas vydání předpovědi je tak 1–2 h za skutečným časem.
+- **Co chybí:** všech 12 stanic v now/ je, ale průtok v Nymburce ČHMÚ operativně nezveřejňuje vůbec (ani na hpps, jen hladinu) a v Mělníku jen dvakrát denně kolem 5:00 a 11:00 UTC. Oba dopočítáváme z bilance vody ověřené na archivu 2006–2020: Mělník = Vraňany + Kostelec o hodinu dřív (medián odchylky 0,5 %), Nymburk = Kostelec − Jizera (medián odchylky 8 %). Na validaci to Ridge zhorší málo: předpověď se v průměru posune o 1 cm, chyba na povodních Děčín +24 h 15,5 → 16,9 cm a +12 h 9,0 → 10,8 cm, pořád daleko pod „bude jako teď“ (44,3 cm). Dvě denní hodnoty v Mělníku se za 20.–23. 10. od dopočtu liší o 0–15 m³/s při průtoku kolem 60 m³/s. Aplikace u předpovědi vždy píše, co je dopočtené.
+- **Navazuje na archiv:** při průtoku 80–90 m³/s je teď Děčín na 90 cm (archiv 2022–2025: 90–94 cm), Ústí při 72–82 m³/s na 125 cm (122–125 cm). Jednotky sedí a posun hladiny proti archivu tam není.
+- **Nejnovější stažená hodnota** (pá 23. 10. 2026 v 18:50 UTC, 20:50 našeho času): Děčín 90 cm a 85 m³/s, Ústí 125 cm a 78 m³/s, oboje pod 1. stupněm. Ridge vydaný z hodiny 18:00 UTC: Děčín 98 / 98 / 98 cm za 12 / 24 / 36 h, ČHMÚ ve stejných časech 93 / 91 / 90 cm; Ústí 136 / 135 / 131 cm, ČHMÚ 126 / 126 / 125 cm. Při nízké vodě kolísá hladina v Děčíně a Ústí o 10–30 cm během pár hodin (nejspíš jezy, domněnka). Za 21.–23. 10. měl Ridge na 12 h průměrnou chybu 11 cm v Děčíně i v Ústí, „bude jako teď“ 8 a 12 cm. Na nízké vodě model nic nepřidá, dnešní data hlavně ukazují, že celý řetězec od ČHMÚ po předpověď funguje i naživo.
+
+### N-leté vody a záplavová území (ověřeno pá 21:30)
+
+Pro vrstvu rozlivu na 3D mapě (`app/rozliv.py`). Vlastní hydrauliku (výpočet proudění vody v údolí) neděláme. Předpovězenou hladinu převedeme na průtok, porovnáme ho s N-letými průtoky ČHMÚ (N-letá voda je průtok, který přijde v průměru jednou za N let) a ukážeme oficiální záplavové území pro tu N-letou vodu. Vrchol 2013 v Děčíně (1 072 cm, 3 700 m³/s) tak vyjde jako voda mezi dvacetiletou a padesátiletou.
+
+- **N-leté průtoky:** ČHMÚ, vyhodnocení 2024, https://opendata.chmi.cz/hydrology/characteristic/data/hydrological_characteristic/ (soubory `NY_0-203-1-<číslo stanice>.json`). Děčín Q1 / Q5 / Q20 / Q100 = 1 050 / 1 960 / 2 970 / 4 410 m³/s, Ústí 1 010 / 1 870 / 2 860 / 4 290 m³/s, k tomu Q2, Q10 a Q50. Q1, Q5, Q10, Q50 a Q100 souhlasí s evidenčními listy hlásných profilů (https://hydro.chmi.cz/hppsevlist/download?seq=2497644 pro Děčín, `seq=307228` pro Ústí). Z nich je i nula vodočtu (nadmořská výška, od které se hladina měří): Děčín 120,07 m n. m., Ústí 130,94 m n. m. Hladina ke každé N-leté vodě je z oficiální měrné křivky ČHMÚ (`.../characteristic/data/discharge_rating_curve/RC_0-203-1-<číslo stanice>.json`, v Děčíně platí od 1. 7. 2024): Děčín Q5 707 cm, Q20 919 cm, Q100 1 206 cm. Všechno je v `data/external/n_lete_vody.csv`, zdroj u každého řádku.
+- **Měrná křivka z našich dat** (převod hladiny na průtok): medián průtoku v pásmech hladiny po 10 cm za 2006–2025. S oficiální křivkou ČHMÚ se shoduje do 3 %, např. Děčín 400 cm: 782 proti 764 m³/s, 1 000 cm: 3 340 proti 3 370 m³/s. Nad nejvyšší změřenou hladinou (Děčín 1 072 cm) ji neprodlužujeme, aplikace to u popisu napíše.
+- **Záplavová území:** DIBAVOD (databáze vodohospodářských dat VÚV TGM), vrstvy D01 (Q5), D02 (Q20), D03 (Q100) a D05 (aktivní zóna pro Q100), stav 30. 10. 2025, https://www.dibavod.cz/27/struktura-dibavod.html. Zipy za celou ČR mají asi 750 MB, leží v `data/raw/zaplavy/` a v Gitu nejsou. Bereme jen polygony toku Labe na úseku Ústí až Hřensko (13,95–14,35° v. d., 50,60–50,90° s. š.), rozdělené na úsek Ústí a úsek Děčín na 50,72° s. š. (zhruba v půli cesty mezi vodočty), zjednodušené s tolerancí 4 m a převedené z S-JTSK do WGS84. Výšku bodů bereme z terénu (dlaždice Terrarium), aby polygony ležely na 3D mapě. Výsledek je `data/external/zaplavova_uzemi.geojson` (0,26 MB), postaví ho `python app/rozliv.py --priprav`.
+
+Limity: polygony platí pro ustálený N-letý průtok, ne pro naši konkrétní povodeň (průběh vlny, led, protipovodňové stěny a stav koryta v nich nejsou). Podle VÚV je průběh jen orientační, závazný ho má správce toku. N-letou vodu pro celý úsek určujeme z jednoho vodočtu. Rozliv v Děčíně ovlivňuje i Ploučnice, která ústí kousek nad vodočtem; její vlastní záplavové území nebereme. Území jsou jen pro Q5, Q20 a Q100, takže mezi nimi nic jemnějšího neukážeme: při průtoku mezi Q5 a Q20 svítí území Q5 a Q20 je jen obrysem.
 
 ## Ovzduší
 

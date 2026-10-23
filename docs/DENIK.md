@@ -139,6 +139,13 @@ Následující záznamy jsou doplněné zpětně (pá 19:35) podle commitů, ať
 - Výsledek a co znamená: chyba na povodních přes 6 kombinací: „jako teď“ 44,3 cm, trend 39,4, LightGBM na syrových vstupech 40,9, LightGBM s posunutými průtoky 22,8, Ridge 17,1. Nic nepropásl a nemá planý poplach. Stromy na povodních prohrávají s lineárním modelem o 5,7 cm.
 - Slabiny a co může být špatně: přeučení (na trénovacích povodních 5–10 cm, na validaci 10–36 cm), schody a přestřelení při rychlém stoupání (2011 asi o 70 cm), povodně 2006 a 2011 jsou vyšší než všechno v tréninku kromě 2013. Povodeň 9/2010 podhodnotí o 25 cm všechny modely, nejspíš déšť blízko kraje, a srážky nemáme. Ve validaci jsou jen 4 povodně.
 - Otázka poroty a odpověď: „Proč jste nevybrali LightGBM, když je na tabulková data obvykle nejlepší?“ Na povodních je o 5,7 cm horší než Ridge. Stromy umí předpovědět jen hodnoty, které viděly, a velká povodeň je v tréninku skoro jen jedna (2013). Vztah „víc vody, vyšší hladina“ je skoro přímka a lineární model ji prodlouží i nad to, co viděl. I když stromy jen opravovaly Ridge, výsledek zhoršily ze 17,1 na 18,9 cm.
+## pá 20:15 · Ondra · Rozbor: srovnání čtyř modelů
+- Co jsme udělali: každý z nás vyzkoušel jiný druh modelu na stejném úkolu. Nejlepší variantu každého jsme přepočítali na jednom počítači a na stejné verzi dat i vyhodnocení.
+- Jak to funguje, jednoduše: všechny modely dostanou stejné vstupy (hladiny v Děčíně a Ústí, průtoky 12 stanic proti proudu) a předpovídají hladinu za 12, 24 a 36 h. Hodnotíme je na 4 povodních, které při tréninku neviděly.
+- Výsledek a co znamená: chyba na povodních lineární regrese 17,1 cm, neuronová síť 17,8, LightGBM 23,1, fyzikální model 24,8, „jako teď“ 44,3. Žádný model nepropásl povodeň, „jako teď“ propásne všechny.
+- Návrh na finální model: lineární regrese (`src/models/ridge.py`). Je nejlepší, nejjednodušší, trénuje se za sekundu, nemá planý poplach a celá se vysvětlí na grafu vah. Síť je stejně dobrá jen v rámci náhody a hůř se vysvětluje. Čeká na potvrzení, finální test 2021–2025 se pustí jednou na vybraný model.
+- Slabiny a co může být špatně: validace má jen 4 povodně, všechny modely na povodních mírně podhodnocují (bias −5 až −8 cm) a na 36 h je chyba skoro dvojnásobná. Data ČHMÚ v archivu jsou zpětně ověřená, v provozu jsou průtoky při povodni předběžné, takže čísla jsou proti provozu optimistická.
+- Otázka poroty a odpověď: „Proč jste nevzali složitější model, když jste ho měli?“ Zkusili jsme čtyři přístupy na stejných datech. Neuronová síť ani LightGBM nebyly lepší, LightGBM navíc přestřeluje vrcholy, které jsou vyšší než všechno v tréninku. Jednodušší model, který umíme vysvětlit, vyhrál i v číslech.
 
 ## pá 20:20 · Ondra
 - Co: Dan dokončil LightGBM, srovnání všech čtyř je finální (`docs/POROZUMENI.md`, sekce Jak číst výsledky, i v procentech). Lineární regrese 17,1 cm, síť 17,8, LightGBM 23,1, fyzikální 24,8, „jako teď“ 44,3.
@@ -153,3 +160,91 @@ Následující záznamy jsou doplněné zpětně (pá 19:35) podle commitů, ať
 ## pá 20:30 · Ondra
 - Co: sepsali jsme celkový přehled řešení `docs/PREHLED.md`: co předpovídáme, které vstupy každý model používá, co jsme nevzali a proč, rozdělení, výsledky a tabulku všech rozhodnutí s důvody.
 - Proč: rozhodnutí byla rozesetá po deníku, pokusech a datech. Pro prezentaci a otázky poroty je potřebujeme pohromadě.
+
+## pá 20:20 · Dan
+- Co: všech 14 mých modelů jsem pustil znovu na opravené verzi dat a vyhodnocení. Závěry platí: LightGBM c 23,1 cm na povodních (stejně jako Ondrovi na Macu), Ridge 17,1, zbytek po Ridge 18,7. Grafy jsou překreslené.
+- Problém: otisk verze v `porovnej.py` vychází na Windows jinak než na Macu (u mě 69a6db32, u Ondry 9a31181e), i když data a kód jsou stejné. Git na Windows (`core.autocrlf=true`) ukládá `.py` soubory s konci řádků CRLF a `verze()` je hashuje i s nimi. Po převodu `.py` na LF vyjde přesně 9a31181e. Následek: `--prehled` na Macu schová výsledky z Windows (Dan, Honza) jako „starou verzi“ a na Windows zase chybí výsledky z Maců. Čísla jdou srovnat, jen je přehled neukáže vedle sebe.
+- Návrh pro Ondru: v `verze()` u `.py` souborů před hashováním nahradit `\r\n` za `\n`, nebo do `.gitattributes` přidat `*.py text eol=lf`. Je to Ondrův soubor, neměnil jsem ho.
+- Problém: Python na Windows zapisuje text v cp1250, pokud se nezadá kódování. Moje starší výsledky tak nešly v novém `porovnej.py` přečíst. Ondra i já jsme je převedli do UTF-8, nový `porovnej.py` už zapisuje UTF-8.
+## pá 20:45 · Ondra
+- Co: zjistili jsme, že doba putování vody závisí na průtoku. Při povodni se vlna zpomalí (Mělník → Ústí 8 h při malé vodě, 16 h nad 1 500 m³/s), protože se rozlije do nivy. Modely zatím počítají s jednou dobou na stanici.
+- Kdo co: Dan zkusí dobu putování podle průtoku (zadání v `docs/UKOL_MODELY.md`, sekce Další úkol), Ondra srážky, sníh a teplotu z 25 stanic ČHMÚ v povodí.
+- Proč: čtyři modely skončily blízko sebe, strop dělají vstupy. Oba pokusy přidávají informaci, kterou modely zatím nemají. Sklon a vzdálenost samotné se nemění, jejich vliv je už ve změřené době putování.
+
+## pá 20:50 · Dan · Rozbor: doba doběhu podle průtoku
+- Co jsme udělali: změřili jsme dobu doběhu z každé stanice zvlášť pro pásma průtoku v Ústí, jen na trénovacích datech, a dali ji do LightGBM a do lineárního modelu místo jedné stálé doby.
+- Jak to funguje, jednoduše: když je v Ústí málo vody, bere model z Ústí průtok před 6 h, když je vody víc, tak před 3 h, protože vlna jde rychleji. U ostatních stanic podobně podle naměřené tabulky.
+- Proč tak a ne jinak: při povodni se vlna rozlije do nivy a zpomalí (transformace povodňové vlny). Doby jsme měřili jen na tréninku, aby se do modelu nedostala validace. Kde bylo v pásmu málo dat nebo slabá souvislost, vzali jsme sousední pásmo, nic jsme nevymýšleli.
+- Výsledek a co znamená: nepomohlo to. LightGBM 23,1 cm stejně jako bez pásem, lineární model se stejnými vstupy o 0,4 cm lépe, pod hranicí 1 cm. Zpomalení vlny při velké povodni se z trénovacích dat změřit nedá, nad 1 500 m³/s je tam jen červen 2013.
+- Slabiny a co může být špatně: doby nad 1 500 m³/s by šly změřit s validačními povodněmi, to ale nesmíme. Pásma podle průtoku v Ústí jsou hrubá a zpoždění v X jsou jen po 3–12 h, takže rozdíl 1–2 h se po zaokrouhlení ztratí. Ondrova tabulka se s mou shoduje, jen Louny nad 1 500 m³/s vychází 10 h místo 23 h, což je stejně jen jedna povodeň.
+- Otázka poroty a odpověď: „Když víte, že se vlna při povodni zpomalí, proč to model nepoužívá?“ Zkusili jsme to a na validaci to nepomohlo. Na trénovacích datech je nad 1 500 m³/s jediná povodeň, takže zpomalení neumíme spolehlivě změřit. Lineární model si dobu doběhu stejně najde sám z vah přes všechna zpoždění 0–36 h, proto mu ruční doba nic nepřidá.
+## pá 20:38 · Ondra
+- Co: Honza dostal vedle aplikace úkol „kolik let dat model potřebuje“ (učicí křivka lineární regrese, jen kraj proti všem stanicím, zadání v `docs/UKOL_MODELY.md`). Sepsali jsme inventuru všech dat `docs/ZDROJE_DAT.md`: co je v balíčku, kolik z toho používáme a proč, co jsme přidali a jaké parametry modely dostávají.
+- Zjištění: denní úhrn srážek ČHMÚ s časem „den D 06:00“ je déšť za následujících 24 h, ne za předchozích (ověřeno na hodinových srážkách v Praze 5–7/2020). Kdybychom ho brali od jeho časové značky, model by viděl den deště z budoucnosti. Bereme ho až od D+1 07:00.
+- Proč: graf o množství dat odpovídá na otázku poroty, proč nestačil balíček. Inventura dat je podklad pro slajd „Jaká data jsme použili“, který zadání výslovně chce.
+
+## pá 20:44 · Honza · Rozbor: kolik let dat model potřebuje
+- Co jsme udělali: nezměněnou lineární regresi jsme naučili na 1, 2, 3, 5, 8 a 13 letech do konce 2018, vždy jen na třech stanicích z kraje a pak na všech 12. Celkem 72 tréninků, stejná validace a společné vyhodnocení.
+- Jak to funguje, jednoduše: měníme jen to, kolik minulých let a odkud model dostane měření. Stejné čtyři povodně mu při učení pokaždé schováme. Graf `docs/grafy/kolik_dat.png` ukazuje, jak klesá chyba.
+- Proč tak a ne jinak: oddělíme přínos delší historie od přínosu stanic proti proudu, aniž bychom ladili model nebo nahlíželi do finálního testu. Pokus běžel v oddělené pracovní kopii kvůli souběžným úpravám aplikace.
+- Výsledek a co znamená: všechny stanice a 8 / 13 let mají chybu 16,6 / 17,1 cm proti 44,3 cm u „bude jako teď“, bez propásnutí i planých poplachů. Dva roky všech stanic mají podobnou chybu jako 13 let jen z kraje (26,9 / 27,8 cm), ale propásnou 4 z 24 hodnocených nástupů; dlouhý kraj nepropásne žádný, má však dva plané poplachy. Osm a třináct let se liší méně než o 1 cm, finální model necháváme beze změny.
+- Slabiny a co může být špatně: krátká okna do pěti let nemají ani jednu hodinu na 2. stupni; delší zahrnují povodeň 2013. Nerozhoduje tedy jen počet let, ale i zastoupení povodní. Validace je retrospektivní, některé povodně jsou starší než trénink. Čtyři povodně nedokazují, že osm let stačí všude; test 2021–2025 jsme nepoužili. Nezávislá kontrola potvrdila stejné validační řádky, správné hranice oken i shodu plného tréninku s Ridge 17,1 cm.
+- Otázka poroty a odpověď: „Takže model potřebuje přesně osm let?“ Ne. Na této validaci osm let funguje podobně jako třináct, ale tato okna už obsahují velkou povodeň 2013. Dva suché roky mohou stačit k menší průměrné chybě, přesto některá povodňová varování propásnou. Historii potřebujeme i k nezávislému ověření na několika povodních.
+## pá 20:55 · Honza · Rozbor: kolik let dat model potřebuje
+- Co jsme udělali: učicí křivku lineární regrese: trénink na 1 až 13 letech před validací, jednou jen se stanicemi z balíčku (Děčín, Ústí, Louny), jednou se všemi 12. Graf `docs/grafy/kolik_dat.png`.
+- Jak to funguje, jednoduše: stejný model, jen mu dáváme méně historie nebo méně stanic, a měříme chybu na stejných 4 povodních.
+- Proč tak a ne jinak: porota se zeptá, proč jsme nevystačili s balíčkem. Odpověď chceme ukázat číslem, ne tvrdit.
+- Výsledek a co znamená: balíček (2 roky, jen kraj) = 45 cm, horší než „jako teď“ (44,3), a 12 z 24 nástupů povodní propásne. Stanice proti proudu srazí chybu na 27 cm i se 2 roky; velká povodeň v tréninku (2013) srazí propásnuté na 0; obojí dohromady 17 cm. Víc stanic pomohlo víc než víc let.
+- Slabiny a co může být špatně: krátká okna končí vždy rokem 2018, takže „2 roky“ znamená 2017–2018 (suchá léta); jiné dva roky by vyšly jinak. Validace má 4 povodně.
+- Otázka poroty a odpověď: „Nestačila by data, která jste dostali?“ Ne. S nimi by model nebyl lepší než „bude jako teď“ a propásl by polovinu povodní, protože v letech 2024–2026 je jediná povodeň a stanice jen v kraji. Proto jsme přidali 20 let a 9 stanic z otevřených dat ČHMÚ.
+## pá 20:44 · Ondra
+- Co: srážky, sníh a teplotu z 25 stanic v povodí do modelu nepřidáváme. Na validaci nepomohly (lineární regrese 17,1 → 17,4 cm, síť 17,8 → 21,2 cm) a ani dokonalá předpověď srážek na den dopředu by nepomohla o víc než 0,8 cm.
+- Proč: otestovali jsme názor, že přesnější model potřebuje všechny faktory povodní. Na horizontu 12–36 h je ale voda z deště a tání už v řekách a model ji vidí v průtocích proti proudu. Faktory, které se nemění (sklon, půda, tvar povodí), jsou už ve změřené době putování a měrné křivce. Víc vstupů při stejném počtu povodní znamená hlavně riziko přeučení (síť se zhoršila o 3,4 cm).
+- Pro porotu: „Zkoušeli jste srážky?“ Ano, z 25 stanic za 20 let, a nepomohly, ani kdybychom znali déšť den dopředu. Proto zůstáváme u jednoduššího modelu.
+
+## pá 20:46 · Honza · sjednocení učicí křivky při synchronizaci
+- Co: zachovali jsme oba záznamy souběžných pokusů; výsledný `src/kolik_dat.py` ukládá metriky a hlídá, aby z vybraného období pocházelo i všech 36 hodin historie. Graf obsahuje chybu i počty propásnutí.
+- Proč se čísla trochu lišila: starší maska připouštěla u krátkých oken prvních 36 řádků se vstupy z předchozího roku. Oprava mění jen krátká okna (kraj a dva roky 45,1 → 44,6 cm), ne 8 a 13 let ani počty propásnutí.
+- Pro porotu: dva roky všech stanic dávají podobnou chybu jako 13 let jen kraje, nikoli průkazně lepší. „Dva roky“ jsou zde 2017–2018; výsledek není měřením skutečného balíčku 2024–2026. Nevyvozujeme obecné minimum osmi let.
+## pá 20:46 · Ondra
+- Co: vlastní model na předpověď deště dělat nebudeme.
+- Proč: myšlenkový pokus ukázal, že ani dokonalá předpověď srážek na den dopředu by nezlepšila chybu o víc než 0,8 cm (`docs/POKUSY.md`, pá 20:44). Náš vlastní model deště by byl horší než dokonalý, takže by přinesl ještě méně. Předpověď počasí navíc potřebuje modely atmosféry (tlakové pole, družice), které z dat ze stanic za večer neuděláme.
+- Plán k finálnímu modelu: lineární regrese je hotová, ladění skončilo podle pravidel. Počkáme na Danův pokus s dobou putování podle průtoku (do 22:00), protože může změnit finální model. Pak finální model natrénujeme na všem do 2020 a jednou pustíme test 2021–2025 (`python src/porovnej.py jako_ted <model> --test`). Po testu přetrénovat model pro aplikaci na všech datech do 2025 (`src/uloz_model.py` zatím trénuje jen na train).
+
+## pá 21:20 · Honza · Rozbor: animace povodně
+- Co jsme udělali: čtvrtá záložka aplikace „Animace povodně“ (`app/animace.py`): plynulá 3D animace v prohlížeči (deck.gl), terén a satelit, skutečné linie řek z OpenStreetMap (`data/external/reky.geojson`, 11 úseků mezi stanicemi), po nich tečou kapky rychlostí podle doby putování a nesou průtok ze stanice proti proudu, sloupce stanic rostou s průtokem, panel ukazuje hladinu v Děčíně a Ústí, předpověď modelu za 24 h a stupeň. Play, pauza, rychlost 1 až 16 h/s, posuvník času. Čtyři validační povodně na výběr.
+- Jak to funguje, jednoduše: je to naše věta „co teče Prahou teď, je zítra v Děčíně“ nakreslená v čase. Kapka, která projede Prahou při 840 m³/s, dorazí za den do Děčína.
+- Proč tak a ne jinak: hydraulický model koryta (rozliv, hloubky) by za noc byl vymyšlený a porota by to poznala. Tohle ukazuje jen to, co máme změřené: průtoky, doby putování, předpověď. Rozliv řešíme zvlášť přes oficiální záplavová území.
+- Doby putování mezi stanicemi (h, odhad z našich dat a tabulky v `docs/DATA.md`): Přelouč → Nymburk 8, Nymburk → Kostelec 5, Jizera → Kostelec 6, Kostelec → Mělník 3, Beroun → Praha 4, Sázava → Praha 5, Praha → Vraňany 4,5, Vraňany → Mělník 2, Mělník → Ústí 12, Louny → Ústí 20, Ústí → Děčín 4. Z délek úseků to dává 4 až 11 km/h. Mezi povodněmi se liší, model s nimi nepočítá, jen animace.
+- Slabiny a co může být špatně: dlaždice jdou z internetu (záloha: screenshoty `docs/grafy/animace_*.png` a video); na telefonu se popisky překrývají; panel ukazuje i skutečnou hladinu o 24 h později, v provozu bychom ji neznali, je tam jen pro srovnání s předpovědí.
+- Otázka poroty a odpověď: „Je ta animace model, nebo jen obrázek?“ Obrázek naměřených dat a naší předpovědi; rychlost kapek je doba putování odhadnutá z dat, ne výpočet proudění. Model je lineární regrese v záložce Teď, animace ho jen vysvětluje.
+## pá 20:55 · Dan
+- Co: odpověď na otázku poroty k době doběhu podle průtoku, jak ji budeme říkat. Zapsaná i do `docs/POROZUMENI.md`, sekce Otázky, které čekáme od poroty.
+- Otázka poroty a odpověď: „Když víte, že se vlna při povodni zpomalí, proč to model nepoužívá?“ Zkusili jsme to a nepomohlo to (21,8 vs 22,2 cm, pod hranicí 1 cm). Lineární model má 98 zpožděných hodnot (z každé stanice 7 zpoždění 0–36 h) a dobu doběhu včetně roztažení vlny si z vah najde sám. Zpomalení při velkých povodních nejde spolehlivě změřit – nad 1 500 m³/s je v tréninku jen jedna povodeň (6/2013, 227 h).
+
+## pá 20:58 · Ondra · Rozhodnutí: finální model
+- Co: finální model je lineární regrese `src/models/ridge.py` (alpha 1, odmocnina průtoků, všech 98 vstupů). Rozhodnuto před spuštěním testu, test se pouští jednou.
+- Proč: na validaci nejlepší (17,1 cm na povodních, 61 % méně než „jako teď“), nic nepropásl, žádný planý poplach, trénink za sekundu a každá váha jde vysvětlit. Všechny pokusy o zlepšení skončily pod hranicí 1 cm nebo horší: síť 17,8, průměr ridge a sítě 16,9, srážky a sníh 17,4, doba putování podle průtoku (Dan) 21,8, větší váha povodní (Honza) 17,2, kratší historie (Honza) 16,6 při 8 letech, rozdíl pod 1 cm.
+- Test: finální model se natrénuje na všem do konce 2020 (train i validace) a vyhodnotí na 2021–2025 (`python src/porovnej.py jako_ted ridge --test`). Pro srovnání pustíme na test i ostatní tři přístupy, výběr je už uzavřený a podle testu se nemění.
+- Čekáme: výsledek na testu může být jiný než na validaci, jsou to jiné povodně (12/2023 a 9/2024 jsou menší než 2006 a 2011) a model má víc tréninkových dat.
+
+## pá 21:02 · Ondra · Rozbor: finální test
+- Co jsme udělali: finální model (lineární regrese) jsme natrénovali na všem do konce 2020 a jednou vyhodnotili na letech 2021–2025, které jsme při ladění nikdy nepoužili.
+- Jak to funguje, jednoduše: stejná zkouška jako validace, jen na nových povodních (2021, Vánoce 2023, únor 2024, Boris 2024).
+- Výsledek a co znamená: chyba na povodních 22,4 cm proti 50,2 cm u „jako teď“, o 55 % menší (na validaci 61 %). Při povodni Boris model hlásil 3. stupeň v Děčíně 27 h předem (předpověď na 24 h). Před 3. stupněm varoval pokaždé.
+- Slabiny a co může být špatně: na testu je chyba o 5 cm větší než na validaci, testové povodně stoupaly rychleji (i laťka je horší). Čtyři hraniční překročení 2. stupně o pár cm model propásl. Vrcholy podhodnocuje, Boris o 38 cm. Síť vyšla na testu o 1,1 cm lépe, na validaci o 0,7 cm hůř, je to náhoda a výběr podle testu neměníme.
+- Otázka poroty a odpověď: „Proč jste nevzali neuronovou síť, když je na testu lepší?“ Model jsme vybrali před testem podle validace a zapsali to do deníku. Kdybychom ho teď vyměnili, vybírali bychom podle testu a ten by přestal být poctivý. Rozdíl 1 cm je navíc menší, než jak se síť liší sama se sebou při jiném seedu.
+
+## pá 21:30 · Honza · Rozbor: předpověď na dnešek z živých dat ČHMÚ
+- Co jsme udělali: `app/aktualni.py` stahuje operativní data ČHMÚ (opendata.chmi.cz/hydrology/now a recent, po 10 minutách, 10–30 min stará) pro našich 12 stanic, sestaví stejný řádek vstupů jako `features.py` a vydá předpověď na teď. V aplikaci je přepínač „Dnešek“ v levém menu; vedle naší předpovědi se ukáže i oficiální předpověď ČHMÚ (řada H_F) na stejné hodiny.
+- Jak to funguje, jednoduše: totéž, co děláme na historii, jen s dnešními čísly. Dnes ve 20:00: Děčín 90 cm, model za 24 h 98 cm, ČHMÚ 91 cm, všechno hluboko pod 1. stupněm.
+- Proč tak a ne jinak: zadání výslovně jmenuje „aplikaci, která zobrazuje aktuální stav a odhad dalšího vývoje“. Bez dneška je to jen analýza historie.
+- Slabiny a co může být špatně: ČHMÚ operativně nezveřejňuje průtok v Nymburce vůbec a v Mělníku jen dvakrát denně; dopočítáváme je z bilance vody (Mělník = Vraňany + Kostelec o hodinu dřív, Nymburk = Kostelec − Jizera). Na validaci to zhorší Děčín +24 h z 15,5 na 16,9 cm; aplikace u předpovědi vždy vypíše, co je dopočtené. Operativní hodnoty jsou nevalidované a vydání je 1–2 h za skutečným časem. Na klidné vodě (jako teď) model nepřidá nic proti „jako teď“, jeho hodnota je při povodni. Pro dnešek používat `ridge_vse` (učený na všem do 2025).
+- Otázka poroty a odpověď: „Funguje to i dnes, ne jen na starých datech?“ Ano: přepínač Dnešek stáhne poslední měření ČHMÚ a vydá předpověď; vedle ní ukazujeme i oficiální předpověď ČHMÚ pro srovnání.
+
+## pá 21:40 · Honza · Rozbor: rozliv z oficiálních záplavových území
+- Co jsme udělali: `app/rozliv.py` převede předpovězenou hladinu na průtok (měrná křivka z našich dat, ověřená proti oficiální křivce ČHMÚ, rozdíl do 3 %), srovná ho s N-letými průtoky ČHMÚ (Q1 až Q100, `data/external/n_lete_vody.csv`, zdroj opendata.chmi.cz hydrological_characteristic a evidenční listy) a na 3D mapě vyplní oficiální záplavové území DIBAVOD (VÚV TGM) pro tu N-letou vodu, kterou předpověď dosáhne (`data/external/zaplavova_uzemi.geojson`, Q5, Q20, Q100, úsek Ústí a Děčín). Pod mapou věta: „739 cm odpovídá asi 2 050 m³/s, to je mezi pětiletou a desetiletou vodou.“
+- Jak to funguje, jednoduše: neumíme spočítat, kam se voda rozlije, ale stát to má změřené pro pětiletou, dvacetiletou a stoletou vodu. My jen řekneme, které z nich je naše předpověď nejblíž, a tu mapu ukážeme.
+- Proč tak a ne jinak: vlastní hydraulický model koryta (tvar dna, drsnost, kalibrace) za noc poctivě nejde a porota by to poznala. Takhle je předpověď naše, převod z měření a polygony oficiální.
+- Slabiny a co může být špatně: polygony platí pro ustálený N-letý průtok, ne pro konkrétní tvar naší povodně; rozliv v Děčíně ovlivňuje i Ploučnice, kterou nemáme; pod pětiletou vodou se mimo koryto nic nerozlije, takže na většině dat je mapa jen s obrysy. Polohu polygonů na terénu jsme ověřili jen v prohlížeči, ne proti skutečnosti.
+- Otázka poroty a odpověď: „To je váš hydraulický model?“ Ne. Je to oficiální záplavové území, které vybíráme podle naší předpovědi průtoku. Vlastní hydrauliku jsme záměrně nedělali.
