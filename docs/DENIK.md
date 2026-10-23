@@ -77,6 +77,18 @@ Následující záznamy jsou doplněné zpětně (pá 19:35) podle commitů, ať
 - Proč: na malých řekách voda doteče za 0–7 h a rozhoduje déšť, je to jiný problém. Model vybraný tam by se pro Labe musel vybírat znovu.
 
 ## pá 19:40 · Ondra
+## pá 19:35 · Honza
+- Problém: `src/porovnej.py` na Windows spadne při ukládání JSON (`UnicodeEncodeError`, výchozí kódování cp1252). Obcházím to proměnnou `PYTHONUTF8=1`, soubor neměním. Oprava pro Ondru: `write_text(..., encoding="utf-8")`. Dan na Windows narazí na totéž, zapsáno do Stavu.
+
+## pá 19:50 · Honza · Rozbor: lineární regrese (Ridge)
+- Co jsme udělali: lineární model `src/models/ridge.py` pro Děčín a Ústí na 12, 24 a 36 h, k tomu varianty (síla regularizace, změna hladiny jako cíl, výběr stanic podle horizontu), graf vah a graf dvou povodní.
+- Jak to funguje, jednoduše: předpověď je vážený součet. Každá stanice a každé zpoždění má jednu váhu, model vstupy vynásobí a sečte. Průtoky bere jako odmocninu (hladina roste s průtokem zhruba jako odmocnina), hladiny nechává. Váhy si našel z let 2006–2018.
+- Proč tak a ne jinak: jediný druh modelu, u kterého jde ukázat celou rovnici na jednom obrázku, a v kontrole řetězce vyšel nejlíp. Varianty jsme zkoušeli po jedné a s důvodem, žádná nezlepšila průměrnou chybu na povodních o 1 cm, tak zůstala nejjednodušší.
+- Výsledek a co znamená: chyba na povodních průměrně 17,1 cm proti 44,3 cm u „jako teď“ (6 kombinací), Děčín +24 h 15,5 cm. Varování před 2. stupněm 11–37 h předem, nic nepropásnuto, žádný planý poplach. Chyba na tréninku a na validaci je stejná, přeučení není.
+- Slabiny a co může být špatně: 36 h je skoro dvakrát horší než 24 h, protože ta voda ještě neteče ani Prahou a srážky nemáme. Vrcholy nad rámec tréninku (2006, 875 cm) model podhodnotí o 20 cm. Model pro Ústí hodně používá hladinu v Děčíně, který je po proudu: je to druhé měření téže vody, ne únik z budoucnosti, ale porota se zeptá. Vstup z času t bereme jako známý v čase t; ČHMÚ ale zveřejňuje hodinové průměry se zpožděním, v provozu by model měl vstupy asi o hodinu starší, čísla na validaci se nemění, jen by se zkrátil předstih.
+- Otázka pro mentory: s jakým zpožděním jsou hodinová data ČHMÚ v provozu dostupná?
+- Otázka poroty a odpověď: „Proč lineární model a ne něco chytřejšího?“ Protože na povodních, které model neviděl, vyhrál (15,5 cm proti 50 cm u stromů v kontrole řetězce), nemá se na čem přeučit a každou váhu umíme vysvětlit fyzikálně: průtok v Praze teď je hladina v Děčíně za den.
+## pá 20:05 · Ondra
 - Co: ověřili jsme, jestli do modelu nepatří přítoky Labe v kraji (Bílina, Ploučnice). Nepatří, na validaci nepomohly (`docs/POKUSY.md`).
 - Proč: přidají jen 2–13 % vody při vrcholu a doteče z nich za pár hodin. Velké přítoky nad krajem (Vltava s Berounkou a Sázavou, Jizera, horní Labe, Ohře) v modelu jsou.
 - Limit pro prezentaci: povodeň z lokálních dešťů v kraji, jako v srpnu 2010, model bez srážek dopředu nevidí.
@@ -98,3 +110,10 @@ Následující záznamy jsou doplněné zpětně (pá 19:35) podle commitů, ať
 - Výsledek a co znamená: na povodních 17,8 cm proti 44,3 cm u „jako teď“, chyba menší o 60 %. Ze 24 nástupů povodní (4 povodně × 6 kombinací cíle a horizontu) žádný nepropásla, jeden planý poplach. Když je voda nad 1. stupněm, vejde se do ±20 cm 90 % předpovědí na 12 h, 58–70 % na 24 h a 46–51 % na 36 h („jako teď“: 51 %, 22–24 %, 12–14 %).
 - Slabiny a co může být špatně: síť se snadno přeučí, na povodních pořád podhodnocuje (o 5–13 cm na 24 a 36 h), validace má jen 4 povodně a hůř se vysvětluje než lineární model.
 - Otázka poroty a odpověď: „Proč nepoužijete rovnou tu neuronovou síť?“ Je zhruba stejně dobrá jako lineární model, ale hůř se vysvětluje a víc kolísá podle náhody. Když je jednodušší model stejně dobrý, bereme jednodušší.
+## pá 19:48 · Tobias · Rozbor: fyzikální model
+- Co jsme udělali: model, který se skoro nic neučí. Vezme průtok v cíli teď a přičte, o kolik víc vody mezitím přitekla Vltavou, Labem a Ohří, posunuté o dobu putování. Průtok pak převede na hladinu měrnou křivkou.
+- Jak to funguje, jednoduše: co teď teče v Praze, bude za 18 h v Děčíně. Z dat jsme změřili, kolik hodin voda putuje z každé stanice (`docs/grafy/fyzika_vetve.png`), a z 13 let měření, jaká hladina odpovídá jakému průtoku (`docs/grafy/fyzika_merna_krivka.png`).
+- Proč tak a ne jinak: je to fyzikální základ, se kterým se učené modely srovnávají, a celý jde vysvětlit na jednom obrázku. Učí se jen doby putování a křivku, přeučit se nemá jak (chyba na tréninku je dokonce vyšší než na validaci).
+- Výsledek a co znamená: `prumer_povodne` 24,8 cm proti zhruba 44 cm u „jako teď“, Děčín +24 h 22,5 cm. Žádná propásnutá povodeň, žádný planý poplach, před 2. stupněm varuje 11–23 h předem. Třetí vrstva stanic (Beroun, Sázava, Přelouč) zlepšila 36 h o 4 cm. Lineární modely jsou lepší (Dan Ridge 17,1 cm).
+- Slabiny a co může být špatně: doby putování jsou jedno pevné číslo, ale při každé povodni jsou trochu jiné. Co ještě nikdo nezměřil, model považuje za neměnné, takže při stoupání podhodnocuje vrcholy, nejvíc na 36 h (38 cm). Před vrcholem 2006 krátce přestřelil o 50 cm. Povodeň z lokálních dešťů (srpen 2010) bez předpovědi srážek nevidí. Přítoky v kraji podle Ondry chybu nevysvětlují, dají jen 2–13 % vody.
+- Otázka poroty a odpověď: „Proč je fyzikální model horší než lineární regrese, když fyzika platí?“ Fyzika tu má zjednodušení: jednu dobu putování a předpoklad, že co nebylo změřeno, se nezmění. Lineární model se z dat naučí i to, že stoupající voda proti proudu ještě dál stoupá, a jakou váhu má která stanice. Fyzikální model je proto laťka a vysvětlení: ukazuje, že učený model nedělá nic magického, jen tuhle fyziku zpřesňuje.
