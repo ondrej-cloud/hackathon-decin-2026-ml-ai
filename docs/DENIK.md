@@ -163,3 +163,8 @@ Následující záznamy jsou doplněné zpětně (pá 19:35) podle commitů, ať
 - Co: Honza dostal vedle aplikace úkol „kolik let dat model potřebuje“ (učicí křivka lineární regrese, jen kraj proti všem stanicím, zadání v `docs/UKOL_MODELY.md`). Sepsali jsme inventuru všech dat `docs/ZDROJE_DAT.md`: co je v balíčku, kolik z toho používáme a proč, co jsme přidali a jaké parametry modely dostávají.
 - Zjištění: denní úhrn srážek ČHMÚ s časem „den D 06:00“ je déšť za následujících 24 h, ne za předchozích (ověřeno na hodinových srážkách v Praze 5–7/2020). Kdybychom ho brali od jeho časové značky, model by viděl den deště z budoucnosti. Bereme ho až od D+1 07:00.
 - Proč: graf o množství dat odpovídá na otázku poroty, proč nestačil balíček. Inventura dat je podklad pro slajd „Jaká data jsme použili“, který zadání výslovně chce.
+
+## pá 21:15 · Ondra
+- Co: srážky, sníh a teplotu z 25 stanic v povodí do modelu nepřidáváme. Na validaci nepomohly (lineární regrese 17,1 → 17,4 cm, síť 17,8 → 21,2 cm) a ani dokonalá předpověď srážek na den dopředu by nepomohla o víc než 0,8 cm.
+- Proč: otestovali jsme názor, že přesnější model potřebuje všechny faktory povodní. Na horizontu 12–36 h je ale voda z deště a tání už v řekách a model ji vidí v průtocích proti proudu. Faktory, které se nemění (sklon, půda, tvar povodí), jsou už ve změřené době putování a měrné křivce. Víc vstupů při stejném počtu povodní znamená hlavně riziko přeučení (síť se zhoršila o 3,4 cm).
+- Pro porotu: „Zkoušeli jste srážky?“ Ano, z 25 stanic za 20 let, a nepomohly, ani kdybychom znali déšť den dopředu. Proto zůstáváme u jednoduššího modelu.
