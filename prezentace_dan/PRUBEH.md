@@ -18,9 +18,9 @@ Dan (spí, noční úkol), větev `dan-prezentace` z `origin/main` 59956c9, work
 - 01:49 Čistý klon `origin/main` (764984a) do dočasné složky mimo repo (scratchpad). Codex v něm (sandbox
   `workspace-write` jen v klonu, prompt `codex/prompt_reprodukovatelnost.txt`) podle README spouští, co jde bez velkého
   stahování, bez instalace a bez testu. Výsledek do `REPRODUKOVATELNOST.md`.
-- 02:05 `PREHLED_POKUSU.md`: 34 řádků, všechny pokusy týmu i Dana (co, proč, výsledek v cm, rozhodnutí, zdroj). Čísla
+- 01:52 `PREHLED_POKUSU.md`: 34 řádků, všechny pokusy týmu i Dana (co, proč, výsledek v cm, rozhodnutí, zdroj). Čísla
   LightGBM jsou z přepočtu na opravené verzi dat (pá 20:15), ostatní z commitnutých zpráv.
-- 02:10 `OTAZKY_POROTY.md`: 40 otázek v 11 tématech, odpovědi s čísly a zdrojem. U otázky 40 (kdo vyhlašuje stupně
+- 01:55 `OTAZKY_POROTY.md`: 40 otázek v 11 tématech, odpovědi s čísly a zdrojem. U otázky 40 (kdo vyhlašuje stupně
   povodňové aktivity, vodní zákon) výslovně psáno, že to v repu podložené není a je to k ověření u mentora.
 - Session nejistoty (`hackathon-2026-nejistota`) začala 01:43 a výsledky ještě nemá. Otázka 32 o nejistotě je zatím jen
   z Honzova `src/nejistota.py`, před ranní zprávou se podívám znovu.
