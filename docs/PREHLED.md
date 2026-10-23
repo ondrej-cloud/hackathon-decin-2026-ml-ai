@@ -60,6 +60,18 @@ Hlavní číslo je průměrná chyba hladiny během povodní (`mae_povodne`, pr�
 | fyzikální (Tobias) | 24,8 cm | 44 % | 76 / 53 / 35 % | 24 z 24 | 0 |
 | „bude jako teď“ | 44,3 cm | 0 % | 51 / 23 / 13 % | 0 z 24 | 0 |
 
+**Vícenásobná validace** (každá z 8 povodní 2006–2020 jednou vynechaná, model učený na ostatních, test nepoužitý; průměr ± kolísání mezi povodněmi):
+
+| Model | Chyba na povodni | Menší než „jako teď“ | Nejlepší na povodních | Propásnuté / plané (48 běhů) |
+|---|---|---|---|---|
+| lineární regrese | 20,1 ± 7,7 cm | 56 % | 4 z 8 | 1 / 3 |
+| neuronová síť | 21,0 ± 8,0 cm | 54 % | 3 z 8 | 4 / 5 |
+| LightGBM | 22,7 ± 8,6 cm | 50 % | 1 z 8 | 0 / 4 |
+| fyzikální | 26,7 ± 10,0 cm | 41 % | 0 z 8 | 0 / 4 |
+| „bude jako teď“ | 45,2 ± 13,9 cm | 0 % | | 72 / 0 |
+
+Pořadí je stejné jako na validaci. Chyba víc záleží na povodni (3/2009 11 cm, 6/2013 34 cm) než na modelu. Graf `docs/grafy/krizova_validace.png`, podrobnosti v `docs/POKUSY.md` (pá 23:27).
+
 **Finální test 2021–2025** (model vybraný předem, natrénovaný na všem do 2020):
 
 | Model | Chyba na povodních | Menší než „jako teď“ | Do ±20 cm (12 / 24 / 36 h) | Zachycené povodně | Plané poplachy |
