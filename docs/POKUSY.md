@@ -226,3 +226,12 @@ Následující pokusy jsou doplněné zpětně (pá 19:55). Všechny byly před 
   Podíl předpovědí do ±20 cm při vodě nad 1. stupněm (+12 / +24 / +36 h): lineární 88 / 76 / 51 %, síť 90 / 64 / 49 %, LightGBM 85 / 61 / 37 %, fyzikální 76 / 53 / 35 %, „jako teď“ 51 / 23 / 13 %.
 - Závěr: všechny čtyři modely jsou na povodních zhruba o polovinu lepší než „jako teď“ a žádný nepropásl povodeň. Lineární regrese a síť jsou v rámci náhody stejné (rozdíl 0,7 cm, rozptyl sítě mezi seedy 0,9 cm). Lineární regrese je ale nejjednodušší, nejrychlejší, nemá planý poplach a každou váhu vysvětlíme. LightGBM přestřeluje vrcholy nad rámec tréninku (1/2011 o 60 cm na 24 h, `docs/grafy/povoden_2011-01_decin_24h.png`). Fyzikální model ukazuje, že učené modely nedělají nic magického, jen fyziku zpřesňují. Na 36 h jsou všechny výrazně horší, bez srážek dál nevidíme.
 - Soubory: `results/*.json` (otisk verze v JSON), `docs/grafy/srovnani_ctyr_modelu.png`, `docs/grafy/povoden_2011-01_decin_24h.png`, `docs/grafy/povoden_2006-03_decin_36h.png`, skripty `src/graf_srovnani.py` a `src/graf_povoden.py`.
+
+## pá 20:15 · Dan · LightGBM a základy znovu na opravené verzi dat a vyhodnocení
+- Otázka: platí moje výsledky i po Ondrově opravě dat a vyhodnocení (pá 19:58)?
+- Data a rozdělení: nová verze (Děčín 5.–8. 2. 2006 vyřazen, bez doplňování děr, validační okno 16 dní před vrcholem, předstih nejvýš horizont). Všech 14 mých modelů a „jako teď“ znovu.
+- Vstupy, model a nastavení: beze změny, seed 42.
+- Kde a jak dlouho: Dan, Yoga 7i, všechno po sobě 10 min.
+- Výsledek na val (`prumer_povodne`): „jako teď“ 44,3, trend 39,4, Ridge 17,1, LightGBM v1 66,8, v2 40,8, a 24,3, c 23,1 (stejně jako Ondrovi na Macu), zbytek po Ridge 18,7, list 200 hodin 22,1, regularizace 22,2, zastavení 22,2, 7 listů 23,0, monotónní 23,8, přímky v listech 97,8. Děčín, chyba na povodních +12 / +24 / +36 h: c 10,2 / 21,3 / 36,4 cm, Ridge 9,0 / 15,5 / 26,0, „jako teď“ 23,0 / 44,4 / 65,6.
+- Závěr: závěry platí. List 200 hodin je teď lepší o 0,97 cm (bez zaokrouhlení 23,08 → 22,11), tedy těsně pod hranicí 1 cm, a v Děčíně přidal plané poplachy před 1. a 3. stupněm, takže neprošel. Nejlepší LightGBM je c, na povodních o 6,0 cm horší než Ridge. Grafy `lgbm_c_povoden2011.png` a `lgbm_shap.png` jsou překreslené z nové verze.
+- Soubory: `results/2026-10-23_2004*` až `_2015*` (otisk verze v JSON). Moje starší `results/*.json` byly zapsané v kódování cp1250 a nový `porovnej.py` je nepřečetl, převedl jsem je do UTF-8 beze změny obsahu.
