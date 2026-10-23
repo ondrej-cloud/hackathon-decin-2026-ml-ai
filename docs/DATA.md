@@ -13,6 +13,10 @@ Co víme o datech. Kdo něco zjistí, doplní nebo opraví příslušnou sekci. 
 
 **Souřadnice stanic:** `data/external/stanice_hydro.csv` (v Gitu, 12 řádků): klíč jako v `data.py`, číslo ČHMÚ, název, tok, zeměpisná šířka a délka (`lat`, `lon`) a stupně povodňové aktivity v cm. Vytaženo z metadat ČHMÚ v balíčku pořadatelů (`meta1-20260930.json`, 545 profilů) skriptem `src/stanice_hydro.py`. Ověřeno: stupně pro Děčín a Ústí souhlasí s `data.SPA`. Předměřice (Jizera) stupně v metadatech nemají. Pro mapu v aplikaci.
 
+**Hladina je měřená, průtok dopočtený** (ověřeno pá 22:48). Hladinu ČHMÚ měří čidlem na vodočtu, průtok z ní počítá měrnou křivkou, kterou sestaví z občasných měření rychlosti vody a průřezu koryta. Šířku ani tvar koryta v datech nemáme, v metadatech stanic (`meta1-20260930.json`) jsou jen poloha a stupně povodňové aktivity. Že je průtok dopočtený, je vidět na datech: v jednom roce se hladina v Děčíně i Ústí při stejném průtoku liší o 1 cm (medián), u 99 % hodin nejvýš o 5–10 cm. Mezi roky se křivka trochu posouvá, jak se mění koryto a jak ČHMÚ křivku upravuje: při 300 m³/s je Děčín 218–227 cm a Ústí 248–257 cm, při 1 000 m³/s Děčín 453–478 cm a Ústí 486–513 cm. Graf křivky Děčína je `docs/grafy/fyzika_merna_krivka.png`. Oficiální měrnou křivku ČHMÚ zveřejňuje v otevřených datech (`hydrology/characteristic/data/discharge_rating_curve/RC_0-203-1-240000.json`), Honza z ní bral hladiny N-letých vod (`data/external/n_lete_vody.csv`).
+
+**Starší povodně a jiná místa** (ověřeno pá 23:52). Hodinová data ČHMÚ jsme stáhli od 2002, ale celá sada stanic je až od 2006: Děčín má hodinová data od 2003, Louny od 2004, Kostelec a Nymburk od 2006. Povodeň 8/2002 (největší v historii měření) v hodinových datech nemá hladinu v Děčíně ani v Ústí, takže se na ní nedá učit ani ověřovat. Starší data má ČHMÚ jen po dnech: denní průměrný průtok v Děčíně od 1887. Denní průměr ale rozmaže vlnu, která do Děčína putuje 4–40 h, pro předpověď na 12–36 h po hodinách se nehodí. Data z jiných řek (Morava, Odra) nepomůžou: model se učí váhy konkrétních stanic na Labi a jejich doby putování, jiná řeka má jiné stanice, vzdálenosti i koryto.
+
 ### Přidaná data ČHMÚ: co, odkud a proč
 
 **Odkud:** otevřená data ČHMÚ, https://opendata.chmi.cz/hydrology/historical/data/hourly/. Soubory jsou `H_0-203-1-<číslo stanice>_HQ_<rok>.json` s hodinovou hladinou (H) a průtokem (Q). Zdarma a bez registrace, v prezentaci uvést zdroj ČHMÚ. Stáhli jsme 26 stanic (`src/stahni_chmu_hydro.py`), do společné tabulky bereme 12.
@@ -60,8 +64,8 @@ U stanic proti proudu bereme jen **průtok**, ne hladinu. Průtok se mezi stanic
 
 Ověřeno:
 - Začínáme rokem 2006, protože průtok v Kostelci, Mělníku a Nymburku za rok 2005 chybí celý.
-- Chyba měření: 5.–7. 2. 2006 je v Děčíně hladina až 1 019 cm při průtoku kolem 120 m³/s, skoky o 1–3 m za hodinu. Vyřazeno (66 hodin chybí).
-- Díry do 6 hodin doplněné lineárně. Jinak chybí jen tyhle 3 dny.
+- Chyba měření: 5.–7. 2. 2006 je v Děčíně hladina až 1 019 cm při průtoku kolem 120 m³/s, skoky o 1–3 m za hodinu, a do 8. 2. dopoledne hladina nesedí s průtokem. Vyřazeno 5. 2. až 8. 2. 9:00, 82 hodin hladiny v Děčíně (ověřeno so 0:01).
+- Nic se nedoplňuje. Doplňování děr jsme zrušili, protože bralo hodnotu z hodiny po díře, tedy z budoucnosti. Surová data jiné díry nemají, kromě těch 82 hodin chybí v tabulce 0 hodnot.
 - Skoky v Ústí o 50–65 cm za hodinu (2007, 2014, 2019, 2023) jsou skutečné, průtok jde s nimi. Nechané.
 - Hladina v Nymburce chybí z třetiny, proto u stanic proti proudu bereme jen průtok.
 - Mezi lety 2016 a 2020 nepřekročilo Labe v Děčíně ani 1. stupeň povodňové aktivity, byla to suchá léta.
@@ -115,6 +119,38 @@ Pro vrstvu rozlivu na 3D mapě (`app/rozliv.py`). Vlastní hydrauliku (výpočet
 - **Záplavová území:** DIBAVOD (databáze vodohospodářských dat VÚV TGM), vrstvy D01 (Q5), D02 (Q20), D03 (Q100) a D05 (aktivní zóna pro Q100), stav 30. 10. 2025, https://www.dibavod.cz/27/struktura-dibavod.html. Zipy za celou ČR mají asi 750 MB, leží v `data/raw/zaplavy/` a v Gitu nejsou. Bereme jen polygony toku Labe na úseku Ústí až Hřensko (13,95–14,35° v. d., 50,60–50,90° s. š.), rozdělené na úsek Ústí a úsek Děčín na 50,72° s. š. (zhruba v půli cesty mezi vodočty), zjednodušené s tolerancí 4 m a převedené z S-JTSK do WGS84. Výšku bodů bereme z terénu (dlaždice Terrarium), aby polygony ležely na 3D mapě. Výsledek je `data/external/zaplavova_uzemi.geojson` (0,26 MB), postaví ho `python app/rozliv.py --priprav`.
 
 Limity: polygony platí pro ustálený N-letý průtok, ne pro naši konkrétní povodeň (průběh vlny, led, protipovodňové stěny a stav koryta v nich nejsou). Podle VÚV je průběh jen orientační, závazný ho má správce toku. N-letou vodu pro celý úsek určujeme z jednoho vodočtu. Rozliv v Děčíně ovlivňuje i Ploučnice, která ústí kousek nad vodočtem; její vlastní záplavové území nebereme. Území jsou jen pro Q5, Q20 a Q100, takže mezi nimi nic jemnějšího neukážeme: při průtoku mezi Q5 a Q20 svítí území Q5 a Q20 je jen obrysem.
+
+### Předpověď srážek v aplikaci (ověřeno pá 23. 10. večer)
+
+V režimu Dnešek ukazujeme vedle předpovědi hladiny, kolik má v povodí pršet (`app/pocasi.py`, `predpoved_srazek()`). Je to jen kontext a upozornění, do modelu srážky nevstupují: na horizontech 12 až 36 h je voda z deště už v řekách a srážky z 25 stanic ČHMÚ na validaci nepomohly (17,1 → 17,4 cm, `docs/POKUSY.md`, pá 20:44). Proto je model nevidí a věta v aplikaci to říká.
+
+Zdroj je Open-Meteo Forecast API (https://api.open-meteo.com/v1/forecast, zdarma, bez klíče), hodinové srážky `precipitation` na 3 dny dopředu v UTC. Hodnota v čase t je součet za hodinu před t. Bereme 12 bodů v jednom dotazu: Vltava s Berounkou a Sázavou (Praha, Beroun, Příbram, Benešov, České Budějovice), horní Labe s Jizerou (Hradec Králové, Turnov, Pardubice, Vrchlabí) a Ohře (Karlovy Vary, Louny, Kadaň). Za každé povodí je průměr bodů za příštích 24 a 48 h od teď a nejvyšší úhrn jednoho bodu za 48 h. Nad 20 mm za 48 h v povodí aplikace varuje, že hladina za 36 h a dál může být vyšší, než model říká. Výsledek se drží v paměti 30 minut. Prahová hodnota 20 mm je odhad, ne vyzkoušená hranice (domněnka).
+
+Limity: jsou to předpovědní modely počasí, ne měření, a 12 bodů je hrubý průměr přes povodí, takže lokální bouřka mezi body se ztratí. Zdroj dat: Open-Meteo.com, licence CC BY 4.0, v aplikaci a v prezentaci ho uvést.
+
+### Rozliv z výškového modelu (ověřeno pá 23. 10. v noci)
+
+Oficiální záplavová území jsou jen pro Q5, Q20 a Q100. Pro plynulý rozliv po 10 cm počítáme vlastní statický rozliv z výškového modelu terénu (`app/rozliv_dem.py`). Výška hladiny u vodočtu je nula vodočtu + hladina (Děčín 120,07 m n. m., Ústí 130,94 m n. m.), podél řeky stoupá se sklonem hladiny a zaplavený je každý bod terénu pod touto výškou, který je spojený s korytem (osa Labe z OpenStreetMap, 8 sousedů). Nic se tu neučí, je to jen porovnání výšek.
+
+- **Terén:** ČÚZK DMR 5G (digitální model reliéfu z leteckého laserového skenování, otevřená data), služba https://ags.cuzk.cz/arcgis2/rest/services/dmr5g/ImageServer. Stahujeme rovnou v S-JTSK v nativním rozlišení 2 m, aby buňky byly čtverce a plocha seděla: čtverec 6 × 6 km kolem každého vodočtu po dlaždicích 2 × 2 km (`data/raw/dem/`, 76 MB, není v Gitu). DMR je terén bez budov a mostů, voda v něm má výšku hladiny z doby skenování.
+- **Sklon hladiny 0,44 m/km:** z našich hodinových dat 2006–2025 jako rozdíl výšky hladiny v Ústí a v Děčíně o 4 h později na 25,4 km řeky. Medián je 0,438 m/km a v pásmech hladiny od nízké vody po 1 100 cm se mění jen mezi 0,43 a 0,44. Oba vodočty jsou pod jezem Střekov, takže vzdutí jezu to nekazí. Voda v DMR podél osy dává v Děčíně 0,40 až 0,44 m/km, to sedí. V Ústí je voda v DMR poskládaná z různých dnů skenování a na sklon použít nejde.
+- **Jez Střekov** je 1,7 km nad vodočtem Ústí. Nad ním držíme hladinu aspoň na úrovni zdrže 141,55 m n. m. (voda v DMR nad jezem má 141,4 až 141,5 m). Bez toho vychází v Ústí IoU pro Q5 jen 0,75.
+- **Výstup:** polygony pro hladiny po 10 cm, Děčín 300–1 250 cm a Ústí 350–1 200 cm (aby se vešla Q100 a rekord 2002), obrysy zjednodušené s tolerancí 2,5 m, ostrůvky a díry pod 400 m² vynechané. Soubory `data/external/rozliv_dem_decin.geojson` (3,0 MB) a `rozliv_dem_usti.geojson` (2,4 MB), každý polygon má `cil`, `hladina_cm`, `plocha_ha`, `vyska_hladiny_m`, `zdroj_dem`, `rozliseni_m` a `sklon_m_km`. Aplikace bere `polygon(cil, hladina_cm)` (nejbližší spočítaná hladina). Postaví je `python app/rozliv_dem.py --priprav` (asi 3 minuty), kontrolu vypíše `python app/rozliv_dem.py`.
+
+Ověření proti oficiálním záplavovým územím DIBAVOD ve stejném čtverci 6 × 6 km, hladina N-leté vody z měrné křivky ČHMÚ. IoU je průnik děleno sjednocením, 1 znamená úplnou shodu.
+
+| | hladina | náš rozliv | DIBAVOD | průnik | IoU |
+|---|---|---|---|---|---|
+| Děčín Q5 | 707 cm | 167 ha | 183 ha | 165 ha | 0,89 |
+| Děčín Q20 | 919 cm | 219 ha | 229 ha | 209 ha | 0,87 |
+| Děčín Q100 | 1 206 cm | 311 ha | 289 ha | 281 ha | 0,88 |
+| Ústí Q5 | 738 cm | 123 ha | 134 ha | 122 ha | 0,90 |
+| Ústí Q20 | 936 cm | 160 ha | 164 ha | 149 ha | 0,84 |
+| Ústí Q100 | 1 157 cm | 252 ha | 223 ha | 213 ha | 0,82 |
+
+Z jednoduchého porovnání výšek tak vyjde skoro stejné území jako z oficiálního hydraulického modelu. Na sklonu v okně ±3 km tolik nezáleží: s vodorovnou hladinou má Děčín Q5 IoU 0,84, se sklonem 0,3 m/km 0,88. Při 300 cm v Děčíně je zaplaveno 110 ha na 8,6 km řeky, to je pruh široký průměrně 127 m, tedy skoro jen koryto (dál než 100 m od osy jen 10 ha); v Ústí při 350 cm 78 ha. Plocha s hladinou nikde neklesá (Děčín 110 → 321 ha, Ústí 78 → 281 ha). Rozdíly: náš rozliv navíc zatéká do údolí přítoků, hlavně Bíliny v Ústí (většina z 39 ha navíc u Q100), a do nízkých míst v centru Děčína u ústí Ploučnice a v Podmoklech. DIBAVOD má navíc úzké pásy podél břehů a kus údolí Ploučnice nad jejím ústím (6 ha u Q5), kam v našem modelu hladina Labe nedosáhne.
+
+Limity: je to statický model bez dynamiky, nepočítá proudění ani objem a průběh vlny a zaplaví všechno pod hladinou spojené s korytem, i kdyby se tam voda za povodeň nestihla dostat. Protipovodňové zdi, mobilní stěny a malé hráze užší než 2 m v terénu nejsou, mosty a podjezdy DMR nemá, takže voda projde i tam, kde ve skutečnosti nemusí. Vzdutí jezu Střekov je jen vodorovná hladina zdrže, při velké vodě se jez sklápí a hladina nad ním je jiná. Ploučnice a Bílina mají vlastní průtok, model jim dává jen hladinu Labe. Sklon je jeden pro celé okno a okno má jen 6 × 6 km. Ověřené je to jen proti modelovým územím DIBAVOD, ne proti skutečnému rozlivu (snímky povodní 2002 nebo 2013 jsme neporovnávali).
 
 ## Ovzduší
 

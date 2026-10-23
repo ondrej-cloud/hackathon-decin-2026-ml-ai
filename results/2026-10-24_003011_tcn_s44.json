@@ -1,0 +1,60 @@
+{
+ "autor": "Honza",
+ "cas": "2026-10-24T00:30:11",
+ "verze": "69a6db32",
+ "model": "tcn_s44",
+ "cast": "val",
+ "rychle": true,
+ "popis": "Konvoluční síť po čase (TCN) jako tcn.py, jen seed 44 (kontrola náhody).",
+ "parametry": {
+  "okno_h": 48,
+  "kanaly": 16,
+  "jadro": 3,
+  "dilatace": [
+   1,
+   2,
+   4,
+   8,
+   16
+  ],
+  "dropout": 0.1,
+  "lr": 0.001,
+  "weight_decay": 0.0001,
+  "batch": 512,
+  "max_epoch": 30,
+  "trpelivost": 5,
+  "zastaveni": "posledních 10 % trénovacích řádků v čase",
+  "seed": 44,
+  "cil": "změna hladiny",
+  "vstupy": "14 surových hodinových řad za 48 h, odmocnina průtoků"
+ },
+ "vysledky": [
+  {
+   "model": "tcn_s44",
+   "cil": "decin",
+   "horizont": 24,
+   "mae": 7.2,
+   "mae_povodne": 15.2,
+   "bias_povodne": -3.7,
+   "mae_nad_1spa": 15.9,
+   "chyba_vrcholu": 11.7,
+   "vrcholy_o_kolik": [
+    -5,
+    -9,
+    24,
+    -9
+   ],
+   "radku": 19264,
+   "spa2_povodni": 4,
+   "spa2_predstih_h": 21.5,
+   "spa2_propasnuto": 0,
+   "spa2_plane_poplachy": 0,
+   "spa3_povodni": 2,
+   "spa3_predstih_h": 19.0,
+   "spa3_propasnuto": 0,
+   "spa3_plane_poplachy": 0,
+   "trenink_s": 227.3,
+   "predpoved_s": 0.26
+  }
+ ]
+}

@@ -2,6 +2,8 @@
 
 Stav k pá 20:30. Na jednom místě: co předpovídáme, z čeho, co jsme nevzali, jak měříme, výsledky a všechna rozhodnutí. Podrobnosti jsou v odkazovaných souborech. Kdo něco rozhodne nebo změní, doplní to sem i do `docs/DENIK.md`.
 
+Celá cesta modelu od čtyř nápadů po finální lineární regresi a všechno, co jsme po testu zkoušeli, je v `docs/CESTA_MODELU.md`.
+
 ## Úloha
 
 Předpovídáme výšku hladiny Labe v cm na vodočtu **Děčín** a zvlášť **Ústí nad Labem** za **12, 24 a 36 hodin**. Z předpovědi poznáme, jestli a kdy voda překročí 2. nebo 3. stupeň povodňové aktivity. Pro město a lidi u řeky to znamená varování den předem místo ve chvíli, kdy voda už stoupá.
@@ -60,6 +62,18 @@ Hlavní číslo je průměrná chyba hladiny během povodní (`mae_povodne`, pr�
 | fyzikální (Tobias) | 24,8 cm | 44 % | 76 / 53 / 35 % | 24 z 24 | 0 |
 | „bude jako teď“ | 44,3 cm | 0 % | 51 / 23 / 13 % | 0 z 24 | 0 |
 
+**Vícenásobná validace** (každá z 8 povodní 2006–2020 jednou vynechaná, model učený na ostatních, test nepoužitý; průměr ± kolísání mezi povodněmi):
+
+| Model | Chyba na povodni | Menší než „jako teď“ | Nejlepší na povodních | Propásnuté / plané (48 běhů) |
+|---|---|---|---|---|
+| lineární regrese | 20,1 ± 7,7 cm | 56 % | 4 z 8 | 1 / 3 |
+| neuronová síť | 21,0 ± 8,0 cm | 54 % | 3 z 8 | 4 / 5 |
+| LightGBM | 22,7 ± 8,6 cm | 50 % | 1 z 8 | 0 / 4 |
+| fyzikální | 26,7 ± 10,0 cm | 41 % | 0 z 8 | 0 / 4 |
+| „bude jako teď“ | 45,2 ± 13,9 cm | 0 % | | 72 / 0 |
+
+Pořadí je stejné jako na validaci. Chyba víc záleží na povodni (3/2009 11 cm, 6/2013 34 cm) než na modelu. Graf `docs/grafy/krizova_validace.png`, podrobnosti v `docs/POKUSY.md` (pá 23:27).
+
 **Finální test 2021–2025** (model vybraný předem, natrénovaný na všem do 2020):
 
 | Model | Chyba na povodních | Menší než „jako teď“ | Do ±20 cm (12 / 24 / 36 h) | Zachycené povodně | Plané poplachy |
@@ -115,6 +129,11 @@ Grafy validace: `docs/grafy/srovnani_procenta.png`, `srovnani_ctyr_modelu.png`, 
 | pá 20:58 | **finální model lineární regrese**, zapsáno před testem | nejlepší na validaci, nejjednodušší, všechny pokusy o zlepšení pod 1 cm |
 | pá 21:00 | test 2021–2025 spuštěn jednou | 22,4 cm, o 55 % méně než „jako teď“; síť o 1,1 cm lepší, výběr podle testu neměníme |
 | pá 20:20 | návrh: finální model lineární regrese | nejlepší, nejjednodušší, bez planých poplachů, každá váha jde vysvětlit; síť je stejná jen v rámci náhody |
+| pá 22:46 | předpověď srážek do modelu nepřidávat, jen do „co dál“ | na 12–36 h nepomáhá (voda už je v řekách), dešťové povodni na 72 h by ubrala až 40 %, ale historické předpovědi na trénink nemáme |
+| pá 23:14 | vodu ve sněhu a zimní model nepoužít | celoročně horší (17,1 → 17,8 cm); zimní model se sněhem je o 4 cm horší než celoroční bez sněhu |
+| pá 23:27 | vícenásobná validace potvrdila výběr | lineární regrese 20,1 ± 7,7 cm přes 8 povodní, nejlepší v průměru, o 56 % lepší než „jako teď“ |
+| pá 23:44 | polynomickou regresi nepoužít | 19,9 a 22,8 proti 17,1 cm, při vysoké vodě se ohne špatně |
+| pá 23:52 | starší povodně a jiné řeky nepřidávat | hodinová data všech stanic až od 2006, povodeň 2002 nemá hladinu v Děčíně, jiné řeky mají jiné stanice |
 
 ## Další kroky a otevřené otázky
 
