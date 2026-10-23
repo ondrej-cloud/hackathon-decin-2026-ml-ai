@@ -9,6 +9,8 @@ Kaggle dává zdarma GPU (dvě karty T4, běžný kód využije jednu), kolem 30
 3. Ověřit: `kaggle kernels list --mine` nesmí skončit chybou.
 4. Test GPU: `python kaggle/push.py kaggle/gpu-test`, průběh `kaggle kernels logs -f <účet>/hackathon-gpu-test`, výsledek `kaggle kernels output <účet>/hackathon-gpu-test -p kaggle/.out/gpu-test`.
 
+Když test vypíše `"device": "cpu"`, Kaggle GPU nepřidělil, nejčastěji kvůli neověřenému telefonu.
+
 Stejný test jde pustit i lokálně (`python kaggle/gpu-test/gpu_test.py`) a čísla porovnat. Ondrův M1 naměřil 0,5 TFLOPS (FP32) a 0,62 TFLOPS (FP16).
 
 ## Postup při tréninku

@@ -199,6 +199,8 @@ Pokud vybereme úlohu s textem (chatbot nad dokumenty), může být jazykový mo
 
 ## Před odjezdem
 
+Celý postup krok za krokem, i s vysvětlením proč, je v `PRIPRAVA.md`. Dá se vložit rovnou do Claude Code, který ho provede.
+
 - [ ] Všichni: přijmout pozvánku, naklonovat, přepnout na svou větev, spustit `claude` se svým příkazem a zkušební `/sync` (postup v sekci Git)
 - [ ] Všichni: Python 3.11 nebo novější, virtuální prostředí a balíčky níž
 - [ ] Všichni: Claude Code nainstalovaný, přihlášený a vyzkoušený
