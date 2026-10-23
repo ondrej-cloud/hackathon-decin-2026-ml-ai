@@ -46,7 +46,7 @@ Otevřená data ČHMÚ, hodinová hladina a průtok, 2006–2025, 12 stanic (`da
 `src/evaluate.py`, dělení v čase:
 - **train:** 2006–2018 bez validačních povodní a 20 dní kolem nich,
 - **val:** povodně 4/2006, 3/2009, 9/2010, 1/2011 a klidné roky 2019–2020. Na nich se ladí a porovnává.
-- **test:** 2021–2025 (povodně 12/2023 a 9/2024). Pustí se jednou na finální model, zatím **nespuštěn**.
+- **test:** 2021–2025 (povodně 2/2021, 12/2023, 2/2024, 9/2024). Spuštěn jednou pá 21:00 po výběru modelu, výsledky níž.
 
 Hlavní číslo je průměrná chyba hladiny během povodní (`mae_povodne`, průměr přes 6 kombinací cíle a horizontu). K tomu varování před 2. a 3. stupněm (předstih, propásnuté povodně, plané poplachy), podíl předpovědí do ±20 cm a bias. Laťka je „bude jako teď“ (hladina za h hodin = hladina teď). Nezávislá kontrola řetězce dopadla „platí“.
 
@@ -60,7 +60,19 @@ Hlavní číslo je průměrná chyba hladiny během povodní (`mae_povodne`, pr�
 | fyzikální (Tobias) | 24,8 cm | 44 % | 76 / 53 / 35 % | 24 z 24 | 0 |
 | „bude jako teď“ | 44,3 cm | 0 % | 51 / 23 / 13 % | 0 z 24 | 0 |
 
-Grafy: `docs/grafy/srovnani_procenta.png`, `srovnani_ctyr_modelu.png`, `povoden_2011-01_decin_24h.png`, `povoden_2006-03_decin_36h.png`. Jak čísla číst a jestli jsou dobrá: `docs/POROZUMENI.md`, sekce Jak číst výsledky.
+**Finální test 2021–2025** (model vybraný předem, natrénovaný na všem do 2020):
+
+| Model | Chyba na povodních | Menší než „jako teď“ | Do ±20 cm (12 / 24 / 36 h) | Zachycené povodně | Plané poplachy |
+|---|---|---|---|---|---|
+| **lineární regrese (finální)** | **22,4 cm** | **55 %** | 89 / 67 / 43 % | 17 z 21 (propásnuté jsou hraniční o pár cm) | 3 |
+| neuronová síť | 21,3 cm | 59 % | 94 / 71 / 44 % | 20 z 21 | 2 |
+| LightGBM | 24,0 cm | 54 % | 91 / 67 / 41 % | 21 z 21 | 4 |
+| fyzikální | 27,1 cm | 45 % | 80 / 64 / 38 % | 21 z 21 | 2 |
+| „bude jako teď“ | 50,2 cm | 0 % | 57 / 32 / 20 % | 0 z 21 | 0 |
+
+Povodeň Boris 9/2024 v Děčíně: 3. stupeň hlášen 27 h předem (předpověď na 24 h), vrchol 649 cm předpovězen na 611 cm. Grafy `docs/grafy/srovnani_procenta_test.png`, `povoden_2024-09_decin_24h.png`, `povoden_2023-12_decin_24h.png`.
+
+Grafy validace: `docs/grafy/srovnani_procenta.png`, `srovnani_ctyr_modelu.png`, `povoden_2011-01_decin_24h.png`, `povoden_2006-03_decin_36h.png`. Jak čísla číst a jestli jsou dobrá: `docs/POROZUMENI.md`, sekce Jak číst výsledky.
 
 ## Rozhodnutí a proč
 
@@ -85,11 +97,13 @@ Grafy: `docs/grafy/srovnani_procenta.png`, `srovnani_ctyr_modelu.png`, `povoden_
 | pá 20:20 | průměr dvou modelů nepoužít | zlepšení 0,2 cm, jen složitost navíc |
 | pá 20:44 | trénovat na celé historii a se všemi stanicemi (Honza) | 2 roky jen z kraje jako balíček: 44,6 cm a 12 z 24 propásnutých, stejně špatné jako „jako teď“; stanice proti proudu pomáhají víc než roky, historie s povodní 2013 odstraní propásnutá varování (`docs/grafy/kolik_dat.png`) |
 | pá 20:44 | srážky, sníh a teplotu do modelu nepřidávat | lineární regrese 17,1 → 17,4 cm, síť 17,8 → 21,2 cm; ani dokonalá předpověď srážek na den dopředu nepomůže o víc než 0,8 cm |
-| pá 20:20 | **návrh: finální model lineární regrese** (čeká na potvrzení) | nejlepší, nejjednodušší, bez planých poplachů, každá váha jde vysvětlit; síť je stejná jen v rámci náhody |
+| pá 20:58 | **finální model lineární regrese**, zapsáno před testem | nejlepší na validaci, nejjednodušší, všechny pokusy o zlepšení pod 1 cm |
+| pá 21:00 | test 2021–2025 spuštěn jednou | 22,4 cm, o 55 % méně než „jako teď“; síť o 1,1 cm lepší, výběr podle testu neměníme |
+| pá 20:20 | návrh: finální model lineární regrese | nejlepší, nejjednodušší, bez planých poplachů, každá váha jde vysvětlit; síť je stejná jen v rámci náhody |
 
 ## Další kroky a otevřené otázky
 
-- Potvrdit finální model, pak jednou pustit test 2021–2025 (Ondra).
+- Test hotový (pá 21:00). Model pro aplikaci přetrénovat na všech datech do 2025 (`src/uloz_model.py` teď trénuje jen na train).
 - Srážky, sníh a teplota: vyzkoušeno, nepomohlo (pá 20:44). Honza: kolik let dat (hotovo, pá 20:44, `docs/grafy/kolik_dat.png`). Dan zkouší dobu putování podle průtoku (do 22:00).
 - Otázka pro mentory: s jakým zpožděním jsou hodinová data ČHMÚ v provozu dostupná? Zkrátil by se o něj předstih.
 - Limity do prezentace: bez srážek nejde dál než den a půl, povodně z dešťů v kraji (8/2010) model nevidí, archivní data jsou zpětně ověřená (v provozu předběžná), validace má jen 4 povodně.

@@ -329,3 +329,17 @@ Následující pokusy jsou doplněné zpětně (pá 19:55). Všechny byly před 
 - Kde dělá chybu (váha 5, u `ridge` skoro stejně): největší díl chyby na povodních má povodeň 9/2010 (33 %, průměrná chyba 22 cm), pak 1/2011 (25 %, 17 cm), 4/2006 (24 %, 17 cm) a 3/2009 (18 %, 12 cm). V 9/2010 model soustavně podhodnocuje (Děčín +24 h o 18 cm, +36 h o 31 cm), nejspíš déšť blízko kraje, který stanice proti proudu nevidí (domněnka). Podle horizontu dělá 36 h 53 % chyby, 24 h 30 % a 12 h 18 %. Váha 5 pomohla jen povodni 4/2006 (17,7 → 16,6 cm), ostatním mírně uškodila.
 - Závěr: neprošlo. Váha 5 je proti `ridge` v rámci náhody stejná (+0,1 cm), váha 20 je horší o 1,4 cm a obě zhoršily klidnou vodu, předstih a vrcholy. Finální zůstává `ridge`. Kdyby se to zkoušelo znovu, váha by se dala odvodit od skutečné hladiny za h hodin místo hladiny teď, pak by se zvýraznilo i stoupání (nezkoušeno).
 - Soubory: `src/models/ridge_vahy.py`, `src/models/ridge_vahy20.py`, `results/2026-10-23_204657_ridge_vahy.json`, `results/2026-10-23_204702_ridge_vahy20.json`, `results/predpovedi/ridge_vahy.parquet`, `results/predpovedi/ridge_vahy20.parquet`.
+
+## pá 21:00 · Ondra · finální test 2021–2025
+- Otázka: jak finální model (lineární regrese, vybraná pá 20:58 před testem) funguje na povodních, které nikdo z nás neviděl ani při ladění?
+- Data a rozdělení: model natrénovaný na všem do konce 2020 (train i validace), test 2021–2025: povodně 2/2021, 12/2023, 2/2024 a 9/2024. Spuštěno jednou (`python src/porovnej.py jako_ted ridge fyzika lgbm mlp --test`). Ostatní tři přístupy jen pro srovnání, výběr se podle testu nemění.
+- Výsledek na testu (`prumer_povodne`; do ±20 cm při vodě nad 1. stupněm; zachycené nástupy povodní před 2. stupněm; plané poplachy):
+  - lineární regrese (finální): 22,4 cm, o 55 % méně než „jako teď“, 66 % do ±20 cm (12 / 24 / 36 h: 89 / 67 / 43 %), zachyceno 17 z 21, 3 plané poplachy
+  - neuronová síť: 21,3 cm, 59 %, 70 %, 20 z 21, 2
+  - LightGBM: 24,0 cm, 54 %, 66 %, 21 z 21, 4
+  - fyzikální: 27,1 cm, 45 %, 61 %, 21 z 21, 2
+  - „jako teď“: 50,2 cm, 0 %, 36 %, 0 z 21
+- Propásnutá varování lineární regrese jsou hraniční: 3 z 4 jsou únor 2024 v Děčíně, kdy voda 2. stupeň (490 cm) přesáhla jen o 6 cm a model předpověděl 474–489 cm. Čtvrté je Ústí +12 h o Vánocích 2023 (předpověď 528 cm, hranice 530). Před 3. stupněm varoval pokaždé.
+- Povodeň Boris 9/2024, Děčín: 3. stupeň překročen 15. 9. 12:00 UTC, model varoval 10 h (předpověď na 12 h), 27 h (24 h) a 30 h (36 h) předem. Vrchol 649 cm předpověděl 24 h předem na 611 cm. Vánoce 2023: 3. stupeň varován 13 / 21 / 29 h předem, vrchol 624 cm předpovězen na 614 cm.
+- Závěr: na testu je chyba o 5 cm větší než na validaci (22,4 proti 17,1 cm), ale i „jako teď“ je na testu horší (50,2 proti 44,3), testové povodně stoupaly rychleji. Zlepšení proti laťce je podobné (55 % proti 61 %), model tedy na nových povodních funguje. Síť vyšla na testu o 1,1 cm lépe než lineární regrese, na validaci o 0,7 cm hůř. Rozdíl mezi nimi je náhoda, výběr neměníme. Všechny modely na testu podhodnocují vrcholy (bias −3 až −27 cm), nejvíc na 36 h.
+- Soubory: `results/*_test.json`, `results/predpovedi/*_test.parquet`, `docs/grafy/srovnani_procenta_test.png`, `docs/grafy/povoden_2024-09_decin_24h.png`, `docs/grafy/povoden_2023-12_decin_24h.png`.

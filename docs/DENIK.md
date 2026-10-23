@@ -220,3 +220,10 @@ Následující záznamy jsou doplněné zpětně (pá 19:35) podle commitů, ať
 - Proč: na validaci nejlepší (17,1 cm na povodních, 61 % méně než „jako teď“), nic nepropásl, žádný planý poplach, trénink za sekundu a každá váha jde vysvětlit. Všechny pokusy o zlepšení skončily pod hranicí 1 cm nebo horší: síť 17,8, průměr ridge a sítě 16,9, srážky a sníh 17,4, doba putování podle průtoku (Dan) 21,8, větší váha povodní (Honza) 17,2, kratší historie (Honza) 16,6 při 8 letech, rozdíl pod 1 cm.
 - Test: finální model se natrénuje na všem do konce 2020 (train i validace) a vyhodnotí na 2021–2025 (`python src/porovnej.py jako_ted ridge --test`). Pro srovnání pustíme na test i ostatní tři přístupy, výběr je už uzavřený a podle testu se nemění.
 - Čekáme: výsledek na testu může být jiný než na validaci, jsou to jiné povodně (12/2023 a 9/2024 jsou menší než 2006 a 2011) a model má víc tréninkových dat.
+
+## pá 21:02 · Ondra · Rozbor: finální test
+- Co jsme udělali: finální model (lineární regrese) jsme natrénovali na všem do konce 2020 a jednou vyhodnotili na letech 2021–2025, které jsme při ladění nikdy nepoužili.
+- Jak to funguje, jednoduše: stejná zkouška jako validace, jen na nových povodních (2021, Vánoce 2023, únor 2024, Boris 2024).
+- Výsledek a co znamená: chyba na povodních 22,4 cm proti 50,2 cm u „jako teď“, o 55 % menší (na validaci 61 %). Při povodni Boris model hlásil 3. stupeň v Děčíně 27 h předem (předpověď na 24 h). Před 3. stupněm varoval pokaždé.
+- Slabiny a co může být špatně: na testu je chyba o 5 cm větší než na validaci, testové povodně stoupaly rychleji (i laťka je horší). Čtyři hraniční překročení 2. stupně o pár cm model propásl. Vrcholy podhodnocuje, Boris o 38 cm. Síť vyšla na testu o 1,1 cm lépe, na validaci o 0,7 cm hůř, je to náhoda a výběr podle testu neměníme.
+- Otázka poroty a odpověď: „Proč jste nevzali neuronovou síť, když je na testu lepší?“ Model jsme vybrali před testem podle validace a zapsali to do deníku. Kdybychom ho teď vyměnili, vybírali bychom podle testu a ten by přestal být poctivý. Rozdíl 1 cm je navíc menší, než jak se síť liší sama se sebou při jiném seedu.
