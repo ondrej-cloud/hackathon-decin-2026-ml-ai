@@ -32,7 +32,8 @@
       "Bash(git reset --hard *)",
       "Read(./.env)",
       "Read(./.env.*)",
-      "Read(./kaggle.json)"
+      "Read(./kaggle.json)",
+      "Read(~/.kaggle/**)"
     ]
   }
 }

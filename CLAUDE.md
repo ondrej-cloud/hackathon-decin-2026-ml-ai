@@ -50,7 +50,7 @@ Zaměření je jen výchozí. Role se během hackathonu míchají a na čem kdo 
 - Podezřele dobrý výsledek nech zkontrolovat subagentem `kontrolor` (únik dat, špatné rozdělení).
 - Velký model od nuly netrénuj, dolaďuj předtrénovaný. Nikdo nemá grafiku NVIDIA: GPU je zdarma na Kaggle (příkaz `kaggle`) nebo v Colabu, Macy mají MPS.
 - Dokud není hotový model, aplikace jede s falešnou předpovědí se stejným rozhraním.
-- Klíče (API, Kaggle) patří do `.env` nebo `kaggle.json`. Zapisuje je člověk ručně a nikdy nejdou do Gitu.
+- Klíče (např. API) patří do `.env`, zapisuje je člověk ručně a nikdy nejdou do Gitu. Ke Kaggle se každý přihlašuje sám přes `kaggle auth login`.
 
 ## Git
 
@@ -82,6 +82,7 @@ Zaměření je jen výchozí. Role se během hackathonu míchají a na čem kdo 
 - `/denik`: zápis změn do `docs/DENIK.md`
 - `/kontrola`: kontrola výsledků a úniku dat
 - `/porota`: nácvik otázek poroty
+- `/kaggle [co natrénovat]`: trénink na GPU na Kaggle (postup v `kaggle/README.md`)
 - subagent `kontrolor`: nezávislá kontrola jednoho pokusu
 
 ## Celý plán týmu

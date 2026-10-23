@@ -21,3 +21,7 @@ kaggle.json
 # Systém
 .DS_Store
 Thumbs.db
+
+# Kaggle: složky k odeslání a stažené výstupy
+kaggle/.build/
+kaggle/.out/

@@ -128,10 +128,11 @@ Claude Code při každém startu sám načte `CLAUDE.md`: kontext hackathonu, pr
 | `/denik` | jednou za hodinu | zápis změn do `docs/DENIK.md` |
 | `/kontrola` | po nových výsledcích | kontrola výsledků (únik dat, rozdělení, metrika) |
 | `/porota` | sobota ráno | nácvik otázek poroty |
+| `/kaggle [co natrénovat]` | neuronové sítě, noční trénink | nahraje data, pošle trénink na GPU na Kaggle, ohlídá ho a stáhne výsledky |
 
 Subagent `kontrolor` nezávisle zkontroluje jeden pokus. Commity z Claude jsou bez podpisu Claude, jen pod jménem autora.
 
-V `.claude/settings.json` je povolené spouštět Python, Streamlit, Kaggle a běžné příkazy Gitu bez ptaní. Zakázané jsou `git push --force`, `git reset --hard` a čtení `.env` a `kaggle.json`. Povolení začnou platit, až Claude Code při prvním spuštění ve složce potvrdíš, že jí důvěřuješ.
+V `.claude/settings.json` je povolené spouštět Python, Streamlit, Kaggle a běžné příkazy Gitu bez ptaní. Zakázané jsou `git push --force`, `git reset --hard` a čtení `.env` a přihlašovacích údajů ke Kaggle. Povolení začnou platit, až Claude Code při prvním spuštění ve složce potvrdíš, že jí důvěřuješ.
 
 ## Git
 
@@ -202,16 +203,18 @@ Pokud vybereme úlohu s textem (chatbot nad dokumenty), může být jazykový mo
 - [ ] Všichni: Python 3.11 nebo novější, virtuální prostředí a balíčky níž
 - [ ] Všichni: Claude Code nainstalovaný, přihlášený a vyzkoušený
 - [ ] Všichni: účet Google kvůli Colabu a Disku
-- [ ] Kdo bude trénovat na Kaggle: účet s ověřeným telefonem (bez něj nejde GPU), API token, vyzkoušet poslat skript na GPU
+- [ ] Kdo bude trénovat na Kaggle: kroky 1–4 z `kaggle/README.md` (účet s ověřeným telefonem, `kaggle auth login`, test GPU)
+- [ ] Majitelé Maců: `brew install libomp`, jinak LightGBM na Macu nejde spustit
 - [ ] Majitelé Maců: ověřit, že PyTorch vidí GPU (příkaz níž)
 - [ ] Všichni: vyzkoušet `streamlit hello`
 - [ ] Všichni: přečíst [článek Datového centra](https://dcuk.cz/novinky/od-otazky-k-prototypu-co-se-da-vytvorit-za-jeden-hackathon/)
 - [ ] Sbalit nabíječky, prodlužku, flashku, spacák a karimatku
 
 ```
+python3 --version                # musí být 3.11 nebo novější; na Macu jinak brew install python@3.12 a dál python3.12
 python3 -m venv .venv
 source .venv/bin/activate        # Windows: .venv\Scripts\activate
-pip install pandas numpy scikit-learn lightgbm matplotlib plotly streamlit jupyter torch torchvision
+pip install pandas numpy scikit-learn lightgbm xgboost optuna shap matplotlib plotly streamlit jupyter torch torchvision kaggle
 
 # Mac: vidí PyTorch GPU? Má vypsat True.
 python -c "import torch; print(torch.backends.mps.is_available())"
