@@ -42,6 +42,10 @@ ZAKLAD = dict(
     soucty=(),              # součty průtoků teď přes skupiny stanic, např. (("praha", "kostelec", "louny"),);
                             # model je převede měrnou křivkou Děčína na cm (krivka_*), viz pokus.Krivka
     zpozdeni_soucty=(0,),
+    krivka=False,           # přidat surový průtok Děčína teď (decin_Qsurovy_0), jen pro fit měrné křivky v modelu
+    rezim=None,             # práh stavu cíle v cm: všechny vstupy ještě jednou vynásobené indikátorem H(t) ≥ práh
+                            # (lineární model se dvěma sklony: klid a velká voda)
+    rezim_stoupa=None,      # totéž s indikátorem „za posledních 6 h stouplo aspoň o tolik cm“
 )
 
 
@@ -81,8 +85,9 @@ def priznaky(T, cil, horizont, **volby):
         if v["zrychleni"]:
             sl[f"{s}_aQ"] = q - 2 * q.shift(3) + q.shift(6)
     nejstarsi = max(nejstarsi, *v["zpozdeni_q"], *v["zmeny_q"], 6 if v["zrychleni"] else 0)
-    if v["soucty"]:
+    if v["soucty"] or v["krivka"]:
         sl["decin_Qsurovy_0"] = T["decin_Q"]
+    if v["soucty"]:
         for i, skup in enumerate(v["soucty"]):
             q = sum(T[f"{s}_Q"] for s in skup)
             for z in v["zpozdeni_soucty"]:
@@ -103,7 +108,8 @@ def priznaky(T, cil, horizont, **volby):
             for k in v["srazky"]:
                 # sra_* drží úhrn posledního ukončeného dne; k dní zpět = posuny po 24 h
                 sl[f"{c}_{k}d"] = sum(T[c].shift(24 * j) for j in range(k))
-        nejstarsi = max(nejstarsi, 24 * (max(v["srazky"]) - 1))
+        # nejstarší měření v součtu: posun 24·(k−1) h + podržení 23 h + 25 h od začátku měřicího dne (data_ridge)
+        nejstarsi = max(nejstarsi, 24 * (max(v["srazky"]) - 1) + 23 + 25)
     if v["snih"]:
         for c in T.columns[T.columns.str.startswith("sce_")]:
             g = c[4:]
@@ -116,11 +122,24 @@ def priznaky(T, cil, horizont, **volby):
                 if not v["jen_tani"]:
                     sl[f"tep_{g}"] = T[f"tep_{g}"]
                 sl[f"tani_{g}"] = sce * T[f"tep_{g}"].clip(lower=0) / 10
-        nejstarsi = max(nejstarsi, 72)
+        # změna za 3 dny (72 h) + podržení 23 h + 25 h od pozorování; teplota z termínů je mladší
+        nejstarsi = max(nejstarsi, 72 + 23 + 25)
     if v["sezona"]:
         den = T.index.dayofyear.to_numpy()
         sl["sezona_sin"] = pd.Series(np.sin(2 * np.pi * den / 365.25), index=T.index)
         sl["sezona_cos"] = pd.Series(np.cos(2 * np.pi * den / 365.25), index=T.index)
+    zakladni = [c for c in sl if not c.startswith("decin_Qsurovy")]
+    if v["rezim"] is not None:
+        ind = (H >= v["rezim"]).astype(float)
+        for c in zakladni:
+            sl[f"{c}_x{v['rezim']}"] = sl[c] * ind
+    if v["rezim_stoupa"] is not None:
+        ind = ((H - H.shift(6)) >= v["rezim_stoupa"]).astype(float).where(H.shift(6).notna())
+        for c in zakladni:
+            sl[f"{c}_s{v['rezim_stoupa']}"] = sl[c] * ind
+        nejstarsi = max(nejstarsi, 6)
+    # vyplněná díra prodlužuje historii vstupu o vyplnit_h hodin
+    nejstarsi += v["vyplnit_h"]
     X = pd.DataFrame(sl).astype("float32")
     y = cilova.shift(-horizont).rename("y")
     ok = X.notna().all(axis=1) & y.notna()

@@ -14,3 +14,14 @@
 - pá 20:44 · reprodukce na stejných řádcích (19 264 val hodin): týmový Ridge Děčín +24 h na mé tabulce 15,5 cm (předpovědi shodné s týmovým kódem na Ondrově tabulce na 1e-5), „jako teď“ 44,4 cm; 17,1 cm je průměr týmového Ridge přes všech 6 kombinací cíl × horizont, pro Děčín +24 h je laťka 15,5.
 - pá 20:57 · hydrologie stažená (620 souborů, 31 stanic × 20 let); díry skoro žádné: Děčín 82 h (02/2006, stejná oprava ledu jako v týmové tabulce), Němčice 170 h v 10/2020 (val) → Němčice vyřazené, Přelouč je hned pod nimi.
 - pá 20:57 · CV přepsaná na normální rovnice pro celou mřížku alph (ověřeno, že dává stejná čísla jako StandardScaler + Ridge ze sklearn), 5 s místo 50 s na pokus.
+- pá 21:00 · staženo vše (hydro 620, srážky 84, sníh 38, teplota 31 souborů); tabulka `tabulka/labe_ridge.parquet` 175 320 h × 65 sloupců, chybí jen 82 h ledu v Děčíně; teplota Labe pod Mělníkem a Jizery doplněná ze sousedních povodí (vybrané teploměry tam nemají celé 2006–2025).
+- pá 21:01 · první CV: týmové vstupy 15,6 cm, všech 30 stanic 14,2, + změny a zrychlení 13,9; log průtoku 16,8 a bez transformace 24,2 (horší, zůstává odmocnina).
+- pá 21:03 · Codex kontrola (a) na data a úniky puštěná na pozadí (jen čtení).
+- pá 21:06 · OpenBLAS omezený na 4 vlákna: CV 10 s místo 44 s (22 vláken se přetahovalo s druhou session).
+- pá 21:07 · Codex (a) hotový za 157 s: přímý únik z budoucnosti nenašel, posun srážek potvrdil; 2 střední nálezy (nejstarší zpoždění nezahrnovalo stáří denních dat a ffill), opraveno, zapsáno v NALEZY_CODEX.md.
+- pá 21:08 · jednotlivé změny proti `b_vse` (14,17): denní srážky 14,18, sníh+teplota 14,45, sezónnost 14,07, interakce stav×změna 14,32 → zatím nic nad hranici 0,3 cm.
+- pá 21:10 · cíl „průtok + měrná křivka“ slepá ulička (CV 29–40 cm, chyby v průtoku dané velkou vodou jsou při malém průtoku ±15 cm); husté zpoždění + změny dohromady 13,90 (nesčítají se); srážky a sníh po opravě z Codexu znovu 14,1–14,4.
+- pá 21:11 · ablace skupin stanic (bez skupiny z 30 / jen tým + skupina) běží.
+- pá 21:15 · MILNÍK val (nahlédnutí 1 a 2): týmové vstupy 15,5, 30 stanic 17,8 na povodních (horší kvůli 2006, přestřelení na tání), ale lepší vzestup 28,5/31,5, začátek 28,1/35,4, klid 6,1/6,9, předstih SPA a 0 planých poplachů.
+- pá 21:30 · regularizace, brzda na nové stanice, řidší zpoždění, aktualizace podle chyby: nic nepomohlo v CV.
+- pá 21:43 · dopředná volba skupin stanic: tým + horní Ohře + horní Labe (133 sloupců, CV 14,41) je poslední krok nad hranicí 0,3 cm; doplňky k němu všechny pod hranicí.

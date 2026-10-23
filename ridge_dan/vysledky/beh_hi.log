@@ -1,0 +1,7 @@
+i_bez_pl_saz_zbr: 182 sloupců, alpha 0.01, CV povodně 14.19 cm, CV vzestup 29.34, CV MAE 7.25 (10.9 s)
+i_jen_uzitecne: 175 sloupců, alpha 0.01, CV povodně 14.23 cm, CV vzestup 29.26, CV MAE 7.26 (10.2 s)
+i_jen_uzitecne_bilina: 182 sloupců, alpha 0.01, CV povodně 14.19 cm, CV vzestup 29.34, CV MAE 7.25 (11.1 s)
+h_rezim250: 448 sloupců, alpha 100, CV povodně 14.26 cm, CV vzestup 29.7, CV MAE 7.26 (26.7 s)
+h_rezim350: 448 sloupců, alpha 100, CV povodně 15.16 cm, CV vzestup 28.8, CV MAE 7.36 (26.8 s)
+h_stoupa5: 448 sloupců, alpha 1, CV povodně 14.28 cm, CV vzestup 29.13, CV MAE 7.22 (27.2 s)
+h_stoupa15: 448 sloupců, alpha 0.01, CV povodně 14.55 cm, CV vzestup 29.7, CV MAE 7.22 (25.6 s)

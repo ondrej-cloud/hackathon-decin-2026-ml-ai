@@ -1,0 +1,5 @@
+tym_cv: 98 sloupců, alpha 0.01, CV povodně 15.63 cm, velké 24.46, CV vzestup 33.79, CV MAE 7.56 (7.2 s)
+b_vse: 224 sloupců, alpha 0.01, CV povodně 14.17 cm, velké 23.04, CV vzestup 28.75, CV MAE 7.26 (15.2 s)
+j_ridke_q: 134 sloupců, alpha 0.01, CV povodně 14.26 cm, velké 23.0, CV vzestup 29.04, CV MAE 7.27 (8.4 s)
+j_ridke_q36: 134 sloupců, alpha 0.01, CV povodně 14.56 cm, velké 23.7, CV vzestup 29.96, CV MAE 7.33 (8.4 s)
+j_bez_q_cilu: 210 sloupců, alpha 0.01, CV povodně 15.6 cm, velké 28.61, CV vzestup 29.92, CV MAE 7.47 (13.7 s)

@@ -1,0 +1,7 @@
+b_vse: 224 sloupců, alpha 0.01, CV povodně 14.17 cm, CV vzestup 28.75, CV MAE 7.26 (14.2 s)
+e_prutok_raw: 225 sloupců, alpha 0.01, CV povodně 29.41 cm, CV vzestup 35.09, CV MAE 16.17 (14.4 s)
+e_prutok_sqrt: 225 sloupců, alpha 30, CV povodně 39.96 cm, CV vzestup 47.02, CV MAE 27.34 (14.7 s)
+e_prutok_raw_zmeny: 380 sloupců, alpha 0.01, CV povodně 29.19 cm, CV vzestup 34.69, CV MAE 16.13 (25.6 s)
+f_huste_zmeny: 469 sloupců, alpha 0.01, CV povodně 13.9 cm, CV vzestup 28.06, CV MAE 7.22 (28.9 s)
+d_srazky: 268 sloupců, alpha 0.01, CV povodně 14.17 cm, CV vzestup 28.87, CV MAE 7.32 (14.2 s)
+d_snih: 279 sloupců, alpha 0.01, CV povodně 14.45 cm, CV vzestup 28.84, CV MAE 7.41 (14.2 s)
