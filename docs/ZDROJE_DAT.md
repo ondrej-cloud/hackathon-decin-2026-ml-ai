@@ -2,6 +2,27 @@
 
 Stav pá 21:00. Kdo přidá nebo vyřadí data, upraví tabulku a zapíše důvod do `docs/DENIK.md`.
 
+## Jednoduše: co model používá
+
+Data z balíčku nezahazujeme. Děčín, Ústí a Louny v balíčku jsou stejné vodočty se stejnými čísly jako v archivu ČHMÚ (ověřeno hodinu po hodině za 2024–2025). Archiv jen sahá o 18 let dál a má i stanice proti proudu.
+
+| Co | Kde se měří | Období | Odkud | K čemu |
+|---|---|---|---|---|
+| hladina (cm) | Děčín, Ústí | 2006–2025, každou hodinu | archiv ČHMÚ (stejné jako balíček, jen delší) | jak vysoko je voda teď a jestli stoupá |
+| průtok (m³/s) | Děčín, Ústí, Louny | 2006–2025 | archiv ČHMÚ (stejné jako balíček, jen delší) | kolik vody teče teď v kraji |
+| průtok (m³/s) | Mělník, Vraňany, Kostelec, Praha, Nymburk, Jizera, Beroun, Sázava, Přelouč | 2006–2025 | archiv ČHMÚ (v balíčku nejsou) | voda, která teprve přiteče, bez nich vidíme jen 4 h dopředu |
+| prahy povodňových stupňů | Děčín, Ústí | | balíček (metadata) | kdy vyhlásit varování |
+| polohy stanic | 12 stanic | | balíček (metadata) | mapa v aplikaci |
+| srážky, sníh, teplota (pokus) | 25 meteostanic v povodí | 2006–2025, denně | archiv ČHMÚ | déšť, který v řece ještě není |
+
+| Z balíčku nepoužíváme | Proč |
+|---|---|
+| 25 menších stanic na potocích v kraji | voda z nich doteče za pár hodin a je jí málo (2–13 %); Bílinu a Ploučnici jsme zkusili a model se zhoršil |
+| teplota vody | na výšku hladiny nemá vliv |
+| počasí z balíčku | jen 2,75 roku, model se učí na 20 letech; stejné druhy dat bereme z ČHMÚ za 20 let |
+| rok 2026 | chybí za něj stanice proti proudu, bez nich model nefunguje |
+| geodata obcí | pro výpočet nejsou potřeba, jen do mapy |
+
 ## Shrnutí
 
 - **Z balíčku od pořadatelů** používáme přímo metadata stanic: stupně povodňové aktivity a polohy stanic pro mapu. Hladiny a průtoky Děčína, Ústí a Loun z balíčku slouží jako kontrola. Za 2024–2025 jsou na hodinu i na centimetr stejné jako archiv ČHMÚ, ze kterého trénujeme.
