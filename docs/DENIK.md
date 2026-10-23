@@ -210,3 +210,7 @@ Následující záznamy jsou doplněné zpětně (pá 19:35) podle commitů, ať
 - Co: vlastní model na předpověď deště dělat nebudeme.
 - Proč: myšlenkový pokus ukázal, že ani dokonalá předpověď srážek na den dopředu by nezlepšila chybu o víc než 0,8 cm (`docs/POKUSY.md`, pá 21:15). Náš vlastní model deště by byl horší než dokonalý, takže by přinesl ještě méně. Předpověď počasí navíc potřebuje modely atmosféry (tlakové pole, družice), které z dat ze stanic za večer neuděláme.
 - Plán k finálnímu modelu: lineární regrese je hotová, ladění skončilo podle pravidel. Počkáme na Danův pokus s dobou putování podle průtoku (do 22:00), protože může změnit finální model. Pak finální model natrénujeme na všem do 2020 a jednou pustíme test 2021–2025 (`python src/porovnej.py jako_ted <model> --test`). Po testu přetrénovat model pro aplikaci na všech datech do 2025 (`src/uloz_model.py` zatím trénuje jen na train).
+
+## pá 20:55 · Dan
+- Co: odpověď na otázku poroty k době doběhu podle průtoku, jak ji budeme říkat. Zapsaná i do `docs/POROZUMENI.md`, sekce Otázky, které čekáme od poroty.
+- Otázka poroty a odpověď: „Když víte, že se vlna při povodni zpomalí, proč to model nepoužívá?“ Zkusili jsme to a nepomohlo to (21,8 vs 22,2 cm, pod hranicí 1 cm). Lineární model má 98 zpožděných hodnot (z každé stanice 7 zpoždění 0–36 h) a dobu doběhu včetně roztažení vlny si z vah najde sám. Zpomalení při velkých povodních nejde spolehlivě změřit – nad 1 500 m³/s je v tréninku jen jedna povodeň (6/2013, 227 h).
