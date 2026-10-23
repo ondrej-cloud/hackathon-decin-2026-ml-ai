@@ -31,3 +31,5 @@
 - pá 21:41 · předběžné určení kandidáta z 21:40 ruším: podle výslovného pravidla zůstává `b_vse`; alpha nově z nezaokrouhlených hodnot se shodou → větší alpha (1 místo 0,01, výsledek stejný).
 - pá 21:42 · val nahlédnutí č. 4 (`finalni` = `b_vse`, alpha 1): povodně 17,8 (tým 15,5, jako teď 44,4), vzestup 28,5, začátek 28,1, klid 6,1; nejistota po blocích: 30 stanic proti týmu −1,56 ± 0,62 cm v CV, lepší ve 4 z 5 bloků.
 - pá 21:50 · Codex (c) hotový za 181 s: kód připravený na test, čísla sedí, únik nenašel; 3 střední + 1 nízký nález opravené (kontrola modelu jen do 2020, obsahové otisky v testu, překlep), aplikace jen popsaná.
+- pá 21:49 · JEDNORÁZOVÝ TEST 2021–2025 (commit 97c2f6e): můj Ridge 16,1 cm na povodních, týmový Ridge 17,5, „jako teď“ 44,8; začátek vzestupu 27,0 vs 32,0; předstih 2. SPA 14,5 vs 12,5 h; propásnuto i plané stejně (1 a 1). Po testu se model už neměnil.
+- pá 21:57 · ZPRAVA.md hotová (srovnání val + test, co pomohlo a co ne, začátek vzestupu, poplachy, nálezy Codexu, adaptér pro aplikaci ověřený na datech 2020).

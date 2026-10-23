@@ -94,8 +94,8 @@ Váhy na vzestup zmenšují podhodnocení na stoupání (−21 → −16 cm), al
 | Ploučnice (Benešov, Stružnice, Česká Lípa) | 14,05 (−0,12) | 15,83 (+0,19) | škodí |
 
 - Co z toho plyne: zisk dávají stanice, které vidí vlnu dřív (horní Ohře, horní Labe, Berounka). Přítoky mezi Ústím
-  a Děčínem jsou při povodních malé: Ploučnice má na vrcholech 32–189 m³/s proti 1 160–3 710 m³/s v Děčíně (2–14 %),
-  Bílina 13–52 m³/s. Vlna „z ničeho“ u Děčína tedy z nich nevzniká, větší podíl má neměřené území a načasování.
+  a Děčínem jsou při povodních malé: Ploučnice má na vrcholech 32–189 m³/s proti 1 160–3 710 m³/s v Děčíně (1–14 %),
+  Bílina 13–52 m³/s (1–3 %). Vlna „z ničeho“ u Děčína tedy z nich nevzniká, větší podíl má neměřené území a načasování.
 - Ponecháno: zatím 30 stanic, štíhlejší sady se zkouší v `i_*`.
 
 ## pá 21:14 · štíhlejší sady a dva režimy (`i_*`, `h_*`)
@@ -194,3 +194,14 @@ Váhy na vzestup zmenšují podhodnocení na stoupání (−21 → −16 cm), al
 - Finální model: **`b_vse` = všech 30 stanic, zpoždění jako v týmu (stav 0/1/2/3/6/12/24 h, průtok 0/3/6/12/18/24/36 h),
   odmocnina průtoků, StandardScaler + Ridge(alpha = 1)**, 224 vstupů. CV povodně 14,17 (tým 15,64), CV vzestup 28,8
   (33,8). Val povodně 17,8 (tým 15,5), vzestup 28,5 (31,5), začátek vzestupu 28,1 (35,4), klid 6,1 (6,9).
+
+## pá 21:49 · JEDNORÁZOVÝ TEST 2021–2025 (`test_jednou.py`, commit 97c2f6e)
+- Co: finální model (`model_ridge.FINALNI`, alpha 1) a týmový Ridge natrénované na všem do konce 2020 jako
+  `porovnej.py --test`, „jako teď“; stejných 43 764 řádků. Spuštěno jednou, značka `vysledky/TEST_HOTOVO.json`
+  s obsahovými otisky souborů.
+- Výsledek: chyba na povodních **16,1** (tým 17,5, „jako teď“ 44,8), celkem 7,0 (7,3), pod 300 cm 6,6 (6,8),
+  rychlé stoupání 24,3 (28,8), začátek vzestupu 27,0 (32,0), chyba vrcholu 29,0 (21,4). Předstih 1./2./3. SPA
+  19,9 / 14,5 / 22,7 h (16,9 / 12,5 / 21,3), propásnuto a plané stejně jako tým (2. SPA: 1 a 1).
+- Po povodních: 12/2023 11,9 (15,0), 2/2024 9,7 (12,6), 9/2024 26,8 (25,0, horší kolem vrcholu 45,8 vs 32,2).
+- Co z toho plyne: test potvrdil směr CV, ne validace. Stejný vzor jako na validaci: lepší stoupání a varování,
+  horší samotné vrcholy velkých povodní. Po testu se model už neměnil.
