@@ -80,8 +80,11 @@ def odznak(cil, hladina):
             f'border-radius:6px;font-weight:600">{STUPNE[s]}</span>')
 
 
-def cary_spa(fig, cil):
+def cary_spa(fig, cil, ymax=None):
+    """Čáry stupňů povodňové aktivity; při nízké vodě jen ty, které jsou v dosahu dat, jinak by graf roztáhly."""
     for n, (prah, barva) in enumerate(zip(SPA[cil], BARVY[1:]), 1):
+        if ymax is not None and prah > ymax * 1.6 + 60:
+            continue
         fig.add_hline(y=prah, line=dict(color=barva, dash="dot"), annotation_text=f"{n}. stupeň",
                       annotation_position="top left", annotation_font_color=barva)
 
@@ -160,9 +163,9 @@ with tab_ted:
                     line=dict(color="black", width=2))
     casy = [cesky(cas + pd.Timedelta(hours=h)) for h in (0,) + HORIZONTY]
     if all(rozmezi.values()):
-        fig.add_scatter(x=casy, y=[ted] + [rozmezi[h][1] for h in HORIZONTY], line=dict(width=0),
+        fig.add_scatter(x=casy, y=[ted] + [rozmezi[h][1] for h in HORIZONTY], mode="lines", line=dict(width=0),
                         showlegend=False, hoverinfo="skip")
-        fig.add_scatter(x=casy, y=[ted] + [rozmezi[h][0] for h in HORIZONTY], fill="tonexty",
+        fig.add_scatter(x=casy, y=[ted] + [rozmezi[h][0] for h in HORIZONTY], mode="lines", fill="tonexty",
                         fillcolor="rgba(31,119,180,0.15)", line=dict(width=0), name="rozmezí (90 % chyb)",
                         hoverinfo="skip")
     fig.add_scatter(x=casy,
