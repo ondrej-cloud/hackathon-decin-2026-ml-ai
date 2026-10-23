@@ -160,3 +160,9 @@ Následující záznamy jsou doplněné zpětně (pá 19:35) podle commitů, ať
 ## pá 20:30 · Ondra
 - Co: sepsali jsme celkový přehled řešení `docs/PREHLED.md`: co předpovídáme, které vstupy každý model používá, co jsme nevzali a proč, rozdělení, výsledky a tabulku všech rozhodnutí s důvody.
 - Proč: rozhodnutí byla rozesetá po deníku, pokusech a datech. Pro prezentaci a otázky poroty je potřebujeme pohromadě.
+
+## pá 20:20 · Dan
+- Co: všech 14 mých modelů jsem pustil znovu na opravené verzi dat a vyhodnocení. Závěry platí: LightGBM c 23,1 cm na povodních (stejně jako Ondrovi na Macu), Ridge 17,1, zbytek po Ridge 18,7. Grafy jsou překreslené.
+- Problém: otisk verze v `porovnej.py` vychází na Windows jinak než na Macu (u mě 69a6db32, u Ondry 9a31181e), i když data a kód jsou stejné. Git na Windows (`core.autocrlf=true`) ukládá `.py` soubory s konci řádků CRLF a `verze()` je hashuje i s nimi. Po převodu `.py` na LF vyjde přesně 9a31181e. Následek: `--prehled` na Macu schová výsledky z Windows (Dan, Honza) jako „starou verzi“ a na Windows zase chybí výsledky z Maců. Čísla jdou srovnat, jen je přehled neukáže vedle sebe.
+- Návrh pro Ondru: v `verze()` u `.py` souborů před hashováním nahradit `\r\n` za `\n`, nebo do `.gitattributes` přidat `*.py text eol=lf`. Je to Ondrův soubor, neměnil jsem ho.
+- Problém: Python na Windows zapisuje text v cp1250, pokud se nezadá kódování. Moje starší výsledky tak nešly v novém `porovnej.py` přečíst. Ondra i já jsme je převedli do UTF-8, nový `porovnej.py` už zapisuje UTF-8.
