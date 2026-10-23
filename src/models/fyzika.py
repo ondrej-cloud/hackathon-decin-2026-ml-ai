@@ -1,4 +1,4 @@
-"""Fyzikální model: průtok v cíli posunutý o přírůstky vody z bran proti proudu, převedený na hladinu měrnou křivkou."""
+"""Fyzikální model (3 vrstvy stanic): průtok v cíli posunutý o přírůstky vody z bran proti proudu, převedený na hladinu měrnou křivkou."""
 import numpy as np
 import pandas as pd
 
@@ -10,7 +10,7 @@ PARAMETRY = {
     "max_posun_h": 48,
     "pasem_krivky": 80,  # pásma po stejných krocích v logaritmu průtoku
     "min_hodin_v_pasmu": 6,
-    "vrstev": 2,  # brány a kolik vrstev stanic nad nimi, když voda nedotekla ani k bráně
+    "vrstev": 3,  # brány a kolik vrstev stanic nad nimi, když voda nedotekla ani k bráně
 }
 # brány do Ústí a stanice nad každou stanicí (Praha-Chuchle je pod soutokem s Berounkou, Jizera ústí pod Nymburkem)
 BRANY = ["vranany", "kostelec", "louny"]

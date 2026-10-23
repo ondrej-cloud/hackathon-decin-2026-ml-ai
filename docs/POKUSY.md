@@ -97,3 +97,9 @@ Následující pokusy jsou doplněné zpětně (pá 19:55). Všechny byly před 
 - Výsledek na val (chyba na povodních bez / s přítoky): Děčín +6 h 4,6 / 4,8 cm, +12 h 9,0 / 9,5, +24 h 15,5 / 16,0; Ústí +6 h 7,3 / 7,5, +12 h 9,6 / 10,1, +24 h 15,7 / 16,2. Při vrcholech povodní přidaly přítoky 2–13 % vody, nejvíc v 8/2010.
 - Závěr: nepomohly, do společných vstupů je nepřidáváme. Jejich voda doteče za pár hodin a na delší horizont rozhoduje déšť. Limit: povodeň z lokálních dešťů v kraji (jako 8/2010) model bez srážek dopředu nevidí.
 - Soubory: jen kontrola, model není uložený.
+
+## pá 19:48 · Tobias · fyzikální model, finální varianta a grafy
+- Nejlepší varianta (3 vrstvy stanic) je teď `src/models/fyzika.py`, první verze se dvěma vrstvami zůstává pro srovnání jako `src/models/fyzika_dve_vrstvy.py`. Po přejmenování znovu spuštěno: `prumer_povodne` 24,8 a 26,6 cm, stejně jako předtím.
+- `docs/grafy/fyzika_merna_krivka.png`: měrná křivka Děčína se stupni povodňové aktivity. Body z povodní leží přesně na křivce, nad 3 710 m³/s (nejvyšší průtok v tréninku) je křivka prodloužená přímkou.
+- `docs/grafy/fyzika_vetve.png`: tři větve (Vltava, Labe, Ohře) s dobami putování mezi stanicemi a do Děčína. Nejdál dopředu vidí Beroun a Přelouč, 24 h.
+- `docs/grafy/fyzika_povoden_2006.png`: validační povodeň 2006, Děčín +24 h. Při stoupání model sleduje skutečnost, „jako teď“ se opožďuje o celý den. Těsně před vrcholem model krátce přestřelí asi o 50 cm, při opadání se opožďuje.
