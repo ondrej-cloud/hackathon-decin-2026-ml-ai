@@ -158,3 +158,8 @@ Následující záznamy jsou doplněné zpětně (pá 19:35) podle commitů, ať
 - Co: zjistili jsme, že doba putování vody závisí na průtoku. Při povodni se vlna zpomalí (Mělník → Ústí 8 h při malé vodě, 16 h nad 1 500 m³/s), protože se rozlije do nivy. Modely zatím počítají s jednou dobou na stanici.
 - Kdo co: Dan zkusí dobu putování podle průtoku (zadání v `docs/UKOL_MODELY.md`, sekce Další úkol), Ondra srážky, sníh a teplotu z 25 stanic ČHMÚ v povodí.
 - Proč: čtyři modely skončily blízko sebe, strop dělají vstupy. Oba pokusy přidávají informaci, kterou modely zatím nemají. Sklon a vzdálenost samotné se nemění, jejich vliv je už ve změřené době putování.
+
+## pá 21:00 · Ondra
+- Co: Honza dostal vedle aplikace úkol „kolik let dat model potřebuje“ (učicí křivka lineární regrese, jen kraj proti všem stanicím, zadání v `docs/UKOL_MODELY.md`). Sepsali jsme inventuru všech dat `docs/ZDROJE_DAT.md`: co je v balíčku, kolik z toho používáme a proč, co jsme přidali a jaké parametry modely dostávají.
+- Zjištění: denní úhrn srážek ČHMÚ s časem „den D 06:00“ je déšť za následujících 24 h, ne za předchozích (ověřeno na hodinových srážkách v Praze 5–7/2020). Kdybychom ho brali od jeho časové značky, model by viděl den deště z budoucnosti. Bereme ho až od D+1 07:00.
+- Proč: graf o množství dat odpovídá na otázku poroty, proč nestačil balíček. Inventura dat je podklad pro slajd „Jaká data jsme použili“, který zadání výslovně chce.
