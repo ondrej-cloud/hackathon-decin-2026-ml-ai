@@ -29,7 +29,12 @@ Do 21:00 body 1 a 2 (kostra celého řetězce), do 23:00 zbytek.
 ## Co je navíc, když zbude čas
 
 7. **Aktuální data ČHMÚ.** Zjistit, jestli opendata.chmi.cz má operativní (dnešní) hodinové hodnoty hladiny a průtoku pro našich 12 stanic (čísla stanic v `src/data.py`, historický archiv stahuje `src/stahni_chmu_hydro.py`). Když ano: tlačítko „Načíst dnešek“ sestaví X stejně jako `features.py` a ukáže skutečnou předpověď na teď. Když ne: zapsat do `docs/DATA.md`, co přesně jsme zjistili, a nechat přehrávání historie.
-8. **Mapa stanic** od Prahy po Děčín s barvou podle stupně. Souřadnice stanic v repu nemáme, bez nich přeskočit.
+8. **3D mapa povodí** od Prahy po Děčín, až po bodech 1 až 6. Souřadnice a stupně 12 stanic jsou v `data/external/stanice_hydro.csv` (sloupce `klic, cislo, stanice, tok, lat, lon, spa1_cm, spa2_cm, spa3_cm`). Postup přes `st.pydeck_chart` (pydeck je součást Streamlitu, bez účtu a klíče):
+   - `TerrainLayer` s veřejnými výškovými dlaždicemi `https://s3.amazonaws.com/elevation-tiles-prod/terrarium/{z}/{x}/{y}.png` (`elevation_decoder`: rScaler 256, gScaler 1, bScaler 1/256, offset −32768) a povrchem z dlaždic OpenStreetMap `https://tile.openstreetmap.org/{z}/{x}/{y}.png`. Terén 2 až 3× přehnaný, pohled šikmo (pitch asi 55), střed mezi Prahou a Děčínem, `map_style=None`.
+   - Na terénu stanice jako `ColumnLayer`: výška sloupce = průtok v daném okamžiku, barva = stupeň povodňové aktivity (zelená, žlutá, oranžová, červená), popisek jméno a průtok. Když sloupce mizí pod terénem, dát jim `z` = nadmořská výška stanice × přehnání (odhad z mapy stačí) nebo `TerrainExtension`, pokud ho pydeck ve verzi na počítači umí.
+   - Posuvník času po 6 h přes povodeň 1/2011, aby bylo vidět, jak vlna jde z Prahy a Mělníka do Ústí a Děčína. To je obrázek k větě „co teče Prahou teď, je zítra v Děčíně“.
+   - Dlaždice jdou z internetu. Na prezentaci mít uložené screenshoty (`docs/grafy/app_mapa_*.png`) a video, kdyby Wi-Fi nešla.
+   - Žádný Blender ani ruční 3D model: statický render nejde ovládat v demu a stál by hodiny.
 
 ## Co se nesmí
 
