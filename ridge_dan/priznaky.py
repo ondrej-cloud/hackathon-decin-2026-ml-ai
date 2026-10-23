@@ -34,6 +34,8 @@ ZAKLAD = dict(
     zmeny_q=(),             # změny průtoku za k hodin (po transformaci), všechny vybrané stanice
     zrychleni=False,        # (H(t) − H(t−3)) − (H(t−3) − H(t−6)) pro cíl, totéž pro průtoky
     srazky=(),              # součty denních úhrnů za posledních k ukončených dní po povodích, např. (1, 2, 3, 5)
+    snih=False,             # výška sněhu po povodích a její změna za 1 a 3 dny, teplota, tání = sníh × kladná teplota
+    jen_tani=False,         # ze sněhu a teploty jen sloupce tani_*
     sezona=False,           # sin/cos dne v roce
     interakce=False,        # stav teď × jeho změna za 6 h (rychlost stoupání závisí na výšce)
     vyplnit_h=0,            # díry ve vstupech vyplnit poslední známou hodnotou, nejvýš k hodin (jen dopředu)
@@ -102,6 +104,19 @@ def priznaky(T, cil, horizont, **volby):
                 # sra_* drží úhrn posledního ukončeného dne; k dní zpět = posuny po 24 h
                 sl[f"{c}_{k}d"] = sum(T[c].shift(24 * j) for j in range(k))
         nejstarsi = max(nejstarsi, 24 * (max(v["srazky"]) - 1))
+    if v["snih"]:
+        for c in T.columns[T.columns.str.startswith("sce_")]:
+            g = c[4:]
+            sce = T[c]
+            if not v["jen_tani"]:
+                sl[c] = sce
+                sl[f"{c}_d1"] = sce - sce.shift(24)
+                sl[f"{c}_d3"] = sce - sce.shift(72)
+            if f"tep_{g}" in T:
+                if not v["jen_tani"]:
+                    sl[f"tep_{g}"] = T[f"tep_{g}"]
+                sl[f"tani_{g}"] = sce * T[f"tep_{g}"].clip(lower=0) / 10
+        nejstarsi = max(nejstarsi, 72)
     if v["sezona"]:
         den = T.index.dayofyear.to_numpy()
         sl["sezona_sin"] = pd.Series(np.sin(2 * np.pi * den / 365.25), index=T.index)

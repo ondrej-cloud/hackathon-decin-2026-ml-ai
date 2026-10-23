@@ -12,3 +12,5 @@
 - pá 20:40 · napsané data_ridge.py (tabulka), hodnoceni.py (split převzatý z evaluate.py + metriky klid/vzestup/začátek/poplachy 400/490/560), priznaky.py, pokus.py (časová CV po blocích let s mezerou 10 dní).
 - pá 20:44 · kontrola tabulky: 12 týmových sloupců z mého stahování je přesně shodných s `data/external/labe_hodinove.parquet` (rozdíl 0, stejné díry); můj split dává pro +12/24/36 h stejné značky jako `evaluate.casti()` (0 rozdílů z 175 320 hodin).
 - pá 20:44 · reprodukce na stejných řádcích (19 264 val hodin): týmový Ridge Děčín +24 h na mé tabulce 15,5 cm (předpovědi shodné s týmovým kódem na Ondrově tabulce na 1e-5), „jako teď“ 44,4 cm; 17,1 cm je průměr týmového Ridge přes všech 6 kombinací cíl × horizont, pro Děčín +24 h je laťka 15,5.
+- pá 20:57 · hydrologie stažená (620 souborů, 31 stanic × 20 let); díry skoro žádné: Děčín 82 h (02/2006, stejná oprava ledu jako v týmové tabulce), Němčice 170 h v 10/2020 (val) → Němčice vyřazené, Přelouč je hned pod nimi.
+- pá 20:57 · CV přepsaná na normální rovnice pro celou mřížku alph (ověřeno, že dává stejná čísla jako StandardScaler + Ridge ze sklearn), 5 s místo 50 s na pokus.

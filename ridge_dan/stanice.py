@@ -36,7 +36,7 @@ HYDRO = {
     "169000": ("zbraslav", "Praha-Zbraslav (Vltava)"),
     "165000": ("kacov", "Kácov (Sázava)"),
     "161000": ("zruc", "Zruč nad Sázavou (Sázava)"),
-    "042000": ("nemcice", "Němčice (Labe)"),
+    # Němčice (042000) staženy, ale vyřazené: díra 170 h v 10/2020 (val) by vyhodila řádky, Přelouč je hned pod nimi
     "059000": ("nemosice", "Nemošice (Chrudimka)"),
     "037000": ("tyniste", "Týniště nad Orlicí (Orlice)"),
     "075000": ("sany", "Sány (Cidlina)"),

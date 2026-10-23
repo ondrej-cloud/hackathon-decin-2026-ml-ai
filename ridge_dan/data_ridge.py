@@ -49,25 +49,68 @@ def hydro():
     return D[[c for c in poradi if c in D]]
 
 
-def srazky_denni():
-    """Denní úhrny po stanicích (index = razítko D 06:00Z), sloupce wsi."""
-    S = pd.read_csv(ZDE / "srazkove_stanice.csv")
+def denni(slozka, prvek, wsi):
+    """Denní hodnoty prvku po stanicích (index = razítko ČHMÚ v UTC), sloupce wsi. Chybějící soubor přeskočí."""
     out = {}
-    for wsi in S.wsi:
-        d = pd.read_csv(CACHE / f"meteorology/climate/historical_csv/data/daily/precipitation/dly-{wsi}-SRA.csv")
-        d = d[d.ELEMENT == "SRA"]
-        out[wsi] = d.assign(DT=pd.to_datetime(d.DT, utc=True)).drop_duplicates("DT").set_index("DT").VALUE
-    return pd.DataFrame(out).sort_index()["2005-12-01":], S.set_index("wsi").skupina
+    for w in wsi:
+        f = CACHE / f"meteorology/climate/historical_csv/data/daily/{slozka}/dly-{w}-{prvek}.csv"
+        if not f.exists():
+            continue
+        d = pd.read_csv(f)
+        d = d[d.ELEMENT == prvek]
+        out[w] = d.assign(DT=pd.to_datetime(d.DT, utc=True)).drop_duplicates("DT").set_index("DT").VALUE
+    return pd.DataFrame(out).sort_index()["2005-12-01":]
 
 
-def srazky_hodinove(denni, skupiny, hodiny):
-    """Průměr přes stanice povodí, posunutý na čas, kdy je úhrn známý, a podržený do dalšího dne."""
+def teplota_terminy(skupiny, hodiny):
+    """Teplota z termínů 06, 13 a 20 UTC (okamžitá měření): průměr posledních tří termínů (≈ posledních 24 h),
+    použitelný hodinu po posledním z nich. Denní průměr AVG (razítko D 00:00Z) se nepoužívá."""
     out = {}
     for s in sorted(skupiny.unique()):
-        d = denni[skupiny.index[skupiny == s]].mean(axis=1)
-        d.index = d.index + DOSTUPNE_PO
-        out[f"sra_{s}"] = d.reindex(hodiny, method="ffill", limit=23)
+        rady = []
+        for w in skupiny.index[skupiny == s]:
+            f = CACHE / f"meteorology/climate/historical_csv/data/daily/temperature/dly-{w}-T.csv"
+            if not f.exists():
+                continue
+            d = pd.read_csv(f)
+            d = d[(d.ELEMENT == "T") & d.TIMEFUNC.isin(["06:00", "13:00", "20:00"])]
+            d = d.assign(DT=pd.to_datetime(d.DT, utc=True)).drop_duplicates("DT").set_index("DT").VALUE.sort_index()
+            d = d["2005-12-01":]
+            # tři po sobě jdoucí termíny musí ležet do 24 h, jinak je v řadě díra
+            ok = (d.index.to_series().diff(2) <= pd.Timedelta(hours=24)).to_numpy()
+            d = d.rolling(3).mean().where(ok)
+            d.index = d.index + pd.Timedelta(hours=1)
+            rady.append(d.rename(w))
+        if rady:
+            out[f"tep_{s}"] = pd.concat(rady, axis=1, sort=True).mean(axis=1).reindex(hodiny, method="ffill", limit=11)
+    out = pd.DataFrame(out, index=hodiny)
+    # vybrané teploměry Labe pod Mělníkem měří jen do roku 2005, Jizera až od 2015: teplota je plošně hladká,
+    # vezme se ze sousedního povodí (Bílina, střední Labe)
+    for s, soused in (("labe_dolni", "bilina"), ("jizera", "labe_stredni")):
+        out[f"tep_{s}"] = out.get(f"tep_{s}", pd.Series(np.nan, index=hodiny)).combine_first(out[f"tep_{soused}"])
+    return out
+
+
+def srazky_denni():
+    S = pd.read_csv(ZDE / "srazkove_stanice.csv")
+    return denni("precipitation", "SRA", S.wsi), S.set_index("wsi").skupina
+
+
+def po_povodich(dny, skupiny, hodiny, predpona, posun):
+    """Průměr přes stanice povodí, posunutý o `posun` od razítka (kdy je hodnota známá), podržený 24 h."""
+    out = {}
+    for s in sorted(skupiny.unique()):
+        sl = [w for w in skupiny.index[skupiny == s] if w in dny]
+        if not sl:
+            continue
+        d = dny[sl].mean(axis=1)
+        d.index = d.index + posun
+        out[f"{predpona}_{s}"] = d.reindex(hodiny, method="ffill", limit=23)
     return pd.DataFrame(out, index=hodiny)
+
+
+def srazky_hodinove(denni_sra, skupiny, hodiny):
+    return po_povodich(denni_sra, skupiny, hodiny, "sra", DOSTUPNE_PO)
 
 
 def overeni_srazek():
@@ -87,9 +130,12 @@ def overeni_srazek():
 
 def postav():
     D = hydro()
-    denni, skupiny = srazky_denni()
-    R = srazky_hodinove(denni, skupiny, D.index)
-    T = pd.concat([D, R], axis=1).astype("float32").rename_axis("cas")
+    sra, skupiny = srazky_denni()
+    R = srazky_hodinove(sra, skupiny, D.index)
+    # výška sněhu: pozorování v 06:00Z, bereme konzervativně až od dalšího dne 07:00Z jako srážky
+    snih = po_povodich(denni("snow", "SCE", skupiny.index), skupiny, D.index, "sce", DOSTUPNE_PO)
+    teplota = teplota_terminy(skupiny, D.index)
+    T = pd.concat([D, R, snih, teplota], axis=1).astype("float32").rename_axis("cas")
     SOUBOR.parent.mkdir(exist_ok=True)
     T.to_parquet(SOUBOR)
     return T
