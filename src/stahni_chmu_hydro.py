@@ -26,6 +26,17 @@ STATIONS = {
     "214000": "Karlovy Vary (Ohře)",
     "216000": "Žatec (Ohře)",
     "219000": "Louny (Ohře)",
+    "215100": "Kadaň (Ohře)",
+    # malé řeky v kraji
+    "241000": "Srbská Kamenice (Kamenice)",
+    "244000": "Hřensko (Kamenice)",
+    "222900": "Bílina (Bílina)",
+    "226000": "Trmice (Bílina)",
+    "320800": "Rumburk (Mandava)",
+    "321000": "Varnsdorf (Mandava)",
+    "218000": "Třetí Mlýn (Chomutovka)",
+    "218700": "Postoloprty (Chomutovka)",
+    "239000": "Benešov nad Ploučnicí (Ploučnice)",
     # Labe v kraji
     "204000": "Mělník (Labe)",
     "220000": "Litoměřice (Labe)",

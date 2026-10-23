@@ -21,7 +21,7 @@ Nejvíc bodů je za odbornost a pořadatelé řekli rovnou: radši jednodušší
 
 ## Stav (aktualizuje kdokoli, kdo má novou informaci)
 
-- **Zadání:** pět úloh v `zadani/`, přehled v `zadani/README.md`. Vybraná úloha: nejspíš ovzduší (`zadani/ksi-2-ovzdusi.md`), potvrdit do 17:30. Celé zadání vybrané úlohy si přečti na začátku každé relace.
+- **Zadání:** pět úloh v `zadani/`, přehled v `zadani/README.md`. Vybraná úloha: nejspíš Labe (`zadani/ksi-3-labe.md`) s daty ČHMÚ ze stanic proti proudu. Nápad v `docs/NAPAD_LABE.md`, plán práce v `docs/POROVNANI_MODELU.md`. Celé zadání vybrané úlohy si přečti na začátku každé relace.
 - **Komu řešení pomáhá:**
 - **Data:** (kde leží v `data/raw/`, co obsahují, velikost)
 - **Metrika:** (jedna hlavní metrika a s jakým jednoduchým řešením se srovnáváme)
