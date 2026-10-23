@@ -400,3 +400,13 @@ Následující pokusy jsou doplněné zpětně (pá 19:55). Všechny byly před 
 - Varování (součet přes 48 běhů): lineární regrese 1 propásnutí (Děčín +12 h, 8/2010) a 3 plané poplachy, síť 4 a 5, LightGBM 0 a 4, fyzikální 0 a 4, „jako teď“ 72 propásnutí. Skoro všechny plané poplachy jsou Ústí 6/2006, kdy voda vystoupala na 525 cm, 5 cm pod 2. stupeň.
 - Závěr: pořadí z validace platí i přes 8 povodní, lineární regrese je nejlepší v průměru i v nejvíc párových srovnáních a má nejmíň chyb ve varování mezi učenými modely. Rozdíl proti síti (0,9 cm) je ale menší než rozdíly mezi povodněmi, takže jsou prakticky stejně dobré. Chyba záleží víc na povodni (11 až 34 cm) než na modelu. Graf `docs/grafy/krizova_validace.png`.
 - Soubory: `src/krizova_validace.py`, `src/graf_krizova_validace.py`, `results/krizova_validace/2026-10-23_232649.csv`
+
+## pá 23:44 · Ondra · polynomická regrese 2. stupně
+- Otázka: nebyla by křivka (polynom) lepší než lineární regrese?
+- Data a rozdělení: společné, validace.
+- Vstupy: 98 společných sloupců (průtoky pod odmocninou) a navíc buď druhé mocniny všech 98 (`ridge_polynom`, 196 sloupců), nebo druhé mocniny a součiny 14 aktuálních hodnot z času t (`ridge_polynom_soucin`, 203 sloupců). Plný polynom 2. stupně by měl 4 949 sloupců, to by se na 2 velkých povodních v tréninku jen přeučilo.
+- Model a nastavení: StandardScaler + Ridge(alpha=1), seed nehraje roli.
+- Kde a jak dlouho: MacBook M1, pod sekundu na model.
+- Výsledek na val (`prumer_povodne`): lineární regrese 17,1 cm, s druhými mocninami 22,8 cm, se součiny 19,9 cm. V klidu stejné (Děčín +24 h 7,5 / 7,8 / 7,7 cm), na povodních horší, hlavně na 36 h (Děčín 26,0 → 35,2 a 34,8 cm). Polynomy víc podhodnocují (bias na povodních Děčín +36 h −29 cm proti −11 u lineární) a chyba vrcholu je větší (Děčín +24 h 14,4 → 31,9 a 14,3 cm).
+- Závěr: polynom nepomohl. Ohyb křivky se určí z běžné vody, které je 99 %, a při vysoké vodě, kde máme jen pár povodní, se ohne špatným směrem. Potřebný ohyb (měrná křivka) už má lineární regrese v odmocnině průtoků. Neuronová síť a LightGBM jsou taky nelineární a taky nevyhrály, takže víc ohybů tu nepomáhá.
+- Soubory: `src/models/ridge_polynom.py`, `src/models/ridge_polynom_soucin.py`, `results/2026-10-23_234433_ridge_polynom.json`, `results/2026-10-23_234438_ridge_polynom_soucin.json`
