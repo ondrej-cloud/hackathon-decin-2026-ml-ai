@@ -31,26 +31,42 @@ from models import mlp  # noqa: E402
 
 warnings.filterwarnings("ignore")
 SEEDY = (42, 43, 44)
-VARIANTY = {"a": "beze změny (98 týmových vstupů)", "b": "+ průtoky 18 nových stanic (224 vstupů)"}
+VARIANTY = {"a": "beze změny (98 týmových vstupů)", "b": "+ průtoky 18 nových stanic (224 vstupů)",
+            "c": "+ srážky (98 + 10 sloupců sr_blizko_*, sr_dal_*, surové mm)"}
+SRAZKY = None  # cesta k srazky_6h.parquet; když je, běží a, b i c jen na hodinách se srážkami
+NEJSTARSI_SR = 78  # nejstarší srážkové měření v příznacích (t − 78 h), jako srazky_dan/obaly.py
 TYM_42 = 17.83  # results/2026-10-23_195305_mlp.json, Ondra, verze 9a31181e
 ZKOUSKA = False
 
 
-@cache
-def data(cil, h):
-    return S.data(cil, h)
+def nacti_data(cil, h):
+    """X, Xn (+ stanice), Xs (+ srážky, jen se SRAZKY), y, c; pro všechny varianty STEJNÉ řádky."""
+    X, Xn, y, c = S.data(cil, h)
+    if SRAZKY is None:
+        return X, Xn, None, y, c
+    Sr = pd.read_parquet(SRAZKY).filter(regex=r"^sr_(blizko|dal)_")
+    assert Sr.shape[1] == 10 and str(Sr.index.tz) == "UTC"
+    Sr = Sr.reindex(X.index).astype("float64")
+    ok = Sr.notna().all(axis=1)
+    # hranice částí s nejstarším srážkovým měřením t − 78 h (stejně jako srazky_dan/obaly.data)
+    c = S.Hd.casti(data_ridge.nacti()[f"{cil}_H"], h, max(36, NEJSTARSI_SR)).reindex(X.index)
+    return X[ok], Xn[ok], pd.concat([X, Sr], axis=1)[ok], y[ok], c[ok]
+
+
+data = cache(nacti_data)  # při tréninku; vyhodnocení si drží jen osa(), ne celé matice vstupů
 
 
 def vstupy(varianta, cil, h):
-    X, Xn, y, c = data(cil, h)
-    return {"a": X, "b": Xn}[varianta], y, c
+    X, Xn, Xs, y, c = data(cil, h)
+    return {"a": X, "b": Xn, "c": Xs}[varianta], y, c
 
 
 @cache
 def osa(cil, h):
     """Pro vyhodnocení stačí y, rozdělení, stav teď a počty vstupů (řádky jsou pro všechny varianty stejné)."""
-    X, Xn, y, c = S.data(cil, h)
-    return y, c, X[f"{cil}_H_0"], {"a": X.shape[1], "b": Xn.shape[1]}
+    X, Xn, Xs, y, c = nacti_data(cil, h)
+    n = {"a": X.shape[1], "b": Xn.shape[1], "c": None if Xs is None else Xs.shape[1]}
+    return y, c, X[f"{cil}_H_0"], n
 
 
 def ulohy(varianty, seedy, kombinace=S.VSE, bloky=range(6)):
@@ -89,9 +105,9 @@ def _trenuj(arg):
     return trenuj(*arg)
 
 
-def _nastav(zkouska):
-    global ZKOUSKA
-    ZKOUSKA = zkouska
+def _nastav(zkouska, srazky):
+    global ZKOUSKA, SRAZKY
+    ZKOUSKA, SRAZKY = zkouska, srazky
 
 
 def nacti_pred(adresar, u, index):
@@ -162,32 +178,35 @@ def vyhodnot(adresar, varianty, seedy, kombinace=S.VSE, bloky=range(6)):
 def kontrola_radku():
     """Všechny varianty mají stejné řádky a varianta a stejné jako týmová tabulka (features.tabulka)."""
     for cil, h in S.VSE:
-        X, Xn, y, c = data(cil, h)
+        X, Xn, Xs, y, c = data(cil, h)
         Xt, _ = S.tabulka(cil, h)
-        assert X.index.equals(Xn.index) and len(X) == len(Xt) and X.equals(Xt[X.columns].loc[X.index]), (cil, h)
-        print(f"řádky {cil} +{h} h: {len(X)} (stejně jako týmová tabulka), vstupy a {X.shape[1]}, b {Xn.shape[1]}, "
-              f"train {int((c == 'train').sum())}, val {int((c == 'val').sum())}", flush=True)
+        assert X.index.equals(Xn.index) and X.equals(Xt.loc[X.index]), (cil, h)
+        assert SRAZKY is not None or len(X) == len(Xt), (cil, h)
+        assert Xs is None or (Xs.index.equals(X.index) and Xs[X.columns].equals(X)), (cil, h)
+        print(f"řádky {cil} +{h} h: {len(X)} (týmová tabulka {len(Xt)}), vstupy a {X.shape[1]}, b {Xn.shape[1]}, "
+              f"c {None if Xs is None else Xs.shape[1]}, train {int((c == 'train').sum())}, val {int((c == 'val').sum())}", flush=True)
 
 
 if __name__ == "__main__":
     p = argparse.ArgumentParser()
     p.add_argument("--vystup", required=True)
     p.add_argument("--prace", type=int, default=4)
-    p.add_argument("--varianty", default=",".join(VARIANTY))
+    p.add_argument("--varianty", default=None)
     p.add_argument("--jen-vyhodnot", action="store_true")
     p.add_argument("--zkouska", action="store_true")
+    p.add_argument("--srazky", help="srazky_6h.parquet: pustí i variantu c, všechny jen na hodinách se srážkami")
     a = p.parse_args()
-    ZKOUSKA = a.zkouska
-    varianty = a.varianty.split(",")
+    ZKOUSKA, SRAZKY = a.zkouska, a.srazky
+    varianty = a.varianty.split(",") if a.varianty else (["a", "b", "c"] if SRAZKY else ["a", "b"])
     kombinace, bloky, seedy = (([("decin", 24)], range(6), (42,)) if a.zkouska else (S.VSE, range(6), SEEDY))
     Path(a.vystup).mkdir(parents=True, exist_ok=True)
-    if not a.zkouska:
+    if not a.zkouska and not a.jen_vyhodnot:
         kontrola_radku()
     if not a.jen_vyhodnot:
         seznam = ulohy(varianty, seedy, kombinace, bloky)
         print(f"{len(seznam)} tréninků, {a.prace} souběžně", flush=True)
         t0, hotovo, prvni = time.time(), 0, {}
-        with Pool(a.prace, initializer=_nastav, initargs=(ZKOUSKA,)) as pool:
+        with Pool(a.prace, initializer=_nastav, initargs=(ZKOUSKA, SRAZKY)) as pool:
             for u, sekund in pool.imap_unordered(_trenuj, [(u, a.vystup) for u in seznam]):
                 hotovo += 1
                 print(f"[{hotovo}/{len(seznam)} {time.time() - t0:.0f} s] {u} {sekund} s", flush=True)
