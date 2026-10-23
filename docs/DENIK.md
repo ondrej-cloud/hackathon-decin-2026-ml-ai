@@ -248,3 +248,10 @@ Následující záznamy jsou doplněné zpětně (pá 19:35) podle commitů, ať
 - Proč tak a ne jinak: vlastní hydraulický model koryta (tvar dna, drsnost, kalibrace) za noc poctivě nejde a porota by to poznala. Takhle je předpověď naše, převod z měření a polygony oficiální.
 - Slabiny a co může být špatně: polygony platí pro ustálený N-letý průtok, ne pro konkrétní tvar naší povodně; rozliv v Děčíně ovlivňuje i Ploučnice, kterou nemáme; pod pětiletou vodou se mimo koryto nic nerozlije, takže na většině dat je mapa jen s obrysy. Polohu polygonů na terénu jsme ověřili jen v prohlížeči, ne proti skutečnosti.
 - Otázka poroty a odpověď: „To je váš hydraulický model?“ Ne. Je to oficiální záplavové území, které vybíráme podle naší předpovědi průtoku. Vlastní hydrauliku jsme záměrně nedělali.
+
+## pá 22:10 · Honza · Rozbor: počasí ne do modelu, ale do aplikace
+- Co jsme udělali: v režimu Dnešek aplikace pod předpovědí ukáže, kolik má příštích 24 a 48 h pršet v povodí Vltavy, horního Labe a Ohře (`app/pocasi.py`, Open-Meteo, průměr z 12 bodů po povodích), s větou pro laika a varováním nad 20 mm. Do modelu srážky nevstupují.
+- Jak to funguje, jednoduše: model říká, co přiteče z vody, která už teče. Předpověď deště říká, co přibude až potom. Ukazujeme obojí vedle sebe, ale nemícháme je.
+- Proč tak a ne jinak: Ondra ověřil, že srážky, sníh ani teplota z 25 stanic modelu nepomohly (17,1 → 17,4 cm) a ani dokonalá předpověď deště na den dopředu nedá víc než 0,8 cm. Na 12–36 h je voda z velkých dešťů už v řekách proti proudu. Vlastní model na předpověď srážek by byl nesmysl, to dělají meteorologické modely. Historické předpovědi počasí z let 2006–2013 nemáme, takže by se vliv nedal poctivě ověřit.
+- Slabiny a co může být špatně: hranice 20 mm („hodně“) a 5 mm („skoro nic“) jsou odhad, ne výpočet. Open-Meteo není ČHMÚ. Déšť rozhoduje od zhruba 48 h dál, tam naše předpověď nesahá.
+- Otázka poroty a odpověď: „A co když zaprší?“ Na dnešek a zítřek to model nepotřebuje, voda z deště teče řekami den a víc. Na pozítří by to potřeboval, proto předpověď srážek ukazujeme vedle a říkáme, že za 36 h a dál může být hladina vyšší, než model říká.
