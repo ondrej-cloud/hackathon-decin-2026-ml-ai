@@ -43,8 +43,7 @@ s poznámkou, že na validaci je kvůli 2006 o 0,6 cm horší. Do prezentace jak
 zlepšují začátek vzestupu, přestřelení velkých povodní je fyzika rozlivu do nivy a ukazatel útlumu (schodek průtoku
 v úseku) je slibný průzkumný nápad (24 h −1,1 cm v LOFO), ne ověřený model.
 
-**Nedoběhlo do 00:30** (volná RAM ~0,5 GB, sdílená se session srážek a sítě): LightGBM 12 (srovnání LightGBM 30
-proti 12); Huber s 30 stanicemi (F30); opravený přepočet vnořených B, D a G2 po nálezu
+**Nedoběhlo do 00:30** (volná RAM ~0,5 GB, sdílená se session srážek a sítě): Huber s 30 stanicemi (F30); opravený přepočet vnořených B, D a G2 po nálezu
 Codexu (h). U těch tří to závěr nemění: chyba ve vnitřním hodnocení mohla vnořený výběr jen přikrášlit
 (výběr viděl část hodin blízké držené povodně), a i tak žádná z nich hranici nedosáhla.
 
@@ -88,7 +87,8 @@ Ridge s 30 stanicemi tedy přísné pravidlo nesplní: zlepšení 0,49 cm je pod
 | F | Huber, 30 stanic | nedoběhlo | | | | | | | | | |
 | G | G1 ½ Ridge 12 + ½ Ridge 30 | 14,65 | −0,64 | 17 | +2,4 | 0,017 | ne | 16,0 | 37,5 | 19,1 | 3 |
 | G | G2 váha Ridge 12/30 striktně vnořeně | 14,73 | −0,56 | 17 | +4,6 | 0,017 | ne | | 36,6 | 21,4 | 3 |
-| G | LightGBM 30 sám | 16,06 | +0,78 | 11 | +12,1 | 1,0 | ne | 20,4 | 37,9 | 28,9 | 7 |
+| G | LightGBM 12 (týmový) | 16,94 | +1,66 | 9 | +8,5 | | ne | 21,3 | | 22,9 | 6 |
+| G | LightGBM 30 sám (proti LightGBM 12: −0,88, 15 z 22) | 16,06 | +0,78 | 11 | +12,1 | 1,0 | ne | 20,4 | 37,9 | 28,9 | 7 |
 | G | **G3 ½ Ridge 30 + ½ LightGBM 30 (pevně)** | **13,94** | **−1,35** | **20** | +8,2 | 0,0001 | **ano** | 18,2 | 34,5 | 25,0 | 6 |
 | G | G4 váha přibližně vnořeně (0,6 Ridge) | 13,95 | −1,33 | 20 | +7,6 | 0,0001 | ano | | 34,4 | 24,3 | 5 |
 | G | síť beze změny | 15,07 | −0,22 | 14 | +6,4 | 0,29 | ne | | 39,2 | 15,6 | 3 |
@@ -107,7 +107,7 @@ varianta těsně nad hranicí (H30, −1,13) vyjít i náhodou, proto výhrady v
 
 ## Pokusy
 
-*(hotovo A, B, C, D, E, F12, H, LightGBM 30, směsi G1–G6 a síť; nedoběhlo: F30, LightGBM 12, opravený přepočet B/D/G2)*
+*(hotovo A, B, C, D, E, F12, H, LightGBM 12 a 30, směsi G1–G6 a síť; nedoběhlo: F30, opravený přepočet B/D/G2)*
 
 ### Pokus C: součty po dílčích povodích místo jednotlivých nových stanic
 

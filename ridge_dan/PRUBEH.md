@@ -57,3 +57,4 @@
 - so 00:10 · citlivost H30: bez 2006 −1,46 cm (17 z 21), bez 2006 a 2011 −1,53 cm.
 - so 00:22 · verdikt: 24 h žádná varianta průkazně (H30 jen průzkumně), 36 h Ridge 30 stanic splní (−2,43, 17 z 22); LightGBM a směsi G3/G4 nedoběhly.
 - so 00:28 · LightGBM 30 doběhl (LOFO 16,06, +0,78); směs G3 = ½ Ridge 30 + ½ LightGBM 30 (pevně) pravidlo splní: −1,35 cm, 20 z 22, nejhorší +8,2, val 18,2; G4 (váha 0,6) totéž. Kontrola Codexu G3 neviděla.
+- so 00:31 · LightGBM 12 doběhl (16,94); nové stanice LightGBM zlepší o 0,88 cm (15 z 22), pod hranicí.

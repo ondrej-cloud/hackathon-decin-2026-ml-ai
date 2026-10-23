@@ -14,6 +14,9 @@
 | Ridge 12 (tým) | 15,29 | | | | | 41,9 | 16,7 | 4/1 |
 | LightGBM 30 | 16,06 | +0,78 | 11 | +12,1 | ne | 37,9 | 28,9 | 7/2 |
 
-LightGBM s novými stanicemi je v LOFO horší než týmový Ridge a má víc planých poplachů. LightGBM 12 dál běží
-(soubor `oof/lgbm_12.parquet` přibude až po 00:30), srovnání LightGBM 30 proti LightGBM 12 tedy zatím chybí.
+| LightGBM 12 (tým) | 16,94 | +1,66 | 9 | +8,5 | ne | 43,1 | 22,9 | 6/? |
+| LightGBM 30 proti LightGBM 12 | 16,06 | −0,88 | 15 | +5,9 | ne (pod 1 cm) | 37,9 | 28,9 | 7/2 |
+
+LightGBM s novými stanicemi je v LOFO horší než týmový Ridge a má víc planých poplachů. Proti týmovému LightGBM se
+zlepší o 0,88 cm (15 z 22 povodní), tedy pod hranicí 1 cm. LightGBM 12 doběhl v 00:30 (`oof/lgbm_12.parquet`).
 Validace ze `stanice_vsem`: lgbm_30 Děčín +24 20,4 (prumer 22,08), lgbm_12 21,3 (23,07).
