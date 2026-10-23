@@ -261,6 +261,12 @@ Následující záznamy jsou doplněné zpětně (pá 19:35) podle commitů, ať
 - Proč: slajdy mají působit jako jeden celek; dosud byly grafy ve třech stylech. Tobias bere do prezentace tyhle.
 - Pozor: balíček 2 roky jen kraj je v grafech 44,6 cm (opravená verze učicí křivky), ne 45,1 z prvního běhu; LightGBM je „o 48 % méně“ (podíl průměrů), v PREHLED.md 49 % (průměr procent); povodeň 2011 hlásil model 15 h předem, ne „den“.
 
+## pá 22:55 · Honza · Rozbor: mapa v Mapbox GL
+- Co jsme udělali: záložka Mapa povodí má nové hlavní zobrazení v Mapbox GL JS (`app/mapbox_mapa.py`): satelit s popisky ulic, 3D terén, 3D budovy v Děčíně a Ústí, oficiální záplavové území přilepené na terén a vyplněné podle předpovědi, stanice s popupem, přelet kamerou mezi celým povodím a městy, panel s předpovědí a větou o N-leté vodě. Pydeck mapa zůstává pro režim Dnešek, přehrání povodně a provoz bez tokenu. Screenshoty `docs/grafy/mapbox_*.png`.
+- Jak to funguje, jednoduše: stejná data jako dřív (průtoky, předpověď, záplavová území), jen je kreslí mapový engine, který umí terén a budovy. Při pětileté vodě v Děčíně je vidět, které domy u Labe a Ploučnice stojí ve vyplněném území.
+- Proč tak a ne jinak: v deck.gl se polygony na terén lepily ručně a malá území zanikala; Mapbox GL je přilepí sám a dá k tomu budovy a ulice, takže rozliv má měřítko, kterému laik rozumí. Vlastní hydraulický model jsme záměrně nedělali.
+- Slabiny a co může být špatně: potřebuje internet a token Mapboxu (veřejný, v `.env`); každé překreslení je jedno načtení mapy do bezplatného limitu; budovy jsou jen od zoomu 15; polygony platí pro ustálený N-letý průtok, ne pro konkrétní povodeň, a rozliv ovlivňuje i Ploučnice, kterou nemáme. Při rychlém přepínání v Streamlitu se v konzoli objeví zrušené požadavky staré mapy, nevadí to.
+- Otázka poroty a odpověď: „Ta modrá plocha je výstup vašeho modelu?“ Ne. Model předpoví hladinu, z ní převedeme průtok a vybereme oficiální záplavové území (DIBAVOD) pro nejbližší N-letou vodu. Modrá plocha je tedy úřední mapa, náš je výběr, které z nich právě platí.
 ## pá 22:46 · Ondra · srážky: kdy dávají smysl
 - Co: Ondra navrhl předpovídat déšť a přes něj průtok a hladinu dřív. Vyzkoušeli jsme to na horizontech až 72 h (`docs/POKUSY.md`, pá 22:46).
 - Zjištění: s dokonalou předpovědí deště se dešťová povodeň 9/2010 zlepší o 23 % na 36 h a o 40 % na 72 h. Povodně z tání sněhu (2006, 2009, 2011) se nezlepší. Naměřené denní srážky nepomáhají vůbec, známe je až ráno po konci dne, kdy voda už teče v řekách.

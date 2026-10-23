@@ -15,6 +15,7 @@ import streamlit.components.v1 as components
 
 import aktualni
 import animace
+import mapbox_mapa
 import pocasi
 from mapa import POHLEDY, deck as mapa_deck, mapbox_token
 from rozliv import n_leta_voda
@@ -54,6 +55,12 @@ def predpovedi_val(nazev, cast="val"):
 def animace_html(povoden, nazev):
     od, do = animace.okno(povoden)
     return animace.html(od, do, nazev)
+
+
+@st.cache_data
+def mapbox_html(cas, predpovedi, pohled):
+    """Mapa v Mapbox GL (satelit, 3D budovy, záplavová území na terénu); stavba stránky trvá asi sekundu."""
+    return mapbox_mapa.html(cas, predpovedi, pohled)
 
 
 @st.cache_data(ttl=600)
@@ -249,10 +256,10 @@ def predpovedi_pro_mapu(t):
 
 
 with tab_mapa:
-    st.markdown(f"**Co teče proti proudu, dorazí k nám.** Sloupce jsou průtoky 12 stanic "
-                f"{cesky(cas):%d. %m. %Y %H:%M} (výška sloupce = průtok), barva je stupeň povodňové aktivity. "
-                "U Děčína a Ústí je v popisku předpověď modelu za 24 h. Okamžik se mění v levém menu, terén je "
-                "2,5× zvýšený.")
+    st.markdown(f"**Co teče proti proudu, dorazí k nám.** Stanice {cesky(cas):%d. %m. %Y %H:%M}: velikost podle "
+                "průtoku, barva podle stupně povodňové aktivity, u Děčína a Ústí předpověď modelu za 24 h. Pohled "
+                "Děčín nebo Ústí přiblíží město s 3D budovami a oficiálním záplavovým územím, které předpovědi "
+                "odpovídá. Okamžik se mění v levém menu.")
     pohled = st.radio("Pohled", list(POHLEDY), horizontal=True, key="mapa_pohled",
                       help="Přiblížení na město ukáže oficiální záplavové území podle předpovědi.")
     misto = st.empty()
@@ -268,6 +275,15 @@ with tab_mapa:
             t = t.tz_convert("UTC")
             misto.pydeck_chart(mapa_deck(t, predpovedi_pro_mapu(t), pohled), height=650)
             cas_modul.sleep(0.6)
+    elif mapbox_token() and not DNES:
+        # Mapbox GL: záplavové území přilepené na terén a 3D budovy; v Dnešku a bez tokenu jednodušší mapa níž
+        with misto:
+            getattr(st, "iframe", components.html)(mapbox_html(cas, pred_mapy, pohled), height=700)
+        voda = n_leta_voda(cil, pred[24])
+        st.markdown(f"**Co předpověď znamená pro {jmeno(cil)}:** {voda['popis']} "
+                    + (f"Na mapě je vyplněné oficiální záplavové území pro {voda['N']}letou vodu (DIBAVOD), ostatní "
+                       "jen obrysem." if voda["N"] >= 5 else
+                       "Rozliv mimo koryto se čeká až od pětileté vody, záplavová území jsou na mapě jen obrysem."))
     else:
         misto.pydeck_chart(mapa_deck(cas, pred_mapy, pohled, tabulka=tabulka_mapy), height=650)
         voda = n_leta_voda(cil, pred[24])

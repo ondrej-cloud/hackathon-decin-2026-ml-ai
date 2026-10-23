@@ -87,7 +87,8 @@ def krok_mapa():
     for pohled in ("Děčín", "Ústí nad Labem", "celé povodí"):
         prvek(at.radio, "Pohled", "mapa_pohled").set_value(pohled).run()
         bez_vyjimky(at)
-        assert len(at.get("deck_gl_json_chart")) == 1, f"pohled {pohled}: chybí mapa"
+        # mapa je buď Mapbox (iframe, s tokenem), nebo pydeck (deck_gl_json_chart); druhý iframe je animace
+        assert len(at.get("deck_gl_json_chart")) + len(at.get("iframe")) == 2, f"pohled {pohled}: chybí mapa"
         assert any("Co předpověď znamená" in x.value for x in at.markdown), f"pohled {pohled}: chybí věta o rozlivu"
     return "tři pohledy s rozlivem"
 
@@ -119,7 +120,7 @@ def krok_animace():
     for povoden in (BORIS, "1/2011"):
         prvek(at.selectbox, "Povodeň", "animace_povoden").set_value(povoden).run()
         bez_vyjimky(at)
-        assert len(at.get("iframe")) == 1, f"{povoden}: chybí animace"
+        assert len(at.get("iframe")) >= 1, f"{povoden}: chybí animace"
     return f"{BORIS} a 1/2011"
 
 
