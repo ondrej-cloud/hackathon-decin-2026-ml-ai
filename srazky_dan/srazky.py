@@ -5,13 +5,16 @@ python srazky.py      postaví data/srazky_6h.parquet (není v Gitu) z cache/ (s
 Z pole AA1–AA4 (délka období v h, úhrn v 0,1 mm, podmínka, kvalita) se berou 6h a 12h úhrny zpráv SYNOP v termínech
 00, 06, 12, 18 UTC. České stanice hlásí 6h úhrn v 00 a 12 UTC a 12h úhrn v 06 a 18 UTC, proto:
 - 6h díl končící v 06 (18) = 12h úhrn v 06 (18) − 6h úhrn v 00 (12); když 6h úhrn chybí, dělí se 12h úhrn napůl.
+  Rozpor (6h úhrn větší než navazující 12h, v datech nejvýš o 1 mm): 6h úhrn zůstává, protože model ho už 6 h
+  používal, a druhý díl je 0.
   Tím se díl končící v 00 (12) „dozví“ až v 06 (18) – do příznaků v 01–06 (13–18) proto vstupuje jen to, co se
   vědělo v 00 (12), tedy chybějící = NaN (predbezne), a dorovnaná hodnota až od 07 (19) (konecne).
 - stopové srážky (podmínka 2) = 0, kvalita 3, 7 (chybné) a podmínky 1, 4–8 (neměřeno, konec akumulace,
   smazané, chybějící období) = chybí, nesmyslně velké úhrny (6h > 150 mm, 12h > 250 mm) = chybí.
 Úhrn patří ke konci měřeného období E a do modelu smí od E + 1 h. Příznak v hodině t: součet za W hodin
-(W = 6, 12, 24, 48, 72) končící posledním termínem E ≤ t − 1 h, jen ze zpráv s koncem ≤ E. Nejstarší měření,
-které příznak použije, je tedy t − 1 − 5 − 72 = t − 78 h (NEJSTARSI_SR).
+(W = 6, 12, 24, 48, 72) končící posledním termínem E ≤ t − 1 h, jen ze zpráv s koncem ≤ E. Razítko nejstarší
+zprávy je t − 78 h, ale nejstarší 6h díl se může počítat z 12h úhrnu (měření od t − 84 h) a v termínu bez zprávy
+platí ještě součty z předchozího termínu (o 6 h starší), proto NEJSTARSI_SR = 90 h.
 Po stanicích se počítá součet, ve skupině průměr stanic, které ho mají (NaN, když žádná). Do skupin jdou jen
 stanice s úplnými zprávami (vyber()).
 """
@@ -26,7 +29,7 @@ CACHE = ZDE / "cache/global-hourly"
 SOUBOR = ZDE / "data/srazky_6h.parquet"
 OD, DO = "2006-01-01", "2025-12-31"
 OKNA = (6, 12, 24, 48, 72)
-NEJSTARSI_SR = 78
+NEJSTARSI_SR = 90
 ZPOZDENI = pd.Timedelta(hours=1)
 
 # USAF: (název, dílčí povodí); „blizko“ = okolí Děčína, ostatní = dál proti proudu
@@ -110,15 +113,22 @@ def sestihodinove(z):
 
 
 def soucty_v_terminech(s):
-    """S_W(E) = srážky za W hodin končících v termínu E, jen ze zpráv s koncem ≤ E (index = E)."""
+    """S_W(E) = srážky za W hodin končících v termínu E, jen ze zpráv s koncem ≤ E (index = E).
+
+    Chybějící 6h díly v okně nahradí průměr známých dílů téhož okna (součet známých × k / počet známých), když je
+    známá aspoň polovina dílů; jinak NaN. Zprávy často chybí právě na začátku deště (25. 9. 2010 v 06 UTC v Ústí
+    i v Doksanech), vyhozené řádky by z obou variant vynechaly hodiny, kde by srážky měly pomoct nejvíc."""
     out = {}
-    hod = s.index.hour
+    posledni = pd.Series(np.where(np.isin(s.index.hour, (6, 18)), s.konecne, s.predbezne), index=s.index)
+    # starší díly (E − 6 a dál) jsou v termínu E vždy dorovnané: dorovnání přijde nejpozději v příštím 06/18
+    starsi = s.konecne.shift(1)
     for w in OKNA:
         k = w // 6
-        # starší díly (E − 6 a dál) jsou v termínu E vždy dorovnané: dorovnání přijde nejpozději v příštím 06/18
-        starsi = s.konecne.shift(1).rolling(k - 1, min_periods=k - 1).sum() if k > 1 else 0.0
-        posledni = np.where(np.isin(hod, (6, 18)), s.konecne, s.predbezne)
-        out[w] = posledni + starsi
+        soucet, pocet = posledni.fillna(0), posledni.notna().astype(float)
+        if k > 1:
+            soucet = soucet + starsi.rolling(k - 1, min_periods=1).sum().fillna(0)
+            pocet = pocet + starsi.notna().astype(float).rolling(k - 1).sum()
+        out[w] = (soucet * k / pocet).where(pocet >= np.ceil(k / 2))
     return pd.DataFrame(out, index=s.index)
 
 

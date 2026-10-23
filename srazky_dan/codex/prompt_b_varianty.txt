@@ -1,0 +1,16 @@
+Jsi nezávislý kontrolor (code review) studentského projektu: předpověď stavu Labe v Děčíně za 12/24/36 h z hodinových dat ČHMÚ. Pokus: přidají šestihodinové srážky ze synoptických zpráv (NOAA ISD) něco třem modelům? Každý model ve dvou variantách, „bez“ (beze změny) a „srazky“ (+ srážkové sloupce sr_*).
+
+PRAVIDLA (závazná):
+- NIC neměň, nezapisuj, nemaž, žádné git příkazy, které něco mění. Jen čti; Python smíš spustit jen s -B a bez zápisu souborů (žádné spuštění spust_srazky.py, píše do vysledky/). Nespouštěj nic, co by sahalo na testovací roky 2021–2025 (c == "test", finalni=True, --test, test_jednou.py).
+- Nečti soubory .env, nic z ~/.kaggle (access_token, kaggle.json) ani jiné přihlašovací údaje.
+- Každý nález: [závažnost: vysoká/střední/nízká] soubor:řádek – co – proč – jak opravit. Když nic nenajdeš, napiš to výslovně.
+- Česky, stručně, nejvýš ~60 řádků.
+
+Soubory (vše ve `srazky_dan/`): `obaly.py` (data a obaly modelů), `spust_srazky.py` (CV a validace), `spolecne.py` (převzatý společný modul: CV po blocích let, metriky), `tabulka_vysledku.py` (souhrn a verdikt), `srazky.py` (příznaky; časování už zkontrolovala první kontrola, viz `codex/kontrola_a_casovani.md`, její nálezy jsou opravené: NEJSTARSI_SR = 90, test `kontrola_casovani.py` s pevnou hodinou a asercemi). Původní modely: `src/models/ridge.py`, `src/models/lgbm_c.py`, `src/models/lgbm_a.py`, `ridge_dan/model_ridge.py`, `ridge_dan/priznaky.py`, `ridge_dan/hodnoceni.py`, `src/evaluate.py`, `src/features.py`.
+
+OVĚŘ:
+1. STEJNÉ ŘÁDKY: obě varianty každého modelu trénují i hodnotí (CV i validace) na identických řádcích (index), se stejným y a stejnými značkami částí c. Hodiny bez srážek jsou vyhozené u obou. Značky částí (train/val/test, vyhození řádků přes hranici) počítají s nejstarším srážkovým měřením.
+2. LIŠÍ SE JEN SRÁŽKAMI: varianta „srazky“ je tentýž model se stejnými hyperparametry, stejnou transformací vstupů (týmový ridge.py odmocňuje jen sloupce s `_Q_`; srážky se odmocňovat nemají), stejným cílem (LightGBM: změna stavu y − H_0), stejným seedem; jen má navíc sloupce sr_*. U LightGBM obal nahrazuje lgbm_c.fit vlastním fitem: je opravdu ekvivalentní (monotone_constraints, parametry, vstupy)?
+3. NAPOJENÍ SRÁŽEK: reindex srážkové tabulky na index řádků (čas vydání předpovědi t, UTC) – žádný posun, správná časová zóna, žádné doplnění dozadu (bfill), žádná normalizace přes budoucí data mimo trénink (StandardScaler se fituje jen na tréninku?).
+4. ÚNIK: nic z validace nebo testu nevstupuje do tréninku; CV bloky s mezerou 10 dní; test 2021–2025 se nikde nepoužije.
+5. METRIKY: odpovídají týmovým (evaluate.vyhodnot, varovani; prumer_povodne = průměr mae_povodne přes 6 kombinací jako porovnej.py), začátek vzestupu, povodně 2006 a 2010; verdikt v tabulka_vysledku.py používá prah 1 cm správně.
