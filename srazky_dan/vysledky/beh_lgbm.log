@@ -1,0 +1,5 @@
+srážky C:\Users\danie\Documents\hackathon-2026-srazky\srazky_dan\data\srazky_6h.parquet (otisk 0fa9e49a), sada hlavni: ['sr_blizko_6h', 'sr_blizko_12h', 'sr_blizko_24h', 'sr_blizko_48h', 'sr_blizko_72h', 'sr_dal_6h', 'sr_dal_12h', 'sr_dal_24h', 'sr_dal_48h', 'sr_dal_72h']
+lgbm bez seed 42: CV povodně 17.77, začátek 36.40, vzestup 36.90, 107314 řádků (446.7 s)
+lgbm srazky seed 42: CV povodně 16.81, začátek 35.54, vzestup 35.04, 107314 řádků (1261.8 s)
+lgbm bez seed 42: VAL prumer_povodne 23.03, Děčín +24 20.8, začátek 36.4, 2006 28.9, 9/2010 21.1, 2./3. SPA plané 0/0, propásnuto 0/0, řádků 107314/18982 (1001.8 s)
+lgbm srazky seed 42: VAL prumer_povodne 21.85, Děčín +24 20.3, začátek 31.8, 2006 28.1, 9/2010 22.9, 2./3. SPA plané 0/4, propásnuto 0/0, řádků 107314/18982 (155.6 s)

@@ -1,0 +1,31 @@
+srážky C:\Users\danie\Documents\hackathon-2026-srazky\srazky_dan\data\srazky_6h.parquet (otisk 0fa9e49a), sada hlavni: ['sr_blizko_6h', 'sr_blizko_12h', 'sr_blizko_24h', 'sr_blizko_48h', 'sr_blizko_72h', 'sr_dal_6h', 'sr_dal_12h', 'sr_dal_24h', 'sr_dal_48h', 'sr_dal_72h']
+C:\Users\danie\.venvs\hackathon\Lib\site-packages\sklearn\linear_model\_ridge.py:227: LinAlgWarning: An ill-conditioned matrix detected: slice 0 has rcond = 1.0661676697054645e-07.
+  return linalg.solve(A, Xy, assume_a="pos", overwrite_a=True).T
+C:\Users\danie\.venvs\hackathon\Lib\site-packages\sklearn\linear_model\_ridge.py:227: LinAlgWarning: An ill-conditioned matrix detected: slice 0 has rcond = 1.0138390393876762e-07.
+  return linalg.solve(A, Xy, assume_a="pos", overwrite_a=True).T
+C:\Users\danie\.venvs\hackathon\Lib\site-packages\sklearn\linear_model\_ridge.py:227: LinAlgWarning: An ill-conditioned matrix detected: slice 0 has rcond = 1.0899758962068518e-07.
+  return linalg.solve(A, Xy, assume_a="pos", overwrite_a=True).T
+C:\Users\danie\.venvs\hackathon\Lib\site-packages\sklearn\linear_model\_ridge.py:227: LinAlgWarning: An ill-conditioned matrix detected: slice 0 has rcond = 1.036140417909337e-07.
+  return linalg.solve(A, Xy, assume_a="pos", overwrite_a=True).T
+C:\Users\danie\.venvs\hackathon\Lib\site-packages\sklearn\linear_model\_ridge.py:227: LinAlgWarning: An ill-conditioned matrix detected: slice 0 has rcond = 1.0452242804603884e-07.
+  return linalg.solve(A, Xy, assume_a="pos", overwrite_a=True).T
+C:\Users\danie\.venvs\hackathon\Lib\site-packages\sklearn\linear_model\_ridge.py:227: LinAlgWarning: An ill-conditioned matrix detected: slice 0 has rcond = 1.0911181647088597e-07.
+  return linalg.solve(A, Xy, assume_a="pos", overwrite_a=True).T
+ridge_dan bez seed None: CV povodně 14.16, začátek 28.95, vzestup 28.74, 107314 řádků (8.1 s)
+C:\Users\danie\.venvs\hackathon\Lib\site-packages\sklearn\linear_model\_ridge.py:227: LinAlgWarning: An ill-conditioned matrix detected: slice 0 has rcond = 1.0585021215092638e-07.
+  return linalg.solve(A, Xy, assume_a="pos", overwrite_a=True).T
+C:\Users\danie\.venvs\hackathon\Lib\site-packages\sklearn\linear_model\_ridge.py:227: LinAlgWarning: An ill-conditioned matrix detected: slice 0 has rcond = 1.1235466246262149e-07.
+  return linalg.solve(A, Xy, assume_a="pos", overwrite_a=True).T
+C:\Users\danie\.venvs\hackathon\Lib\site-packages\sklearn\linear_model\_ridge.py:227: LinAlgWarning: An ill-conditioned matrix detected: slice 0 has rcond = 1.0854238752244783e-07.
+  return linalg.solve(A, Xy, assume_a="pos", overwrite_a=True).T
+C:\Users\danie\.venvs\hackathon\Lib\site-packages\sklearn\linear_model\_ridge.py:227: LinAlgWarning: An ill-conditioned matrix detected: slice 0 has rcond = 1.0405641859279058e-07.
+  return linalg.solve(A, Xy, assume_a="pos", overwrite_a=True).T
+C:\Users\danie\.venvs\hackathon\Lib\site-packages\sklearn\linear_model\_ridge.py:227: LinAlgWarning: An ill-conditioned matrix detected: slice 0 has rcond = 1.114220182785175e-07.
+  return linalg.solve(A, Xy, assume_a="pos", overwrite_a=True).T
+ridge_dan srazky seed None: CV povodně 14.10, začátek 29.03, vzestup 28.83, 107314 řádků (9.2 s)
+C:\Users\danie\.venvs\hackathon\Lib\site-packages\sklearn\linear_model\_ridge.py:227: LinAlgWarning: An ill-conditioned matrix detected: slice 0 has rcond = 1.0380928472386586e-07.
+  return linalg.solve(A, Xy, assume_a="pos", overwrite_a=True).T
+C:\Users\danie\.venvs\hackathon\Lib\site-packages\sklearn\linear_model\_ridge.py:227: LinAlgWarning: An ill-conditioned matrix detected: slice 0 has rcond = 1.0337934952531214e-07.
+  return linalg.solve(A, Xy, assume_a="pos", overwrite_a=True).T
+ridge_dan bez seed None: VAL prumer_povodne 17.8, Děčín +24 17.8, začátek 28.1, 2006 24.6, 9/2010 20.7, 2./3. SPA plané 0/0, propásnuto 0/0, řádků 107314/18982 (2.1 s)
+ridge_dan srazky seed None: VAL prumer_povodne 18.1, Děčín +24 18.1, začátek 28.4, 2006 25.4, 9/2010 21.0, 2./3. SPA plané 0/0, propásnuto 0/0, řádků 107314/18982 (2.3 s)

@@ -1,0 +1,5 @@
+srážky C:\Users\danie\Documents\hackathon-2026-srazky\srazky_dan\data\srazky_6h.parquet (otisk 0fa9e49a), sada povodi: ['sr_blizko_6h', 'sr_blizko_12h', 'sr_blizko_24h', 'sr_blizko_48h', 'sr_blizko_72h', 'sr_ohre_6h', 'sr_ohre_12h', 'sr_ohre_24h', 'sr_ohre_48h', 'sr_ohre_72h', 'sr_berounka_6h', 'sr_berounka_12h', 'sr_berounka_24h', 'sr_berounka_48h', 'sr_berounka_72h', 'sr_vltava_6h', 'sr_vltava_12h', 'sr_vltava_24h', 'sr_vltava_48h', 'sr_vltava_72h', 'sr_horni_labe_6h', 'sr_horni_labe_12h', 'sr_horni_labe_24h', 'sr_horni_labe_48h', 'sr_horni_labe_72h']
+ridge_tym bez seed None: CV povodně 15.64, začátek 34.92, vzestup 33.76, 107008 řádků (29.3 s)
+ridge_tym srazky seed None: CV povodně 15.66, začátek 33.69, vzestup 33.20, 107008 řádků (24.1 s)
+ridge_tym bez seed None: VAL prumer_povodne 17.08, Děčín +24 15.5, začátek 35.4, 2006 16.0, 9/2010 20.8, 2./3. SPA plané 0/0, propásnuto 0/0, řádků 107008/18982 (13.6 s)
+ridge_tym srazky seed None: VAL prumer_povodne 17.07, Děčín +24 15.3, začátek 32.8, 2006 15.6, 9/2010 19.9, 2./3. SPA plané 0/0, propásnuto 0/0, řádků 107008/18982 (14.4 s)

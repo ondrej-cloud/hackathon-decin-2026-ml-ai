@@ -1,0 +1,90 @@
+C:\Users\danie\.venvs\hackathon\Lib\site-packages\sklearn\linear_model\_ridge.py:227: LinAlgWarning: An ill-conditioned matrix detected: slice 0 has rcond = 8.817345076295169e-08.
+  return linalg.solve(A, Xy, assume_a="pos", overwrite_a=True).T
+C:\Users\danie\.venvs\hackathon\Lib\site-packages\sklearn\linear_model\_ridge.py:227: LinAlgWarning: An ill-conditioned matrix detected: slice 0 has rcond = 7.997695661288162e-08.
+  return linalg.solve(A, Xy, assume_a="pos", overwrite_a=True).T
+C:\Users\danie\.venvs\hackathon\Lib\site-packages\sklearn\linear_model\_ridge.py:227: LinAlgWarning: An ill-conditioned matrix detected: slice 0 has rcond = 8.021861219731363e-08.
+  return linalg.solve(A, Xy, assume_a="pos", overwrite_a=True).T
+C:\Users\danie\.venvs\hackathon\Lib\site-packages\sklearn\linear_model\_ridge.py:227: LinAlgWarning: An ill-conditioned matrix detected: slice 0 has rcond = 8.042956523013345e-08.
+  return linalg.solve(A, Xy, assume_a="pos", overwrite_a=True).T
+C:\Users\danie\.venvs\hackathon\Lib\site-packages\sklearn\linear_model\_ridge.py:227: LinAlgWarning: An ill-conditioned matrix detected: slice 0 has rcond = 8.19797492113139e-08.
+  return linalg.solve(A, Xy, assume_a="pos", overwrite_a=True).T
+C:\Users\danie\.venvs\hackathon\Lib\site-packages\sklearn\linear_model\_ridge.py:227: LinAlgWarning: An ill-conditioned matrix detected: slice 0 has rcond = 8.160798614653686e-08.
+  return linalg.solve(A, Xy, assume_a="pos", overwrite_a=True).T
+C:\Users\danie\.venvs\hackathon\Lib\site-packages\sklearn\linear_model\_ridge.py:227: LinAlgWarning: An ill-conditioned matrix detected: slice 0 has rcond = 8.203968349107527e-08.
+  return linalg.solve(A, Xy, assume_a="pos", overwrite_a=True).T
+C:\Users\danie\.venvs\hackathon\Lib\site-packages\sklearn\linear_model\_ridge.py:227: LinAlgWarning: An ill-conditioned matrix detected: slice 0 has rcond = 7.966595916286678e-08.
+  return linalg.solve(A, Xy, assume_a="pos", overwrite_a=True).T
+C:\Users\danie\.venvs\hackathon\Lib\site-packages\sklearn\linear_model\_ridge.py:227: LinAlgWarning: An ill-conditioned matrix detected: slice 0 has rcond = 7.803451040899745e-08.
+  return linalg.solve(A, Xy, assume_a="pos", overwrite_a=True).T
+C:\Users\danie\.venvs\hackathon\Lib\site-packages\sklearn\linear_model\_ridge.py:227: LinAlgWarning: An ill-conditioned matrix detected: slice 0 has rcond = 8.305625698312724e-08.
+  return linalg.solve(A, Xy, assume_a="pos", overwrite_a=True).T
+C:\Users\danie\.venvs\hackathon\Lib\site-packages\sklearn\linear_model\_ridge.py:227: LinAlgWarning: An ill-conditioned matrix detected: slice 0 has rcond = 8.251043226437105e-08.
+  return linalg.solve(A, Xy, assume_a="pos", overwrite_a=True).T
+C:\Users\danie\.venvs\hackathon\Lib\site-packages\sklearn\linear_model\_ridge.py:227: LinAlgWarning: An ill-conditioned matrix detected: slice 0 has rcond = 8.107797100365133e-08.
+  return linalg.solve(A, Xy, assume_a="pos", overwrite_a=True).T
+C:\Users\danie\.venvs\hackathon\Lib\site-packages\sklearn\linear_model\_ridge.py:227: LinAlgWarning: An ill-conditioned matrix detected: slice 0 has rcond = 7.889450159836997e-08.
+  return linalg.solve(A, Xy, assume_a="pos", overwrite_a=True).T
+C:\Users\danie\.venvs\hackathon\Lib\site-packages\sklearn\linear_model\_ridge.py:227: LinAlgWarning: An ill-conditioned matrix detected: slice 0 has rcond = 8.739021950532333e-08.
+  return linalg.solve(A, Xy, assume_a="pos", overwrite_a=True).T
+C:\Users\danie\.venvs\hackathon\Lib\site-packages\sklearn\linear_model\_ridge.py:227: LinAlgWarning: An ill-conditioned matrix detected: slice 0 has rcond = 8.353024583129809e-08.
+  return linalg.solve(A, Xy, assume_a="pos", overwrite_a=True).T
+C:\Users\danie\.venvs\hackathon\Lib\site-packages\sklearn\linear_model\_ridge.py:227: LinAlgWarning: An ill-conditioned matrix detected: slice 0 has rcond = 8.37915763440833e-08.
+  return linalg.solve(A, Xy, assume_a="pos", overwrite_a=True).T
+C:\Users\danie\.venvs\hackathon\Lib\site-packages\sklearn\linear_model\_ridge.py:227: LinAlgWarning: An ill-conditioned matrix detected: slice 0 has rcond = 8.22178378712124e-08.
+  return linalg.solve(A, Xy, assume_a="pos", overwrite_a=True).T
+C:\Users\danie\.venvs\hackathon\Lib\site-packages\sklearn\linear_model\_ridge.py:227: LinAlgWarning: An ill-conditioned matrix detected: slice 0 has rcond = 8.480463264959326e-08.
+  return linalg.solve(A, Xy, assume_a="pos", overwrite_a=True).T
+C:\Users\danie\.venvs\hackathon\Lib\site-packages\sklearn\linear_model\_ridge.py:227: LinAlgWarning: An ill-conditioned matrix detected: slice 0 has rcond = 8.106266591312306e-08.
+  return linalg.solve(A, Xy, assume_a="pos", overwrite_a=True).T
+C:\Users\danie\.venvs\hackathon\Lib\site-packages\sklearn\linear_model\_ridge.py:227: LinAlgWarning: An ill-conditioned matrix detected: slice 0 has rcond = 8.531502970754445e-08.
+  return linalg.solve(A, Xy, assume_a="pos", overwrite_a=True).T
+C:\Users\danie\.venvs\hackathon\Lib\site-packages\sklearn\linear_model\_ridge.py:227: LinAlgWarning: An ill-conditioned matrix detected: slice 0 has rcond = 8.872860490782841e-08.
+  return linalg.solve(A, Xy, assume_a="pos", overwrite_a=True).T
+C:\Users\danie\.venvs\hackathon\Lib\site-packages\sklearn\linear_model\_ridge.py:227: LinAlgWarning: An ill-conditioned matrix detected: slice 0 has rcond = 8.179934241070441e-08.
+  return linalg.solve(A, Xy, assume_a="pos", overwrite_a=True).T
+ridge_dan bez seed None: LOFO 14.79 cm, začátek 34.07, 2. SPA propásnuto/plané 0/3 (131144 řádků, 169.5 s)
+C:\Users\danie\.venvs\hackathon\Lib\site-packages\sklearn\linear_model\_ridge.py:227: LinAlgWarning: An ill-conditioned matrix detected: slice 0 has rcond = 8.784105887116311e-08.
+  return linalg.solve(A, Xy, assume_a="pos", overwrite_a=True).T
+C:\Users\danie\.venvs\hackathon\Lib\site-packages\sklearn\linear_model\_ridge.py:227: LinAlgWarning: An ill-conditioned matrix detected: slice 0 has rcond = 7.963934223198521e-08.
+  return linalg.solve(A, Xy, assume_a="pos", overwrite_a=True).T
+C:\Users\danie\.venvs\hackathon\Lib\site-packages\sklearn\linear_model\_ridge.py:227: LinAlgWarning: An ill-conditioned matrix detected: slice 0 has rcond = 7.99192605427379e-08.
+  return linalg.solve(A, Xy, assume_a="pos", overwrite_a=True).T
+C:\Users\danie\.venvs\hackathon\Lib\site-packages\sklearn\linear_model\_ridge.py:227: LinAlgWarning: An ill-conditioned matrix detected: slice 0 has rcond = 8.014254149202316e-08.
+  return linalg.solve(A, Xy, assume_a="pos", overwrite_a=True).T
+C:\Users\danie\.venvs\hackathon\Lib\site-packages\sklearn\linear_model\_ridge.py:227: LinAlgWarning: An ill-conditioned matrix detected: slice 0 has rcond = 8.160497344533724e-08.
+  return linalg.solve(A, Xy, assume_a="pos", overwrite_a=True).T
+C:\Users\danie\.venvs\hackathon\Lib\site-packages\sklearn\linear_model\_ridge.py:227: LinAlgWarning: An ill-conditioned matrix detected: slice 0 has rcond = 8.130615469781333e-08.
+  return linalg.solve(A, Xy, assume_a="pos", overwrite_a=True).T
+C:\Users\danie\.venvs\hackathon\Lib\site-packages\sklearn\linear_model\_ridge.py:227: LinAlgWarning: An ill-conditioned matrix detected: slice 0 has rcond = 8.167604192976796e-08.
+  return linalg.solve(A, Xy, assume_a="pos", overwrite_a=True).T
+C:\Users\danie\.venvs\hackathon\Lib\site-packages\sklearn\linear_model\_ridge.py:227: LinAlgWarning: An ill-conditioned matrix detected: slice 0 has rcond = 7.953911307367889e-08.
+  return linalg.solve(A, Xy, assume_a="pos", overwrite_a=True).T
+C:\Users\danie\.venvs\hackathon\Lib\site-packages\sklearn\linear_model\_ridge.py:227: LinAlgWarning: An ill-conditioned matrix detected: slice 0 has rcond = 7.769495624643241e-08.
+  return linalg.solve(A, Xy, assume_a="pos", overwrite_a=True).T
+C:\Users\danie\.venvs\hackathon\Lib\site-packages\sklearn\linear_model\_ridge.py:227: LinAlgWarning: An ill-conditioned matrix detected: slice 0 has rcond = 8.273337215314314e-08.
+  return linalg.solve(A, Xy, assume_a="pos", overwrite_a=True).T
+C:\Users\danie\.venvs\hackathon\Lib\site-packages\sklearn\linear_model\_ridge.py:227: LinAlgWarning: An ill-conditioned matrix detected: slice 0 has rcond = 7.691473769000368e-08.
+  return linalg.solve(A, Xy, assume_a="pos", overwrite_a=True).T
+C:\Users\danie\.venvs\hackathon\Lib\site-packages\sklearn\linear_model\_ridge.py:227: LinAlgWarning: An ill-conditioned matrix detected: slice 0 has rcond = 8.082659519459412e-08.
+  return linalg.solve(A, Xy, assume_a="pos", overwrite_a=True).T
+C:\Users\danie\.venvs\hackathon\Lib\site-packages\sklearn\linear_model\_ridge.py:227: LinAlgWarning: An ill-conditioned matrix detected: slice 0 has rcond = 7.861051187774137e-08.
+  return linalg.solve(A, Xy, assume_a="pos", overwrite_a=True).T
+C:\Users\danie\.venvs\hackathon\Lib\site-packages\sklearn\linear_model\_ridge.py:227: LinAlgWarning: An ill-conditioned matrix detected: slice 0 has rcond = 8.155559783062927e-08.
+  return linalg.solve(A, Xy, assume_a="pos", overwrite_a=True).T
+C:\Users\danie\.venvs\hackathon\Lib\site-packages\sklearn\linear_model\_ridge.py:227: LinAlgWarning: An ill-conditioned matrix detected: slice 0 has rcond = 8.31985929039547e-08.
+  return linalg.solve(A, Xy, assume_a="pos", overwrite_a=True).T
+C:\Users\danie\.venvs\hackathon\Lib\site-packages\sklearn\linear_model\_ridge.py:227: LinAlgWarning: An ill-conditioned matrix detected: slice 0 has rcond = 8.345965341050032e-08.
+  return linalg.solve(A, Xy, assume_a="pos", overwrite_a=True).T
+C:\Users\danie\.venvs\hackathon\Lib\site-packages\sklearn\linear_model\_ridge.py:227: LinAlgWarning: An ill-conditioned matrix detected: slice 0 has rcond = 7.94475099041847e-08.
+  return linalg.solve(A, Xy, assume_a="pos", overwrite_a=True).T
+C:\Users\danie\.venvs\hackathon\Lib\site-packages\sklearn\linear_model\_ridge.py:227: LinAlgWarning: An ill-conditioned matrix detected: slice 0 has rcond = 8.44718854864368e-08.
+  return linalg.solve(A, Xy, assume_a="pos", overwrite_a=True).T
+C:\Users\danie\.venvs\hackathon\Lib\site-packages\sklearn\linear_model\_ridge.py:227: LinAlgWarning: An ill-conditioned matrix detected: slice 0 has rcond = 8.064791501283253e-08.
+  return linalg.solve(A, Xy, assume_a="pos", overwrite_a=True).T
+C:\Users\danie\.venvs\hackathon\Lib\site-packages\sklearn\linear_model\_ridge.py:227: LinAlgWarning: An ill-conditioned matrix detected: slice 0 has rcond = 8.501359616275295e-08.
+  return linalg.solve(A, Xy, assume_a="pos", overwrite_a=True).T
+C:\Users\danie\.venvs\hackathon\Lib\site-packages\sklearn\linear_model\_ridge.py:227: LinAlgWarning: An ill-conditioned matrix detected: slice 0 has rcond = 8.84141684309725e-08.
+  return linalg.solve(A, Xy, assume_a="pos", overwrite_a=True).T
+C:\Users\danie\.venvs\hackathon\Lib\site-packages\sklearn\linear_model\_ridge.py:227: LinAlgWarning: An ill-conditioned matrix detected: slice 0 has rcond = 8.148494146098528e-08.
+  return linalg.solve(A, Xy, assume_a="pos", overwrite_a=True).T
+ridge_dan srazky seed None: LOFO 14.77 cm, začátek 34.1, 2. SPA propásnuto/plané 0/3 | rozdíl -0.03, zlepšeno 13/22, nejhorší +0.5, p 0.5235, platí False (131144 řádků, 187.1 s)
