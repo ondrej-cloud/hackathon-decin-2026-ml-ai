@@ -248,3 +248,12 @@ Následující pokusy jsou doplněné zpětně (pá 19:55). Všechny byly před 
 - Výsledek na val: do rozmezí se vešlo 89–92 % hodnot celkem, na povodních 76–88 % (12 h 87–88 %, 24 h 79–84 %, 36 h 76–78 %). Šířka rozmezí na povodních: Děčín 33 / 53 / 72 cm, Ústí 61 / 77 / 82 cm. Pásmo nad 600 cm v Ústí má v tréninku málo řádků (hlavně 2013), proto je tam dolní mez −83 až −91 cm.
 - Závěr: na klidné vodě rozmezí sedí (9 z 10), na povodních je o něco užší, než by mělo (8 z 10), protože validační povodně jsou vyšší než trénovací. Tak to i říkáme. V aplikaci „nejspíš od–do“ u každé předpovědi a modrý pás v grafu.
 - Soubory: `src/nejistota.py`, `models/ridge_intervaly.json`, `app/predikce.py` (`interval`).
+
+## pá 20:55 · Honza · kolik let dat model potřebuje (učicí křivka)
+- Otázka: proč nestačil balíček pořadatelů (2 roky, jen kraj)? Jak se chyba mění s délkou historie a sadou stanic?
+- Data a rozdělení: společné; trénink omezený na posledních N let před validací (2019 − N až 2018), N = 1, 2, 3, 5, 8, 13; validace stejná. Dvě sady vstupů: jen kraj (Děčín, Ústí, Louny, 35 sloupců) a všechny stanice (98 sloupců).
+- Model a nastavení: `ridge.fit` beze změn (odmocnina průtoků, StandardScaler, Ridge alpha 1).
+- Kde a jak dlouho: notebook, 72 tréninků za minutu.
+- Výsledek na val (`prumer_povodne` v cm, v závorce propásnuté nástupy povodní u 2. stupně z 24): jen kraj: 1 rok 39,2 (9), 2 roky 45,1 (12), 3 roky 35,6 (9), 5 let 34,2 (10), 8 let 27,2 (0), 13 let 27,8 (0). Všechny stanice: 1 rok 28,3 (2), 2 roky 26,9 (4), 3 roky 24,8 (3), 5 let 21,0 (3), 8 let 16,6 (0), 13 let 17,1 (0). „Jako teď“ 44,3.
+- Závěr: 1) Stanice proti proudu pomohly víc než roky: 2 roky se všemi stanicemi (26,9) jsou lepší než 13 let jen s krajem (27,8). 2) Rozhoduje, jestli je v tréninku velká povodeň: v letech 2014–2018 žádná nad 2. stupněm nebyla, modely z 1–5 let proto propásnou 2–12 nástupů z 24; jakmile je v tréninku povodeň 2013 (8 let, 409 hodin nad 2. stupněm v Děčíně), propásnuté klesnou na 0. 3) Balíček (2 roky, jen kraj) by dal 45 cm, tedy nic lepšího než „jako teď“, a propásl polovinu povodní. 4) 8 let (16,6) a 13 let (17,1) je totéž v rámci náhody. Potvrzuje zjištění z NAPAD_LABE na společném rozdělení.
+- Soubory: `src/kolik_dat.py`, `docs/grafy/kolik_dat.png`.
