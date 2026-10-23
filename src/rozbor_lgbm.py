@@ -3,6 +3,7 @@
 python src/rozbor_lgbm.py tabulka jako_ted zaklad_ridge lgbm_a   chyba proti „jako teď“ a varování před 1.–3. stupněm
 python src/rozbor_lgbm.py trenink lgbm_a                        chyba na trénovací části proti validaci (přeučení)
 python src/rozbor_lgbm.py graf lgbm_a zaklad_ridge              povodeň 1/2011 v Děčíně za 24 h, do docs/grafy/
+python src/rozbor_lgbm.py shap lgbm                             SHAP pro Děčín za 24 h, do docs/grafy/
 """
 import importlib
 import sys
@@ -13,6 +14,7 @@ import pandas as pd
 from data import SPA
 from evaluate import casti, varovani, vyhodnot
 from features import tabulka
+from models.lgbm_a import DOBA, nejblizsi
 from porovnej import RESULTS, ROOT, VSE, prehled
 
 
@@ -50,29 +52,89 @@ def trenink(nazev):
               f"na povodních train {m['train']['mae_povodne']} / val {m['val']['mae_povodne']} cm")
 
 
-def graf(modely, cil="decin", h=24, od="2011-01-05", do="2011-01-25"):
-    fig, ax = plt.subplots(figsize=(10, 4.5))
+BARVY = ["#2a78d6", "#eb6834", "#1baf7a"]
+INKOUST, MDLY, MRIZKA = "#0b0b0b", "#898781", "#e1e0d9"
+NAZVY = {"usti": "Ústí", "louny": "Louny", "melnik": "Mělník", "vranany": "Vraňany", "kostelec": "Kostelec",
+         "praha": "Praha", "nymburk": "Nymburk", "jizera": "Jizera", "beroun": "Beroun", "sazava": "Sázava",
+         "prelouc": "Přelouč", "decin": "Děčín"}
+
+
+def vzhled(ax):
+    ax.set_facecolor("#fcfcfb")
+    ax.grid(color=MRIZKA, lw=0.6)
+    for s in ("top", "right"):
+        ax.spines[s].set_visible(False)
+    for s in ("left", "bottom"):
+        ax.spines[s].set_color("#c3c2b7")
+    ax.tick_params(colors=MDLY, labelsize=8)
+
+
+def graf(modely, cil="decin", h=24, od="2011-01-08", do="2011-01-23"):
+    fig, ax = plt.subplots(figsize=(10, 4.5), facecolor="#fcfcfb")
+    vzhled(ax)
     for i, m in enumerate(["jako_ted"] + modely):
         p = pd.read_parquet(RESULTS / "predpovedi" / f"{m}.parquet")
         p = p[(p.cil == cil) & (p.horizont == h)]
         p.index = p.index + pd.Timedelta(hours=h)
         p = p[od:do]
         if i == 0:
-            ax.plot(p.index, p.skutecnost, color="black", lw=2, label="skutečnost")
-        ax.plot(p.index, p.predpoved, lw=1.3, ls="--" if m == "jako_ted" else "-", label=f"{m} (+{h} h)")
+            ax.plot(p.index, p.skutecnost, color=INKOUST, lw=2.5, label="skutečnost")
+            ax.plot(p.index, p.predpoved, color=MDLY, lw=1.5, ls="--", label="„jako teď“")
+        else:
+            ax.plot(p.index, p.predpoved, color=BARVY[i - 1], lw=2, label=m)
     for n, prah in enumerate(SPA[cil], 1):
-        ax.axhline(prah, color="grey", lw=0.6, ls=":")
-        ax.text(pd.Timestamp(od, tz="UTC"), prah + 5, f"{n}. SPA", fontsize=8, color="grey")
-    ax.set_ylabel("stav v Děčíně (cm)")
-    ax.set_title(f"Povodeň 1/2011, předpověď na {h} h dopředu (validace)")
-    ax.legend(loc="upper left", fontsize=8)
+        ax.axhline(prah, color=MDLY, lw=0.8, ls=":")
+        ax.text(pd.Timestamp(od, tz="UTC"), prah + 6, f"{n}. stupeň ({prah} cm)", fontsize=8, color=MDLY)
+    ax.set_ylabel("stav v Děčíně (cm)", color=INKOUST)
+    ax.set_title(f"Povodeň 1/2011 (validace): předpověď vydaná {h} h předem, vynesená k času, na který platí",
+                 fontsize=10, color=INKOUST, loc="left")
+    ax.legend(loc="upper left", fontsize=8, frameon=False)
     fig.tight_layout()
     soubor = ROOT / "docs/grafy" / f"{modely[0]}_povoden2011.png"
     soubor.parent.mkdir(exist_ok=True)
-    fig.savefig(soubor, dpi=120)
+    fig.savefig(soubor, dpi=130)
+    print(f"uloženo {soubor.relative_to(ROOT)}")
+
+
+def popis(c, cil, h):
+    if c.startswith(f"{cil}_H_"):
+        return f"{NAZVY[cil]} stav před {c.split('_')[-1]} h"
+    if c in ("sezona_sin", "sezona_cos", "trend_6h"):
+        return {"sezona_sin": "roční období (sin)", "sezona_cos": "roční období (cos)", "trend_6h": "trend stavu za 6 h"}[c]
+    s, co = c.split("_")
+    z = nejblizsi(max(DOBA[cil][s] - h, 0))
+    return f"{NAZVY[s]} {'přírůstek průtoku' if co == 'dQ' else 'průtok'} (před {z} h)"
+
+
+def shap_graf(modely, cil="decin", h=24):
+    """Podle čeho model rozhoduje: průměrná absolutní hodnota SHAP na validaci a během povodně 1/2011."""
+    import shap
+    from lightgbm import LGBMRegressor
+
+    model = importlib.import_module(f"models.{modely[0]}")
+    X, y = tabulka(cil, h)
+    c = casti(cil, h).reindex(X.index)
+    V = model.vstupy(X, cil, h)
+    m = LGBMRegressor(**model.PARAMETRY).fit(V[c == "train"], (y - X[f"{cil}_H_0"])[c == "train"])
+    ev = V[c == "val"]
+    S = pd.DataFrame(shap.TreeExplainer(m).shap_values(ev), index=ev.index, columns=V.columns)
+    casti_grafu = {"celá validace": S, "povodeň 1/2011": S["2011-01-03":"2011-01-22"]}
+    fig, osy = plt.subplots(1, 2, figsize=(11, 5.5), facecolor="#fcfcfb")
+    for ax, (nadpis, s) in zip(osy, casti_grafu.items()):
+        vzhled(ax)
+        d = s.abs().mean().sort_values().tail(12)
+        ax.barh([popis(k, cil, h) for k in d.index], d.values, color=BARVY[0], height=0.7)
+        ax.set_title(nadpis, fontsize=10, color=INKOUST, loc="left")
+        ax.set_xlabel("průměrný vliv na předpověď změny stavu (cm)", fontsize=8, color=MDLY)
+        print(f"{nadpis}: " + ", ".join(f"{popis(k, cil, h)} {v:.1f}" for k, v in d[::-1].head(6).items()))
+    fig.suptitle(f"{modely[0]}: podle čeho rozhoduje, {NAZVY[cil]} +{h} h (SHAP)", fontsize=11, color=INKOUST, x=0.01,
+                 ha="left")
+    fig.tight_layout()
+    soubor = ROOT / "docs/grafy" / f"{modely[0]}_shap.png"
+    fig.savefig(soubor, dpi=130)
     print(f"uloženo {soubor.relative_to(ROOT)}")
 
 
 if __name__ == "__main__":
     prikaz, *modely = sys.argv[1:]
-    {"tabulka": srovnani, "trenink": lambda m: [trenink(x) for x in m], "graf": graf}[prikaz](modely)
+    {"tabulka": srovnani, "trenink": lambda m: [trenink(x) for x in m], "graf": graf, "shap": shap_graf}[prikaz](modely)

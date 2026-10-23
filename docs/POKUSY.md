@@ -145,3 +145,13 @@ Následující pokusy jsou doplněné zpětně (pá 19:55). Všechny byly před 
 - Výsledek na val (chyba na povodních bez / s přítoky): Děčín +6 h 4,6 / 4,8 cm, +12 h 9,0 / 9,5, +24 h 15,5 / 16,0; Ústí +6 h 7,3 / 7,5, +12 h 9,6 / 10,1, +24 h 15,7 / 16,2. Při vrcholech povodní přidaly přítoky 2–13 % vody, nejvíc v 8/2010.
 - Závěr: nepomohly, do společných vstupů je nepřidáváme. Jejich voda doteče za pár hodin a na delší horizont rozhoduje déšť. Limit: povodeň z lokálních dešťů v kraji (jako 8/2010) model bez srážek dopředu nevidí.
 - Soubory: jen kontrola, model není uložený.
+
+## pá 19:56 · Dan · LightGBM c: zbytek po Ridge, přímky v listech, regularizace, zastavení tréninku
+- Otázka: dá se přeučení a neschopnost stromů jít nad to, co viděly, obejít jinak než zjednodušením stromů?
+- Data a rozdělení: společné rozdělení, všech 6 kombinací. Zastavení tréninku jen na letech 2017–2018 z trénovací části, validace se na něj nepoužije.
+- Vstupy: jako c.
+- Model a nastavení: (1) stromy se učí jen opravu Ridge, cíl = skutečnost − předpověď `zaklad_ridge`; (2) `linear_tree=True`, v listu přímka místo čísla; (3) 15 listů, `reg_lambda` 10, `colsample_bytree` 0,7; (4) zastavení, když se MAE na 2017–2018 nezlepší 50 stromů. Seed 42.
+- Kde a jak dlouho: Dan, Yoga 7i, 2–8 s na model.
+- Výsledek na val (`prumer_povodne`, c 22,8, Ridge 17,1): zbytek po Ridge 18,9, přímky v listech 111,8, regularizace 22,2, zastavení 22,4 (zastaveno po 63–212 stromech). Zbytek po Ridge má proti c navíc 2 plané poplachy před 2. stupněm (Děčín 24 a 36 h) a 1 propásnutou povodeň (Ústí 36 h).
+- Závěr: neprošlo nic. Nejzajímavější je zbytek po Ridge: proti c pomohl o 3,9 cm, ale samotný Ridge zhoršil o 1,8 cm a přidal plané poplachy. Opravy, které se stromy naučí na povodních z tréninku, na jiné povodně nesedí. Přímky v listech při velké vodě ujely až o 3 m, protože přímka naučená na úzkém kousku dat se za jeho hranou nekontrolovaně prodlouží. Regularizace a zastavení pomohly jen o 0,4–0,6 cm, pod hranicí 1 cm. Zastavení se navíc řídí suchými roky 2017–2018 bez povodně, takže o povodních nic neví. Podle pravidel tady ladění končí, nejlepší LightGBM zůstává c.
+- Soubory: `src/models/lgbm_c_ridge.py`, `src/models/lgbm_c_linear.py`, `src/models/lgbm_c_regularizace.py`, `src/models/lgbm_c_stop.py`, `results/2026-10-23_1953_lgbm_c_ridge.json`, `results/2026-10-23_1954_lgbm_c_linear.json`, `results/2026-10-23_1954_lgbm_c_regularizace.json`, `results/2026-10-23_1955_lgbm_c_stop.json`
