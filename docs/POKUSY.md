@@ -242,3 +242,9 @@ Následující pokusy jsou doplněné zpětně (pá 19:55). Všechny byly před 
 - Myšlenkový pokus, jako bychom srážky znali o den dřív (dokonalá předpověď na zítřek, do modelu se nesmí): lineární regrese 16,3 cm, zlepšení jen o 0,8 cm.
 - Závěr: nepomohlo, do společných vstupů meteo nepřidáváme. Většinu vlivu deště a sněhu už model vidí v průtocích proti proudu, protože na horizontech 12–36 h je voda z velkých dešťů už v řekách. Denní srážky jako průměr za povodí jsou navíc hrubé. Ani dokonalá předpověď na den dopředu nepřekročí naši hranici 1 cm. Síť s víc vstupy a stejným počtem povodní se přeučí. Pomoct by mohly hodinové srážky (ČHMÚ je má až od 2018, na trénink málo) a víc povodní.
 - Soubory: `src/stahni_chmu_meteo.py`, `src/meteo.py`, `src/pokus_meteo.py`, `data/external/labe_meteo.parquet`, `data/external/labe_meteo_o_den_driv.parquet` (jen myšlenkový pokus).
+## pá 20:40 · Honza · odhad nejistoty předpovědi
+- Otázka: jak široké rozmezí máme k předpovědi říkat, aby se do něj skutečnost většinou vešla?
+- Data a rozdělení: společné. Chyby Ridge na trénovací části podle pásma hladiny teď (0–300, 300–450, 450–600, nad 600 cm), 5. a 95. percentil. Pokrytí ověřeno na validaci, kterou při odhadu rozmezí model nevidí.
+- Výsledek na val: do rozmezí se vešlo 89–92 % hodnot celkem, na povodních 76–88 % (12 h 87–88 %, 24 h 79–84 %, 36 h 76–78 %). Šířka rozmezí na povodních: Děčín 33 / 53 / 72 cm, Ústí 61 / 77 / 82 cm. Pásmo nad 600 cm v Ústí má v tréninku málo řádků (hlavně 2013), proto je tam dolní mez −83 až −91 cm.
+- Závěr: na klidné vodě rozmezí sedí (9 z 10), na povodních je o něco užší, než by mělo (8 z 10), protože validační povodně jsou vyšší než trénovací. Tak to i říkáme. V aplikaci „nejspíš od–do“ u každé předpovědi a modrý pás v grafu.
+- Soubory: `src/nejistota.py`, `models/ridge_intervaly.json`, `app/predikce.py` (`interval`).
