@@ -6,7 +6,7 @@ Na začátku relace člověk zadá `/ondra`, `/dan`, `/honza` nebo `/tobias`. Z 
 
 ## Stav (aktualizuje kdokoli, kdo má novou informaci)
 
-- **Zadání:** zatím neznámé, témata se představí v pátek v 15:30
+- **Zadání:** pět úloh v `zadani/`, přehled v `zadani/README.md`. Vybraná úloha: zatím ne. Až bude, její celé zadání (`zadani/<úloha>.md`) si přečti na začátku každé relace.
 - **Komu řešení pomáhá:**
 - **Data:** (kde leží v `data/raw/`, co obsahují, velikost)
 - **Metrika:** (jedna hlavní metrika a s jakým jednoduchým řešením se srovnáváme)
@@ -17,7 +17,7 @@ Na začátku relace člověk zadá `/ondra`, `/dan`, `/honza` nebo `/tobias`. Z 
     - Dan:
     - Honza:
     - Tobias:
-- **Smějí data do cloudu (Kaggle, Colab, jazykové modely)?** zeptat se pořadatelů
+- **Smějí data do cloudu (Kaggle, Colab, jazykové modely)?** Úlohy KSI (obce, ovzduší, Labe) mají otevřená data, ta můžou. Data ÚFP (ekvilibrium, ubíhající elektrony) se nesmí zveřejnit ani zpřístupnit nikomu mimo účastníky. Na Kaggle jen se svolením mentora z ÚFP, do té doby jen lokálně.
 
 ## Tým
 
@@ -39,6 +39,26 @@ Zaměření je jen výchozí. Role se během hackathonu míchají a na čem kdo 
 - Když se změní něco, co používají ostatní (struktura, názvy souborů, rozhraní), zapiš to do Stavu.
 - Když něco v zadání nevíš, nehádej. Navrhni otázku pro mentora.
 - Drž se harmonogramu níž. Po sobotní 11:00 už jen opravy, žádné nové funkce.
+
+## Dokumentace (průběžně, sám od sebe)
+
+Porota hodnotí hlavně to, jak úloze a výsledkům rozumíme a jak to vysvětlíme. Proto se zapisuje hned, ne až večer. Zapisuješ sám, i když o to člověk neřekne, a ve stejném commitu jako kód.
+
+| Kdy | Kam |
+|---|---|
+| po každém tréninku nebo pokusu, i nepovedeném | `docs/POKUSY.md`, nový záznam na konec |
+| když se rozhodneme, změníme postup nebo narazíme na problém | `docs/DENIK.md`, nový záznam na konec |
+| když zjistíme něco o datech (rozložení, chyby, chybějící hodnoty, rozdělení) | `docs/DATA.md`, do příslušné sekce |
+| když člověku něco vysvětluješ, pochopíme něco z fyziky nebo domény, odpověď mentora | `docs/POROZUMENI.md` |
+| graf, který stojí za ukázání | `docs/grafy/` a jednou větou, co ukazuje, do `DATA.md` nebo `POKUSY.md` |
+
+- Formát záznamů je v hlavičce každého souboru.
+- Piš jednoduše, aby se to dalo říct porotě. Odborné slovo vysvětli v závorce.
+- Ke každému číslu patří srovnání (baseline) a závěr, co z toho plyne.
+- Nepovedené pokusy a slepé uličky zapisuj taky. Porota se ptá, co jsme zkoušeli a proč to nešlo.
+- Odliš ověřené od domněnky.
+- Do `DENIK.md` a `POKUSY.md` jen připisuj na konec, nic nepřepisuj. Git je při slučování spojí sám. V `DATA.md` a `POROZUMENI.md` uprav jen to, čeho se zjištění týká.
+- Než relace skončí nebo před `/sync` zkontroluj, že nic z toho nechybí.
 
 ## Pravidla pro data a modely
 
@@ -79,7 +99,7 @@ Zaměření je jen výchozí. Role se během hackathonu míchají a na čem kdo 
 - `/sync [main]`: synchronizace s Gitem
 - `/temata <text zadání>`: rozbor témat a návrh nápadů (pátek 15:30)
 - `/stav`: přehled týmu na kontrolní body
-- `/denik`: zápis změn do `docs/DENIK.md`
+- `/denik`: dohledá, co se na všech větvích udělalo a v `docs/` chybí, a doplní to
 - `/kontrola`: kontrola výsledků a úniku dat
 - `/porota`: nácvik otázek poroty
 - `/kaggle [co natrénovat]`: trénink na GPU na Kaggle (postup v `kaggle/README.md`)
@@ -89,4 +109,4 @@ Zaměření je jen výchozí. Role se během hackathonu míchají a na čem kdo 
 
 @README.md
 
-Podklady o minulých ročnících a vzorcích vítězů jsou v `docs/brainstorming-podklady.md`. Načti je, když se vybírá téma nebo chystá prezentace.
+Podklady o minulých ročnících a vzorcích vítězů jsou v `docs/brainstorming-podklady.md`. Načti je, když se vybírá téma nebo chystá prezentace. Zadání jsou v `zadani/`.
