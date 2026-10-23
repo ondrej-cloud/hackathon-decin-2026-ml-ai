@@ -104,13 +104,19 @@ def n_leta_voda(cil, hladina_cm):
 
 @cache
 def _uzemi():
-    """Polygony z geojsonu s výškou převedenou na výšku v mapě (terén zvýšený PREHANI×)."""
-    features = json.loads(SOUBOR_UZEMI.read_text(encoding="utf-8"))["features"]
-    for f in features:
-        f["geometry"]["coordinates"] = [
-            [[[x, y, round((z + NAD_TERENEM) * PREHANI)] for x, y, z in kruh] for kruh in polygon]
-            for polygon in f["geometry"]["coordinates"]
-        ]
+    """Polygony z geojsonu ve 2D, každý polygon zvlášť, s výškou v mapě v properties["vyska"].
+
+    deck.gl neumí správně vyplnit polygon s výškou v každém vrcholu (výplň se roztáhne přes celou mapu), proto 2D
+    a jedna výška na polygon: 75. percentil výšky terénu v jeho vrcholech + rezerva, zvýšená PREHANI× jako terén.
+    Terén vyšší než tahle hladina polygonem prorazí, což odpovídá tomu, že kopce z vody vyčnívají.
+    """
+    features = []
+    for f in json.loads(SOUBOR_UZEMI.read_text(encoding="utf-8"))["features"]:
+        for polygon in f["geometry"]["coordinates"]:
+            zs = [c[2] for kruh in polygon for c in kruh]
+            features.append(dict(type="Feature",
+                                 properties=f["properties"] | {"vyska": round((float(np.percentile(zs, 75)) + NAD_TERENEM) * PREHANI)},
+                                 geometry=dict(type="Polygon", coordinates=[[c[:2] for c in kruh] for kruh in polygon])))
     return features
 
 
@@ -134,21 +140,19 @@ def vrstvy(cil, hladina_cm):
         if p["N"] == vyplnit:
             tooltip += f"\nOdpovídá předpovědi: {voda['popis']}"
         (plne if p["N"] == vyplnit else obrysy).append(f | {"tooltip": tooltip})
+    # polygony jsou vytažené (extruded) na výšku properties["vyska"], ať leží na terénu; obrys by byl pod ním
     vysledek = []
     if obrysy:
         vysledek.append(pdk.Layer(
             "GeoJsonLayer", id=f"rozliv-{cil}-obrysy", data=obrysy,
-            filled=False, stroked=True, extruded=False,
-            get_line_color=MODRA + [170], line_width_min_pixels=1, line_width_units="pixels",
-            pickable=True,
+            filled=True, stroked=False, extruded=True, get_elevation="properties.vyska",
+            get_fill_color=MODRA + [45], pickable=True,
         ))
     if plne:
         vysledek.append(pdk.Layer(
             "GeoJsonLayer", id=f"rozliv-{cil}-Q{vyplnit}", data=plne,
-            filled=True, stroked=True, extruded=False,
-            get_fill_color=MODRA + [110], get_line_color=[15, 80, 170, 230],
-            line_width_min_pixels=2, line_width_units="pixels",
-            pickable=True, auto_highlight=True,
+            filled=True, stroked=False, extruded=True, get_elevation="properties.vyska",
+            get_fill_color=MODRA + [130], pickable=True, auto_highlight=True,
         ))
     return vysledek
 

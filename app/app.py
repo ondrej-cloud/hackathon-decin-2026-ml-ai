@@ -15,7 +15,7 @@ import streamlit.components.v1 as components
 
 import aktualni
 import animace
-from mapa import deck as mapa_deck, mapbox_token
+from mapa import POHLEDY, deck as mapa_deck, mapbox_token
 from rozliv import n_leta_voda
 from predikce import (BARVY, HORIZONTY, KDE, NAZEV, ROOT, SPA, STUPNE, interval, modely, nacti, nacti_model, stupen,
                       vstupy, vysvetleni)
@@ -249,6 +249,8 @@ with tab_mapa:
                 f"{cesky(cas):%d. %m. %Y %H:%M} (výška sloupce = průtok), barva je stupeň povodňové aktivity. "
                 "U Děčína a Ústí je v popisku předpověď modelu za 24 h. Okamžik se mění v levém menu, terén je "
                 "2,5× zvýšený.")
+    pohled = st.radio("Pohled", list(POHLEDY), horizontal=True, key="mapa_pohled",
+                      help="Přiblížení na město ukáže oficiální záplavové území podle předpovědi.")
     misto = st.empty()
     if DNES:
         st.info("Pro dnešek mapa ukazuje poslední hodinu z archivu, ne živá data: průtoky v Mělníku a Nymburce ČHMÚ "
@@ -259,10 +261,10 @@ with tab_mapa:
     if st.button("Přehrát povodeň 1/2011 (8. až 24. 1., po 6 hodinách, asi 40 s)"):
         for t in pd.date_range("2011-01-08", "2011-01-24 18:00", freq="6h", tz=TZ):
             t = t.tz_convert("UTC")
-            misto.pydeck_chart(mapa_deck(t, predpovedi_pro_mapu(t)), height=650)
+            misto.pydeck_chart(mapa_deck(t, predpovedi_pro_mapu(t), pohled), height=650)
             cas_modul.sleep(0.6)
     else:
-        misto.pydeck_chart(mapa_deck(cas_mapa, predpovedi_pro_mapu(cas_mapa)), height=650)
+        misto.pydeck_chart(mapa_deck(cas_mapa, predpovedi_pro_mapu(cas_mapa), pohled), height=650)
         voda = n_leta_voda(cil, pred[24])
         st.markdown(f"**Co předpověď znamená pro {jmeno(cil)}:** {voda['popis']} "
                     + (f"Na mapě je vyplněné oficiální záplavové území pro {voda['N']}letou vodu (DIBAVOD), ostatní "
