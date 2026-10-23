@@ -11,6 +11,7 @@ import pandas as pd
 import plotly.graph_objects as go
 import streamlit as st
 
+from mapa import deck as mapa_deck
 from predikce import (BARVY, HORIZONTY, KDE, NAZEV, ROOT, SPA, STUPNE, modely, nacti, nacti_model, stupen, vstupy,
                       vysvetleni)
 
@@ -97,7 +98,7 @@ radek = X.loc[[cas]]
 ted = float(radek[f"{cil}_H_0"].iloc[0])
 pred = {h: float(model_c(nazev, cil, h).predict(radek)[0]) for h in HORIZONTY}
 
-tab_ted, tab_kvalita = st.tabs(["Teď", "Jak dobře to funguje"])
+tab_ted, tab_kvalita, tab_mapa = st.tabs(["Teď", "Jak dobře to funguje", "Mapa povodí"])
 
 with tab_ted:
     st.subheader(f"{jmeno(cil)}, {cesky(cas):%d. %m. %Y %H:%M} českého času")
@@ -119,7 +120,7 @@ with tab_ted:
                     text=["teď"] + [f"za {h} h" for h in HORIZONTY])
     cary_spa(fig, cil)
     fig.update_layout(yaxis_title="hladina (cm)", height=420, margin=dict(l=10, r=10, t=30, b=50),
-                      legend=dict(orientation="h"), hovermode="x unified")
+                      legend=dict(orientation="h", y=1.08, x=0), hovermode="x unified")
     fig.update_xaxes(tickformat="%d. %m.\n%H:%M")
     st.plotly_chart(fig, width="stretch")
     st.caption("Černá čára je, co se změřilo do zvoleného okamžiku. Modré body jsou předpověď vydaná v tomhle "
@@ -150,7 +151,7 @@ with tab_kvalita:
                         name=f"model {nazev}, vydáno {h} h předem", line=dict(color=MODRA, width=2))
     cary_spa(fig, cil)
     fig.update_layout(yaxis_title="hladina (cm)", height=450, margin=dict(l=10, r=10, t=30, b=50),
-                      legend=dict(orientation="h"), hovermode="x unified")
+                      legend=dict(orientation="h", y=1.08, x=0), hovermode="x unified")
     fig.update_xaxes(tickformat="%d. %m.\n%H:%M")
     st.plotly_chart(fig, width="stretch")
     st.caption("Každý bod modré čáry je samostatná předpověď vydaná o zvolený počet hodin dřív. "
@@ -167,3 +168,13 @@ with tab_kvalita:
         st.caption("Chyba při povodních je průměrná odchylka v cm v týdnu před vrcholem a 5 dní po něm, "
                    "průměr přes 4 povodně. Varování počítáme od chvíle, kdy model poprvé předpověděl překročení "
                    "2. stupně, do chvíle, kdy hladina práh opravdu překročila.")
+
+with tab_mapa:
+    st.markdown(f"**Co teče proti proudu, dorazí k nám.** Sloupce jsou průtoky 12 stanic "
+                f"{cesky(cas):%d. %m. %Y %H:%M} (výška sloupce = průtok), barva je stupeň povodňové aktivity. "
+                "Okamžik se mění v levém menu, terén je 2,5× zvýšený.")
+    st.pydeck_chart(mapa_deck(cas), height=650)
+    st.caption("Děčín a Ústí: barva podle hladiny a stupňů povodňové aktivity. Ostatní stanice: zelená pod 95. "
+               "percentilem průtoku z let 2006–2018, žlutá do 99., červená nad ním; nejde o oficiální stupně. "
+               "Kolečkem přiblížíte, tažením posunete, Shift a tažením natočíte. Podklad © OpenStreetMap, výšky "
+               "Mapzen / AWS Terrain Tiles, měření ČHMÚ. Dlaždice se stahují z internetu.")
