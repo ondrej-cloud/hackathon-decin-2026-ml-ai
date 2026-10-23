@@ -35,7 +35,7 @@ Ridge s 30 stanicemi tedy přísné pravidlo nesplní: zlepšení 0,49 cm je pod
 
 ## Pokusy
 
-*(průběžně doplňováno; hotovo C, E; běží A, B, D, F, LightGBM, směsi G)*
+*(průběžně doplňováno; hotovo A, C, D, E, H, směsi G1–G2; běží B, F, LightGBM, směsi G3–G4)*
 
 ### Pokus C: součty po dílčích povodích místo jednotlivých nových stanic
 
@@ -78,4 +78,72 @@ Ridge s 30 stanicemi tedy přísné pravidlo nesplní: zlepšení 0,49 cm je pod
 - Závěr: delší zpoždění nepomáhají, zhorší povodeň 2006 (o dalších 4,7 cm) a přidají planý poplach. Samotných
   30 stanic při 36 h pravidlo proti týmovému Ridge splní (−2,4 cm, 17 z 22, nejhorší +7,0 v roce 2006), na validaci
   ale vychází o 0,6 cm hůř (26,6 proti 26,0), opět kvůli 2006 (36,2 proti 26,8, přestřelení 84 cm).
+
+
+#### Pokus A · rozbor přestřelení v povodni 2006 (a 2011), Ridge 12 vs 30 stanic, Děčín +24 h
+
+Skript `pokus_A.py`, čísla `vysledky_A.json`, příspěvky po 6 h `prispevky_A_2006.csv` a `prispevky_A_2011.csv`, denní bilance `bilance_A_2006.csv`. Nic se neladilo ani nemazalo.
+
+- Už týmový Ridge (12 stanic) v roce 2006 na stoupání přestřelí o 40 cm (29. 3. 00:00, validační split; ve foldu LOFO 39 cm). S 30 stanicemi o 62 cm (LOFO 59 cm); rozdíl obou předpovědí je v tu chvíli +22 cm.
+- Příspěvky 30 − 12 stanic (cm, validační split), stoupání a vrchol:
+
+| čas (vydání) | skut. za 24 h | 12 st. | 30 st. | horní Labe | horní Berounka | Zbraslav | horní Sázava | Ploučnice | Děčín+Ústí | Beroun | Vltava tým | Nespeky |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| 27. 3. 12:00 | 549 | 539 | 552 | +44 | +15 | +7 | +3 | +8 | −24 | −10 | −13 | −9 |
+| 28. 3. 12:00 | 642 | 682 | 703 | +38 | +17 | +36 | +12 | +4 | −33 | −17 | −26 | −12 |
+| 29. 3. 00:00 | 682 | 722 | 744 | +34 | +24 | +16 | +11 | +13 | −35 | −21 | −22 | −13 |
+| 1. 4. 12:00 | 829 | 867 | 886 | +25 | +17 | +7 | −17 | +10 | −47 | −23 | −16 | +11 |
+| 3. 4. 00:00 | 875 | 852 | 842 | +14 | +14 | −4 | −28 | +1 | −48 | −19 | −2 | +20 |
+
+- Mechanismus: nové stanice proti proudu (hlavně horní Labe s Orlicí, Chrudimkou a Cidlinou, horní Berounka, Zbraslav, horní Sázava) přidají na stoupání +80 až +110 cm a model to vyrovnává zápornými změnami vah týmových stanic (Děčín −148 / Ústí +113 cm, Beroun, Vraňany, Nespeky). Výsledkem je čistých +20 cm. Na vrcholu je to obráceně: horní Sázava už opadá (−28 cm) a 30 stanic vrchol podstřelí (842 proti 875).
+- Proč model přestřelí: v roce 2006 se vlna na Labi v Polabí utlumila. Kostelec měl 28.–31. 3. o 18–21 % méně vody než Nymburk + Jizera (498 proti 610, 566 proti 719, 693 proti 862 m³/s) a dorovnal se až 3. 4. Také Mělník proti Vraňanům + Kostelci (29. 3. 1 578 proti 1 803) a Ústí proti Mělníku + Lounům (1 580 proti 1 780). Lineární model se naučil, že vzestup nahoře dorazí celý. V roce 2006 se ale zhruba pětina vody několik dní držela v nivě. Čím víc vzdálených stanic model má, tím víc tomuto signálu věří.
+- Chyba dat to není. Bilance sedí (Praha ≈ Zbraslav + Beroun do 8 %, Nymburk ≈ Přelouč + Cidlina do 5 %). Drobnosti: Cidlina Sány 60 h konstantně 4,05 m³/s (16.–19. 3., před povodní), Žatec 38 h konstantně (řízený odtok z Nechranic). Zbraslav má stav o 71 cm výš než obvykle při stejném průtoku (vzdutí nebo led), její průtok ale bilanci sedí. Nic nemažu.
+- 2011 (tání, 730 cm) má stejný mechanismus. Přestřelení 30 stanic je 60 cm proti 36–39 cm (14. 1. 18:00), rozdíl +35 cm. Nahoru táhne horní Berounka (+31 až +34), horní Labe (+21), horní Jizera (+20), horní Ohře (+16 až +18), Zbraslav (+15), dolů Děčín/Ústí (−39 až −43), Beroun (−27 až −31) a Vltava tým (−15 až −19). Průměrná chyba povodně je ale u 30 stanic stejná nebo lepší (13,8–14,1 proti 14,4–14,5).
+- Co by pomohlo: menší váha vzdálených stanic, aby jejich protichůdné váhy s týmovými stanicemi byly menší (pokusy B a C). Pak nelineární útlum velkých vln, tedy vstup, který pozná, že vlna je tak velká, že se rozlije do nivy, například rozdíl Kostelec − (Nymburk + Jizera) jako ukazatel. Ten musí projít LOFO; neladil jsem ho.
+
+
+### Pokus D: vnořený dopředný výběr nových stanic (Ridge Děčín +24 h)
+
+- Co: v každém z 22 foldů LOFO-CV zvlášť začne model s týmovými 98 vstupy a po jedné přidává novou stanici (všech
+  7 zpoždění), vždy tu, která nejvíc sníží vnitřní LOFO chybu přes zbylých 21 povodní (modely bez mezer k i j);
+  přidá ji jen při striktním zlepšení. Alpha 1, odmocnina průtoků jako v týmu. Validace: tentýž výběr jen z tréninku
+  týmového splitu (vnitřní LOFO přes jeho 18 povodní). Skript `pokus_D.py`, výsledky `vysledky_D.json`, 18 min.
+- Proč: všech 18 stanic přidává šum a protichůdné váhy; výběr jen užitečných stanic by mohl zisk zachovat a
+  přeučení zmenšit.
+
+| Varianta | LOFO 22 | rozdíl | zlepšeno z 22 | nejhorší zhoršení | znam. test p | splňuje | VAL | začátek (LOFO) | 2006 (LOFO) | plané 2. SPA (LOFO) |
+|---|---|---|---|---|---|---|---|---|---|---|
+| týmový Ridge (12 stanic) | 15,29 | | | | | | 15,5 | 41,9 | 16,7 | 4 |
+| Ridge 30 stanic | 14,79 | −0,49 | 15 | +6,5 | 0,13 | ne | 17,8 | 34,1 | 23,3 | 3 |
+| **D: vnořený výběr** | **14,68** | **−0,61** | **16** | **+4,7** (2006) | 0,053 | **ne** | 17,2 | 36,1 | 21,4 | 3 |
+
+- Výběr je velmi stabilní: ve všech 22 foldech Žatec, Karlovy Vary, Plzeň-Bílá Hora, Litavka, Orlice Týniště,
+  Jizera Bakov, ve 21 Zbraslav, v 10 Bílina Trmice; Stružnice, Zruč, Sány po jednom; Ploučnice Benešov, Česká Lípa,
+  Zbečno, Liblín, Střela, Kácov, Chrudimka nikdy. Na validačním tréninku vybráno 10 stanic (tytéž + Zruč, Střela,
+  Trmice). Vnitřní chyba klesá z ~15,4 na ~14,4 cm.
+- Zhoršení po povodních malá: nejvíc 2006 (+4,7), pak 1/2011 +0,9, 6/2013 +0,4, 8/2010 +0,3.
+- Závěr: oproti všem 30 stanicím je výběr o 0,1 cm lepší, zlepší 16 z 22 povodní a největší zhoršení (2006) zmenší
+  z 6,5 na 4,7 cm. Pravidlo ale **nesplní**: průměrné zlepšení proti týmovému Ridge je jen 0,61 cm (< 1 cm).
+  Na validaci 17,2 proti týmovým 15,5.
+
+
+#### Pokus H (doplňkový): ukazatel útlumu vlny v nivě z týmových stanic
+
+- Co: z rozboru A (2006: ~20 % vody se několik dní drží v nivě Polabí) přidán vstup „schodek v úseku“ = průtok po
+  proudu − součet přítoků nad ním, pro Kostelec − (Nymburk + Jizera), Mělník − (Vraňany + Kostelec) a
+  Ústí − (Mělník + Louny), zpoždění 0/6/12/24 h, 12 sloupců v m³/s. H12 = k týmovému Ridge, H30 = k Ridge 30.
+  Alpha 1, nic se neladí. Zapsáno předem (PRUBEH 23:37) jako jediný doplňkový nápad; skript `pokus_H.py`.
+- Výhrada: nápad vznikl z rozboru povodně 2006, která je ve validaci a v LOFO je jedním z 22 foldů.
+
+| Varianta | LOFO 22 | rozdíl | zlepšeno z 22 | nejhorší zhoršení | znam. p | splňuje | val Děčín | začátek (LOFO) | 2006 (LOFO) | plané 2. SPA (LOFO) |
+|---|---|---|---|---|---|---|---|---|---|---|
+| týmový Ridge | 15,29 | | | | | | 15,5 | 41,9 | 16,7 | 4 |
+| H12 tým + útlum | 14,61 | −0,68 | 16 | +0,6 | 0,053 | ne | **14,8** | 41,0 | 14,3 | 6 |
+| Ridge 30 | 14,79 | −0,49 | 15 | +6,5 | 0,13 | ne | 17,8 | 34,1 | 23,3 | 3 |
+| **H30 Ridge 30 + útlum** | **14,15** | **−1,13** | **18** | +5,9 | 0,004 | **ano** | 17,5 | 33,5 | 22,6 | 4 |
+
+- Validace H12: 2006 13,4 cm (tým 16,0), přestřelení 2006 56 cm (57), 1 planý 2. SPA; H30: 2006 23,9, přestřelení 73.
+- Závěr: ukazatel útlumu sám pomáhá týmovému modelu hlavně v roce 2006 (validace 14,8 proti 15,5), ale v LOFO
+  jen o 0,68 cm. S 30 stanicemi pravidlo těsně splní (−1,13 cm, 18 z 22, žádná povodeň horší o víc než 5,9 cm),
+  na validaci je ale pořád horší než týmový Ridge (17,5) – přestřelení 2006 z nových stanic ukazatel nespraví.
 

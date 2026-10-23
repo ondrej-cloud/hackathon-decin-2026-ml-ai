@@ -14,7 +14,7 @@ def zaznamy(f):
     if isinstance(z, dict):
         z = z.get("varianty") or z.get("vysledky") or z.get("zaznamy") or [z]
     for r in z:
-        if isinstance(r, dict) and ("lofo" in r or "skore" in r):
+        if isinstance(r, dict) and (r.get("lofo") is not None or isinstance(r.get("skore"), dict)):
             yield f.stem.replace("vysledky_", ""), r
 
 
@@ -41,7 +41,7 @@ if __name__ == "__main__":
     print("|---|---|---|---|---|---|---|---|---|---|---|---|")
     for f in SOUBORY:
         for pokus, r in zaznamy(f):
-            s = r.get("skore", r)
+            s = r.get("skore") or r
             print(f"| {pokus} | {r.get('nazev', '')} | {cislo(s.get('lofo'), 2)} | {cislo(s.get('rozdil'), 2, True)} | "
                   f"{s.get('zlepseno', '')} | {cislo(s.get('nejhorsi_zhorseni'), 1, True)} | {cislo(s.get('znamenkovy_p'), 3)} | "
                   f"{'ano' if s.get('splnuje') else 'ne' if 'splnuje' in s else ''} | {cislo(val_cislo(r))} | "

@@ -1,0 +1,512 @@
+{
+ "2006": {
+  "val": {
+   "max_prestreleni_30": 62.2,
+   "cas_max_30": "2006-03-29 00:00:00+00:00",
+   "max_prestreleni_12": 40.5,
+   "mae_30": 20.9,
+   "mae_12": 15.8,
+   "v_case_max_rozdil_30_12_po_skupinach": {
+    "Děčín+Ústí (cíl)": -34.7,
+    "Vltava tým (Praha, Vraňany)": -22.2,
+    "Berounka Beroun": -21.0,
+    "Sázava Nespeky": -13.4,
+    "ohre_horni": -3.0,
+    "Labe tým (Mělník, Kostelec, Nymburk, Přelouč)": -0.2,
+    "Jizera Předměřice": 0.5,
+    "bilina": 2.8,
+    "Ohře Louny": 7.0,
+    "jizera_horni": 8.8,
+    "sazava_horni": 11.2,
+    "ploucnice": 13.3,
+    "zbraslav": 15.5,
+    "berounka_horni": 23.6,
+    "labe_horni": 34.0
+   },
+   "v_case_max_stanice_30_12": {
+    "decin": -147.9,
+    "vranany": -30.1,
+    "zruc": -23.6,
+    "kostelec": -21.1,
+    "beroun": -21.0,
+    "sazava": -13.4,
+    "nymburk": -10.4,
+    "prelouc": 6.4,
+    "litavka": 6.6,
+    "louny": 7.0,
+    "praha": 7.8,
+    "tyniste": 7.9,
+    "liblin": 7.9,
+    "bakov": 8.8,
+    "nemosice": 9.3,
+    "zbecno": 9.6,
+    "struznice": 11.9,
+    "zbraslav": 15.5,
+    "sany": 16.8,
+    "melnik": 25.0,
+    "kacov": 34.8,
+    "usti": 113.2
+   },
+   "pred30_minus_pred12_v_case_max": 22.1
+  },
+  "lofo": {
+   "max_prestreleni_30": 59.0,
+   "cas_max_30": "2006-03-28 18:00:00+00:00",
+   "max_prestreleni_12": 38.8,
+   "mae_30": 19.9,
+   "mae_12": 16.1,
+   "v_case_max_rozdil_30_12_po_skupinach": {
+    "Děčín+Ústí (cíl)": -35.5,
+    "Berounka Beroun": -23.0,
+    "Vltava tým (Praha, Vraňany)": -20.3,
+    "Sázava Nespeky": -12.3,
+    "ohre_horni": -5.4,
+    "Labe tým (Mělník, Kostelec, Nymburk, Přelouč)": -1.3,
+    "Jizera Předměřice": 1.0,
+    "bilina": 2.9,
+    "jizera_horni": 6.4,
+    "Ohře Louny": 8.4,
+    "sazava_horni": 8.5,
+    "ploucnice": 9.1,
+    "zbraslav": 17.7,
+    "berounka_horni": 24.1,
+    "labe_horni": 40.2
+   },
+   "v_case_max_stanice_30_12": {
+    "decin": -155.0,
+    "vranany": -25.9,
+    "beroun": -23.0,
+    "zruc": -22.3,
+    "kostelec": -18.0,
+    "nymburk": -14.9,
+    "sazava": -12.3,
+    "zatec": -6.3,
+    "liblin": 5.2,
+    "praha": 5.6,
+    "zbecno": 6.1,
+    "bakov": 6.4,
+    "benesov_pl": 6.8,
+    "tyniste": 7.2,
+    "prelouc": 7.5,
+    "louny": 8.4,
+    "litavka": 11.9,
+    "nemosice": 12.4,
+    "zbraslav": 17.7,
+    "sany": 20.6,
+    "melnik": 24.1,
+    "kacov": 30.7,
+    "usti": 119.5
+   },
+   "pred30_minus_pred12_v_case_max": 20.3
+  }
+ },
+ "2011": {
+  "val": {
+   "max_prestreleni_30": 60.1,
+   "cas_max_30": "2011-01-14 18:00:00+00:00",
+   "max_prestreleni_12": 36.0,
+   "mae_30": 14.1,
+   "mae_12": 14.4,
+   "v_case_max_rozdil_30_12_po_skupinach": {
+    "Děčín+Ústí (cíl)": -43.1,
+    "Berounka Beroun": -27.2,
+    "Vltava tým (Praha, Vraňany)": -18.7,
+    "Sázava Nespeky": -9.0,
+    "Jizera Předměřice": -5.7,
+    "Ohře Louny": 1.8,
+    "Labe tým (Mělník, Kostelec, Nymburk, Přelouč)": 4.3,
+    "bilina": 4.4,
+    "sazava_horni": 10.3,
+    "ploucnice": 12.1,
+    "zbraslav": 14.8,
+    "ohre_horni": 17.8,
+    "jizera_horni": 21.1,
+    "labe_horni": 21.2,
+    "berounka_horni": 31.4
+   },
+   "v_case_max_stanice_30_12": {
+    "decin": -156.3,
+    "vranany": -27.9,
+    "beroun": -27.2,
+    "kostelec": -18.3,
+    "zruc": -12.0,
+    "sazava": -9.0,
+    "nymburk": -7.0,
+    "jizera": -5.7,
+    "litavka": 5.7,
+    "prelouc": 5.8,
+    "zatec": 7.4,
+    "praha": 9.2,
+    "struznice": 9.3,
+    "liblin": 10.3,
+    "karlovy_vary": 10.4,
+    "sany": 11.6,
+    "zbecno": 14.2,
+    "zbraslav": 14.8,
+    "bakov": 21.1,
+    "kacov": 22.4,
+    "melnik": 23.8,
+    "usti": 113.1
+   },
+   "pred30_minus_pred12_v_case_max": 35.5
+  },
+  "lofo": {
+   "max_prestreleni_30": 60.7,
+   "cas_max_30": "2011-01-14 18:00:00+00:00",
+   "max_prestreleni_12": 38.5,
+   "mae_30": 13.8,
+   "mae_12": 14.5,
+   "v_case_max_rozdil_30_12_po_skupinach": {
+    "Děčín+Ústí (cíl)": -38.6,
+    "Berounka Beroun": -30.6,
+    "Sázava Nespeky": -15.6,
+    "Vltava tým (Praha, Vraňany)": -14.6,
+    "Jizera Předměřice": -8.8,
+    "Ohře Louny": 1.9,
+    "bilina": 5.2,
+    "Labe tým (Mělník, Kostelec, Nymburk, Přelouč)": 6.3,
+    "sazava_horni": 11.5,
+    "ploucnice": 12.2,
+    "zbraslav": 14.7,
+    "ohre_horni": 15.8,
+    "jizera_horni": 19.9,
+    "labe_horni": 21.5,
+    "berounka_horni": 34.2
+   },
+   "v_case_max_stanice_30_12": {
+    "decin": -146.1,
+    "beroun": -30.6,
+    "vranany": -24.8,
+    "nymburk": -15.9,
+    "sazava": -15.6,
+    "zruc": -11.9,
+    "jizera": -8.8,
+    "trmice": 5.2,
+    "struznice": 6.7,
+    "litavka": 6.8,
+    "zatec": 7.5,
+    "karlovy_vary": 8.3,
+    "benesov_pl": 9.5,
+    "plzen": 9.9,
+    "praha": 10.2,
+    "sany": 12.6,
+    "zbraslav": 14.7,
+    "melnik": 17.1,
+    "zbecno": 19.2,
+    "bakov": 19.9,
+    "kacov": 23.5,
+    "usti": 107.5
+   },
+   "pred30_minus_pred12_v_case_max": 35.1
+  }
+ },
+ "bilance_2006_denni": {
+  "2006-03-15": {
+   "Praha": 223.0,
+   "Zbraslav+Beroun": 221.0,
+   "Nespeky (Sázava)": 26.0,
+   "Kácov": 22.0,
+   "Zruč": 20.0,
+   "Louny": 37.0,
+   "Žatec": 33.0,
+   "K. Vary": 29.0,
+   "Nymburk": 61.0,
+   "Přelouč+Cidlina": 44.0,
+   "Přelouč": 38.0,
+   "Orlice+Chrudimka": 18.0,
+   "Beroun": 49.0,
+   "Zbečno+Litavka": 47.0,
+   "Mělník": 310.0,
+   "Vraňany+Kostelec": 310.0,
+   "Ústí": 357.0,
+   "Mělník+Louny": 347.0,
+   "Děčín": 370.0
+  },
+  "2006-03-18": {
+   "Praha": 236.0,
+   "Zbraslav+Beroun": 235.0,
+   "Nespeky (Sázava)": 30.0,
+   "Kácov": 26.0,
+   "Zruč": 21.0,
+   "Louny": 36.0,
+   "Žatec": 33.0,
+   "K. Vary": 27.0,
+   "Nymburk": 52.0,
+   "Přelouč+Cidlina": 41.0,
+   "Přelouč": 37.0,
+   "Orlice+Chrudimka": 17.0,
+   "Beroun": 42.0,
+   "Zbečno+Litavka": 42.0,
+   "Mělník": 312.0,
+   "Vraňany+Kostelec": 312.0,
+   "Ústí": 364.0,
+   "Mělník+Louny": 347.0,
+   "Děčín": 376.0
+  },
+  "2006-03-21": {
+   "Praha": 262.0,
+   "Zbraslav+Beroun": 271.0,
+   "Nespeky (Sázava)": 34.0,
+   "Kácov": 27.0,
+   "Zruč": 21.0,
+   "Louny": 39.0,
+   "Žatec": 33.0,
+   "K. Vary": 36.0,
+   "Nymburk": 60.0,
+   "Přelouč+Cidlina": 50.0,
+   "Přelouč": 45.0,
+   "Orlice+Chrudimka": 18.0,
+   "Beroun": 67.0,
+   "Zbečno+Litavka": 71.0,
+   "Mělník": 351.0,
+   "Vraňany+Kostelec": 352.0,
+   "Ústí": 415.0,
+   "Mělník+Louny": 390.0,
+   "Děčín": 423.0
+  },
+  "2006-03-24": {
+   "Praha": 247.0,
+   "Zbraslav+Beroun": 242.0,
+   "Nespeky (Sázava)": 32.0,
+   "Kácov": 24.0,
+   "Zruč": 18.0,
+   "Louny": 37.0,
+   "Žatec": 32.0,
+   "K. Vary": 32.0,
+   "Nymburk": 80.0,
+   "Přelouč+Cidlina": 66.0,
+   "Přelouč": 56.0,
+   "Orlice+Chrudimka": 19.0,
+   "Beroun": 65.0,
+   "Zbečno+Litavka": 61.0,
+   "Mělník": 362.0,
+   "Vraňany+Kostelec": 362.0,
+   "Ústí": 428.0,
+   "Mělník+Louny": 399.0,
+   "Děčín": 443.0
+  },
+  "2006-03-27": {
+   "Praha": 454.0,
+   "Zbraslav+Beroun": 496.0,
+   "Nespeky (Sázava)": 137.0,
+   "Kácov": 70.0,
+   "Zruč": 62.0,
+   "Louny": 153.0,
+   "Žatec": 156.0,
+   "K. Vary": 146.0,
+   "Nymburk": 322.0,
+   "Přelouč+Cidlina": 263.0,
+   "Přelouč": 211.0,
+   "Orlice+Chrudimka": 126.0,
+   "Beroun": 193.0,
+   "Zbečno+Litavka": 184.0,
+   "Mělník": 762.0,
+   "Vraňany+Kostelec": 763.0,
+   "Ústí": 808.0,
+   "Mělník+Louny": 914.0,
+   "Děčín": 799.0
+  },
+  "2006-03-30": {
+   "Praha": 1342.0,
+   "Zbraslav+Beroun": 1364.0,
+   "Nespeky (Sázava)": 505.0,
+   "Kácov": 408.0,
+   "Zruč": 268.0,
+   "Louny": 198.0,
+   "Žatec": 189.0,
+   "K. Vary": 191.0,
+   "Nymburk": 637.0,
+   "Přelouč+Cidlina": 661.0,
+   "Přelouč": 554.0,
+   "Orlice+Chrudimka": 301.0,
+   "Beroun": 306.0,
+   "Zbečno+Litavka": 286.0,
+   "Mělník": 1918.0,
+   "Vraňany+Kostelec": 1999.0,
+   "Ústí": 1888.0,
+   "Mělník+Louny": 2116.0,
+   "Děčín": 1955.0
+  },
+  "2006-04-02": {
+   "Praha": 1406.0,
+   "Zbraslav+Beroun": 1398.0,
+   "Nespeky (Sázava)": 441.0,
+   "Kácov": 337.0,
+   "Zruč": 193.0,
+   "Louny": 249.0,
+   "Žatec": 244.0,
+   "K. Vary": 255.0,
+   "Nymburk": 721.0,
+   "Přelouč+Cidlina": 732.0,
+   "Přelouč": 636.0,
+   "Orlice+Chrudimka": 288.0,
+   "Beroun": 229.0,
+   "Zbečno+Litavka": 210.0,
+   "Mělník": 2309.0,
+   "Vraňany+Kostelec": 2317.0,
+   "Ústí": 2358.0,
+   "Mělník+Louny": 2558.0,
+   "Děčín": 2499.0
+  },
+  "2006-04-05": {
+   "Praha": 1136.0,
+   "Zbraslav+Beroun": 1119.0,
+   "Nespeky (Sázava)": 193.0,
+   "Kácov": 171.0,
+   "Zruč": 90.0,
+   "Louny": 238.0,
+   "Žatec": 241.0,
+   "K. Vary": 155.0,
+   "Nymburk": 590.0,
+   "Přelouč+Cidlina": 511.0,
+   "Přelouč": 475.0,
+   "Orlice+Chrudimka": 199.0,
+   "Beroun": 183.0,
+   "Zbečno+Litavka": 167.0,
+   "Mělník": 2121.0,
+   "Vraňany+Kostelec": 2061.0,
+   "Ústí": 2416.0,
+   "Mělník+Louny": 2359.0,
+   "Děčín": 2611.0
+  },
+  "2006-04-08": {
+   "Praha": 892.0,
+   "Zbraslav+Beroun": 863.0,
+   "Nespeky (Sázava)": 115.0,
+   "Kácov": 90.0,
+   "Zruč": 48.0,
+   "Louny": 201.0,
+   "Žatec": 201.0,
+   "K. Vary": 100.0,
+   "Nymburk": 253.0,
+   "Přelouč+Cidlina": 203.0,
+   "Přelouč": 186.0,
+   "Orlice+Chrudimka": 94.0,
+   "Beroun": 119.0,
+   "Zbečno+Litavka": 110.0,
+   "Mělník": 1312.0,
+   "Vraňany+Kostelec": 1316.0,
+   "Ústí": 1684.0,
+   "Mělník+Louny": 1513.0,
+   "Děčín": 1830.0
+  }
+ },
+ "stav_vs_prutok_2006": {
+  "kacov": {
+   "median_odchylka_stavu_cm": 2.0,
+   "max_odchylka_cm": 323.0,
+   "hodin": 648,
+   "konstantni_hodnoty_max_h": 5
+  },
+  "zruc": {
+   "median_odchylka_stavu_cm": 10.0,
+   "max_odchylka_cm": 304.0,
+   "hodin": 648,
+   "konstantni_hodnoty_max_h": 13
+  },
+  "zbraslav": {
+   "median_odchylka_stavu_cm": 71.0,
+   "max_odchylka_cm": 241.0,
+   "hodin": 648,
+   "konstantni_hodnoty_max_h": 12
+  },
+  "tyniste": {
+   "median_odchylka_stavu_cm": 5.0,
+   "max_odchylka_cm": 121.0,
+   "hodin": 648,
+   "konstantni_hodnoty_max_h": 5
+  },
+  "nemosice": {
+   "median_odchylka_stavu_cm": 2.0,
+   "max_odchylka_cm": 208.0,
+   "hodin": 648,
+   "konstantni_hodnoty_max_h": 11
+  },
+  "sany": {
+   "median_odchylka_stavu_cm": 6.0,
+   "max_odchylka_cm": 148.0,
+   "hodin": 648,
+   "konstantni_hodnoty_max_h": 60
+  },
+  "zatec": {
+   "median_odchylka_stavu_cm": 31.0,
+   "max_odchylka_cm": 65.0,
+   "hodin": 648,
+   "konstantni_hodnoty_max_h": 38
+  },
+  "karlovy_vary": {
+   "median_odchylka_stavu_cm": 3.0,
+   "max_odchylka_cm": 131.0,
+   "hodin": 648,
+   "konstantni_hodnoty_max_h": 20
+  },
+  "zbecno": {
+   "median_odchylka_stavu_cm": -12.0,
+   "max_odchylka_cm": 84.0,
+   "hodin": 648,
+   "konstantni_hodnoty_max_h": 12
+  },
+  "bakov": {
+   "median_odchylka_stavu_cm": -43.0,
+   "max_odchylka_cm": 142.0,
+   "hodin": 648,
+   "konstantni_hodnoty_max_h": 13
+  }
+ },
+ "utlum_2006_denni_m3s": {
+  "Kostelec vs Nymburk+Předměřice": {
+   "03-28": [
+    498,
+    610
+   ],
+   "03-29": [
+    566,
+    719
+   ],
+   "03-31": [
+    693,
+    862
+   ],
+   "04-03": [
+    996,
+    981
+   ]
+  },
+  "Mělník vs Vraňany+Kostelec": {
+   "03-29": [
+    1578,
+    1803
+   ],
+   "03-31": [
+    2118,
+    2098
+   ]
+  },
+  "Ústí vs Mělník+Louny": {
+   "03-29": [
+    1580,
+    1780
+   ],
+   "04-03": [
+    2505,
+    2635
+   ]
+  },
+  "Praha vs Zbraslav+Beroun": {
+   "03-28": [
+    820,
+    882
+   ],
+   "03-29": [
+    1222,
+    1263
+   ]
+  }
+ },
+ "podezrele_rady_2006": {
+  "sany_Q": "60 h konstantně 4,05 m3/s od 16. 3. 18:00 (malý průtok před povodní, nejspíš led/doplněno)",
+  "zatec_Q": "38 h konstantně 32,8 m3/s od 23. 3. (řízený odtok z Nechranic)",
+  "zbraslav_H": "stav o 71 cm (medián) výš než obvykle při stejném průtoku, průtok ale sedí s bilancí Praha ≈ Zbraslav + Beroun"
+ },
+ "zaver": "Přestřelení dělá blok nových stanic proti proudu (horní Labe +28 až +44 cm, horní Berounka +15 až +24, Zbraslav, horní Sázava) při současném přesunu váhy z týmových stanic (Děčín/Ústí, Beroun, Vraňany, Nespeky); důvodem je útlum vlny v Polabí v roce 2006 (Kostelec o 18–21 % pod Nymburk + Jizera po 4 dny), ne chyba dat."
+}

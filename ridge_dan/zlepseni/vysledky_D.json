@@ -1,0 +1,691 @@
+{
+ "nazev": "D_dopredny_vyber",
+ "popis": "Ridge Děčín +24 h, týmových 98 vstupů + nové stanice vybrané vnořeným dopředným výběrem (alpha 1)",
+ "lofo": 14.68,
+ "po_povodnich": {
+  "2006-04-02": 21.4,
+  "2006-05-31": 12.5,
+  "2006-07-01": 12.0,
+  "2006-08-09": 13.0,
+  "2007-12-08": 6.8,
+  "2008-03-03": 8.1,
+  "2009-03-06": 9.1,
+  "2009-06-30": 17.6,
+  "2010-03-02": 9.4,
+  "2010-03-22": 8.7,
+  "2010-06-03": 11.0,
+  "2010-08-08": 28.8,
+  "2010-09-28": 21.0,
+  "2011-01-16": 15.9,
+  "2012-01-24": 10.5,
+  "2012-03-01": 11.3,
+  "2012-12-29": 9.0,
+  "2013-01-08": 9.0,
+  "2013-02-01": 10.8,
+  "2013-06-05": 48.2,
+  "2013-06-26": 17.1,
+  "2015-01-11": 11.6
+ },
+ "zacatek": 36.1,
+ "n_zacatek": 406,
+ "povoden_2006": 21.4,
+ "spa2_propasnuto": 0,
+ "spa2_plane": 3,
+ "spa3_propasnuto": 0,
+ "spa3_plane": 1,
+ "rozdil": -0.61,
+ "zlepseno": 16,
+ "zhorseno": 6,
+ "nejhorsi_zhorseni": 4.7,
+ "znamenkovy_p": 0.0525,
+ "splnuje": false,
+ "val": {
+  "mae_povodne": 17.2,
+  "mae_zacatek": 29.3,
+  "spa2_plane_poplachy": 0,
+  "spa3_plane_poplachy": 0,
+  "spa2_propasnuto": 0,
+  "spa3_propasnuto": 0,
+  "spa2_predstih_h": 17.0,
+  "mae_2006": 22.3,
+  "mae_2006_stoupani": 23.9,
+  "max_prestreleni_2006": 60.6,
+  "bias_2006": -4.5
+ },
+ "val_vybrane": [
+  "tyniste",
+  "karlovy_vary",
+  "zatec",
+  "zruc",
+  "plzen",
+  "litavka",
+  "trmice",
+  "plasy",
+  "zbraslav",
+  "bakov"
+ ],
+ "val_vnitrni_prubeh": [
+  15.838,
+  15.202,
+  14.863,
+  14.597,
+  14.506,
+  14.424,
+  14.298,
+  14.273,
+  14.253,
+  14.251,
+  14.251
+ ],
+ "vyber_po_foldech": {
+  "2006-04-02": {
+   "stanice": [
+    "tyniste",
+    "karlovy_vary",
+    "zatec",
+    "plzen",
+    "litavka",
+    "zruc",
+    "bakov",
+    "zbraslav",
+    "trmice"
+   ],
+   "vnitrni_skore": [
+    15.361,
+    14.908,
+    14.678,
+    14.498,
+    14.409,
+    14.345,
+    14.266,
+    14.233,
+    14.189,
+    14.165
+   ]
+  },
+  "2006-05-31": {
+   "stanice": [
+    "tyniste",
+    "karlovy_vary",
+    "zatec",
+    "zbraslav",
+    "plzen",
+    "litavka",
+    "bakov"
+   ],
+   "vnitrni_skore": [
+    15.402,
+    14.969,
+    14.769,
+    14.642,
+    14.562,
+    14.511,
+    14.427,
+    14.356
+   ]
+  },
+  "2006-07-01": {
+   "stanice": [
+    "tyniste",
+    "karlovy_vary",
+    "zatec",
+    "plzen",
+    "litavka",
+    "bakov",
+    "zbraslav"
+   ],
+   "vnitrni_skore": [
+    15.423,
+    15.026,
+    14.831,
+    14.652,
+    14.563,
+    14.486,
+    14.42,
+    14.419
+   ]
+  },
+  "2006-08-09": {
+   "stanice": [
+    "tyniste",
+    "karlovy_vary",
+    "zatec",
+    "plzen",
+    "litavka",
+    "bakov",
+    "zbraslav",
+    "trmice",
+    "sany"
+   ],
+   "vnitrni_skore": [
+    15.401,
+    14.962,
+    14.799,
+    14.623,
+    14.558,
+    14.479,
+    14.418,
+    14.407,
+    14.407,
+    14.407
+   ]
+  },
+  "2007-12-08": {
+   "stanice": [
+    "tyniste",
+    "karlovy_vary",
+    "zatec",
+    "plzen",
+    "litavka",
+    "bakov",
+    "zbraslav"
+   ],
+   "vnitrni_skore": [
+    15.533,
+    15.151,
+    15.011,
+    14.862,
+    14.774,
+    14.702,
+    14.675,
+    14.655
+   ]
+  },
+  "2008-03-03": {
+   "stanice": [
+    "tyniste",
+    "karlovy_vary",
+    "zatec",
+    "plzen",
+    "litavka",
+    "bakov",
+    "zbraslav",
+    "trmice"
+   ],
+   "vnitrni_skore": [
+    15.531,
+    15.165,
+    14.984,
+    14.825,
+    14.743,
+    14.666,
+    14.624,
+    14.603,
+    14.602
+   ]
+  },
+  "2009-03-06": {
+   "stanice": [
+    "tyniste",
+    "karlovy_vary",
+    "zatec",
+    "plzen",
+    "litavka",
+    "bakov",
+    "zbraslav",
+    "trmice"
+   ],
+   "vnitrni_skore": [
+    15.596,
+    15.171,
+    14.966,
+    14.795,
+    14.731,
+    14.661,
+    14.593,
+    14.581,
+    14.572
+   ]
+  },
+  "2009-06-30": {
+   "stanice": [
+    "tyniste",
+    "karlovy_vary",
+    "zatec",
+    "litavka",
+    "plzen",
+    "bakov"
+   ],
+   "vnitrni_skore": [
+    15.171,
+    14.786,
+    14.576,
+    14.401,
+    14.335,
+    14.272,
+    14.233
+   ]
+  },
+  "2010-03-02": {
+   "stanice": [
+    "tyniste",
+    "karlovy_vary",
+    "zatec",
+    "plzen",
+    "bakov",
+    "litavka",
+    "zbraslav",
+    "trmice"
+   ],
+   "vnitrni_skore": [
+    15.562,
+    15.172,
+    14.968,
+    14.792,
+    14.724,
+    14.654,
+    14.587,
+    14.557,
+    14.554
+   ]
+  },
+  "2010-03-22": {
+   "stanice": [
+    "tyniste",
+    "karlovy_vary",
+    "zatec",
+    "plzen",
+    "litavka",
+    "bakov",
+    "zbraslav",
+    "trmice"
+   ],
+   "vnitrni_skore": [
+    15.633,
+    15.22,
+    15.027,
+    14.841,
+    14.763,
+    14.685,
+    14.625,
+    14.6,
+    14.591
+   ]
+  },
+  "2010-06-03": {
+   "stanice": [
+    "tyniste",
+    "karlovy_vary",
+    "zatec",
+    "plzen",
+    "litavka",
+    "bakov",
+    "zbraslav"
+   ],
+   "vnitrni_skore": [
+    15.45,
+    15.014,
+    14.809,
+    14.64,
+    14.569,
+    14.501,
+    14.461,
+    14.445
+   ]
+  },
+  "2010-08-08": {
+   "stanice": [
+    "tyniste",
+    "zatec",
+    "karlovy_vary",
+    "bakov",
+    "plzen",
+    "struznice",
+    "litavka",
+    "zbraslav"
+   ],
+   "vnitrni_skore": [
+    14.716,
+    14.402,
+    14.242,
+    14.082,
+    13.993,
+    13.936,
+    13.864,
+    13.799,
+    13.781
+   ]
+  },
+  "2010-09-28": {
+   "stanice": [
+    "tyniste",
+    "karlovy_vary",
+    "zatec",
+    "plzen",
+    "litavka",
+    "zbraslav",
+    "bakov"
+   ],
+   "vnitrni_skore": [
+    15.084,
+    14.655,
+    14.408,
+    14.239,
+    14.154,
+    14.043,
+    14.038,
+    14.018
+   ]
+  },
+  "2011-01-16": {
+   "stanice": [
+    "tyniste",
+    "zatec",
+    "karlovy_vary",
+    "plzen",
+    "litavka",
+    "bakov",
+    "zbraslav",
+    "trmice"
+   ],
+   "vnitrni_skore": [
+    15.425,
+    15.002,
+    14.775,
+    14.564,
+    14.5,
+    14.43,
+    14.358,
+    14.343,
+    14.343
+   ]
+  },
+  "2012-01-24": {
+   "stanice": [
+    "tyniste",
+    "karlovy_vary",
+    "zatec",
+    "zbraslav",
+    "bakov",
+    "plzen",
+    "litavka"
+   ],
+   "vnitrni_skore": [
+    15.525,
+    15.127,
+    14.944,
+    14.763,
+    14.686,
+    14.619,
+    14.547,
+    14.489
+   ]
+  },
+  "2012-03-01": {
+   "stanice": [
+    "tyniste",
+    "zatec",
+    "karlovy_vary",
+    "plzen",
+    "litavka",
+    "bakov",
+    "zbraslav",
+    "trmice"
+   ],
+   "vnitrni_skore": [
+    15.375,
+    15.031,
+    14.853,
+    14.679,
+    14.588,
+    14.505,
+    14.475,
+    14.46,
+    14.45
+   ]
+  },
+  "2012-12-29": {
+   "stanice": [
+    "tyniste",
+    "zatec",
+    "karlovy_vary",
+    "plzen",
+    "litavka",
+    "bakov",
+    "zbraslav",
+    "trmice"
+   ],
+   "vnitrni_skore": [
+    15.492,
+    15.102,
+    14.93,
+    14.764,
+    14.679,
+    14.605,
+    14.549,
+    14.549,
+    14.54
+   ]
+  },
+  "2013-01-08": {
+   "stanice": [
+    "tyniste",
+    "karlovy_vary",
+    "zatec",
+    "plzen",
+    "bakov",
+    "litavka",
+    "zbraslav"
+   ],
+   "vnitrni_skore": [
+    15.605,
+    15.178,
+    14.979,
+    14.819,
+    14.721,
+    14.658,
+    14.593,
+    14.569
+   ]
+  },
+  "2013-02-01": {
+   "stanice": [
+    "tyniste",
+    "karlovy_vary",
+    "zatec",
+    "plzen",
+    "bakov",
+    "litavka",
+    "zbraslav"
+   ],
+   "vnitrni_skore": [
+    15.483,
+    15.085,
+    14.919,
+    14.755,
+    14.688,
+    14.604,
+    14.528,
+    14.49
+   ]
+  },
+  "2013-06-05": {
+   "stanice": [
+    "karlovy_vary",
+    "tyniste",
+    "zatec",
+    "zbraslav",
+    "bakov",
+    "plzen",
+    "litavka"
+   ],
+   "vnitrni_skore": [
+    13.9,
+    13.537,
+    13.291,
+    13.18,
+    13.083,
+    12.986,
+    12.902,
+    12.852
+   ]
+  },
+  "2013-06-26": {
+   "stanice": [
+    "karlovy_vary",
+    "tyniste",
+    "zatec",
+    "plzen",
+    "bakov",
+    "litavka",
+    "zbraslav"
+   ],
+   "vnitrni_skore": [
+    15.338,
+    14.959,
+    14.674,
+    14.505,
+    14.454,
+    14.39,
+    14.34,
+    14.328
+   ]
+  },
+  "2015-01-11": {
+   "stanice": [
+    "tyniste",
+    "karlovy_vary",
+    "zatec",
+    "plzen",
+    "litavka",
+    "bakov",
+    "zbraslav",
+    "trmice"
+   ],
+   "vnitrni_skore": [
+    15.38,
+    14.998,
+    14.83,
+    14.673,
+    14.614,
+    14.528,
+    14.468,
+    14.44,
+    14.435
+   ]
+  }
+ },
+ "cetnost_vyberu_z_22": {
+  "zatec": 22,
+  "karlovy_vary": 22,
+  "plzen": 22,
+  "litavka": 22,
+  "tyniste": 22,
+  "bakov": 22,
+  "zbraslav": 21,
+  "trmice": 10,
+  "struznice": 1,
+  "zruc": 1,
+  "sany": 1,
+  "benesov_pl": 0,
+  "ceska_lipa": 0,
+  "zbecno": 0,
+  "liblin": 0,
+  "plasy": 0,
+  "kacov": 0,
+  "nemosice": 0
+ },
+ "reference": {
+  "ridge_12": {
+   "lofo": 15.29,
+   "po_povodnich": {
+    "2006-04-02": 16.7,
+    "2006-05-31": 12.4,
+    "2006-07-01": 12.4,
+    "2006-08-09": 13.6,
+    "2007-12-08": 10.1,
+    "2008-03-03": 10.5,
+    "2009-03-06": 9.5,
+    "2009-06-30": 18.6,
+    "2010-03-02": 10.4,
+    "2010-03-22": 9.0,
+    "2010-06-03": 11.9,
+    "2010-08-08": 28.5,
+    "2010-09-28": 20.9,
+    "2011-01-16": 15.0,
+    "2012-01-24": 10.7,
+    "2012-03-01": 13.7,
+    "2012-12-29": 11.3,
+    "2013-01-08": 9.6,
+    "2013-02-01": 12.2,
+    "2013-06-05": 47.8,
+    "2013-06-26": 17.3,
+    "2015-01-11": 14.0
+   },
+   "zacatek": 41.9,
+   "n_zacatek": 406,
+   "povoden_2006": 16.7,
+   "spa2_propasnuto": 0,
+   "spa2_plane": 4,
+   "spa3_propasnuto": 0,
+   "spa3_plane": 1
+  },
+  "ridge_30": {
+   "lofo": 14.79,
+   "po_povodnich": {
+    "2006-04-02": 23.3,
+    "2006-05-31": 12.2,
+    "2006-07-01": 12.3,
+    "2006-08-09": 12.2,
+    "2007-12-08": 6.7,
+    "2008-03-03": 8.5,
+    "2009-03-06": 8.8,
+    "2009-06-30": 21.8,
+    "2010-03-02": 8.3,
+    "2010-03-22": 8.1,
+    "2010-06-03": 9.9,
+    "2010-08-08": 27.5,
+    "2010-09-28": 21.0,
+    "2011-01-16": 16.2,
+    "2012-01-24": 10.9,
+    "2012-03-01": 11.2,
+    "2012-12-29": 9.2,
+    "2013-01-08": 9.9,
+    "2013-02-01": 10.6,
+    "2013-06-05": 50.6,
+    "2013-06-26": 15.9,
+    "2015-01-11": 10.5
+   },
+   "zacatek": 34.1,
+   "n_zacatek": 406,
+   "povoden_2006": 23.3,
+   "spa2_propasnuto": 0,
+   "spa2_plane": 3,
+   "spa3_propasnuto": 0,
+   "spa3_plane": 1,
+   "rozdil": -0.49,
+   "zlepseno": 15,
+   "zhorseno": 7,
+   "nejhorsi_zhorseni": 6.5,
+   "znamenkovy_p": 0.1338,
+   "splnuje": false
+  },
+  "val_ridge_12": {
+   "mae_povodne": 15.5,
+   "mae_zacatek": 35.4,
+   "spa2_plane_poplachy": 0,
+   "spa3_plane_poplachy": 0,
+   "spa2_propasnuto": 0,
+   "spa3_propasnuto": 0,
+   "spa2_predstih_h": 15.5,
+   "mae_2006": 16.0,
+   "mae_2006_stoupani": 19.4,
+   "max_prestreleni_2006": 56.7,
+   "bias_2006": 0.5
+  },
+  "val_ridge_30": {
+   "mae_povodne": 17.8,
+   "mae_zacatek": 28.1,
+   "spa2_plane_poplachy": 0,
+   "spa3_plane_poplachy": 0,
+   "spa2_propasnuto": 0,
+   "spa3_propasnuto": 0,
+   "spa2_predstih_h": 16.8,
+   "mae_2006": 24.6,
+   "mae_2006_stoupani": 29.1,
+   "max_prestreleni_2006": 68.2,
+   "bias_2006": 1.7
+  }
+ },
+ "sekund": 1065
+}
