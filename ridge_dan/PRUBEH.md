@@ -48,3 +48,4 @@
 - pá 23:15 · nový úkol: zlepšení ze stanic přes přísné hodnocení (LOFO-CV 22 povodní, mezera ±20 dní, pravidlo ≥ 1 cm + většina povodní + žádná horší o > 10 cm), uzávěrka posunutá na 00:30.
 - pá 23:19 · motor `zlepseni/lofo.py` (rychlý Ridge ze součtů, shoda se sklearn 5e-5 cm) a foldy `stanice_vsem/lofo_foldy.csv` pushnuté jako první (09db53c); laťky: týmový Ridge 15,29, Ridge 30 stanic 14,79 (−0,49, lepší 15 z 22) → pravidlo nesplní.
 - pá 23:21 · najednou spuštěno 7 subagentů (A rozbor 2006, B penalizace nových stanic, C součty po povodích, D vnořený výběr stanic, E delší zpoždění pro 36 h, F Huber, příprava LOFO předpovědí LightGBM) a Codex jako experimentátor směsí G (zápis jen do `ridge_dan/smesi/`); běhy čekají na volnou RAM ≥ 1,5 GB.
+- pá 23:25 · hotové C (součty po povodích: −0,67, 18 z 22, pod 1 cm) a E (delší zpoždění 36 h nic nepřidají; samotný Ridge 30 při 36 h pravidlo splní: −2,43, 17 z 22, nejhorší +7,0).
