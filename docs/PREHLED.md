@@ -66,8 +66,8 @@ Hlavní číslo je průměrná chyba hladiny během povodní (`mae_povodne`, pr�
 
 | Model | Chyba na povodni | Menší než „jako teď“ | Nejlepší na povodních | Propásnuté / plané (48 běhů) |
 |---|---|---|---|---|
-| lineární regrese | 20,1 ± 7,7 cm | 56 % | 4 z 8 | 1 / 3 |
-| neuronová síť | 21,0 ± 8,0 cm | 54 % | 3 z 8 | 4 / 5 |
+| lineární regrese | 20,1 ± 7,7 cm | 55 % | 4 z 8 | 1 / 3 |
+| neuronová síť | 21,0 ± 8,0 cm | 53 % | 3 z 8 | 4 / 5 |
 | LightGBM | 22,7 ± 8,6 cm | 50 % | 1 z 8 | 0 / 4 |
 | fyzikální | 26,7 ± 10,0 cm | 41 % | 0 z 8 | 0 / 4 |
 | „bude jako teď“ | 45,2 ± 13,9 cm | 0 % | | 72 / 0 |
@@ -131,7 +131,7 @@ Grafy validace: `docs/grafy/srovnani_procenta.png`, `srovnani_ctyr_modelu.png`, 
 | pá 20:20 | návrh: finální model lineární regrese | nejlepší, nejjednodušší, bez planých poplachů, každá váha jde vysvětlit; síť je stejná jen v rámci náhody |
 | pá 22:46 | předpověď srážek do modelu nepřidávat, jen do „co dál“ | na 12–36 h nepomáhá (voda už je v řekách), dešťové povodni na 72 h by ubrala až 40 %, ale historické předpovědi na trénink nemáme |
 | pá 23:14 | vodu ve sněhu a zimní model nepoužít | celoročně horší (17,1 → 17,8 cm); zimní model se sněhem je o 4 cm horší než celoroční bez sněhu |
-| pá 23:27 | vícenásobná validace potvrdila výběr | lineární regrese 20,1 ± 7,7 cm přes 8 povodní, nejlepší v průměru, o 56 % lepší než „jako teď“ |
+| pá 23:27 | vícenásobná validace potvrdila výběr | lineární regrese 20,1 ± 7,7 cm přes 8 povodní, nejlepší v průměru, o 55 % lepší než „jako teď“ jako na testu |
 | pá 23:44 | polynomickou regresi nepoužít | 19,9 a 22,8 proti 17,1 cm, při vysoké vodě se ohne špatně |
 | pá 23:52 | starší povodně a jiné řeky nepřidávat | hodinová data všech stanic až od 2006, povodeň 2002 nemá hladinu v Děčíně, jiné řeky mají jiné stanice |
 

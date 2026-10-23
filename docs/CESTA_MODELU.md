@@ -85,7 +85,7 @@ Test zůstal stranou. Ověřovali jsme, jestli výběr nebyla náhoda, a zkouše
 | 22:46 | srážky na 12–72 h | dešťová povodeň 9/2010 s dokonalou předpovědí o 23 % lépe na 36 h a o 40 % na 72 h, zimní povodně ne; naměřené denní srážky nic | předpověď srážek dává smysl na 2–3 dny u dešťových povodní; na trénink chybí historické předpovědi |
 | 23:14 | srážky v reálném čase, horní mez | nejvýš o 1 cm | hodinové srážky má ČHMÚ až od 2018 |
 | 23:14 | voda ve sněhu, zvláštní zimní model | 17,8; zimní model se sněhem 18,9 proti celoročnímu 15,6 na zimních povodních | zimní model má jen půlku dat, sníh to nevyrovná |
-| 23:27 | **vícenásobná validace**: 8 povodní 2006–2020, každá jednou vynechaná | regrese 20,1 ± 7,7, síť 21,0, LightGBM 22,7, fyzikální 26,7, „jako teď“ 45,2; regrese nejlepší na 4 z 8 | výběr nebyl náhoda, zlepšení 56 % jako na testu (55 %) |
+| 23:27 | **vícenásobná validace**: 8 povodní 2006–2020, každá jednou vynechaná | regrese 20,1 ± 7,7, síť 21,0, LightGBM 22,7, fyzikální 26,7, „jako teď“ 45,2; regrese nejlepší na 4 z 8 | výběr nebyl náhoda, zlepšení 55 % stejně jako na testu |
 | 23:44 | polynomická regrese 2. stupně | 19,9 a 22,8 | při vysoké vodě se křivka ohne špatně |
 | 0:01 | „při prudkém vzestupu ještě prudší“ | 17,0, při náběhu o 1 cm lépe | většina vzestupů nepokračuje (jen 22 %), model rozumně sází na průměr |
 | 0:01 | varování podle horní meze nejistoty | o 3–4 h dřív, ale 4 plané poplachy | hodí se jako předběžná výstraha, ne jako předpověď |
