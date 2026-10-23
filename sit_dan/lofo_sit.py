@@ -111,6 +111,21 @@ def vyhodnot(adresar, horizonty, seedy):
     return P, out
 
 
+NAZVY = {"a": "beze_zmeny", "b": "plus_18_stanic"}
+
+
+def spoj(adresar, cil_soubor):
+    """Spojí předpovědi všech foldů do jednoho out-of-fold souboru a ověří, že se okna nepřekrývají."""
+    P = pd.concat([pd.read_parquet(f) for f in sorted(Path(adresar).glob("lofo_*.parquet"))], ignore_index=True)
+    dup = P.duplicated(["cas", "horizont", "varianta", "seed"]).sum()
+    pocty = P.groupby(["horizont", "varianta"]).fold.nunique().to_dict()
+    P = P.assign(varianta=P.varianta.map(NAZVY), cil=P.cil.astype(str), povoden=P.povoden.astype(str))
+    P = P[["cas", "cil", "horizont", "varianta", "predpoved", "skutecnost", "fold", "povoden", "seed"]]
+    P.sort_values(["horizont", "varianta", "cas"]).to_parquet(cil_soubor, index=False)
+    print(f"{len(P)} řádků, duplicit {dup}, foldů {pocty} -> {cil_soubor}", flush=True)
+    return dup, pocty
+
+
 if __name__ == "__main__":
     p = argparse.ArgumentParser()
     p.add_argument("--foldy", required=True)
@@ -120,6 +135,7 @@ if __name__ == "__main__":
     p.add_argument("--seedy", default="42")
     p.add_argument("--prace", type=int, default=4)
     p.add_argument("--jen-vyhodnot", action="store_true")
+    p.add_argument("--spoj", help="cílový out-of-fold parquet")
     a = p.parse_args()
     horizonty = [int(x) for x in a.horizonty.split(",")]
     seedy = [int(x) for x in a.seedy.split(",")]
@@ -137,4 +153,6 @@ if __name__ == "__main__":
             for j, (u, sekund) in enumerate(pool.imap_unordered(trenuj, seznam), 1):
                 print(f"[{j}/{len(seznam)} {time.time() - t0:.0f} s] {u} {sekund} s", flush=True)
     else:
+        if a.spoj:
+            spoj(a.vystup, a.spoj)
         vyhodnot(a.vystup, horizonty, seedy)

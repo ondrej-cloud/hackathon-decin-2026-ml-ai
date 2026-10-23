@@ -194,6 +194,7 @@ if __name__ == "__main__":
     p.add_argument("--varianty", default=None)
     p.add_argument("--jen-vyhodnot", action="store_true")
     p.add_argument("--zkouska", action="store_true")
+    p.add_argument("--dil", default="1/1", help="i/n: jen každá n-tá úloha od i-té (víc kernelů souběžně)")
     p.add_argument("--srazky", help="srazky_6h.parquet: pustí i variantu c, všechny jen na hodinách se srážkami")
     a = p.parse_args()
     ZKOUSKA, SRAZKY = a.zkouska, a.srazky
@@ -203,17 +204,19 @@ if __name__ == "__main__":
     if not a.zkouska and not a.jen_vyhodnot:
         kontrola_radku()
     if not a.jen_vyhodnot:
-        seznam = ulohy(varianty, seedy, kombinace, bloky)
+        i, n = (int(x) for x in a.dil.split("/"))
+        seznam = [u for j, u in enumerate(ulohy(varianty, seedy, kombinace, bloky)) if j % n == i - 1]
         print(f"{len(seznam)} tréninků, {a.prace} souběžně", flush=True)
         t0, hotovo, prvni = time.time(), 0, {}
         with Pool(a.prace, initializer=_nastav, initargs=(ZKOUSKA, SRAZKY)) as pool:
             for u, sekund in pool.imap_unordered(_trenuj, [(u, a.vystup) for u in seznam]):
                 hotovo += 1
                 print(f"[{hotovo}/{len(seznam)} {time.time() - t0:.0f} s] {u} {sekund} s", flush=True)
-                if u[:3] == (varianty[0], seedy[0], "val"):
+                if n == 1 and u[:3] == (varianty[0], seedy[0], "val"):
                     prvni[u[3:5]] = u
                     if len(prvni) == len(kombinace):
                         z = vyhodnot_val(a.vystup, varianty[0], seedy[0], kombinace)
                         print(f"REPRODUKCE: {varianty[0]} seed {seedy[0]} prumer_povodne {z['prumer_povodne']} "
                               f"(tým {TYM_42}), po kombinacích {[r['mae_povodne'] for r in z['kombinace']]}", flush=True)
-    vyhodnot(a.vystup, varianty, seedy, kombinace, bloky)
+    if a.dil == "1/1" or a.jen_vyhodnot:
+        vyhodnot(a.vystup, varianty, seedy, kombinace, bloky)
