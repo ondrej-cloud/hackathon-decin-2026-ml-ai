@@ -1,0 +1,7 @@
+# stažená data ČHMÚ a z nich postavené tabulky do Gitu nepatří
+cache/
+tabulka/
+modely/
+*.parquet
+*.joblib
+codex/*.log
