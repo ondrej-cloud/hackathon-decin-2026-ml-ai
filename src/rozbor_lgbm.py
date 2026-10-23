@@ -62,6 +62,7 @@ NAZVY = {"usti": "Ústí", "louny": "Louny", "melnik": "Mělník", "vranany": "V
 def vzhled(ax):
     ax.set_facecolor("#fcfcfb")
     ax.grid(color=MRIZKA, lw=0.6)
+    ax.set_axisbelow(True)
     for s in ("top", "right"):
         ax.spines[s].set_visible(False)
     for s in ("left", "bottom"):
@@ -103,7 +104,7 @@ def popis(c, cil, h):
         return {"sezona_sin": "roční období (sin)", "sezona_cos": "roční období (cos)", "trend_6h": "trend stavu za 6 h"}[c]
     s, co = c.split("_")
     z = nejblizsi(max(DOBA[cil][s] - h, 0))
-    return f"{NAZVY[s]} {'přírůstek průtoku' if co == 'dQ' else 'průtok'} (před {z} h)"
+    return f"{NAZVY[s]} {'přírůstek průtoku' if co == 'dQ' else 'průtok'} ({f'před {z} h' if z else 'teď'})"
 
 
 def shap_graf(modely, cil="decin", h=24):

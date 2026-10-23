@@ -190,3 +190,13 @@ Následující pokusy jsou doplněné zpětně (pá 19:55). Všechny byly před 
 - `docs/grafy/fyzika_merna_krivka.png`: měrná křivka Děčína se stupni povodňové aktivity. Body z povodní leží přesně na křivce, nad 3 710 m³/s (nejvyšší průtok v tréninku) je křivka prodloužená přímkou.
 - `docs/grafy/fyzika_vetve.png`: tři větve (Vltava, Labe, Ohře) s dobami putování mezi stanicemi a do Děčína. Nejdál dopředu vidí Beroun a Přelouč, 24 h.
 - `docs/grafy/fyzika_povoden_2006.png`: validační povodeň 2006, Děčín +24 h. Při stoupání model sleduje skutečnost, „jako teď“ se opožďuje o celý den. Těsně před vrcholem model krátce přestřelí asi o 50 cm, při opadání se opožďuje.
+
+## pá 20:00 · Dan · LightGBM finální varianta (lgbm = c), seedy a SHAP
+- Otázka: je výsledek c stabilní a podle čeho model rozhoduje?
+- Data a rozdělení: společné rozdělení, všech 6 kombinací; SHAP pro Děčín +24 h na validaci.
+- Vstupy: jako c.
+- Model a nastavení: `src/models/lgbm.py` je c (500 stromů, learning_rate 0,05, 31 listů), seedy 42, 43, 44.
+- Kde a jak dlouho: Dan, Yoga 7i, 5–7 s na model, SHAP pár sekund.
+- Výsledek na val: `prumer_povodne` 22,8 se všemi třemi seedy na desetinu stejně (bez náhodného výběru řádků a vstupů v LightGBM náhoda není). Regularizace se seedy 22,0–22,2, takže její zlepšení o 0,6–0,8 cm je skutečné, ale pod hranicí 1 cm. Chyba „jen při vysoké vodě“ (nad 1. stupněm, Děčín +12 / +24 / +36 h): 10,8 / 24,3 / 42,3 cm, Ridge 9,0 / 16,8 / 29,6, „jako teď“ 25,7 / 51,0 / 74,5. Varování před 1. stupněm (400 cm) nic nepropásl, předstih 8 / 21 / 46 h.
+- Závěr: SHAP ukazuje, že model dělá fyzikálně rozumnou věc. Pro Děčín za 24 h rozhoduje hlavně přírůstek průtoku v Praze (voda, která Prahou už protekla a do Děčína ještě nedotekla), při povodni 2011 v průměru 19 cm vlivu, pak Přelouč, Louny a Ústí. Za klidu rozhoduje hlavně stav v Děčíně za poslední hodiny. Graf povodně 2011 ukazuje slabinu: při rychlém stoupání LightGBM přestřelí asi o 70 cm (800 proti 730 cm) a skáče, Ridge jde hladce.
+- Soubory: `src/models/lgbm.py`, `results/2026-10-23_2000_lgbm.json`, `docs/grafy/lgbm_shap.png` (podle čeho rozhoduje, celá validace a povodeň 2011), `docs/grafy/lgbm_c_povoden2011.png` (skutečnost, „jako teď“, c, Ridge a zbytek po Ridge při povodni 2011, +24 h)
