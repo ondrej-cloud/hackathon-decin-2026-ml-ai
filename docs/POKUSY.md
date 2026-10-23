@@ -371,3 +371,42 @@ Následující pokusy jsou doplněné zpětně (pá 19:55). Všechny byly před 
 - Po povodních, Děčín (bez srážek → dokonalá předpověď): dešťová povodeň 9/2010 36 h 31,6 → 24,4 cm (−23 %), 48 h 46,1 → 31,5 (−32 %), 72 h 79,7 → 48,0 (−40 %). Zimní a jarní povodně 4/2006, 3/2009 a 1/2011 se zlepšily nejvýš o 2–6 cm a některé zhoršily (3/2009 na 36 h 18,0 → 20,4 cm).
 - Závěr: řetězec déšť → průtok → hladina funguje, ale jen pro povodně z deště a jen s předpovědí deště, ne s naměřenými denními srážkami. Ty známe až ráno po konci dne, a to už voda teče v řekách proti proudu, proto nepomáhají ani na 72 h. Hodinové srážky v reálném čase by mohly být o hodiny dřív, nezkoušeli jsme (archiv až od 2018). Povodně z tání sněhu déšť nevysvětlí, na ty by byla potřeba vodní hodnota sněhu a předpověď teploty. Ve validaci jsou tři povodně z tání a jedna dešťová, proto průměr vychází malý. Dešťová povodeň je jen jedna, číslo −40 % je tedy jeden případ. Skutečná předpověď deště se plete, takže reálný přínos bude menší. Finální model se nemění (test už proběhl), do prezentace jako „co dál“.
 - Soubory: `src/pokus_dest_horizonty.py`, `src/pokus_dest_dopredu.py` (funkce `dest_dopredu`)
+
+## pá 23:14 · Ondra · vodní hodnota sněhu, celoročně i zvláštní zimní model
+- Otázka: pomůže, když model ví, kolik vody je ve sněhu a jestli taje? A pomůže aspoň v zimě, když je sníh jen sezónní?
+- Data a rozdělení: denní archiv ČHMÚ, vodní hodnota sněhu (mm vody ve sněhu, měří se jednou týdně v pondělí, má ji všech 25 stanic). Bez sněhu 0, jinak platí poslední měření nejvýš 7 dní, bereme ji až den po změření. Průměr po větvích (Vltava, horní Labe, Ohře), k tomu úbytek za 7 dní (roztálo) a „tání“ = voda ve sněhu × průměrná teplota nad nulou. Na začátku povodně 2006 bylo v horním Labi 239 mm vody ve sněhu, 2009 147 mm, 2011 93 mm, 2010 nic. Společné rozdělení, jen validace.
+- Model a nastavení: `ridge` beze změny. Zimní model = stejný model učený jen na listopadu až dubnu.
+- Kde a jak dlouho: MacBook M1, asi minuta.
+- Výsledek na val, celý rok (`prumer_povodne`): bez sněhu 17,1, s vodou ve sněhu 17,8, i s teplotou 17,8 cm. Nejvíc zhoršila jarní tání 2006 (Děčín +24 h 16,0 → 19,4 cm), 3/2009 a 1/2011 skoro beze změny.
+- Výsledek jen na zimě (zimní povodně 2006, 2009, 2011, průměr přes 6 kombinací): celoroční model bez sněhu 15,6 cm, celoroční s „táním“ 16,1, zimní model bez sněhu 19,7, se sněhem 19,1, se sněhem a táním 18,9 (na 36 h o 1,8–2,3 cm lépe než zimní bez sněhu). Ve varování žádná chyba.
+- Závěr: v samotném zimním modelu sníh trochu pomáhá, hlavně na 36 h. Zimní model je ale o 4 cm horší než celoroční, protože má jen polovinu dat a nevidí velké letní povodně (2013). Nejlepší zůstává celoroční model bez sněhu. Domněnka, proč sníh nepomáhá víc: zásoba sněhu říká, kolik vody může přijít během týdnů, ne za 36 h. Kdy roztaje, rozhoduje počasí, a roztátou vodu model vidí v průtocích proti proudu dřív, než doteče do Děčína.
+- Soubory: `src/pokus_snih_voda.py`
+
+## pá 23:14 · Ondra · horní mez pro hodinové srážky v reálném čase
+- Otázka: denní srážky známe až ráno po konci dne. Pomohly by srážky, které známe hned, jak spadnou (hodinové z automatických stanic)?
+- Data a rozdělení: hodinové srážky má ČHMÚ v archivu až od 2018, na trénink 2006–2018 nestačí. Místo nich horní mez: denní úhrn běžícího dne známý už od jeho začátku (`labe_meteo_o_den_driv.parquet`). Ten ví víc než hodinové srážky v reálném čase, protože zná i zbytek dne, takže hodinové srážky můžou pomoct nejvýš tolik. Jen validace.
+- Model a nastavení: `ridge`, horizonty 12–72 h, `src/pokus_dest_horizonty.py` (varianta `hned`).
+- Výsledek na val, Děčín (bez srážek → horní mez): 12 h 9,0 → 8,7, 24 h 15,5 → 14,6, 36 h 26,0 → 24,9, 48 h 40,3 → 39,4, 72 h 78,0 → 76,8 cm. Na dešťové povodni 9/2010 víc: 24 h 20,8 → 17,8, 36 h 31,6 → 26,6, 72 h 79,7 → 69,8 cm.
+- Závěr: srážky v reálném čase by v průměru pomohly nejvýš o 1 cm, na dešťové povodni o 3–10 cm. Zkusit je pořádně nejde, archiv je krátký. Do prezentace jako „co dál“ spolu s předpovědí srážek.
+- Soubory: `src/pokus_dest_horizonty.py`
+
+## pá 23:27 · Ondra · vícenásobná validace, každá povodeň jednou vynechaná
+- Otázka: vyhrává lineární regrese jen díky tomu, které čtyři povodně jsme dali do validace, nebo obecně? A jak moc se chyba liší mezi povodněmi?
+- Data a rozdělení: 8 povodní nad 2. stupněm v Děčíně 2006–2020 (4/2006, 6/2006, 3/2009, 8/2010, 9/2010, 1/2011, 2/2013, 6/2013 se dvěma vrcholy jako jeden blok). Pro každou: validace = 16 dní před vrcholem až 5 po, trénink = zbytek 2006–2020 bez 20 dní kolem ní, stejná ochranná pásma jako v `evaluate.py`. Test 2021–2025 se nepoužil. Model se učí i na povodních, které přišly po vynechané, u fyzikálních vztahů v řece to nevadí.
+- Vstupy: 98 společných sloupců, modely beze změny (`jako_ted`, `ridge`, `mlp`, `lgbm`, `fyzika`).
+- Model a nastavení: 8 povodní × 2 cíle × 3 horizonty × 5 modelů = 240 tréninků, seed 42.
+- Kde a jak dlouho: MacBook M1, asi 18 minut.
+- Výsledek (chyba v okně kolem vrcholu, průměr 6 kombinací, pak přes povodně, ± směrodatná odchylka): lineární regrese 20,1 ± 7,7 cm, síť 21,0 ± 8,0, LightGBM 22,7 ± 8,6, fyzikální 26,7 ± 10,0, „jako teď“ 45,2 ± 13,9. Lineární regrese je o 56 % lepší než „jako teď“ (validace 61 %, test 55 %). Nejlepší byla na 4 povodních z 8, síť na 3, LightGBM na 1. Proti síti vyhrála 5 z 8, proti LightGBM 6 z 8. Nejlehčí povodeň 3/2009 (11,2 cm), nejtěžší 6/2013 (33,9 cm, vrchol 1 072 cm, když se vynechá, model nikdy tak vysokou vodu neviděl) a 8/2010 (28,6 cm, déšť blízko Děčína).
+- Varování (součet přes 48 běhů): lineární regrese 1 propásnutí (Děčín +12 h, 8/2010) a 3 plané poplachy, síť 4 a 5, LightGBM 0 a 4, fyzikální 0 a 4, „jako teď“ 72 propásnutí. Skoro všechny plané poplachy jsou Ústí 6/2006, kdy voda vystoupala na 525 cm, 5 cm pod 2. stupeň.
+- Závěr: pořadí z validace platí i přes 8 povodní, lineární regrese je nejlepší v průměru i v nejvíc párových srovnáních a má nejmíň chyb ve varování mezi učenými modely. Rozdíl proti síti (0,9 cm) je ale menší než rozdíly mezi povodněmi, takže jsou prakticky stejně dobré. Chyba záleží víc na povodni (11 až 34 cm) než na modelu. Graf `docs/grafy/krizova_validace.png`.
+- Soubory: `src/krizova_validace.py`, `src/graf_krizova_validace.py`, `results/krizova_validace/2026-10-23_232649.csv`
+
+## pá 23:44 · Ondra · polynomická regrese 2. stupně
+- Otázka: nebyla by křivka (polynom) lepší než lineární regrese?
+- Data a rozdělení: společné, validace.
+- Vstupy: 98 společných sloupců (průtoky pod odmocninou) a navíc buď druhé mocniny všech 98 (`ridge_polynom`, 196 sloupců), nebo druhé mocniny a součiny 14 aktuálních hodnot z času t (`ridge_polynom_soucin`, 203 sloupců). Plný polynom 2. stupně by měl 4 949 sloupců, to by se na 2 velkých povodních v tréninku jen přeučilo.
+- Model a nastavení: StandardScaler + Ridge(alpha=1), seed nehraje roli.
+- Kde a jak dlouho: MacBook M1, pod sekundu na model.
+- Výsledek na val (`prumer_povodne`): lineární regrese 17,1 cm, s druhými mocninami 22,8 cm, se součiny 19,9 cm. V klidu stejné (Děčín +24 h 7,5 / 7,8 / 7,7 cm), na povodních horší, hlavně na 36 h (Děčín 26,0 → 35,2 a 34,8 cm). Polynomy víc podhodnocují (bias na povodních Děčín +36 h −29 cm proti −11 u lineární) a chyba vrcholu je větší (Děčín +24 h 14,4 → 31,9 a 14,3 cm).
+- Závěr: polynom nepomohl. Ohyb křivky se určí z běžné vody, které je 99 %, a při vysoké vodě, kde máme jen pár povodní, se ohne špatným směrem. Potřebný ohyb (měrná křivka) už má lineární regrese v odmocnině průtoků. Neuronová síť a LightGBM jsou taky nelineární a taky nevyhrály, takže víc ohybů tu nepomáhá.
+- Soubory: `src/models/ridge_polynom.py`, `src/models/ridge_polynom_soucin.py`, `results/2026-10-23_234433_ridge_polynom.json`, `results/2026-10-23_234438_ridge_polynom_soucin.json`

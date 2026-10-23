@@ -10,6 +10,8 @@ Co řešíme, pro koho a proč na tom záleží. Dvě tři věty, které řekne 
 
 Odborné výrazy ze zadání a z našeho řešení, vysvětlené jednoduše.
 
+- **„Bude jako teď“** (základ, baseline): každou hodinu se vydá předpověď, že za 24 h bude hladina stejná jako teď. V pondělí v 10:00 je 249 cm, tak na úterý 10:00 předpoví 249 cm. V 11:00 je hladina jiná, tak vydá jinou předpověď. Nakreslené v čase, pro který platí, dají skutečnou křivku posunutou o den doprava: vzestup „ohlásí“ až den poté, co se stal, a nikdy nevaruje předem. Na klidné řece je přesná, při povodni se plete o metr i víc. Každý model ji musí porazit, jinak nemá smysl. Graf `docs/grafy/jako_ted_vysvetleni.png` (Boris 9/2024: 13. 9. ve 12:00 bylo 249 cm, předpověď na další den 249, skutečně 406 cm).
+
 ## Proč tahle metoda
 
 Co jsme zvolili, s čím jsme to srovnávali a proč jsme jiné možnosti nevzali.
@@ -36,6 +38,13 @@ Co jsme zvolili, s čím jsme to srovnávali a proč jsme jiné možnosti nevzal
 - Předpověď je vážený součet vstupů, každá stanice a zpoždění má jednu váhu. Vybrali jsme ji, protože na vynechaných povodních vyšla nejlíp a celá se dá ukázat na jednom obrázku (`docs/grafy/ridge_vahy_decin.png`). „Ridge“ znamená, že se velké váhy mírně penalizují; na našich datech na tom nezáleží (alpha 0,1 až 10 dává stejný výsledek).
 - Odmocnina z průtoků: hladina roste s průtokem zhruba jako odmocnina (měrná křivka), takže lineárnímu modelu odmocnina průtoku sedí lépe. Na hladinu ji nedáváme, zkazila vrchol 2006 o metr.
 - Učit „změnu hladiny“ místo hladiny je u lineárního modelu totéž (váha u hladiny teď se posune o 1), u stromů ne.
+
+**Proč vyhrála lineární regrese nad ostatními** (shrnutí důkazů, pá 23:52):
+- Fyzika je součet. Voda v Děčíně je zhruba Vltava + horní Labe + Ohře, každá posunutá o dobu, než doteče. Vážený součet zpožděných průtoků je přesně tvar lineární regrese, takže se nemusí nic „hledat“. Jediný ohyb, který fyzika potřebuje (měrná křivka, hladina roste s průtokem jako odmocnina), dostane model přes odmocninu z průtoků.
+- Velkých povodní je málo. V tréninku jsou dvě nad 3. stupněm (8/2010, 6/2013). Lineární regrese má 98 vah a odhaduje je ze 108 tisíc hodin. Neuronová síť má přes 20 tisíc vah, LightGBM stovky stromů; z pár povodní se naučí i náhodu.
+- Musí umět výš, než viděla. LightGBM předpovídá průměry z tréninku a nad nejvyšší viděnou vodu nevystoupá (2013: 823 místo 1 072 cm). Polynom se při vysoké vodě ohne špatným směrem (17,1 → 19,9 a 22,8 cm, `docs/POKUSY.md` pá 23:44). Přímka v trendu pokračuje.
+- Ověřeno třikrát: validace 17,1 cm (síť 17,8, LightGBM 23,1, fyzikální 24,8), vícenásobná validace přes 8 povodní 20,1 cm (síť 21,0, LightGBM 22,7, fyzikální 26,7), test 22,4 cm (síť 21,3). Proti „jako teď“ pokaždé o 55–61 % lepší.
+- Síť je stejně dobrá v rámci náhody (na testu o 1,1 cm lepší, ve vícenásobné validaci o 0,9 cm horší). Vybrali jsme regresi, protože je jednodušší, má méně chyb ve varování a každou její váhu umíme ukázat a vysvětlit.
 
 ## Jak číst výsledky
 
@@ -116,3 +125,4 @@ Připraveno pá 21:00 (Ondra jde za mentory). Odpověď dopsat pod každou otáz
 - Když víte, že se vlna při povodni zpomalí, proč to model nepoužívá? Zkusili jsme to a nepomohlo to (21,8 vs 22,2 cm, pod hranicí 1 cm). Lineární model má 98 zpožděných hodnot (z každé stanice 7 zpoždění 0–36 h) a dobu doběhu včetně roztažení vlny si z vah najde sám. Zpomalení při velkých povodních nejde spolehlivě změřit – nad 1 500 m³/s je v tréninku jen jedna povodeň (6/2013, 227 h). Podrobnosti v `docs/POKUSY.md` (pá 20:45).
 - Jak znáte hladinu, když neznáte šířku a tvar koryta? Šířku potřebujeme jen tam, kde hladinu předpovídáme, tedy v Děčíně a v Ústí, a tam ji model zná z historie. Hladinu ČHMÚ na vodočtu měří přímo a průtok z ní dopočítává, šířku koryta v datech nemáme a nepotřebujeme. ČHMÚ na každém vodočtu několikrát do roka změří průřez koryta a rychlost vody (průtok = rychlost × plocha průřezu) a z toho sestaví měrnou křivku: při jakém průtoku je jaká hladina. Model má 20 let hodin, kdy v Děčíně tekl známý průtok a byla známá hladina (od 76 do 1 072 cm v 6/2013), takže tvar koryta je schovaný v jeho vahách. Mezi stanicemi šířku nepotřebujeme, protože proti proudu bereme průtok v m³/s, a ten na šířce nezávisí: voda, která proteče Mělníkem, za pár hodin doteče do Děčína, jen později a trochu roztažená. Kdy a jak moc roztažená, se model naučil ze zpoždění 0–36 h. Selže, když se koryto změní (ledová zácpa jako v Děčíně 2/2006, kterou jsme z dat vyřadili, bagrování, nová stavba) nebo když voda vystoupí výš než kdy v tréninku.
 - Proč nepředpovídáte déšť a nedáte ho do modelu? Zkusili jsme horní mez: model dostal skutečný déšť na 3 dny dopředu, jako by předpověď počasí byla dokonalá. Chyba klesla jen o 1 cm (na 36 h o 1,8 cm) a varování nepřišlo dřív. První nárůst vody vidíme v průtocích proti proudu 12–40 h předem a déšť, který spadne teď, do Děčína většinou doteče až za víc než 36 h. Skutečná předpověď deště se navíc plete. Srážky by pomohly u předpovědi na 2–5 dní nebo na malých řekách (`docs/POKUSY.md`, pá 22:32).
+- Nemáte výsledek jen ze šťastně vybrané validace? Ověřili jsme to vícenásobnou validací: každou z 8 povodní 2006–2020 jsme jednou vynechali a model naučili na ostatních. Lineární regrese vyšla 20,1 ± 7,7 cm, síť 21,0, LightGBM 22,7, fyzikální 26,7, „jako teď“ 45,2. Zlepšení proti „jako teď“ 56 %, na testu 55 %. Chyba víc záleží na povodni (11 až 34 cm) než na modelu (`docs/grafy/krizova_validace.png`).
