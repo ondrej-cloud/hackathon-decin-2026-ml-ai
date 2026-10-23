@@ -5,12 +5,14 @@ Spuštění z kořene repozitáře:
     Mac:      .venv/bin/python -m streamlit run app/app.py
 """
 import json
+import time as cas_modul
 from datetime import date, datetime, time
 
 import pandas as pd
 import plotly.graph_objects as go
 import streamlit as st
 
+from mapa import deck as mapa_deck, mapbox_token
 from predikce import (BARVY, HORIZONTY, KDE, NAZEV, ROOT, SPA, STUPNE, modely, nacti, nacti_model, stupen, vstupy,
                       vysvetleni)
 
@@ -97,7 +99,7 @@ radek = X.loc[[cas]]
 ted = float(radek[f"{cil}_H_0"].iloc[0])
 pred = {h: float(model_c(nazev, cil, h).predict(radek)[0]) for h in HORIZONTY}
 
-tab_ted, tab_kvalita = st.tabs(["Teď", "Jak dobře to funguje"])
+tab_ted, tab_kvalita, tab_mapa = st.tabs(["Teď", "Jak dobře to funguje", "Mapa povodí"])
 
 with tab_ted:
     st.subheader(f"{jmeno(cil)}, {cesky(cas):%d. %m. %Y %H:%M} českého času")
@@ -119,7 +121,7 @@ with tab_ted:
                     text=["teď"] + [f"za {h} h" for h in HORIZONTY])
     cary_spa(fig, cil)
     fig.update_layout(yaxis_title="hladina (cm)", height=420, margin=dict(l=10, r=10, t=30, b=50),
-                      legend=dict(orientation="h"), hovermode="x unified")
+                      legend=dict(orientation="h", y=1.08, x=0), hovermode="x unified")
     fig.update_xaxes(tickformat="%d. %m.\n%H:%M")
     st.plotly_chart(fig, width="stretch")
     st.caption("Černá čára je, co se změřilo do zvoleného okamžiku. Modré body jsou předpověď vydaná v tomhle "
@@ -150,7 +152,7 @@ with tab_kvalita:
                         name=f"model {nazev}, vydáno {h} h předem", line=dict(color=MODRA, width=2))
     cary_spa(fig, cil)
     fig.update_layout(yaxis_title="hladina (cm)", height=450, margin=dict(l=10, r=10, t=30, b=50),
-                      legend=dict(orientation="h"), hovermode="x unified")
+                      legend=dict(orientation="h", y=1.08, x=0), hovermode="x unified")
     fig.update_xaxes(tickformat="%d. %m.\n%H:%M")
     st.plotly_chart(fig, width="stretch")
     st.caption("Každý bod modré čáry je samostatná předpověď vydaná o zvolený počet hodin dřív. "
@@ -167,3 +169,33 @@ with tab_kvalita:
         st.caption("Chyba při povodních je průměrná odchylka v cm v týdnu před vrcholem a 5 dní po něm, "
                    "průměr přes 4 povodně. Varování počítáme od chvíle, kdy model poprvé předpověděl překročení "
                    "2. stupně, do chvíle, kdy hladina práh opravdu překročila.")
+
+def predpovedi_pro_mapu(t):
+    """Předpověď modelu za 24 h pro Děčín i Ústí v čase t (UTC), pro popisky na mapě."""
+    out = {}
+    for c in KDE:
+        Xc = vstupy_c(c)
+        if t in Xc.index:
+            out[c] = (24, float(model_c(nazev, c, 24).predict(Xc.loc[[t]])[0]))
+    return out
+
+
+with tab_mapa:
+    st.markdown(f"**Co teče proti proudu, dorazí k nám.** Sloupce jsou průtoky 12 stanic "
+                f"{cesky(cas):%d. %m. %Y %H:%M} (výška sloupce = průtok), barva je stupeň povodňové aktivity. "
+                "U Děčína a Ústí je v popisku předpověď modelu za 24 h. Okamžik se mění v levém menu, terén je "
+                "2,5× zvýšený.")
+    misto = st.empty()
+    if st.button("Přehrát povodeň 1/2011 (8. až 24. 1., po 6 hodinách, asi 40 s)"):
+        for t in pd.date_range("2011-01-08", "2011-01-24 18:00", freq="6h", tz=TZ):
+            t = t.tz_convert("UTC")
+            misto.pydeck_chart(mapa_deck(t, predpovedi_pro_mapu(t)), height=650)
+            cas_modul.sleep(0.6)
+    else:
+        misto.pydeck_chart(mapa_deck(cas, predpovedi_pro_mapu(cas)), height=650)
+    st.caption("Děčín a Ústí: barva podle hladiny a stupňů povodňové aktivity. Ostatní stanice: zelená pod 95. "
+               "percentilem průtoku z let 2006–2018, žlutá do 99., červená nad ním; nejde o oficiální stupně. "
+               "Kolečkem přiblížíte, tažením posunete, Shift a tažením natočíte. "
+               + ("Snímky a výšky © Mapbox, © Maxar. " if mapbox_token() else
+                  "Podklad © OpenStreetMap, výšky Mapzen / AWS Terrain Tiles. ")
+               + "Měření ČHMÚ. Dlaždice se stahují z internetu.")

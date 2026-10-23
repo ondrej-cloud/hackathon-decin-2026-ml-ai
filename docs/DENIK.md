@@ -146,6 +146,10 @@ Následující záznamy jsou doplněné zpětně (pá 19:35) podle commitů, ať
 - Zjištění: čtyři různé modely skončily blízko sebe. Strop dělají vstupy, ne model. Další zlepšení by přinesly srážky v povodí, ne složitější model.
 - Problém: výsledky z Windows byly uložené v kódování cp1250. Převedli jsme je na UTF-8 a `porovnej.py` je teď ukládá i čte správně.
 
+## pá 20:20 · Honza
+- Co: aplikace má třetí záložku „Mapa povodí“: 3D terén (veřejné výškové dlaždice bez klíče, podklad OpenStreetMap) a na něm 12 stanic jako sloupce, výška = průtok, barva = stupeň povodňové aktivity (u stanic bez hladiny percentil průtoku, není to oficiální stupeň). Okamžik se řídí z levého menu stejně jako ostatní záložky. Modely pro aplikaci (`models/`) a předpovědi Ridge přepočítané na opraveném vyhodnocení: `results/2026-10-23_201351_ridge.json`, 17,1 cm, `bias_povodne` −1,5 (12 h) až −11,6 cm (36 h).
+- Proč: obrázek k větě „co teče Prahou teď, je zítra v Děčíně“. Staré výsledky nový `--prehled` ignoruje, proto přepočet.
+- Problém: dlaždice mapy se stahují z internetu. Na prezentaci je záloha `docs/grafy/app_mapa.png`, v sobotu přibude video.
 ## pá 20:30 · Ondra
 - Co: sepsali jsme celkový přehled řešení `docs/PREHLED.md`: co předpovídáme, které vstupy každý model používá, co jsme nevzali a proč, rozdělení, výsledky a tabulku všech rozhodnutí s důvody.
 - Proč: rozhodnutí byla rozesetá po deníku, pokusech a datech. Pro prezentaci a otázky poroty je potřebujeme pohromadě.

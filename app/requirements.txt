@@ -1,5 +1,6 @@
 streamlit>=1.60
 plotly>=6
+pydeck
 pandas>=2.2
 numpy
 pyarrow
