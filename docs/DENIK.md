@@ -87,3 +87,7 @@ Následující záznamy jsou doplněné zpětně (pá 19:55) podle commitů, ať
 - Slabiny a co může být špatně: 36 h je skoro dvakrát horší než 24 h, protože ta voda ještě neteče ani Prahou a srážky nemáme. Vrcholy nad rámec tréninku (2006, 875 cm) model podhodnotí o 20 cm. Model pro Ústí hodně používá hladinu v Děčíně, který je po proudu: je to druhé měření téže vody, ne únik z budoucnosti, ale porota se zeptá. Vstup z času t bereme jako známý v čase t; ČHMÚ ale zveřejňuje hodinové průměry se zpožděním, v provozu by model měl vstupy asi o hodinu starší, čísla na validaci se nemění, jen by se zkrátil předstih.
 - Otázka pro mentory: s jakým zpožděním jsou hodinová data ČHMÚ v provozu dostupná?
 - Otázka poroty a odpověď: „Proč lineární model a ne něco chytřejšího?“ Protože na povodních, které model neviděl, vyhrál (15,5 cm proti 50 cm u stromů v kontrole řetězce), nemá se na čem přeučit a každou váhu umíme vysvětlit fyzikálně: průtok v Praze teď je hladina v Děčíně za den.
+## pá 20:05 · Ondra
+- Co: ověřili jsme, jestli do modelu nepatří přítoky Labe v kraji (Bílina, Ploučnice). Nepatří, na validaci nepomohly (`docs/POKUSY.md`).
+- Proč: přidají jen 2–13 % vody při vrcholu a doteče z nich za pár hodin. Velké přítoky nad krajem (Vltava s Berounkou a Sázavou, Jizera, horní Labe, Ohře) v modelu jsou.
+- Limit pro prezentaci: povodeň z lokálních dešťů v kraji, jako v srpnu 2010, model bez srážek dopředu nevidí.

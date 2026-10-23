@@ -14,7 +14,15 @@ Odborné výrazy ze zadání a z našeho řešení, vysvětlené jednoduše.
 
 Co jsme zvolili, s čím jsme to srovnávali a proč jsme jiné možnosti nevzali.
 
-- Lineární regrese (Ridge): předpověď je vážený součet vstupů, každá stanice a zpoždění má jednu váhu. Vybrali jsme ji, protože na vynechaných povodních vyšla nejlíp a celá se dá ukázat na jednom obrázku (`docs/grafy/ridge_vahy_decin.png`). „Ridge“ znamená, že se velké váhy mírně penalizují; na našich datech na tom nezáleží (alpha 0,1 až 10 dává stejný výsledek).
+**Proč zpoždění 0–36 h a horizonty 12, 24, 36 h** (Labe):
+- Doba putování vody do Ústí se liší podle stanice a hlavně podle povodně. Z Vraňan šel vrchol jednou 12 h, jindy 45 h. Jedno pevné číslo na stanici by bylo špatně, proto model dostane od každé stanice průtok před 0, 3, 6, 12, 18, 24 a 36 h a sám si najde, které zpoždění je důležité. Z jeho vah pak dobu putování vyčteme.
+- Kolik zpoždění je potřeba: nejvzdálenější stanice (Beroun) je od Děčína asi 40 h, nejkratší horizont je 12 h. Voda, která do Děčína přijde za 12 h, prošla Berounem asi před 28 h. Nejstarších 36 h to pokryje i s rezervou na to, že se doba mezi povodněmi mění.
+- Proč ne každou hodinu: zpoždění blízko sebe nesou skoro stejnou informaci, jen by přibyly sloupce (444 místo 84). Doba putování navíc kolísá o víc hodin, než je rozestup.
+- Proč nejvýš 36 h dopředu: voda, která do Děčína přijde za víc než 40 h, ještě neprotekla žádnou naší stanicí. Je v potocích nebo ještě nespadla. Na to by byly potřeba srážky.
+- Pro horizont h pomáhá hlavně stanice, odkud voda teče déle než h. Proto čím dál dopředu, tím dál proti proudu se musíme dívat.
+
+**Proč lineární regrese (Ridge)** (Honza):
+- Předpověď je vážený součet vstupů, každá stanice a zpoždění má jednu váhu. Vybrali jsme ji, protože na vynechaných povodních vyšla nejlíp a celá se dá ukázat na jednom obrázku (`docs/grafy/ridge_vahy_decin.png`). „Ridge“ znamená, že se velké váhy mírně penalizují; na našich datech na tom nezáleží (alpha 0,1 až 10 dává stejný výsledek).
 - Odmocnina z průtoků: hladina roste s průtokem zhruba jako odmocnina (měrná křivka), takže lineárnímu modelu odmocnina průtoku sedí lépe. Na hladinu ji nedáváme, zkazila vrchol 2006 o metr.
 - Učit „změnu hladiny“ místo hladiny je u lineárního modelu totéž (váha u hladiny teď se posune o 1), u stromů ne.
 
