@@ -603,7 +603,7 @@
   },
   {
     "nazev": "G3",
-    "popis": "Nespočteno: chybí ověřené LOFO předpovědi externího modelu.",
+    "popis": "0,5 Ridge30 + 0,5 LightGBM30 (seed 42); LOFO nespočteno, chybí ověřené předpovědi.",
     "skore": null,
     "validace": {
       "mae": 7.1,
@@ -628,25 +628,27 @@
       "spa3_plane_poplachy": 0
     },
     "vybrane_vahy": 0.5,
-    "duvod": "LOFO LightGBM30 zatím nedodáno.; V C:\\Users\\danie\\Documents\\hackathon-2026-sit\\sit_dan\\lofo nebyly nalezeny použitelné LOFO předpovědi sítě (2026-10-23 23:32:02).",
-    "stav": "ceka"
+    "duvod": "LOFO LightGBM30 zatím nedodáno.; V C:\\Users\\danie\\Documents\\hackathon-2026-sit\\sit_dan\\lofo nebyly nalezeny použitelné LOFO předpovědi sítě (2026-10-23 23:32:02). Poslední kontrola 2026-10-23 23:56:20: ověřené podklady pro tuto variantu stále chybí. Celkový limit 35 minut končí před dodacími termíny 00:10/00:12.",
+    "stav": "nedostupne_v_limitu"
   },
   {
     "nazev": "G4",
-    "popis": "Nespočteno: chybí ověřené LOFO předpovědi externího modelu.",
+    "popis": "w Ridge30 + (1−w) LightGBM30; POUZE PŘIBLIŽNĚ vnořené váhy dle ostatních 21 LOFO oken; nespočteno, chybí předpovědi.",
     "skore": null,
     "validace": null,
     "vybrane_vahy": null,
-    "duvod": "LOFO LightGBM30 zatím nedodáno.; V C:\\Users\\danie\\Documents\\hackathon-2026-sit\\sit_dan\\lofo nebyly nalezeny použitelné LOFO předpovědi sítě (2026-10-23 23:32:02).",
-    "stav": "ceka"
+    "duvod": "LOFO LightGBM30 zatím nedodáno.; V C:\\Users\\danie\\Documents\\hackathon-2026-sit\\sit_dan\\lofo nebyly nalezeny použitelné LOFO předpovědi sítě (2026-10-23 23:32:02). Poslední kontrola 2026-10-23 23:56:20: ověřené podklady pro tuto variantu stále chybí. Celkový limit 35 minut končí před dodacími termíny 00:10/00:12.",
+    "stav": "nedostupne_v_limitu",
+    "vnoreni": "priblizne"
   },
   {
     "nazev": "G5",
-    "popis": "Nespočteno: chybí ověřené LOFO předpovědi externího modelu.",
+    "popis": "0,5 Ridge30 + 0,5 síť; soubor dodán, vyhodnocení nedokončeno kvůli čekání na RAM.",
     "skore": null,
     "validace": null,
     "vybrane_vahy": 0.5,
-    "duvod": "LOFO LightGBM30 zatím nedodáno.; V C:\\Users\\danie\\Documents\\hackathon-2026-sit\\sit_dan\\lofo nebyly nalezeny použitelné LOFO předpovědi sítě (2026-10-23 23:32:02).",
-    "stav": "ceka"
+    "duvod": "Soubor dodán (2026-10-23T23:52:54.415709), ale doplňovací běh od 23:53 čekal v L.cekej_na_ram(1500); v limitu 35 minut se hodnocení nedokončilo. Shoda foldů tohoto zdroje zatím neověřena.",
+    "stav": "dodano_nevyhodnoceno_ram",
+    "zdroj": "C:\\Users\\danie\\Documents\\hackathon-2026-sit\\sit_dan\\lofo\\sit_lofo_oof.parquet"
   }
 ]

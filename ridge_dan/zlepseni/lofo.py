@@ -161,13 +161,21 @@ class Motor:
     def okno(self, k):
         return self.A[self.pov[k]["okno"]], self.y[self.pov[k]["okno"]]
 
+    def okno_vnitrni(self, k, j):
+        """Okno vnitřní povodně j bez hodin v mezeře vnějšího foldu k (blízké povodně se překrývají, např.
+        12/2012 a 1/2013 o 48 h; ty hodiny se při výběru pro fold k nesmí použít)."""
+        m = self.pov[j]["okno"] & ~self.pov[k]["mezera"]
+        return self.A[m], self.y[m]
+
     def vnitrni_skore(self, k, alpha=1.0, pen=None, sloupce=None):
-        """Průměrná chyba přes 21 vnitřních povodní (j ≠ k), každá z modelu bez mezer k a j."""
+        """Průměrná chyba přes vnitřní povodně j ≠ k (jen hodiny mimo mezeru k), každá z modelu bez mezer k a j."""
         e = []
         for j in range(len(self.pov)):
             if j == k:
                 continue
-            A_o, y_o = self.okno(j)
+            A_o, y_o = self.okno_vnitrni(k, j)
+            if len(y_o) == 0:
+                continue
             e.append(np.abs(predikuj(ridge_z_souctu(self.vnitrni(k, j), alpha, pen, sloupce), A_o) - y_o).mean())
         return float(np.mean(e))
 

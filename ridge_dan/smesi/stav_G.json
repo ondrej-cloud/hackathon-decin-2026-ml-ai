@@ -1,0 +1,13 @@
+{
+  "cas": "2026-10-23T23:56:20.305166",
+  "finalni": true,
+  "chybi": [
+    "G3: LOFO LightGBM30 zatím nedodáno.; V C:\\Users\\danie\\Documents\\hackathon-2026-sit\\sit_dan\\lofo nebyly nalezeny použitelné LOFO předpovědi sítě (2026-10-23 23:32:02). Poslední kontrola 2026-10-23 23:56:20: ověřené podklady pro tuto variantu stále chybí. Celkový limit 35 minut končí před dodacími termíny 00:10/00:12.",
+    "G4: LOFO LightGBM30 zatím nedodáno.; V C:\\Users\\danie\\Documents\\hackathon-2026-sit\\sit_dan\\lofo nebyly nalezeny použitelné LOFO předpovědi sítě (2026-10-23 23:32:02). Poslední kontrola 2026-10-23 23:56:20: ověřené podklady pro tuto variantu stále chybí. Celkový limit 35 minut končí před dodacími termíny 00:10/00:12.",
+    "G5: Soubor dodán (2026-10-23T23:52:54.415709), ale doplňovací běh od 23:53 čekal v L.cekej_na_ram(1500); v limitu 35 minut se hodnocení nedokončilo. Shoda foldů tohoto zdroje zatím neověřena."
+  ],
+  "protokol": "2006–2020; před tvorbou vstupů filtr v Parquet; 2021–2025 nepoužito; L.skore beze změn.",
+  "ram": "L.cekej_na_ram(1500), původní čekání; CIM dotaz lokálně nahrazen GlobalMemoryStatusEx kvůli sandboxu.",
+  "casovy_limit": "35 minut od zahájení 23:22, konec nejpozději 23:57; dříve než dodací termíny 00:10/00:12.",
+  "posledni_kontrola_zdroju": "2026-10-23T23:56:20.305166"
+}

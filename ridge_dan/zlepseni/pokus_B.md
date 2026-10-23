@@ -20,8 +20,8 @@
   (týmový Ridge: začátek vzestupu 41,9, 2006 16,7, plané 2. SPA 4)
 - Vnořená varianta B (doběhla 00:05): ve všech 22 foldech vnitřní LOFO vybralo f = 1, takže B = Ridge 30:
   LOFO 14,79, rozdíl −0,49, zlepšeno 15 z 22, nejhorší zhoršení +6,5, nesplňuje. Validace B (vnořený výběr na
-  týmovém splitu) do termínu nedoběhla, dopočítá ji `pokus_B.py` do `vysledky_B.json`; při f = 1 je to Ridge 30
-  (val 17,8).
+  týmovém splitu přes 18 tréninkových povodní, taky f = 1): val povodně 17,8 (tým 15,5), začátek vzestupu 28,1,
+  2006 24,6 (přestřelení na stoupání 68 cm), plané 2./3. SPA 0/0.
 - Závěr: silnější penalizace nových stanic průměr nezlepší (nejlíp f = 1, −0,49 cm). Zmenší jen nejhorší zhoršení
   (6,5 → 4,4 cm) a chybu 2006 (23,3 → 21,1), ale o tolik zhorší začátek vzestupu (34,1 → 38,7). Pravidlo nesplní
   žádné f.

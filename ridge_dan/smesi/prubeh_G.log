@@ -1,0 +1,32 @@
+23:23:10 Čekám na RAM: lofo.cekej_na_ram(1500).
+23:23:57 Čekám na RAM: lofo.cekej_na_ram(1500).
+23:25:09 Diagnostika RAM: celkem=15805 MB, volno=514 MB; diagnostický PID=9416.
+23:25:57 Volná RAM 1561 MB; načítám jen roky 2006–2020.
+23:26:39 Ověřena shoda všech 22 foldů s lofo_foldy.csv; řádků 131234, sloupců 98/224.
+23:26:41 G1: {"lofo": 14.65, "po_povodnich": {"2006-04-02": 19.1, "2006-05-31": 11.9, "2006-07-01": 12.2, "2006-08-09": 12.2, "2007-12-08": 8.0, "2008-03-03": 9.2, "2009-03-06": 8.6, "2009-06-30": 19.6, "2010-03-02": 8.9, "2010-03-22": 8.5, "2010-06-03": 10.7, "2010-08-08": 27.4, "2010-09-28": 20.8, "2011-01-16": 15.3, "2012-01-24": 10.3, "2012-03-01": 12.3, "2012-12-29": 9.4, "2013-01-08": 9.6, "2013-02-01": 11.1, "2013-06-05": 49.0, "2013-06-26": 16.1, "2015-01-11": 11.9}, "zacatek": 37.5, "n_zacatek": 406, "povoden_2006": 19.1, "spa2_propasnuto": 0, "spa2_plane": 3, "spa3_propasnuto": 0, "spa3_plane": 1, "rozdil": -0.64, "zlepseno": 17, "zhorseno": 5, "nejhorsi_zhorseni": 2.4, "znamenkovy_p": 0.0169, "splnuje": false}
+23:26:43 G2 fold 00 2006-04-02: w=0.8, vnitřní MAE=14.4565
+23:26:45 G2 fold 01 2006-05-31: w=0.7, vnitřní MAE=14.7114
+23:26:48 G2 fold 02 2006-07-01: w=0.7, vnitřní MAE=14.7574
+23:26:50 G2 fold 03 2006-08-09: w=0.7, vnitřní MAE=14.7665
+23:26:52 G2 fold 04 2007-12-08: w=0.6, vnitřní MAE=14.9610
+23:26:55 G2 fold 05 2008-03-03: w=0.6, vnitřní MAE=14.8994
+23:26:57 G2 fold 06 2009-03-06: w=0.6, vnitřní MAE=14.9453
+23:26:59 G2 fold 07 2009-06-30: w=0.7, vnitřní MAE=14.4477
+23:27:02 G2 fold 08 2010-03-02: w=0.6, vnitřní MAE=14.9305
+23:27:04 G2 fold 09 2010-03-22: w=0.6, vnitřní MAE=14.9476
+23:27:06 G2 fold 10 2010-06-03: w=0.6, vnitřní MAE=14.8014
+23:27:08 G2 fold 11 2010-08-08: w=0.7, vnitřní MAE=14.0758
+23:27:10 G2 fold 12 2010-09-28: w=0.7, vnitřní MAE=14.3114
+23:27:12 G2 fold 13 2011-01-16: w=0.7, vnitřní MAE=14.6761
+23:27:14 G2 fold 14 2012-01-24: w=0.7, vnitřní MAE=14.8191
+23:27:16 G2 fold 15 2012-03-01: w=0.6, vnitřní MAE=14.7431
+23:27:18 G2 fold 16 2012-12-29: w=0.6, vnitřní MAE=14.8669
+23:27:20 G2 fold 17 2013-01-08: w=0.7, vnitřní MAE=14.8766
+23:27:22 G2 fold 18 2013-02-01: w=0.6, vnitřní MAE=14.8338
+23:27:25 G2 fold 19 2013-06-05: w=0.7, vnitřní MAE=12.9935
+23:27:27 G2 fold 20 2013-06-26: w=0.7, vnitřní MAE=14.5987
+23:27:29 G2 fold 21 2015-01-11: w=0.6, vnitřní MAE=14.7906
+23:27:29 G2: {"lofo": 14.73, "po_povodnich": {"2006-04-02": 21.4, "2006-05-31": 11.9, "2006-07-01": 12.3, "2006-08-09": 12.1, "2007-12-08": 7.6, "2008-03-03": 9.1, "2009-03-06": 8.5, "2009-06-30": 20.4, "2010-03-02": 8.7, "2010-03-22": 8.4, "2010-06-03": 10.6, "2010-08-08": 27.3, "2010-09-28": 20.8, "2011-01-16": 15.6, "2012-01-24": 10.5, "2012-03-01": 12.1, "2012-12-29": 9.2, "2013-01-08": 9.7, "2013-02-01": 11.0, "2013-06-05": 49.6, "2013-06-26": 15.8, "2015-01-11": 11.5}, "zacatek": 36.6, "n_zacatek": 406, "povoden_2006": 21.4, "spa2_propasnuto": 0, "spa2_plane": 3, "spa3_propasnuto": 0, "spa3_plane": 1, "rozdil": -0.56, "zlepseno": 17, "zhorseno": 5, "nejhorsi_zhorseni": 4.6, "znamenkovy_p": 0.0169, "splnuje": false}
+23:27:30 G1/G2 hotovy; validační soubory ověří doplňovací skript.
+23:32:02 Doplnění: hotovo ['G1', 'G2']; chybí ['LOFO LightGBM30 zatím nedodáno.', 'V C:\\Users\\danie\\Documents\\hackathon-2026-sit\\sit_dan\\lofo nebyly nalezeny použitelné LOFO předpovědi sítě (2026-10-23 23:32:02).']
+23:56:20 Výstupy uzavřeny z již spočtených metrik, bez nového výpočtu.

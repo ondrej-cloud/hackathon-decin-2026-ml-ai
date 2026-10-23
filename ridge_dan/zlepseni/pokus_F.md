@@ -19,6 +19,6 @@
 - Závěr: Huber týmovému Ridge škodí (horší 19 z 22 povodní, znaménkový test p = 0,0009). Povodně jsou přesně ty
   „extrémy“, které Huber potlačuje, takže se model učí hlavně klid a na povodních podhodnocuje. Méně přestřelí
   v roce 2006, ale za cenu horší chyby. F30 nedoběhl: počítač byl v souběhu s dalšími 6 agenty a session se sítí
-  bez volné RAM (pod 0,5 GB volno), výpočet `pokus_F.py` dál běží a výsledek F30 připíše do `vysledky_F.json`.
-  Vzhledem k F12 se neočekává, že by F30 pravidlo splnil.
+  bez volné RAM (pod 0,5 GB volno), pokračující běh `pokus_F.py` skončil kolem 00:09 bez výsledku F30 (proces ukončený zvenku,
+  v logu žádná chyba), F30 tedy CHYBÍ. Vzhledem k F12 se neočekává, že by F30 pravidlo splnil.
 - Soubory: `pokus_F.py`, `vysledky_F.json` (F12), `pokus_F_beh1_float64.log` (první úplný běh F12 s kontrolou).

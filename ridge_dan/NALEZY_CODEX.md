@@ -51,3 +51,8 @@ spojení podle času bez budoucích vstupů a strom fyzikálního modelu bez zje
 Celkově: čísla včetně stability sedí, oprava doby doběhu u LightGBM nečerpá z drženého bloku, varianty se liší jen
 stanicemi, závěr odpovídá hranici 1 cm. Jediný nález (nízký): CV vzestup Ridge s 30 stanicemi je 28,747, tedy
 28,7, ne 28,8 (zaokrouhlené dvakrát). Opraveno ve STANICE_VSEM.md a ZPRAVA.md.
+
+## (h) přísné hodnocení zlepšení, so 00:05–00:08 (`codex/kontrola_h_zlepseni.md`)
+Dva vysoké nálezy: únik ve vnitřním hodnocení vnořených výběrů (okno j bez ohledu na mezeru k) a H30 jako výsledek
+s návrhem z hodnocené povodně. Motor opraven, verdikt přepsán (H30 průzkumně), podrobně v ZLEPSENI.md.
+Codex G (směsi) pracoval jako experimentátor se zápisem jen do `ridge_dan/smesi/`, 35 min, G1 a G2.

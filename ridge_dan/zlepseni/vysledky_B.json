@@ -39,7 +39,20 @@
   "zhorseno": 7,
   "nejhorsi_zhorseni": 6.5,
   "znamenkovy_p": 0.1338,
-  "splnuje": false
+  "splnuje": false,
+  "val": {
+   "mae_povodne": 17.8,
+   "mae_zacatek": 28.1,
+   "spa2_plane_poplachy": 0.0,
+   "spa3_plane_poplachy": 0.0,
+   "spa2_propasnuto": 0.0,
+   "spa3_propasnuto": 0.0,
+   "spa2_predstih_h": 16.8,
+   "mae_2006": 24.6,
+   "mae_2006_stoupani": 29.1,
+   "max_prestreleni_2006": 68.2,
+   "bias_2006": 1.7
+  }
  },
  {
   "nazev": "B_pevne_f0.75",
@@ -81,7 +94,20 @@
   "zhorseno": 7,
   "nejhorsi_zhorseni": 6.5,
   "znamenkovy_p": 0.1338,
-  "splnuje": false
+  "splnuje": false,
+  "val": {
+   "mae_povodne": 17.8,
+   "mae_zacatek": 28.1,
+   "spa2_plane_poplachy": 0.0,
+   "spa3_plane_poplachy": 0.0,
+   "spa2_propasnuto": 0.0,
+   "spa3_propasnuto": 0.0,
+   "spa2_predstih_h": 16.8,
+   "mae_2006": 24.6,
+   "mae_2006_stoupani": 29.1,
+   "max_prestreleni_2006": 68.2,
+   "bias_2006": 1.7
+  }
  },
  {
   "nazev": "B_pevne_f0.5",
@@ -123,7 +149,20 @@
   "zhorseno": 7,
   "nejhorsi_zhorseni": 6.5,
   "znamenkovy_p": 0.1338,
-  "splnuje": false
+  "splnuje": false,
+  "val": {
+   "mae_povodne": 17.8,
+   "mae_zacatek": 28.1,
+   "spa2_plane_poplachy": 0.0,
+   "spa3_plane_poplachy": 0.0,
+   "spa2_propasnuto": 0.0,
+   "spa3_propasnuto": 0.0,
+   "spa2_predstih_h": 16.8,
+   "mae_2006": 24.6,
+   "mae_2006_stoupani": 29.1,
+   "max_prestreleni_2006": 68.1,
+   "bias_2006": 1.7
+  }
  },
  {
   "nazev": "B_pevne_f0.25",
@@ -165,7 +204,20 @@
   "zhorseno": 7,
   "nejhorsi_zhorseni": 6.5,
   "znamenkovy_p": 0.1338,
-  "splnuje": false
+  "splnuje": false,
+  "val": {
+   "mae_povodne": 17.8,
+   "mae_zacatek": 28.2,
+   "spa2_plane_poplachy": 0.0,
+   "spa3_plane_poplachy": 0.0,
+   "spa2_propasnuto": 0.0,
+   "spa3_propasnuto": 0.0,
+   "spa2_predstih_h": 16.8,
+   "mae_2006": 24.6,
+   "mae_2006_stoupani": 29.1,
+   "max_prestreleni_2006": 68.0,
+   "bias_2006": 1.7
+  }
  },
  {
   "nazev": "B_pevne_f0.1",
@@ -207,7 +259,20 @@
   "zhorseno": 6,
   "nejhorsi_zhorseni": 6.4,
   "znamenkovy_p": 0.0525,
-  "splnuje": false
+  "splnuje": false,
+  "val": {
+   "mae_povodne": 17.8,
+   "mae_zacatek": 28.5,
+   "spa2_plane_poplachy": 0.0,
+   "spa3_plane_poplachy": 0.0,
+   "spa2_propasnuto": 0.0,
+   "spa3_propasnuto": 0.0,
+   "spa2_predstih_h": 16.8,
+   "mae_2006": 24.4,
+   "mae_2006_stoupani": 28.8,
+   "max_prestreleni_2006": 67.5,
+   "bias_2006": 1.6
+  }
  },
  {
   "nazev": "B_pevne_f0.05",
@@ -249,7 +314,20 @@
   "zhorseno": 6,
   "nejhorsi_zhorseni": 6.1,
   "znamenkovy_p": 0.0525,
-  "splnuje": false
+  "splnuje": false,
+  "val": {
+   "mae_povodne": 17.7,
+   "mae_zacatek": 29.2,
+   "spa2_plane_poplachy": 0.0,
+   "spa3_plane_poplachy": 0.0,
+   "spa2_propasnuto": 0.0,
+   "spa3_propasnuto": 0.0,
+   "spa2_predstih_h": 16.5,
+   "mae_2006": 24.0,
+   "mae_2006_stoupani": 28.5,
+   "max_prestreleni_2006": 68.6,
+   "bias_2006": 1.6
+  }
  },
  {
   "nazev": "B_pevne_f0.02",
@@ -291,7 +369,20 @@
   "zhorseno": 6,
   "nejhorsi_zhorseni": 5.5,
   "znamenkovy_p": 0.0525,
-  "splnuje": false
+  "splnuje": false,
+  "val": {
+   "mae_povodne": 17.4,
+   "mae_zacatek": 31.1,
+   "spa2_plane_poplachy": 0.0,
+   "spa3_plane_poplachy": 0.0,
+   "spa2_propasnuto": 0.0,
+   "spa3_propasnuto": 0.0,
+   "spa2_predstih_h": 16.5,
+   "mae_2006": 23.0,
+   "mae_2006_stoupani": 27.8,
+   "max_prestreleni_2006": 70.0,
+   "bias_2006": 2.0
+  }
  },
  {
   "nazev": "B_pevne_f0.01",
@@ -333,7 +424,20 @@
   "zhorseno": 6,
   "nejhorsi_zhorseni": 4.4,
   "znamenkovy_p": 0.0525,
-  "splnuje": false
+  "splnuje": false,
+  "val": {
+   "mae_povodne": 16.9,
+   "mae_zacatek": 32.8,
+   "spa2_plane_poplachy": 0.0,
+   "spa3_plane_poplachy": 0.0,
+   "spa2_propasnuto": 0.0,
+   "spa3_propasnuto": 0.0,
+   "spa2_predstih_h": 16.0,
+   "mae_2006": 21.4,
+   "mae_2006_stoupani": 26.9,
+   "max_prestreleni_2006": 67.6,
+   "bias_2006": 2.7
+  }
  },
  {
   "nazev": "B",

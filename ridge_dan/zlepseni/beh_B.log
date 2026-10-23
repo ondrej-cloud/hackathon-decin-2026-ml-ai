@@ -1,0 +1,11 @@
+pevné f=1.0: LOFO 14.79, rozdíl -0.49, zlepšeno 15/22
+pevné f=0.75: LOFO 14.79, rozdíl -0.49, zlepšeno 15/22
+pevné f=0.5: LOFO 14.79, rozdíl -0.49, zlepšeno 15/22
+pevné f=0.25: LOFO 14.8, rozdíl -0.49, zlepšeno 15/22
+pevné f=0.1: LOFO 14.81, rozdíl -0.47, zlepšeno 16/22
+pevné f=0.05: LOFO 14.85, rozdíl -0.43, zlepšeno 16/22
+pevné f=0.02: LOFO 14.96, rozdíl -0.33, zlepšeno 16/22
+pevné f=0.01: LOFO 15.02, rozdíl -0.26, zlepšeno 16/22
+B vnořené: LOFO 14.79, rozdíl -0.49, zlepšeno 15/22, vybrané f {'2006-04-02': 1.0, '2006-05-31': 1.0, '2006-07-01': 1.0, '2006-08-09': 1.0, '2007-12-08': 1.0, '2008-03-03': 1.0, '2009-03-06': 1.0, '2009-06-30': 1.0, '2010-03-02': 1.0, '2010-03-22': 1.0, '2010-06-03': 1.0, '2010-08-08': 1.0, '2010-09-28': 1.0, '2011-01-16': 1.0, '2012-01-24': 1.0, '2012-03-01': 1.0, '2012-12-29': 1.0, '2013-01-08': 1.0, '2013-02-01': 1.0, '2013-06-05': 1.0, '2013-06-26': 1.0, '2015-01-11': 1.0}
+val B {'mae_povodne': 17.8, 'mae_zacatek': 28.1, 'spa2_plane_poplachy': 0.0, 'spa3_plane_poplachy': 0.0, 'spa2_propasnuto': 0.0, 'spa3_propasnuto': 0.0, 'spa2_predstih_h': 16.8, 'mae_2006': 24.6, 'mae_2006_stoupani': 29.1, 'max_prestreleni_2006': 68.2, 'bias_2006': 1.7} f_val 1.0 (1531 s)
+EXIT 0

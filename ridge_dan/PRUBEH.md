@@ -53,3 +53,6 @@
 - pá 23:44 · H: H30 (Ridge 30 + útlum) pravidlo těsně splní (LOFO 14,15, −1,13, 18 z 22, nejhorší +5,9), val 17,5; H12 LOFO −0,68 (ne), val 14,8. D (vnořený výběr stanic) −0,61, 16 z 22, ne. A: přestřelení 2006/2011 = útlum v nivě Polabí, data v pořádku.
 - pá 23:57 · B (pevná f) hotovo, žádné f nepřiblíží −1 cm (nejlíp −0,49); vnořená B, F (Huber) a LightGBM se kvůli RAM (volno ~0,5 GB, sdílené s dalšími session) zpožďují; předběžný verdikt v ZLEPSENI.md.
 - pá 00:05 · síť dodala LOFO předpovědi (v termínu 00:10); PŘEDEM: G5 = 0,5 Ridge 30 + 0,5 síť +18, G6 = 0,5 Ridge 12 + 0,5 síť beze změny (pevné váhy, nic se nevybírá), plus síť samotná pro srovnání.
+- so 00:09 · Codex (h) na konci: únik ve vnitřním hodnocení vnořených výběrů (okna blízkých povodní v mezeře drženého foldu) a H30 jako průzkumný výsledek (návrh z hodnocené povodně 2006); motor opraven, přepočet B/D/G2 nedoběhl (závěr nemění), F30 zastaven kvůli RAM.
+- so 00:10 · citlivost H30: bez 2006 −1,46 cm (17 z 21), bez 2006 a 2011 −1,53 cm.
+- so 00:22 · verdikt: 24 h žádná varianta průkazně (H30 jen průzkumně), 36 h Ridge 30 stanic splní (−2,43, 17 z 22); LightGBM a směsi G3/G4 nedoběhly.

@@ -1,0 +1,9 @@
+- **Vysoká — [lofo.py:170](C:/Users/danie/Documents/hackathon-2026-ridge/ridge_dan/zlepseni/lofo.py:170), [experiment_G.py:156](C:/Users/danie/Documents/hackathon-2026-ridge/ridge_dan/smesi/experiment_G.py:156):** Vnitřní hodnocení používá celé okno j včetně řádků vyřazených vnějším foldem k. Okna 29. 12. 2012 a 8. 1. 2013 sdílejí **48 hodin**, takže výběry B, D a G2 skutečně používají cíle držené povodně. **Oprava:** hodnotit jen `okno_j & ~mezera_k`; prázdná okna vynechat a upravit protokol, případně blízké povodně seskupit. Výsledky přepočítat.
+
+- **Vysoká — [ZLEPSENI.md:145](C:/Users/danie/Documents/hackathon-2026-ridge/ridge_dan/ZLEPSENI.md:145):** Vstupy H vznikly rozborem hodnocené povodně 2006. Následné LOFO s pevně převzatým nápadem neodstraňuje tento únik při návrhu modelu; uvedená výhrada proto nestačí k tvrzení o přísně potvrzeném zlepšení. **Oprava:** H30 označit za průzkumný výsledek a potvrdit na nezávislých datech nebo postup návrhu zahrnout do vnějšího hodnocení.
+
+- **Nízká — [ZLEPSENI.md:180](C:/Users/danie/Documents/hackathon-2026-ridge/ridge_dan/ZLEPSENI.md:180):** Dokument uvádí, že vnořené B chybí, ale JSON už obsahuje dokončené B: **14,79 cm, −0,49 cm, `splnuje=false`**, ve všech foldech f = 1. **Oprava:** aktualizovat stav a závěr podle existujícího výsledku.
+
+Ověřeno: odečítání sjednocení mezer v tréninkových součtech je správné; všech 22 foldů odpovídá CSV a počet řádků je 131 234. Přepočet `lofo.skore` reprodukoval reference i H12/H30 bez rozdílů, včetně H30 `splnuje=true`. Budoucí vstupy jsem v kontrolovaných posunech nenašel. Přibližná vnořenost G4 je v souhrnu výslovně přiznána.
+
+**Verdikt ZLEPSENI.md pro +24 h jako důkaz splnění přísného protokolu neobstojí, přestože číselný výsledek H30 je reprodukovatelný.**
