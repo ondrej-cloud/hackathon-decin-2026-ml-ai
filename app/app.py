@@ -172,7 +172,11 @@ with tab_ted:
                     y=[ted] + [pred[h] for h in HORIZONTY], mode="markers+lines", name="předpověď",
                     line=dict(color=MODRA, dash="dash"), marker=dict(size=[6, 11, 11, 11]),
                     text=["teď"] + [f"za {h} h" for h in HORIZONTY])
-    cary_spa(fig, cil)
+    ymax = max([float(okno.max())] + [pred[h] for h in HORIZONTY] + [r[1] for r in rozmezi.values() if r])
+    cary_spa(fig, cil, ymax)
+    if ymax * 1.6 + 60 < SPA[cil][0]:
+        st.caption(f"Hladina je hluboko pod 1. stupněm povodňové aktivity ({SPA[cil][0]} cm), čáry stupňů se do "
+                   "grafu nevešly.")
     fig.update_layout(yaxis_title="hladina (cm)", height=420, margin=dict(l=10, r=10, t=30, b=50),
                       legend=dict(orientation="h", y=1.08, x=0), hovermode="x unified")
     fig.update_xaxes(tickformat="%d. %m.\n%H:%M")
