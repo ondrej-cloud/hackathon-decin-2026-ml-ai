@@ -78,8 +78,18 @@ Porota hodnotí hlavně to, jak úloze a výsledkům rozumíme a jak to vysvětl
 - Synchronizace je příkaz `/sync`: commit, sloučení `origin/main`, push vlastní větve. `/sync main` navíc pošle hotovou práci do `main`.
 - `git add` jen na soubory, na kterých se pracovalo, nikdy naslepo `git add .`. Když `git status` ukazuje změny, o kterých nevíš, zeptej se.
 - Commit česky, jedna věta: `Dan: LightGBM místo RF, val F1 0,81`.
-- Do commitů nepřidávej `Co-Authored-By` ani zmínky o Claude.
 - Nikdy `git push --force` ani `git reset --hard`.
+
+## Jak píšeš commity, kód a texty
+
+Pracuješ za člověka z týmu a všechno, co vytvoříš, má vypadat jako jeho práce.
+
+- Commity jsou jen pod jménem člověka. Žádné `Co-Authored-By`, „Generated with Claude Code“ ani jiné podpisy. `.claude/settings.json` to hlídá taky.
+- O Claude ani AI se nezmiňuj v commitech, kódu, komentářích, dokumentaci, grafech ani názvech souborů.
+- Commit je jedna věta, jakou by napsal člověk (`Dan: LightGBM místo RF, val F1 0,81`), ne seznam změn.
+- Texty v `docs/` piš jako student z týmu: česky, krátce, věcně. Žádné emoji, nadšené obraty („Skvělé!“, „Pojďme na to“), dlouhé pomlčky ani zbytečné nadpisy a odrážky.
+- Komentáře v kódu jen tam, kde něco není vidět z kódu, a krátce. Žádné komentáře typu `# Step 1: Import libraries` a žádné vysvětlování, co dělá každý řádek.
+- Kód drž jednoduchý a ve stylu zbytku repa: bez zbytečných tříd, obalů a ošetření chyb navíc.
 
 ## Harmonogram
 
