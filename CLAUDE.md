@@ -28,7 +28,7 @@ Nejvíc bodů je za odbornost a pořadatelé řekli rovnou: radši jednodušší
 - **Rozdělení a vyhodnocení:** `src/evaluate.py` (train 2006–2018, val 4 vynechané povodně a 2019–2020, test 2021–2025). Model je `src/models/<nazev>.py` s `fit(X, y, cil, horizont)`, která vrátí `predict(X)`. Spouští se `python src/porovnej.py <nazev>`, srovnání `--prehled`, `--test` jen Ondra. Na Windows před tím `$env:PYTHONUTF8=1`, jinak spadne zápis JSON na kódování. Zadání modelů pro všechny v `docs/UKOL_MODELY.md`.
 - **Propojení modelu a aplikace:** `models/<model>_<cil>_<h>.joblib` je objekt s `predict(X)`, X má 98 sloupců z `features.tabulka(cil, h)`, vrací hladinu v cm v čase vydání + h. Aplikace nejdřív přidá `src/` do `sys.path`. Ridge uloží `python src/uloz_model.py` (5 s; soubory nejsou v Gitu, aplikace si je při chybění vytvoří sama). Zadání aplikace v `docs/UKOL_APLIKACE.md`.
 - **Kdo teď na čem dělá:**
-    - Ondra: neuronová síť `src/models/mlp.py`, ve 21:00 srovnání a výběr
+    - Ondra: neuronová síť hotová (17,8 cm). Srovnání všech čtyř hotové (`docs/POKUSY.md`, pá 20:15): lineární regrese 17,1 cm vede, návrh na finální model. Vyhodnocení opravené po nezávislé kontrole, starší výsledky je potřeba pustit znovu.
     - Dan: LightGBM `src/models/lgbm.py`
     - Honza: lineární regrese `src/models/ridge.py` hotová (val `prumer_povodne` 17,1 cm proti 44,3 u „jako teď“, varianty v `docs/POKUSY.md`, grafy v `docs/grafy/`). Aplikace `app/app.py` běží (`streamlit run app/app.py`, obrazovky „Teď“ a „Jak dobře to funguje“, model se volí v menu). Teď 3D mapa a doplňky podle `docs/UKOL_APLIKACE.md`
     - Tobias: fyzikální model `src/models/fyzika.py`

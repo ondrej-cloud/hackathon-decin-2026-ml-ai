@@ -67,7 +67,7 @@ Ověřeno:
 - Mezi lety 2016 a 2020 nepřekročilo Labe v Děčíně ani 1. stupeň povodňové aktivity, byla to suchá léta.
 - Stupně povodňové aktivity (metadata ČHMÚ): Děčín 400 / 490 / 560 cm, Ústí 450 / 530 / 600 cm.
 
-**Kontrola správnosti** (pá 19:45, ověřeno):
+**Kontrola správnosti** (pá 19:30, ověřeno):
 - Data ČHMÚ jsou za 2024–2025 na hodinu i na centimetr stejná jako balíček od pořadatelů (Děčín, Ústí, Louny, 17 544 hodin, rozdíl 0, bez časového posunu).
 - Bilance vody sedí každý rok: Mělník = Vraňany + Kostelec (poměr 1,00), Ústí = 1,01–1,04 × (Mělník + Louny), Děčín = 1,04–1,08 × Ústí. Navíc přitékají menší přítoky (Bílina, Ploučnice). Žádná stanice nemá v některém roce průtok posunutý.
 - Měrná křivka se nemění: při průtoku 250–300 m³/s je hladina v Děčíně každý rok 204–214 cm, v Ústí 234–242 cm. V Děčíně za 20 let klesla asi o 5 cm, nejspíš kvůli dnu řeky (domněnka).
@@ -77,6 +77,8 @@ Ověřeno:
 - Žádné nulové ani záporné hodnoty.
 
 **Povodně v Děčíně nad 3. stupněm:** 4/2006 (875 cm), 8/2010 (560), 1/2011 (730), 6/2013 (1 072), 12/2023 (624), 9/2024 (649).
+
+**Doba doběhu do Děčína** (ověřeno, `src/doba_dobehu.py`): posun s největší korelací změn průtoku za 6 h, jen trénovací část. Ústí 4 h (korelace 0,93), Kostelec 10 h, Nymburk 10 h, Mělník 13 h, Vraňany 13 h, Louny 16 h, Praha-Chuchle 17 h, Předměřice a Přelouč 18 h, Beroun 23 h, Nespeky 25 h. Při velké vodě (Děčín nad 300 cm) vychází skoro stejně, jen korelace je silnější (Mělník 0,76 místo 0,51). Do Ústí je to o 3–4 h méně (Mělník 9 h, Praha 13 h). Z Lounů a vzdálených stanic je korelace slabá (0,2–0,3), doba je tam jen přibližná.
 
 **Rozdělení** (`src/evaluate.py`, dělení v čase, ne náhodně):
 - train: 2006–2018 bez validačních povodní a 20 dní kolem nich,

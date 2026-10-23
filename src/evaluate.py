@@ -1,7 +1,7 @@
 """Společné rozdělení na train / val / test a vyhodnocení. Nikdo ho nemění jen pro svůj model.
 
 - train: 2006–2018 bez validačních povodní a 20 dní kolem nich
-- val: 4 vynechané povodně (14 dní před vrcholem až 5 dní po něm) a klidné roky 2019–2020
+- val: 4 vynechané povodně (16 dní před vrcholem až 5 dní po něm) a klidné roky 2019–2020
 - test: 2021–2025 (povodně 12/2023 a 9/2024), pouští se jednou na konci, rozhoduje Ondra.
   Finální model se pak trénuje na všem do konce 2020.
 """
@@ -14,7 +14,7 @@ from features import NEJSTARSI
 POVODNE_VAL = ["2006-04-03", "2009-03-07", "2010-09-29", "2011-01-17"]
 KLID_VAL = ("2019-01-01", "2020-12-31")
 TEST_OD = "2021-01-01"
-OKNO_VAL, PRED, PO, VYNECHAT = pd.Timedelta(days=14), pd.Timedelta(days=7), pd.Timedelta(days=5), pd.Timedelta(days=20)
+OKNO_VAL, PRED, PO, VYNECHAT = pd.Timedelta(days=16), pd.Timedelta(days=7), pd.Timedelta(days=5), pd.Timedelta(days=20)
 
 
 def povodne(H, prah):
@@ -47,7 +47,11 @@ def casti(cil, horizont, finalni=False):
 
 
 def varovani(y, pred, prah, horizont):
-    """Varování před překročením prahu. y a pred: index je čas vydání t, hodnota je stav v t + horizont."""
+    """Varování před překročením prahu. y a pred: index je čas vydání t, hodnota je stav v t + horizont.
+
+    Předstih je nejvýš horizont: dřívější varování znamená, že model ohlásil povodeň dřív, než mohla přijít.
+    Propásnutá povodeň se do průměrného předstihu počítá jako 0.
+    """
     hodiny = pd.date_range(y.index.min(), y.index.max(), freq="h")
     y, pred = y.reindex(hodiny), pred.reindex(hodiny)
     alarm = (pred >= prah).astype(int)
@@ -58,7 +62,7 @@ def varovani(y, pred, prah, horizont):
     for t in zacatky:
         vydane = alarm[t - pd.Timedelta(hours=48): t + pd.Timedelta(hours=horizont - 1)]
         if vydane.any():
-            predstih.append(horizont - (vydane.idxmax() - t) / pd.Timedelta(hours=1))
+            predstih.append(min(horizont, horizont - (vydane.idxmax() - t) / pd.Timedelta(hours=1)))
         else:
             predstih.append(0.0)
             propasnuto += 1
@@ -87,6 +91,8 @@ def vyhodnot(y, pred, cil, horizont):
     out = dict(
         mae=round(e.mean(), 1),
         mae_povodne=round(e[okno].mean(), 1),
+        # kladná = model na povodních soustavně nadhodnocuje (pozor, nadhodnocování zlepšuje předstih)
+        bias_povodne=round((pred - y)[okno].mean(), 1),
         mae_nad_1spa=round(e[y >= spa1].mean(), 1),
         chyba_vrcholu=round(float(np.mean(np.abs(vrcholy))), 1),
         vrcholy_o_kolik=[round(float(v)) for v in vrcholy],

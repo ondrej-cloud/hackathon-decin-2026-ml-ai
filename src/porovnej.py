@@ -9,6 +9,7 @@ Model je soubor src/models/<nazev>.py s funkcí fit(X, y, cil, horizont), která
 Volitelně PARAMETRY = {...}, uloží se k výsledku.
 """
 import argparse
+import hashlib
 import importlib
 import json
 import subprocess
@@ -25,8 +26,16 @@ from features import tabulka
 ROOT = Path(__file__).resolve().parents[1]
 RESULTS = ROOT / "results"
 VSE = [(c, h) for c in ("decin", "usti") for h in (12, 24, 36)]
-SLOUPCE = ["mae", "mae_povodne", "chyba_vrcholu", "spa2_predstih_h", "spa2_propasnuto", "spa2_plane_poplachy",
+SLOUPCE = ["mae", "mae_povodne", "bias_povodne", "chyba_vrcholu", "spa2_predstih_h", "spa2_propasnuto", "spa2_plane_poplachy",
            "spa3_predstih_h", "spa3_propasnuto", "trenink_s"]
+
+
+def verze():
+    """Otisk dat, vstupů a vyhodnocení. Výsledky s jiným otiskem --prehled nemíchá s novými."""
+    h = hashlib.sha1()
+    for f in ("data/external/labe_hodinove.parquet", "src/features.py", "src/evaluate.py"):
+        h.update((ROOT / f).read_bytes())
+    return h.hexdigest()[:8]
 
 
 def spust(nazev, test=False, rychle=False):
@@ -41,6 +50,7 @@ def spust(nazev, test=False, rychle=False):
         predict = model.fit(X[tr], y[tr], cil=cil, horizont=h)
         t1 = time.time()
         pred = pd.Series(np.asarray(predict(X[ev]), dtype=float), index=X.index[ev])
+        assert np.isfinite(pred).all(), f"{nazev} vrátil NaN nebo nekonečno ({cil} +{h} h)"
         m = vyhodnot(y[ev], pred, cil, h)
         radky.append(dict(model=nazev, cil=cil, horizont=h, **m, trenink_s=round(t1 - t0, 1),
                           predpoved_s=round(time.time() - t1, 2)))
@@ -49,12 +59,12 @@ def spust(nazev, test=False, rychle=False):
 
     cas = datetime.now()
     autor = subprocess.run(["git", "config", "user.name"], capture_output=True, text=True).stdout.strip()
-    zaznam = dict(autor=autor, cas=cas.isoformat(timespec="minutes"), model=nazev, cast=cast, rychle=rychle,
+    zaznam = dict(autor=autor, cas=cas.isoformat(timespec="seconds"), verze=verze(), model=nazev, cast=cast, rychle=rychle,
                   popis=(model.__doc__ or "").strip().split("\n")[0],
                   parametry=getattr(model, "PARAMETRY", {}), vysledky=radky)
     RESULTS.mkdir(exist_ok=True)
-    soubor = RESULTS / f"{cas:%Y-%m-%d_%H%M}_{nazev}{'_test' if test else ''}.json"
-    soubor.write_text(json.dumps(zaznam, ensure_ascii=False, indent=1))
+    soubor = RESULTS / f"{cas:%Y-%m-%d_%H%M%S}_{nazev}{'_test' if test else ''}.json"
+    soubor.write_text(json.dumps(zaznam, ensure_ascii=False, indent=1), encoding="utf-8")
     if not rychle:
         (RESULTS / "predpovedi").mkdir(exist_ok=True)
         pd.concat(predpovedi).rename_axis("cas_vydani").to_parquet(
@@ -64,11 +74,21 @@ def spust(nazev, test=False, rychle=False):
 
 
 def prehled(cast="val"):
-    posledni = {}
+    posledni, stare = {}, set()
     for f in sorted(RESULTS.glob("*.json")):
-        z = json.loads(f.read_text())
-        if z["cast"] == cast and not z.get("rychle"):
+        b = f.read_bytes()
+        try:
+            z = json.loads(b.decode("utf-8"))
+        except UnicodeDecodeError:  # starší výsledky z Windows bez UTF-8
+            z = json.loads(b.decode("cp1250"))
+        if z["cast"] != cast or z.get("rychle"):
+            continue
+        if z.get("verze") == verze():
             posledni[z["model"]] = z
+        else:
+            stare.add(z["model"])
+    if stare - set(posledni):
+        print("jen se starou verzí dat nebo vyhodnocení (pusť je znovu):", ", ".join(sorted(stare - set(posledni))))
     if not posledni:
         return pd.DataFrame()
     return pd.DataFrame([r for z in posledni.values() for r in z["vysledky"]])

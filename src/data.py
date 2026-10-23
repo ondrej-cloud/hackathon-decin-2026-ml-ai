@@ -51,9 +51,9 @@ def postav():
         for k, v in parts.items()
     }).sort_index()
     D = D.reindex(pd.date_range(OD, f"{DO} 23:00", freq="h", tz="UTC"))
-    # chyba měření: v Děčíně stav až 1 019 cm při průtoku kolem 120 m3/s, Ústí přitom 161 cm
-    D.loc["2006-02-05":"2006-02-07", "decin_H"] = None
-    D = D.interpolate(limit=6, limit_area="inside")
+    # chyba měření: v Děčíně stav až 1 019 cm při průtoku kolem 120 m3/s, Ústí přitom 161 cm,
+    # a do 8. 2. dopoledne hladina nesedí s průtokem (nejspíš led). Nedoplňujeme, surová data jinak díry nemají.
+    D.loc["2006-02-05":"2006-02-08 09:00", "decin_H"] = None
     cols = [f"{k}_{v}" for k in CILE for v in "HQ"] + [f"{k}_Q" for k in PROTI_PROUDU]
     D[cols].astype("float32").rename_axis("cas").to_parquet(SOUBOR)
     return D[cols]

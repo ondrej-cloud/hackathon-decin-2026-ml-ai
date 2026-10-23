@@ -50,6 +50,9 @@ Hodnoty jsou syrové, bez úprav. Odmocninu, škálování a podobně si dělá 
 | `spa2_propasnuto` | povodně, před kterými nevaroval vůbec |
 | `spa2_plane_poplachy` | varování, po kterých povodeň nepřišla |
 | `spa3_...` | totéž pro 3. stupeň (Děčín 560 cm, Ústí 600 cm) |
+| `bias_povodne` | o kolik model na povodních v průměru nadhodnocuje (+) nebo podhodnocuje (−). Soustavné nadhodnocování zlepšuje předstih, proto se dívej na obojí. |
+
+Předstih je nejvýš horizont a propásnutá povodeň se do něj počítá jako 0. Každý výsledek si ukládá otisk verze dat a vyhodnocení (`verze` v JSON). `--prehled` ukazuje jen výsledky s aktuální verzí, starší vypíše jako „pusť je znovu“.
 
 **S čím se srovnáváme:**
 
