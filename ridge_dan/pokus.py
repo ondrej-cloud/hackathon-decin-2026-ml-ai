@@ -231,6 +231,7 @@ def cv_alphy(X, y, c, zmena=False, vahy=None, alphy=ALPHY, prutok=False, brzda=N
         udalosti = {k: e[pos].mean() for k, pos in okna.items()}
         velke = [udalosti[k] for k, pos in okna.items() if y_np[pos].max() >= 490]
         radky[a] = dict(cv_povodne=round(float(np.mean(list(udalosti.values()))), 2), cv_mae=round(e.mean(), 2),
+                        cv_povodne_presne=float(np.mean(list(udalosti.values()))),
                         cv_velke=round(float(np.mean(velke)), 2),
                         cv_vzestup=round(e[vz].mean(), 2), cv_bias_vzestup=round((p_np - y_np)[vz].mean(), 2),
                         cv_udalosti={k: round(v, 1) for k, v in udalosti.items()})
@@ -239,7 +240,9 @@ def cv_alphy(X, y, c, zmena=False, vahy=None, alphy=ALPHY, prutok=False, brzda=N
 
 def nejlepsi_alpha(X, y, c, zmena=False, vahy=None, alphy=ALPHY, prutok=False, brzda=None):
     radky, _ = cv_alphy(X, y, c, zmena, vahy, alphy, prutok, brzda)
-    a = min(radky, key=lambda a: radky[a]["cv_povodne"])
+    # z nezaokrouhlených hodnot; co je do 0,01 cm od nejlepší, bere se ta největší alpha (víc regularizace)
+    nej = min(r["cv_povodne_presne"] for r in radky.values())
+    a = max(a for a, r in radky.items() if r["cv_povodne_presne"] <= nej + 0.01)
     return a, radky
 
 
@@ -269,6 +272,17 @@ def srovnani(T, y, pred):
                 jako_ted=Hd.metriky(y_tym[spol], ted[spol], H, CIL, HORIZONT))
 
 
+@cache
+def otisk():
+    """Commit, ze kterého se pouští, příznak neuložených změn v ridge_dan/ a otisk tabulky."""
+    import hashlib
+    import subprocess
+    git = lambda *a: subprocess.run(["git", *a], capture_output=True, text=True, cwd=ZDE).stdout.strip()  # noqa: E731
+    return dict(commit=git("rev-parse", "--short", "HEAD"), zmeny=bool(git("status", "--porcelain", "--", ".")),
+                tabulka=hashlib.sha1(data_ridge.SOUBOR.read_bytes()).hexdigest()[:8],
+                evaluate=Hd.OTISK_EVALUATE[:8])
+
+
 def zapis(zaznam):
     LOG.parent.mkdir(exist_ok=True)
     with open(LOG, "a", encoding="utf-8") as f:
@@ -290,7 +304,7 @@ def spust(nazev, volby, s_val=False):
         alpha, radky = volby["alpha"], cv_alphy(X, y, c, zmena, vahy, (volby["alpha"],), prutok, brzda)[0]
     else:
         alpha, radky = nejlepsi_alpha(X, y, c, zmena, vahy, prutok=prutok, brzda=brzda)
-    z = dict(cas=datetime.now().isoformat(timespec="seconds"), nazev=nazev, volby=volby, sloupcu=X.shape[1],
+    z = dict(cas=datetime.now().isoformat(timespec="seconds"), nazev=nazev, volby=volby, otisk=otisk(), sloupcu=X.shape[1],
              radku_train=int((c == "train").sum()), alpha=alpha, **radky[alpha],
              cv_alphy={a: r["cv_povodne"] for a, r in radky.items()})
     if s_val:
@@ -386,6 +400,8 @@ POKUSY |= {
     "m_snih": L2 | dict(snih=True),
     "m_dlouhe": L2 | dict(zpozdeni_q=(0, 3, 6, 12, 18, 24, 36, 48)),
 }
+
+POKUSY["finalni"] = VSE | dict(alpha=1.0)  # = model_ridge.FINALNI, ALPHA
 
 if __name__ == "__main__":
     p = argparse.ArgumentParser()

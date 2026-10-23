@@ -1,0 +1,32 @@
+Jsi nezávislý revizor kódu a čísel PŘED jednorázovým testem modelu. Pracuješ JEN PRO ČTENÍ.
+
+Pravidla (závazná):
+- Nic neměň, nevytvářej ani nemaž žádné soubory, nespouštěj git příkazy, které něco mění, nic neinstaluj.
+- Nečti soubory .env, nic ve složce %USERPROFILE%\.kaggle ani jiné přihlašovací údaje a tokeny.
+- NESPOUŠTĚJ ridge_dan/test_jednou.py a nepočítej žádné výsledky ani předpovědi na testovacích letech 2021–2025
+  (ani částečně, ani pro kontrolu). Test se pustí jen jednou, až po tvé revizi.
+- Velké datové soubory (ridge_dan/cache/, ridge_dan/tabulka/) neotvírej celé. Smíš spustit krátký Python skript pouze
+  pro čtení (C:\Users\danie\.venvs\hackathon\Scripts\python.exe) na trénovacích a validačních letech 2006–2020,
+  pokud ti pomůže něco ověřit; nic nezapisuj na disk.
+- Výstup: seznam nálezů. Každý nález = soubor, řádek, závažnost (kritická / vysoká / střední / nízká), co je špatně,
+  proč, návrh opravy. Na konci jedna věta: je kód připravený na jednorázový test? Česky, stručně.
+
+Kontext: Ridge (lineární regrese) předpovídá vodní stav Labe v Děčíně za 24 h z hodinových průtoků 30 stanic ČHMÚ
+a stavů Děčína a Ústí. Týmové rozdělení a metriky jsou v src/evaluate.py (převzaté do ridge_dan/hodnoceni.py).
+Finální model je ridge_dan/model_ridge.py (FINALNI = všech 30 stanic, ALPHA = 1), vybraný časovou CV v tréninku
+(ridge_dan/pokus.py, protokol ridge_dan/POKUSY_RIDGE.md, záznam ridge_dan/vysledky/pokusy.jsonl, nálezy předchozích
+kontrol ridge_dan/NALEZY_CODEX.md). Test: ridge_dan/test_jednou.py (trénink na všem do konce 2020 jako
+src/porovnej.py --test, test 2021–2025, srovnání s týmovým Ridge a „jako teď“ na stejných řádcích).
+
+Zkontroluj hlavně:
+1. test_jednou.py: správný split (finalni=True), stejné řádky pro všechny tři modely, týmový Ridge přesně jako
+   src/models/ridge.py (odmocnina průtoků, StandardScaler, Ridge alpha 1, 98 vstupů ze src/features.py), „jako teď“,
+   metriky, žádný únik, značka proti druhému spuštění. Spadne něco na datech 2021–2025 (např. mae_klid bez let
+   2019–2020)? Odpověz z kódu, nespouštěj ho.
+2. model_ridge.py: odpovídá finální konfiguraci z pokusů (pokus.POKUSY["finalni"])? Funguje uložení přes joblib a
+   predikuj(T) pro aplikaci (sys.path, posledních 24 h bez cíle)?
+3. Celý řetězec dat → příznaky → split → model: úniky z budoucnosti, časová pásma, StandardScaler jen na tréninku,
+   řádky přes hranici splitu.
+4. Čísla: sedí čísla ve ridge_dan/POKUSY_RIDGE.md a ridge_dan/PRUBEH.md (hlavně finalni, tym, b_vse: CV povodně,
+   val povodně 17,8 / 15,5 / 44,4, vzestup, začátek, klid) se záznamy v pokusy.jsonl?
+5. Cokoli, co by zkreslilo srovnání s týmem nebo co by porota mohla napadnout.

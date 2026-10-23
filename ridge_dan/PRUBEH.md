@@ -22,6 +22,11 @@
 - pá 21:08 · jednotlivé změny proti `b_vse` (14,17): denní srážky 14,18, sníh+teplota 14,45, sezónnost 14,07, interakce stav×změna 14,32 → zatím nic nad hranici 0,3 cm.
 - pá 21:10 · cíl „průtok + měrná křivka“ slepá ulička (CV 29–40 cm, chyby v průtoku dané velkou vodou jsou při malém průtoku ±15 cm); husté zpoždění + změny dohromady 13,90 (nesčítají se); srážky a sníh po opravě z Codexu znovu 14,1–14,4.
 - pá 21:11 · ablace skupin stanic (bez skupiny z 30 / jen tým + skupina) běží.
-- pá 21:15 · MILNÍK val (nahlédnutí 1 a 2): týmové vstupy 15,5, 30 stanic 17,8 na povodních (horší kvůli 2006, přestřelení na tání), ale lepší vzestup 28,5/31,5, začátek 28,1/35,4, klid 6,1/6,9, předstih SPA a 0 planých poplachů.
-- pá 21:30 · regularizace, brzda na nové stanice, řidší zpoždění, aktualizace podle chyby: nic nepomohlo v CV.
-- pá 21:43 · dopředná volba skupin stanic: tým + horní Ohře + horní Labe (133 sloupců, CV 14,41) je poslední krok nad hranicí 0,3 cm; doplňky k němu všechny pod hranicí.
+- pá 21:17 · MILNÍK val (nahlédnutí 1 a 2): týmové vstupy 15,5, 30 stanic 17,8 na povodních (horší kvůli 2006, přestřelení na tání), ale lepší vzestup 28,5/31,5, začátek 28,1/35,4, klid 6,1/6,9, předstih SPA a 0 planých poplachů.
+- pá 21:25 · regularizace, brzda na nové stanice, řidší zpoždění, aktualizace podle chyby: nic nepomohlo v CV.
+- pá 21:33 · dopředná volba skupin stanic: tým + horní Ohře + horní Labe (133 sloupců, CV 14,41) je poslední krok nad hranicí 0,3 cm; doplňky k němu všechny pod hranicí.
+- pá 21:36 · obal pro aplikaci `model_ridge.py` (joblib 9 kB, `predict(X)` i `predikuj(T)`) a `test_jednou.py` (značka proti druhému spuštění) hotové; Codex (b) na protokol běží.
+- pá 21:40 · PŘEDEM URČENO: kandidát na finální model = `l_tym_plus_2` (tým + horní Ohře + horní Labe, alpha 0,01), vybraný jen z CV; validace (nahlédnutí č. 3) ho jen popíše, podle ní kandidáta neměním (jen když odhalí chybu v kódu). Změnit ho může jen další pokus, který projde pravidlem v CV.
+- pá 21:39 · Codex (b) hotový za 138 s: 2 vysoké nálezy (neúplná evidence validace a adaptivní použití; kompaktní kandidát je v CV horší než ponechaný `b_vse`), 5 středních, 1 nízký; všechny opravené nebo zdůvodněné v NALEZY_CODEX.md.
+- pá 21:41 · předběžné určení kandidáta z 21:40 ruším: podle výslovného pravidla zůstává `b_vse`; alpha nově z nezaokrouhlených hodnot se shodou → větší alpha (1 místo 0,01, výsledek stejný).
+- pá 21:42 · val nahlédnutí č. 4 (`finalni` = `b_vse`, alpha 1): povodně 17,8 (tým 15,5, jako teď 44,4), vzestup 28,5, začátek 28,1, klid 6,1; nejistota po blocích: 30 stanic proti týmu −1,56 ± 0,62 cm v CV, lepší ve 4 z 5 bloků.

@@ -57,7 +57,8 @@ def metriky(y, pred, H, cil="decin", horizont=24):
     # rychlé stoupání: za horizont hodin stoupne aspoň o 50 cm; začátek: v posledních 6 h ještě skoro nestoupalo
     vzestup = zmena >= 50
     zacatek = vzestup & ((ted - H.shift(6).reindex(y.index)) < 10)
-    m |= dict(mae_klid=round(e[klid].mean(), 1),
+    nizko = (y < 300) & (ted < 300)  # klid použitelný i pro test (tam nejsou roky 2019–2020)
+    m |= dict(mae_klid=round(e[klid].mean(), 1) if klid.any() else None, mae_pod_300=round(e[nizko].mean(), 1),
               mae_vzestup=round(e[vzestup].mean(), 1), bias_vzestup=round((pred - y)[vzestup].mean(), 1),
               n_vzestup=int(vzestup.sum()),
               mae_zacatek=round(e[zacatek].mean(), 1), bias_zacatek=round((pred - y)[zacatek].mean(), 1),

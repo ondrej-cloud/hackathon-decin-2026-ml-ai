@@ -14,7 +14,7 @@ Protokol proti přeladění validace:
 Laťky na validaci (stejné řádky): týmový Ridge 15,5 cm (Děčín +24 h; 17,1 je jeho průměr přes 6 kombinací),
 „jako teď“ 44,4 cm.
 
-## pá 20:58 · základ: týmové vstupy na vlastní tabulce
+## pá 20:56 · základ: týmové vstupy na vlastní tabulce
 - Co: přesně týmové vstupy (98 sloupců: stav Děčína a Ústí se 7 zpožděními, průtoky 12 stanic se 7 zpožděními,
   odmocnina průtoků), Ridge alpha 1 (`tym`); totéž s alphou z CV (`tym_cv`) a s cílem „změna hladiny“ (`tym_zmena`).
 - Proč: ověřit, že vlastní tabulka a převzaté vyhodnocení dávají totéž co týmový model, a mít laťku pro CV.
@@ -23,21 +23,21 @@ Laťky na validaci (stejné řádky): týmový Ridge 15,5 cm (Děčín +24 h; 17
   Na validaci stejné řádky jako týmový model, 15,5 cm (viz PRUBEH 20:44).
 - Ponecháno: jako laťka. Cíl „změna hladiny“ ne (nic nedává, jednodušší je hladina).
 
-## pá 21:00 · všech 30 stanic (`b_vse`)
+## pá 20:57 · všech 30 stanic (`b_vse`)
 - Co: k 12 týmovým stanicím 18 dalších (Ploučnice ×3, Bílina, Ohře ×2, Berounka ×5, Vltava Zbraslav, Sázava ×2,
   Orlice, Chrudimka, Cidlina, Jizera Bakov), stejná zpoždění 0–36 h, odmocnina.
 - Proč: Ploučnice a Bílina se vlévají mezi Ústím a Děčínem, dnes je model nevidí; vzdálenější stanice dávají náskok.
 - Výsledek: CV povodně 14,17 cm (−1,47), CV vzestup 28,8 (−5,0), podhodnocení vzestupu −21 místo −27.
 - Ponecháno: ano, nový základ.
 
-## pá 21:01 · změny za 1/3/6/12 h a zrychlení (`c_vse_zmeny`)
+## pá 20:58 · změny za 1/3/6/12 h a zrychlení (`c_vse_zmeny`)
 - Co: k `b_vse` změny průtoku a stavu za 1, 3, 6, 12 h a zrychlení (Q(t) − 2Q(t−3) + Q(t−6)).
 - Proč: začátek vlny poznáme podle toho, že se stoupání zrychluje.
 - Výsledek: CV povodně 13,90 (−0,27), CV vzestup 28,2 (−0,6). Lineární model si většinu změn umí složit ze zpoždění
   sám, nové jsou jen změny za 1 h.
 - Ponecháno: zatím ne (pod hranicí 0,3 cm), zkusím znovu v kombinaci na konci.
 
-## pá 21:01 · transformace průtoku (`c_vse_log`, `c_vse_bez_transformace`)
+## pá 20:59 · transformace průtoku (`c_vse_log`, `c_vse_bez_transformace`)
 - Výsledek: log 16,82, bez transformace 24,22, odmocnina 14,17. Odmocnina nejlíp napodobí měrnou křivku
   (stav roste s průtokem zhruba jako odmocnina), log ji přehne, lineární průtok ji nenapodobí vůbec.
 - Ponecháno: odmocnina (beze změny).
@@ -47,7 +47,7 @@ Každý zvlášť, alpha vždy z CV. CV povodně / CV vzestup:
 
 | Pokus | Co a proč | CV povodně | CV vzestup | Ponecháno |
 |---|---|---|---|---|
-| `d_srazky` | denní srážky po 11 povodích, součty za 1/2/3/5 dní (déšť, který ještě nedotekl do stanic) | 14,18 | 28,9 | ne |
+| `d_srazky` | denní srážky po 11 povodích, součty za 1/2/3/5 dní (déšť, který ještě nedotekl do stanic) | 14,18 (po opravě hranic z Codexu a 14,17) | 28,9 | ne |
 | `d_snih` | výška sněhu po povodích, její změna za 1 a 3 dny, teplota, tání = sníh × kladná teplota (3 ze 4 val povodní s táním) | 14,45 | 28,9 | ne |
 | `d_sezona` | sin/cos dne v roce | 14,07 | 28,8 | ne (−0,10) |
 | `d_interakce` | stav × změna stavu za 6 h | 14,32 | 29,0 | ne |
@@ -77,7 +77,7 @@ Váhy na vzestup zmenšují podhodnocení na stoupání (−21 → −16 cm), al
   stejnou informaci (co se dělo v posledních 1–2 hodinách).
 - Ponecháno: ne (pod hranicí, 469 sloupců místo 224).
 
-## pá 21:12 · které nové stanice pomáhají: ablace po skupinách (`g_*`)
+## pá 21:11 · které nové stanice pomáhají: ablace po skupinách (`g_*`)
 - Co: z 30 stanic vždy jednu skupinu vynechat (`g_bez_*`, laťka `b_vse` 14,17) a k 12 týmovým vždy jednu skupinu
   přidat (`g_tym_plus_*`, laťka `tym` 15,64).
 - Proč: zjistit, odkud je zisk 1,5 cm, a nenechat v modelu stanice, které jen přidávají šum.
@@ -98,14 +98,14 @@ Váhy na vzestup zmenšují podhodnocení na stoupání (−21 → −16 cm), al
   Bílina 13–52 m³/s. Vlna „z ničeho“ u Děčína tedy z nich nevzniká, větší podíl má neměřené území a načasování.
 - Ponecháno: zatím 30 stanic, štíhlejší sady se zkouší v `i_*`.
 
-## pá 21:13 · štíhlejší sady a dva režimy (`i_*`, `h_*`)
+## pá 21:14 · štíhlejší sady a dva režimy (`i_*`, `h_*`)
 - `i_bez_pl_saz_zbr` (bez Ploučnice, horní Sázavy a Zbraslavi) 14,19, `i_jen_uzitecne` (tým + horní Ohře, horní Labe,
   Berounka, Jizera) 14,23: stejně jako všech 30 (14,17), vzestup o 0,5 horší. Ponecháno: ne.
 - Dva režimy: všechny vstupy ještě jednou vynásobené indikátorem „Děčín ≥ 250 / 350 cm“ (`h_rezim*`) 14,26 / 15,16,
   nebo „za 6 h stouplo o ≥ 5 / 15 cm“ (`h_stoupa*`) 14,28 / 14,55. Model se dvěma sklony je přeučený (448 sloupců).
   Ponecháno: ne.
 
-## pá 21:15 · MILNÍK, validace nahlédnutí č. 1 a 2 (`tym`, `b_vse`)
+## pá 21:17 · MILNÍK, validace nahlédnutí č. 1 a 2 (`tym`, `b_vse`)
 - Výsledek na val (stejných 19 264 řádků):
 
 | | týmové vstupy (`tym`) | 30 stanic (`b_vse`) | „jako teď“ |
@@ -128,7 +128,7 @@ Váhy na vzestup zmenšují podhodnocení na stoupání (−21 → −16 cm), al
   se směrodatnou chybou 2,2, tedy v rámci náhody.
 - Rozhodnutí: dál se řídím CV (pravidlo úlohy), ale zkusím zmenšit protichůdné váhy (regularizace, menší sady).
 
-## pá 21:20–21:30 · pokusy proti protichůdným vahám
+## pá 21:18–21:30 · pokusy proti protichůdným vahám
 - Alpha: CV je plochá do 30 (14,17 → 14,27) a pak roste (100: 14,46, 1 000: 15,72). Pravidlo jedné směrodatné chyby
   jasný výběr nedává (rozdíly jsou všude asi 1,2–1,5 SE). Ponecháno: alpha z CV.
 - Brzda jen na 18 nových stanic (standardizované sloupce × 1/k, tj. penalizace k²; `k_brzda10/30/100`): CV vždy
@@ -140,15 +140,15 @@ Váhy na vzestup zmenšují podhodnocení na stoupání (−21 → −16 cm), al
   v t − 24 h, učeno na chybách mimo vlastní blok (vnořená CV). Tým 15,63 → 15,57, 30 stanic 14,17 → 14,08.
   Chyby se za 24 h skoro rozpadnou. Ponecháno: ne.
 
-## pá 21:40 · dopředná volba skupin stanic (`l_tym_plus_*`)
+## pá 21:34 · dopředná volba skupin stanic (`l_tym_plus_*`)
 - Co: k týmovým stanicím přidávat skupiny v pořadí podle jejich samostatného přínosu, CV po každém kroku.
 - Výsledek: tým 15,64 → + horní Ohře 14,90 (−0,74) → + horní Labe 14,41 (−0,49) → + Berounka 14,29 (−0,12) →
   + Jizera 14,23 (−0,06) → + Bílina 14,19 (−0,04) → + Zbraslav 14,10 (−0,09) → + horní Sázava 14,05 (−0,05).
 - Ponecháno: podle pravidla (krok aspoň 0,3 cm) končí volba po dvou skupinách: **tým + horní Ohře (Žatec,
   Karlovy Vary) + horní Labe (Orlice Týniště, Chrudimka Nemošice, Cidlina Sány)**, 133 sloupců, CV 14,41
-  (`l_tym_plus_2`). Zbylých 0,36 cm do 30 stanic je součet malých kroků pod hranicí šumu.
+  (`l_tym_plus_2`). Zbylé kroky (do 14,05 s 203 sloupci, tj. všech 30 stanic bez Ploučnice) jsou každý pod hranicí. Proti `b_vse` (224 sloupců, 14,17) je `l_tym_plus_2` o 0,24 horší, viz oprava ve 21:43.
 
-## pá 21:43 · doplňky ke kompaktnímu základu `l_tym_plus_2` (14,41)
+## pá 21:35 · doplňky ke kompaktnímu základu `l_tym_plus_2` (14,41)
 
 | Pokus | CV povodně | velké | CV vzestup | Ponecháno |
 |---|---|---|---|---|
@@ -161,3 +161,36 @@ Váhy na vzestup zmenšují podhodnocení na stoupání (−21 → −16 cm), al
 | zpoždění až 48 h (`m_dlouhe`) | 14,49 | 23,3 | 30,3 | ne |
 
 „velké“ = CV jen na 5 tréninkových povodních s vrcholem nad 490 cm (2. SPA), jako týmová metrika.
+
+## pá 21:43 · oprava podle Codexu (b): pravidla, evidence validace, finální kandidát
+- Pravidla výběru, teď výslovně (platí pro všechny záznamy výš, rozhodnutí podle nich se nemění):
+  přidání se ponechá, když zlepší CV povodně aspoň o 0,3 cm a nezhorší CV vzestup; náhrada ponechaného modelu
+  jednodušším jen tehdy, když CV povodně nezhorší o víc než 0,1 cm a CV vzestup o víc než 0,3 cm.
+  Alpha: z nezaokrouhlených hodnot CV, ze všech alph do 0,01 cm od nejlepší ta největší (víc regularizace).
+- `l_tym_plus_2` (kompaktní, 133 sloupců) tím pravidlem neprojde: proti ponechanému `b_vse` CV povodně
+  14,41 vs 14,17 (+0,24) a CV vzestup 30,34 vs 28,75 (+1,6). Že jsem ho v 21:33 označil za kandidáta, bylo
+  ovlivněné rozborem validace 2006 (hledal jsem model s menšími protichůdnými vahami), ne CV. **Vracím se k `b_vse`.**
+- Evidence všech nahlédnutí do validace (Codex správně upozornil, že `pokusy.jsonl` jich ukazoval jen část):
+  1. pá 20:44, zkušební běh bez zápisu: týmový Ridge na mé tabulce 15,5 a „jako teď“ 44,4 (reprodukce laťky,
+     model se podle toho nevybíral);
+  2. pá 21:17, milník: `tym` 15,5 a `b_vse` 17,8 (záznamy 1 a 2 v `pokusy.jsonl`);
+  3. pá 21:18–21:22, rozbor téhož běhu po povodních a fázích (`rozbor_val.py`), průběh předpovědí 2006 a příspěvky
+     stanic 1. 4. 2006. To už bylo adaptivní použití validace: motivovalo pokusy s regularizací, brzdou, řidšími
+     zpožděními a kompaktní sadou (`k_*`, `j_*`, `l_*`, `m_*`). O nich ale rozhodovala jen CV a žádný z nich
+     nakonec nebyl ponechán;
+  4. pá 21:42, `finalni` = `b_vse` s alphou 1 podle nového pravidla pro shody: val 17,8 (popis finálního modelu).
+- Nejistota po blocích a epizodách místo jen přes 18 povodní (povodně 29. 12. 2012 a 8. 1. 2013 se překrývají):
+
+| Rozdíl CV povodně | přes povodně (n = 18) | přes epizody (n = 17) | přes bloky (n = 5) | lepší v blocích |
+|---|---|---|---|---|
+| `b_vse` − `tym` | −1,48 ± 0,38 | −1,50 ± 0,38 | −1,56 ± 0,62 | 4 z 5 (horší 2008–09) |
+| `l_tym_plus_2` − `tym` | −1,24 ± 0,27 | −1,26 ± 0,28 | −1,35 ± 0,39 | 5 z 5 |
+| `l_tym_plus_2` − `b_vse` | +0,24 ± 0,29 | +0,24 ± 0,30 | +0,21 ± 0,28 | 1 z 5 |
+| `g_bez_ploucnice` − `b_vse` | −0,11 ± 0,19 | −0,13 ± 0,20 | −0,21 ± 0,26 | 2 z 5 |
+| `d_huste` − `b_vse` | −0,27 ± 0,14 | −0,29 ± 0,15 | −0,26 ± 0,10 | 5 z 5 |
+
+  (± = směrodatná chyba průměru rozdílů.) Přínos 18 nových stanic proti týmu je vidět i po blocích. Husté zpoždění
+  je proti `b_vse` malé, ale konzistentní zlepšení; podle předem daného prahu 0,3 cm ho nepřidávám.
+- Finální model: **`b_vse` = všech 30 stanic, zpoždění jako v týmu (stav 0/1/2/3/6/12/24 h, průtok 0/3/6/12/18/24/36 h),
+  odmocnina průtoků, StandardScaler + Ridge(alpha = 1)**, 224 vstupů. CV povodně 14,17 (tým 15,64), CV vzestup 28,8
+  (33,8). Val povodně 17,8 (tým 15,5), vzestup 28,5 (31,5), začátek vzestupu 28,1 (35,4), klid 6,1 (6,9).

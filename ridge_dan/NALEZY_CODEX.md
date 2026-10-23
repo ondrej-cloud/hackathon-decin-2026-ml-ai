@@ -10,3 +10,17 @@ Celkově: přímý únik budoucích měření nenašel, posun denních srážek 
 |---|---|---|
 | `priznaky.py`: `nejstarsi` nezahrnuje stáří denních dat (srážkový součet až 47 h + posuny, sníh 48 h), takže řádek na začátku validace může obsahovat srážky z tréninkového období | střední | Opraveno: u srážek se přičítá 24·(k−1) + 23 + 25 h, u sněhu 72 + 23 + 25 h. Není to únik z budoucnosti (data jsou starší než t), ale porušovalo to pravidlo „řádky přes hranici splitu vyhodit“. Pokusy se srážkami a sněhem jsem pustil znovu. |
 | `priznaky.py`: `vyplnit_h` (ffill) prodlužuje historii vstupu, ale `nejstarsi` se nezvětší | střední | Opraveno: `nejstarsi += vyplnit_h`. Volba zatím nebyla použitá. |
+
+## (b) v polovině, protokol a přeladění validace, pá 21:37–21:39 (`codex/kontrola_b_protokol.md`)
+Celkově: přímý únik nenašel; před testem je potřeba napravit evidenci validace a doložit výběr.
+
+| Nález | Závažnost | Co jsem udělal |
+|---|---|---|
+| 1. Evidence validace neúplná (reprodukce 20:44, rozbor po povodních), validace ovlivnila směr hledání | vysoká | Souhlasím. V POKUSY_RIDGE.md (21:43) je seznam všech 4 nahlédnutí včetně zkušebního běhu a rozboru a přiznané adaptivní použití; pokusy, které rozbor motivoval, rozhodovala CV a žádný nebyl ponechán. |
+| 2. `l_tym_plus_2` je v CV horší než ponechaný `b_vse` (14,41 vs 14,17, vzestup 30,3 vs 28,8), změna základu neodpovídá pravidlu | vysoká | Souhlasím. Pravidlo pro zjednodušení je teď výslovně v protokolu, `l_tym_plus_2` jím neprojde, finální model je zpět `b_vse`. |
+| 3. Mnohonásobné porovnávání (69 běhů), přínos horního Labe nejistý | střední | Hlavní tvrzení (30 stanic proti týmu) jsem ověřil po blocích: −1,56 ± 0,62, lepší ve 4 z 5 bloků. Plnou vnořenou CV celého výběru jsem nedělal (výběr stanic ručně po skupinách, nejde zopakovat automaticky); finální model nakonec nepoužívá žádný jemný výběr, jen „všechny stanice s úplnými řadami“. |
+| 4. Povodně nejsou nezávislé (překryv 12/2012 a 1/2013, společné bloky) | střední | Přidaná nejistota přes epizody (17) a bloky (5), tabulka v POKUSY_RIDGE.md. |
+| 5. Alpha z čísel zaokrouhlených na 0,01, při shodě vyhrála nejmenší | střední | Opraveno: výběr z nezaokrouhlených hodnot, ze shod (do 0,01 cm) největší alpha. Finální alpha 1 místo 0,01, CV i val beze změny (14,17 / 17,8). |
+| 6. Protokol nesedí s evidencí (d_srazky po opravě 14,17, korekce není v JSONL, „0,36 do 30 stanic“ patří k 203 sloupcům, chybí otisky) | střední | Opraveno v textu (níž), každý nový záznam v `pokusy.jsonl` má `otisk` (commit, neuložené změny, otisk tabulky a evaluate.py). Korekce běžela mimo `pokus.py`, čísla jsou v POKUSY_RIDGE.md. |
+| 7. Stanice vybrané podle úplnosti řad až do 2025 (znalost testovacího období) | nízká | Ověřeno: žádná vodoměrná stanice nevypadla kvůli dírám v testu, všechna vyřazení byla kvůli dírám v tréninku/validaci (Kadaň, Terezín, Litoměřice, Děčín-Březiny, Ústí-Bílina, Postoloprty, Blšanka 2006–2012; Němčice 10/2020). Srážkoměry vybrané s koncem řady ≥ 2025 ve finálním modelu nejsou. |
+| 8. Jednorázovost testu není atomická | střední | Opraveno: značka `vysledky/TEST_HOTOVO.json` se zakládá výhradně (mód „x“) před výpočtem, s konfigurací a otiskem; druhé ani souběžné spuštění neprojde. |

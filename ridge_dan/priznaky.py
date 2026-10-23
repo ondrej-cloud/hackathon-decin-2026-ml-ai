@@ -65,7 +65,8 @@ def seznam_stanic(volba):
     return list(volba)
 
 
-def priznaky(T, cil, horizont, **volby):
+def priznaky(T, cil, horizont, bez_cile=False, **volby):
+    """bez_cile=True: nechá i řádky, kde cíl ještě neznáme (posledních `horizont` hodin, pro předpověď v provozu)."""
     v = ZAKLAD | volby
     cilova = T[f"{cil}_H"]
     if v["vyplnit_h"]:  # jen vstupy, cíl zůstává změřený
@@ -142,5 +143,5 @@ def priznaky(T, cil, horizont, **volby):
     nejstarsi += v["vyplnit_h"]
     X = pd.DataFrame(sl).astype("float32")
     y = cilova.shift(-horizont).rename("y")
-    ok = X.notna().all(axis=1) & y.notna()
+    ok = X.notna().all(axis=1) & (y.notna() | bez_cile)
     return X[ok], y[ok], nejstarsi
