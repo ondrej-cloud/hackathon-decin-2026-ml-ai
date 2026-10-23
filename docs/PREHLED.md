@@ -127,6 +127,11 @@ Grafy validace: `docs/grafy/srovnani_procenta.png`, `srovnani_ctyr_modelu.png`, 
 | pá 20:58 | **finální model lineární regrese**, zapsáno před testem | nejlepší na validaci, nejjednodušší, všechny pokusy o zlepšení pod 1 cm |
 | pá 21:00 | test 2021–2025 spuštěn jednou | 22,4 cm, o 55 % méně než „jako teď“; síť o 1,1 cm lepší, výběr podle testu neměníme |
 | pá 20:20 | návrh: finální model lineární regrese | nejlepší, nejjednodušší, bez planých poplachů, každá váha jde vysvětlit; síť je stejná jen v rámci náhody |
+| pá 22:46 | předpověď srážek do modelu nepřidávat, jen do „co dál“ | na 12–36 h nepomáhá (voda už je v řekách), dešťové povodni na 72 h by ubrala až 40 %, ale historické předpovědi na trénink nemáme |
+| pá 23:14 | vodu ve sněhu a zimní model nepoužít | celoročně horší (17,1 → 17,8 cm); zimní model se sněhem je o 4 cm horší než celoroční bez sněhu |
+| pá 23:27 | vícenásobná validace potvrdila výběr | lineární regrese 20,1 ± 7,7 cm přes 8 povodní, nejlepší v průměru, o 56 % lepší než „jako teď“ |
+| pá 23:44 | polynomickou regresi nepoužít | 19,9 a 22,8 proti 17,1 cm, při vysoké vodě se ohne špatně |
+| pá 23:52 | starší povodně a jiné řeky nepřidávat | hodinová data všech stanic až od 2006, povodeň 2002 nemá hladinu v Děčíně, jiné řeky mají jiné stanice |
 
 ## Další kroky a otevřené otázky
 

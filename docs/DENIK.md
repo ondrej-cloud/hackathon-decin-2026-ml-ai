@@ -280,3 +280,9 @@ Následující záznamy jsou doplněné zpětně (pá 19:35) podle commitů, ať
 - Výsledek a co znamená: lineární regrese 20,1 ± 7,7 cm, síť 21,0, LightGBM 22,7, fyzikální 26,7, „jako teď“ 45,2. Regrese je o 56 % lepší než „jako teď“, stejně jako na testu (55 %). Výběr modelu tedy nebyl náhoda výběru povodní.
 - Slabiny a co může být špatně: model se učí i na povodních po té vynechané (budoucnost v tréninku). Pro vztahy v řece to nevadí, ale přísnější by bylo učit jen na minulosti, na to máme málo povodní. Regrese a síť se liší míň, než kolísá chyba mezi povodněmi.
 - Otázka poroty a odpověď: „Nemáte výsledek jen ze šťastně vybrané validace?“ Ne, ověřili jsme to na všech 8 povodních 2006–2020, každá jednou vynechaná. Pořadí modelů i zlepšení proti „jako teď“ zůstalo stejné a sedí s testem.
+
+## pá 23:52 · Ondra · starší povodně a data odjinud nepřidáváme
+- Co: zjišťovali jsme, jestli by model zlepšily starší povodně (hlavně 8/2002) nebo data z jiných řek.
+- Zjištění: hodinová data mají celou sadu stanic až od 2006. Povodeň 2002 v nich nemá hladinu v Děčíně ani v Ústí. Starší data jsou jen denní průměrné průtoky (Děčín od 1887), které rozmažou vlnu putující 4–40 h. Jiné řeky mají jiné stanice a doby putování, náš model se učí váhy konkrétních stanic na Labi.
+- Rozhodnutí: zůstáváme u 2006–2025. Denní data od 1887 by šla použít na předpověď na několik dní nebo na četnost velkých povodní, do „co dál“.
+- Pro porotu: „Proč jen od 2006?“ Od té doby měří po hodinách všech 12 stanic, které model potřebuje. Starší povodně buď nemají hodinová data, nebo chybí hladina v Děčíně.
