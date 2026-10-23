@@ -21,6 +21,21 @@ from priznaky import tym_priznaky
 
 ZDE = Path(__file__).resolve().parent
 ZNACKA = ZDE / "vysledky/TEST_HOTOVO.json"
+SOUBORY = ["stanice.py", "data_ridge.py", "priznaky.py", "hodnoceni.py", "pokus.py", "model_ridge.py", "test_jednou.py",
+           "../src/evaluate.py", "../src/features.py", "../src/models/ridge.py", "tabulka/labe_ridge.parquet"]
+
+
+def otisky():
+    """Obsahové otisky (sha1, konce řádků sjednocené na LF, ať sedí i s Macy) všeho, co test používá."""
+    import hashlib
+    out = {}
+    for f in SOUBORY:
+        b = (ZDE / f).read_bytes()
+        if not f.endswith(".parquet"):
+            b = b.replace(bytes([13, 10]), bytes([10]))
+        out[f] = hashlib.sha1(b).hexdigest()[:12]
+    return out
+
 
 if __name__ == "__main__":
     # značka se zakládá výhradně (mód "x") ještě před výpočtem: druhé ani souběžné spuštění neprojde,
@@ -28,7 +43,8 @@ if __name__ == "__main__":
     try:
         with open(ZNACKA, "x", encoding="utf-8") as f:
             f.write(json.dumps(dict(start=datetime.now().isoformat(timespec="seconds"), model=model_ridge.FINALNI,
-                                    alpha=model_ridge.ALPHA, otisk=pokus.otisk()), ensure_ascii=False, default=str))
+                                    alpha=model_ridge.ALPHA, otisk=pokus.otisk(), otisky=otisky()),
+                               ensure_ascii=False, default=str))
     except FileExistsError:
         sys.exit(f"Test už proběhl nebo běží ({ZNACKA.read_text(encoding='utf-8')[:300]}), podruhé ne.")
     T = data_ridge.nacti()
@@ -47,7 +63,7 @@ if __name__ == "__main__":
     assert np.isfinite(p_moje[spol]).all() and np.isfinite(p_tym[spol]).all()
     yy = y[spol]
     out = dict(cas=datetime.now().isoformat(timespec="seconds"), model=model_ridge.FINALNI, alpha=model_ridge.ALPHA,
-               otisk_evaluate=Hd.OTISK_EVALUATE, radku=len(spol), radku_moje=len(p_moje), radku_tym=len(p_tym),
+               otisk_evaluate=Hd.OTISK_EVALUATE, otisky=otisky(), radku=len(spol), radku_moje=len(p_moje), radku_tym=len(p_tym),
                moje=Hd.metriky(yy, p_moje[spol], H, "decin", 24),
                tym=Hd.metriky(yy, p_tym[spol], H, "decin", 24),
                jako_ted=Hd.metriky(yy, Xt.loc[spol, "decin_H_0"], H, "decin", 24))

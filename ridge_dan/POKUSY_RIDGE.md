@@ -129,7 +129,7 @@ Váhy na vzestup zmenšují podhodnocení na stoupání (−21 → −16 cm), al
 - Rozhodnutí: dál se řídím CV (pravidlo úlohy), ale zkusím zmenšit protichůdné váhy (regularizace, menší sady).
 
 ## pá 21:18–21:30 · pokusy proti protichůdným vahám
-- Alpha: CV je plochá do 30 (14,17 → 14,27) a pak roste (100: 14,46, 1 000: 15,72). Pravidlo jedné směrodatné chyby
+- Alpha: CV je plochá do 30 (14,17 → 14,27) a pak roste (100: 14,45, 1 000: 15,72). Pravidlo jedné směrodatné chyby
   jasný výběr nedává (rozdíly jsou všude asi 1,2–1,5 SE). Ponecháno: alpha z CV.
 - Brzda jen na 18 nových stanic (standardizované sloupce × 1/k, tj. penalizace k²; `k_brzda10/30/100`): CV vždy
   vybere nejmenší alphu a výsledek je 14,17 / 14,17 / 14,21. Ponecháno: ne.

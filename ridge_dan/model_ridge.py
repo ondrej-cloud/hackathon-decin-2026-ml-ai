@@ -66,8 +66,10 @@ if __name__ == "__main__":
     m, X, y, c = model_ridge.trenink(T)
     SOUBOR.parent.mkdir(exist_ok=True)
     joblib.dump(m, SOUBOR)
+    # kontrola jen na letech do 2020, na testovací roky se mimo test_jednou.py nesahá
+    X = X[X.index < pd.Timestamp("2021-01-01", tz="UTC")]
     p = m.predict(X.tail(1))[0]
     print(f"{SOUBOR.relative_to(ZDE)}: {SOUBOR.stat().st_size / 1e3:.0f} kB, {len(m.sloupce)} vstupů, "
-          f"poslední řádek {X.index[-1]:%Y-%m-%d %H:%M} UTC → {p:.0f} cm za 24 h")
+          f"řádek {X.index[-1]:%Y-%m-%d %H:%M} UTC → {p:.0f} cm za 24 h")
     print("největší váhy:", m.vahy().abs().sort_values().tail(8).round(1).to_dict())
     assert np.isfinite(m.predict(X)).all()
