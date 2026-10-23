@@ -2,7 +2,9 @@
 
 Když modely Ridge chybí, natrénuje je stejně jako src/uloz_model.py (trénovací část, asi 5 s).
 """
+import json
 import sys
+from functools import cache
 from pathlib import Path
 
 import joblib
@@ -54,6 +56,22 @@ def stupen(cil, hladina):
 def predpoved(nazev, cil, radek):
     """Předpovědi za 12/24/36 h z jednoho řádku vstupů (DataFrame s jedním řádkem): {h: cm}."""
     return {h: float(nacti_model(nazev, cil, h).predict(radek)[0]) for h in HORIZONTY}
+
+
+@cache
+def _intervaly():
+    soubor = MODELS / "ridge_intervaly.json"
+    return json.loads(soubor.read_text(encoding="utf-8")) if soubor.exists() else None
+
+
+def interval(nazev, cil, h, hladina_ted, pred):
+    """Rozmezí (dolní, horní) v cm, do kterého se vešlo 90 % chyb na tréninku v pásmu hladiny teď; jen pro ridge."""
+    z = _intervaly()
+    if nazev != "ridge" or not z:
+        return None
+    z = z[f"{cil}_{h}"]
+    i = max(k for k, hranice in enumerate(z["pasma"][:-1]) if hladina_ted >= hranice)
+    return pred + z["dolni"][i], pred + z["horni"][i]
 
 
 def trend(ted, drive):

@@ -233,3 +233,10 @@ Následující pokusy jsou doplněné zpětně (pá 19:55). Všechny byly před 
 - Výsledek na val: `lgbm` 23,1 cm (stejné jako varianta c, ze které vychází). Pořadí: lineární regrese 17,1, síť 17,8, LightGBM 23,1, fyzikální 24,8, „jako teď“ 44,3. Do ±20 cm při vodě nad 1. stupněm: 72 / 67 / 61 / 55 / 29 %. Všechny čtyři modely zachytily 24 z 24 nástupů povodní. Průměr lineární regrese a sítě: 16,9 cm, 71 % do ±20 cm, tedy zlepšení o 0,2 cm, pod hranicí 1 cm.
 - Závěr: lineární regrese vede. Průměrování modelů nepomáhá a jen by přidalo složitost. Čtyři různé přístupy na stejných vstupech skončily blízko sebe, takže rezervu nemá model, ale vstupy (chybí srážky).
 - Soubory: `src/procenta.py`, `docs/grafy/srovnani_procenta.png`, `docs/grafy/srovnani_ctyr_modelu.png`, `results/*_lgbm.json`.
+
+## pá 20:40 · Honza · odhad nejistoty předpovědi
+- Otázka: jak široké rozmezí máme k předpovědi říkat, aby se do něj skutečnost většinou vešla?
+- Data a rozdělení: společné. Chyby Ridge na trénovací části podle pásma hladiny teď (0–300, 300–450, 450–600, nad 600 cm), 5. a 95. percentil. Pokrytí ověřeno na validaci, kterou při odhadu rozmezí model nevidí.
+- Výsledek na val: do rozmezí se vešlo 89–92 % hodnot celkem, na povodních 76–88 % (12 h 87–88 %, 24 h 79–84 %, 36 h 76–78 %). Šířka rozmezí na povodních: Děčín 33 / 53 / 72 cm, Ústí 61 / 77 / 82 cm. Pásmo nad 600 cm v Ústí má v tréninku málo řádků (hlavně 2013), proto je tam dolní mez −83 až −91 cm.
+- Závěr: na klidné vodě rozmezí sedí (9 z 10), na povodních je o něco užší, než by mělo (8 z 10), protože validační povodně jsou vyšší než trénovací. Tak to i říkáme. V aplikaci „nejspíš od–do“ u každé předpovědi a modrý pás v grafu.
+- Soubory: `src/nejistota.py`, `models/ridge_intervaly.json`, `app/predikce.py` (`interval`).
