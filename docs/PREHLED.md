@@ -2,6 +2,8 @@
 
 Stav k pá 20:30. Na jednom místě: co předpovídáme, z čeho, co jsme nevzali, jak měříme, výsledky a všechna rozhodnutí. Podrobnosti jsou v odkazovaných souborech. Kdo něco rozhodne nebo změní, doplní to sem i do `docs/DENIK.md`.
 
+Celá cesta modelu od čtyř nápadů po finální lineární regresi a všechno, co jsme po testu zkoušeli, je v `docs/CESTA_MODELU.md`.
+
 ## Úloha
 
 Předpovídáme výšku hladiny Labe v cm na vodočtu **Děčín** a zvlášť **Ústí nad Labem** za **12, 24 a 36 hodin**. Z předpovědi poznáme, jestli a kdy voda překročí 2. nebo 3. stupeň povodňové aktivity. Pro město a lidi u řeky to znamená varování den předem místo ve chvíli, kdy voda už stoupá.
