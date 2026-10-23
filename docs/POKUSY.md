@@ -90,6 +90,46 @@ Následující pokusy jsou doplněné zpětně (pá 19:55). Všechny byly před 
 - Varianta `fyzika_tri_vrstvy`: navíc Beroun a Sázava nad Prahou a Přelouč nad Nymburkem, známá část se prodlouží na 21–25 h. `prumer_povodne` 24,8 cm (−1,8 cm). Na 36 h Děčín 38,5 a Ústí 37,5 cm (−4 cm), na 12 h beze změny (tam stačí brány). Propásnuté 0, plané poplachy 0. Varování před 2. stupněm v Děčíně ale přichází později (+24 h: 17,5 místo 26 h předem).
 - Závěr: varianta prošla (zlepšení přes 1 cm, varování nehorší). Potvrzuje Ondrovo zjištění, že na delší horizont pomáhá každá vrstva stanic. Na 36 h je pořád velká chyba, protože ani třetí vrstva nesahá na 36 h dopředu.
 - Soubory: `src/models/fyzika.py`, `src/models/fyzika_tri_vrstvy.py`, `results/` (fyzika a fyzika_tri_vrstvy).
+## pá 19:36 · Honza · lineární regrese (Ridge) v1
+- Otázka: jak dobře předpovídá lineární model a sedí to s Ondrovou kontrolou řetězce?
+- Data a rozdělení: společné (`src/evaluate.py`), train 2006–2018 bez validačních povodní, val 4 povodně a 2019–2020, asi 108 tisíc řádků train.
+- Vstupy: všech 98 sloupců z `src/features.py`. Odmocnina jen na průtoky (`_Q_`), hladiny beze změny, pak `StandardScaler`. Obojí uvnitř `Pipeline`, takže se učí jen na trénovacích datech.
+- Model a nastavení: `Ridge(alpha=1)`. Bez náhody, lineární regrese má jediné řešení.
+- Kde a jak dlouho: Honzův notebook, půl sekundy na jednu kombinaci.
+- Výsledek na val (chyba na povodních +12 / +24 / +36 h): Děčín 9,0 / 15,5 / 26,0 cm, Ústí 9,6 / 15,7 / 26,7 cm. „Jako teď“ Děčín 23,0 / 44,4 / 65,6, Ústí 23,4 / 44,2 / 65,1. Průměr přes 6 kombinací (`prumer_povodne`) 17,1 cm proti 44,3 cm. Varování před 2. stupněm: Děčín 11 / 15,5 / 36,7 h předem, Ústí 16,8 / 20,8 / 21,5 h; všude 0 propásnutých a 0 planých poplachů („jako teď“ propásne všechny). Chyba trénink proti validaci (všechny hodiny, Děčín): 5,5 / 7,3 / 10,1 proti 5,2 / 7,5 / 10,9 cm, model se neučí nazpaměť.
+- Závěr: sedí s kontrolou řetězce (15,5 cm). Vrcholy (`vrcholy_o_kolik`, Děčín +24 h): 2006 o 22 cm níž, 2009 o 9 výš, 2010 o 19 výš, 2011 o 7 níž. V Ústí model vrcholy spíš podhodnocuje (−15 až −21 cm na 24 h). Na 36 h je chyba na povodních skoro dvojnásobná proti 24 h: voda, která bude v Děčíně za 36 h, z velké části ještě neteče ani Prahou.
+- Soubory: `results/2026-10-23_1938_ridge.json`, `results/predpovedi/ridge.parquet`, `src/models/ridge.py`.
+
+## pá 19:38 · Honza · síla regularizace alpha
+- Otázka: záleží na alpha (0,1 / 1 / 10 / 100)? Regularizace (zmenšování vah) má bránit tomu, aby model spoléhal na jeden vstup.
+- Data, vstupy a model: jako v1, mění se jen alpha.
+- Výsledek na val (`prumer_povodne`): 17,1 / 17,1 / 17,1 / 17,5 cm. Alpha 100 navíc zkracuje předstih varování o půl hodiny.
+- Závěr: při 108 tisících řádků a 98 vstupech regularizace skoro nic nemění, rozdíl pod 1 cm. Zůstává alpha 1.
+- Soubory: `results/2026-10-23_1938_ridge_alpha01.json`, `..._ridge_alpha10.json`, `..._ridge_alpha100.json`, `src/models/ridge_alpha01.py`, `ridge_alpha10.py`, `ridge_alpha100.py`.
+
+## pá 19:39 · Honza · cíl jako změna hladiny
+- Otázka: pomůže učit změnu (hladina za h hodin minus hladina teď) místo samotné hladiny? U LightGBM to Ondra zkoušel.
+- Data, vstupy a model: jako v1, jen cíl je y − hladina teď a k předpovědi se hladina teď přičte zpět.
+- Výsledek na val: do desetiny cm stejné jako v1 (17,1 cm), stejné předstihy.
+- Závěr: u lineárního modelu, který má hladinu teď mezi vstupy, je to totéž. Váha u „hladiny teď“ se jen posune o jedničku, zbytek rovnice je stejný; liší se jen regularizace té jedné váhy a ta je zanedbatelná. U stromů to totéž není, tam změna cíle smysl mít může.
+- Soubory: `results/2026-10-23_1939_ridge_zmena.json`, `src/models/ridge_zmena.py`.
+
+## pá 19:39 · Honza · brány podle horizontu
+- Otázka: platí i pro Ridge, že na 12 h stačí blízké stanice a vzdálené jen přidávají šum (`docs/NAPAD_LABE.md`, Brány proti proudu)?
+- Vstupy: 12 h jen Děčín, Ústí, Louny, Mělník, Vraňany a Kostelec; 24 h navíc Praha, Nymburk a Jizera; 36 h všechny (stejné jako v1). Hladiny Děčína a Ústí vždy.
+- Výsledek na val: `prumer_povodne` 17,6 cm (v1 17,1). Na 12 h je chyba o 0,4–0,6 cm menší (Děčín 8,4, Ústí 9,2), ale varování přijde později (Děčín 2. stupeň 9,2 h místo 11 h předem, Ústí 3. stupeň 4 h místo 9 h). Na 24 h horší o 2 cm (17,3 / 17,8).
+- Závěr: pro Ridge ne. Regularizace dá vzdáleným stanicím malé váhy sama (viz graf vah) a ruční výběr modelu jen bere informaci, i na 12 h pomáhá vědět, co teče Prahou. Zjištění z NAPAD_LABE platilo pro regresi bez regularizace a jiné rozdělení. Tři varianty po sobě bez zlepšení o 1 cm, podle pravidel končím. Finální je v1.
+- Soubory: `results/2026-10-23_1939_ridge_brany.json`, `src/models/ridge_brany.py`.
+
+## pá 19:50 · Honza · vysvětlení: váhy a graf povodní
+- Otázka: podle čeho model rozhoduje a dělá fyzikálně rozumnou věc?
+- Graf `docs/grafy/ridge_vahy_decin.png` (a `ridge_vahy_usti.png`): váha každé stanice a zpoždění pro 12, 24 a 36 h, v cm na jednu směrodatnou odchylku vstupu. Co ukazuje:
+  - Největší váhu má hladina v cíli teď (Děčín +24 h: +88) a hned za ní průtok v Praze teď (+49). Voda z Prahy doteče do Děčína zhruba za den, takže průtok v Praze teď je skoro přímo hladina v Děčíně za 24 h.
+  - Čím delší horizont, tím větší váhu mají vzdálené stanice: na 12 h rozhoduje Mělník (+15) a Praha má jen +8, na 24 h Praha +49, na 36 h Praha +50 a k tomu Beroun +26, Louny +25, Sázava +20, Přelouč +16, Jizera +14. Stejné zjištění jako v NAPAD_LABE („čím dál dopředu, tím dál proti proudu“), jen si ho model našel sám přes váhy.
+  - Záporné váhy u téže veličiny o pár hodin dřív (hladina před 1 h −31, Praha před 3 h −15) znamenají, že model počítá rozdíl, tedy trend: stoupá, nebo klesá, a jak rychle.
+  - Průtok a hladina na téže stanici mají opačná znaménka (Děčín hladina +88, průtok −11): nesou skoro stejnou informaci (měrná křivka) a model si je navzájem dorovnává. Jednotlivé váhy se proto nečtou samostatně, jen jako celek.
+- Graf `docs/grafy/ridge_povodne_decin_24h.png`: povodně 4/2006 a 1/2011 v Děčíně, skutečnost, „jako teď“ a předpověď vydaná 24 h předem. Model kopíruje stoupání i vrchol, „jako teď“ je o den pozadu. V 2011 se model na prudkém stoupání 14.–15. 1. opožďuje o několik hodin a vrchol 2006 (875 cm) má o 20 cm níž; 3. stupeň přesto hlásí den předem.
+- Soubory: `src/grafy_ridge.py` (pustit `python src/grafy_ridge.py`), `docs/grafy/`.
 ## pá 20:05 · Ondra · přítoky v kraji (Bílina, Ploučnice)
 - Otázka: pomůže modelu průtok přítoků, které do Labe ústí mezi Ústím a Děčínem?
 - Data a rozdělení: společné rozdělení (`src/evaluate.py`), navíc průtok Bílina-Trmice a Ploučnice-Benešov z ČHMÚ, zpoždění 0, 3, 6 a 12 h.
