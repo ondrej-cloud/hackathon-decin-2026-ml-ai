@@ -146,12 +146,13 @@ def priznaky_stanice(z):
 
 
 def vyber(pokryti):
-    """Stanice s 6h úhrnem v 00/12 UTC aspoň v 80 % termínů v každém roce 2006–2020 (výběr bez testovacích let).
+    """Stanice s 6h úhrnem v 00/12 UTC aspoň v 80 % termínů v každém roce 2006–2018 (jen tréninkové roky; s 2006–2020
+    nebo 2006–2017 vyjde stejných 9 stanic).
 
     U ostatních po roce ~2013 chybějí hlavně suché termíny (nuly ze zpráv BUFR se do ISD nedostaly): podíl kladných
     úhrnů mezi platnými stoupl z ~0,2 na 0,6–0,9, průměr skupiny by srážky nadhodnotil.
     """
-    return [u for u in pokryti if pokryti.loc[2006:2020, u].min() >= MIN_POKRYTI]
+    return [u for u in pokryti if pokryti.loc[2006:2018, u].min() >= MIN_POKRYTI]
 
 
 def postav():

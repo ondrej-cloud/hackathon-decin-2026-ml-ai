@@ -29,10 +29,14 @@ def nejnovejsi(zaznamy):
     out = {}
     for (model, sada, *_), z in posledni.items():
         out.setdefault((model, sada), []).append(z)
-    # jen záznamy se stejnou srážkovou tabulkou jako ten nejnovější
+    # jen záznamy se stejnou srážkovou tabulkou a historií jako ten nejnovější; páry bez / srazky na stejných řádcích
     for k, zz in out.items():
-        otisk = max(zz, key=lambda z: z["cas"])["srazky"]
-        out[k] = [z for z in zz if z["srazky"] == otisk]
+        nej = max(zz, key=lambda z: z["cas"])
+        out[k] = [z for z in zz if z["srazky"] == nej["srazky"] and z.get("nejstarsi_sr") == nej.get("nejstarsi_sr")]
+        for z in out[k]:
+            for d in out[k]:
+                if (z["seed"], z["cast"]) == (d["seed"], d["cast"]):
+                    assert (z.get("n_train"), z.get("n_val")) == (d.get("n_train"), d.get("n_val")), (k, z["cast"])
     return out
 
 
