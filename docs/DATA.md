@@ -11,6 +11,8 @@ Co víme o datech. Kdo něco zjistí, doplní nebo opraví příslušnou sekci. 
 | hladina (cm) i průtok (m³/s) | Děčín, Ústí nad Labem (cíle) |
 | jen průtok | Louny (Ohře), Mělník, Vraňany (Vltava), Kostelec n. L., Praha-Chuchle, Nymburk, Předměřice (Jizera), Beroun (Berounka), Nespeky (Sázava), Přelouč |
 
+**Souřadnice stanic:** `data/external/stanice_hydro.csv` (v Gitu, 12 řádků): klíč jako v `data.py`, číslo ČHMÚ, název, tok, zeměpisná šířka a délka (`lat`, `lon`) a stupně povodňové aktivity v cm. Vytaženo z metadat ČHMÚ v balíčku pořadatelů (`meta1-20260930.json`, 545 profilů) skriptem `src/stanice_hydro.py`. Ověřeno: stupně pro Děčín a Ústí souhlasí s `data.SPA`. Předměřice (Jizera) stupně v metadatech nemají. Pro mapu v aplikaci.
+
 ### Přidaná data ČHMÚ: co, odkud a proč
 
 **Odkud:** otevřená data ČHMÚ, https://opendata.chmi.cz/hydrology/historical/data/hourly/. Soubory jsou `H_0-203-1-<číslo stanice>_HQ_<rok>.json` s hodinovou hladinou (H) a průtokem (Q). Zdarma a bez registrace, v prezentaci uvést zdroj ČHMÚ. Stáhli jsme 26 stanic (`src/stahni_chmu_hydro.py`), do společné tabulky bereme 12.
@@ -65,7 +67,7 @@ Ověřeno:
 - Mezi lety 2016 a 2020 nepřekročilo Labe v Děčíně ani 1. stupeň povodňové aktivity, byla to suchá léta.
 - Stupně povodňové aktivity (metadata ČHMÚ): Děčín 400 / 490 / 560 cm, Ústí 450 / 530 / 600 cm.
 
-**Kontrola správnosti** (pá 19:45, ověřeno):
+**Kontrola správnosti** (pá 19:30, ověřeno):
 - Data ČHMÚ jsou za 2024–2025 na hodinu i na centimetr stejná jako balíček od pořadatelů (Děčín, Ústí, Louny, 17 544 hodin, rozdíl 0, bez časového posunu).
 - Bilance vody sedí každý rok: Mělník = Vraňany + Kostelec (poměr 1,00), Ústí = 1,01–1,04 × (Mělník + Louny), Děčín = 1,04–1,08 × Ústí. Navíc přitékají menší přítoky (Bílina, Ploučnice). Žádná stanice nemá v některém roce průtok posunutý.
 - Měrná křivka se nemění: při průtoku 250–300 m³/s je hladina v Děčíně každý rok 204–214 cm, v Ústí 234–242 cm. V Děčíně za 20 let klesla asi o 5 cm, nejspíš kvůli dnu řeky (domněnka).
