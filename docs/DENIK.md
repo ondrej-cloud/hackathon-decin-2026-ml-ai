@@ -170,3 +170,11 @@ Následující záznamy jsou doplněné zpětně (pá 19:35) podle commitů, ať
 - Co: zjistili jsme, že doba putování vody závisí na průtoku. Při povodni se vlna zpomalí (Mělník → Ústí 8 h při malé vodě, 16 h nad 1 500 m³/s), protože se rozlije do nivy. Modely zatím počítají s jednou dobou na stanici.
 - Kdo co: Dan zkusí dobu putování podle průtoku (zadání v `docs/UKOL_MODELY.md`, sekce Další úkol), Ondra srážky, sníh a teplotu z 25 stanic ČHMÚ v povodí.
 - Proč: čtyři modely skončily blízko sebe, strop dělají vstupy. Oba pokusy přidávají informaci, kterou modely zatím nemají. Sklon a vzdálenost samotné se nemění, jejich vliv je už ve změřené době putování.
+
+## pá 20:50 · Dan · Rozbor: doba doběhu podle průtoku
+- Co jsme udělali: změřili jsme dobu doběhu z každé stanice zvlášť pro pásma průtoku v Ústí, jen na trénovacích datech, a dali ji do LightGBM a do lineárního modelu místo jedné stálé doby.
+- Jak to funguje, jednoduše: když je v Ústí málo vody, bere model z Ústí průtok před 6 h, když je vody víc, tak před 3 h, protože vlna jde rychleji. U ostatních stanic podobně podle naměřené tabulky.
+- Proč tak a ne jinak: při povodni se vlna rozlije do nivy a zpomalí (transformace povodňové vlny). Doby jsme měřili jen na tréninku, aby se do modelu nedostala validace. Kde bylo v pásmu málo dat nebo slabá souvislost, vzali jsme sousední pásmo, nic jsme nevymýšleli.
+- Výsledek a co znamená: nepomohlo to. LightGBM 23,1 cm stejně jako bez pásem, lineární model se stejnými vstupy o 0,4 cm lépe, pod hranicí 1 cm. Zpomalení vlny při velké povodni se z trénovacích dat změřit nedá, nad 1 500 m³/s je tam jen červen 2013.
+- Slabiny a co může být špatně: doby nad 1 500 m³/s by šly změřit s validačními povodněmi, to ale nesmíme. Pásma podle průtoku v Ústí jsou hrubá a zpoždění v X jsou jen po 3–12 h, takže rozdíl 1–2 h se po zaokrouhlení ztratí. Ondrova tabulka se s mou shoduje, jen Louny nad 1 500 m³/s vychází 10 h místo 23 h, což je stejně jen jedna povodeň.
+- Otázka poroty a odpověď: „Když víte, že se vlna při povodni zpomalí, proč to model nepoužívá?“ Zkusili jsme to a na validaci to nepomohlo. Na trénovacích datech je nad 1 500 m³/s jediná povodeň, takže zpomalení neumíme spolehlivě změřit. Lineární model si dobu doběhu stejně najde sám z vah přes všechna zpoždění 0–36 h, proto mu ruční doba nic nepřidá.
