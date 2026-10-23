@@ -1,1 +1,7 @@
-streamlit==1.66.1
+streamlit>=1.60
+plotly>=6
+pandas>=2.2
+numpy
+pyarrow
+scikit-learn>=1.6
+joblib
