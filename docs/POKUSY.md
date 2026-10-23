@@ -353,7 +353,7 @@ Následující pokusy jsou doplněné zpětně (pá 19:55). Všechny byly před 
 - Závěr: i na 36 h by dokonalá předpověď deště ubrala jen 1,1 cm z 26 cm (4 %). Déšť, který spadne zítra, dorazí do Děčína většinou až za víc než 36 h, protože musí stéct do potoků a pak 1–2 dny téct po Labi a Vltavě. První nárůst vody model vidí v průtocích proti proudu (Beroun, Praha, Přelouč) 12–40 h předem. Vlastní předpověď deště by byla horší než dokonalá, takže by přinesla ještě méně. Srážky by pomohly na předpověď na 2–5 dní a na malých řekách v kraji.
 - Soubory: `src/pokus_meteo.py`, `data/external/labe_meteo_o_den_driv.parquet`
 
-## pá 22:36 · Ondra · dokonalá předpověď deště na 1–3 dny dopředu
+## pá 22:32 · Ondra · dokonalá předpověď deště na 1–3 dny dopředu
 - Otázka: když déšť předpovíme a dáme ho do modelu, pozná model nárůst hladiny dřív a přesněj? Pokus z pá 22:29 dával jen déšť běžícího dne, tady model zná celý déšť až na 3 dny dopředu.
 - Data a rozdělení: denní srážky ČHMÚ z 25 stanic (`data/raw/chmu_meteo/`), průměr za každou větev (Vltava, horní Labe, Ohře). V čase t model zná skutečný úhrn běžícího srážkového dne (od 6:00 do 6:00 UTC) a součet se zítřkem a pozítřkem, 9 sloupců navíc. Je to horní mez, žádná skutečná předpověď počasí nebude lepší než skutečný déšť. Do modelu se nesmí. Jen validace.
 - Model a nastavení: `ridge` beze změny, 98 + 9 vstupů.
