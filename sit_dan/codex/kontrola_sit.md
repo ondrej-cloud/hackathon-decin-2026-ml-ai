@@ -1,0 +1,5 @@
+- **[sit_dan/beh_sit.py:63](C:/Users/danie/Documents/hackathon-2026-sit/sit_dan/beh_sit.py:63) — vysoká:** Existující předpovědi se přebírají pouze podle názvu souboru. `--zkouska` používá stejné názvy, přestože nastavuje jen 3 iterace (ř. 66). Následný plný běh tak může vyhodnotit zkušební model nebo smíchat výsledky různých nastavení; kontrola indexu to neodhalí. **Oprava:** oddělit zkušební výstupy a před opětovným použitím ověřovat otisk kódu, dat a parametrů.
+
+- **[sit_dan/data_ridge.py:146](C:/Users/danie/Documents/hackathon-2026-sit/sit_dan/data_ridge.py:146) — nízká:** Načítá se celá tabulka včetně testu 2021–2025; obdobně `src/data.py:65`. Předpovědi ani metriky se pro test v kontrolovaném spouštěči nepočítají, ale úplné oddělení testových dat zajištěno není. **Oprava:** pro tento experiment filtrovat načítání na čas před rokem 2021.
+
+Celkově jsou na ověřených datech 2006–2020 varianty shodné kromě vstupů, mají stejné řádky a CV bloky, správné transformace, kauzální zpoždění v UTC i týmové validační metriky; číselnou reprodukci 17,83 cm jsem bez trénování neověřoval.

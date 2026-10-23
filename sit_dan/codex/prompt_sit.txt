@@ -1,0 +1,24 @@
+Jsi nezávislý kontrolor pokusu. Pracuješ JEN PRO ČTENÍ a kontrola má být krátká (do 10 minut).
+
+Pravidla (závazná):
+- Nic neměň, nevytvářej ani nemaž žádné soubory (ani AGENTS.md), nespouštěj git příkazy, které něco mění, nic neinstaluj.
+- Nečti soubory .env, nic ve složce %USERPROFILE%\.kaggle ani jiné přihlašovací údaje a tokeny.
+- Nepočítej nic na testovacích letech 2021–2025 (žádné předpovědi ani metriky), nespouštěj src/porovnej.py s --test.
+- Neuronovou síť netrénuj. Smíš spustit krátký Python skript jen pro čtení (C:\Users\danie\.venvs\hackathon\Scripts\python.exe)
+  na letech 2006–2020, nic nezapisuj na disk. Velké datové soubory neotvírej celé.
+- Výstup: seznam nálezů. Každý nález = soubor, řádek, závažnost (kritická / vysoká / střední / nízká), co je špatně, proč,
+  návrh opravy. Na konci jedna věta celkového hodnocení. Česky, stručně.
+
+Kontext: Týmová neuronová síť (src/models/mlp.py, scikit-learn MLPRegressor) pro stav Labe v Děčíně/Ústí se porovnává ve dvou
+variantách vstupů: a) beze změny (98 týmových sloupců z src/features.py), b) + průtoky 18 nových stanic ČHMÚ (126 sloupců
+<stanice>_Q_<zpoždění>, zpoždění 0–36 h) z vlastní tabulky sit_dan/tabulka/labe_ridge.parquet, spojené podle času UTC.
+Kód: sit_dan/beh_sit.py (úlohy, trénink, vyhodnocení), sit_dan/spolecne.py (data, CV, metriky; zkopírované beze změny
+z jiné větve), sit_dan/hodnoceni.py (bloky CV, metriky), sit_dan/data_ridge.py (načtení tabulky), sit_dan/kaggle/kernel/sit_kaggle.py
+(spouštěč na Kaggle). Týmové soubory src/ se nemění. Týmové číslo sítě (seed 42, průměr mae_povodne přes 6 kombinací) je 17,83 cm.
+
+Zkontroluj jen tohle:
+1. Liší se varianty a a b JEN vstupy (stejná funkce mlp.fit, parametry, seed, cíl, transformace)? Zpracuje síť nové stanice
+   stejně jako ostatní stanice (odmocnina a škálování)? Dává varianta a totéž co týmový model v src/porovnej.py?
+2. Běží obě varianty na STEJNÝCH řádcích ve validaci i v CV (stejné bloky, stejné indexy předpovědí)?
+3. Vstupují nové stanice jen z času <= t (žádný posun do budoucnosti, správné časové pásmo, reindex)?
+4. Počítají se metriky stejně jako v src/porovnej.py / spolecne.py a nesahá se na test 2021–2025?

@@ -1,0 +1,1297 @@
+OpenAI Codex v0.162.0-alpha.17.2
+--------
+workdir: C:\Users\danie\Documents\hackathon-2026-sit
+model: gpt-6.1-sol
+provider: openai
+approval: never
+sandbox: read-only
+reasoning effort: medium
+reasoning summaries: none
+session id: 01a16a94-a71a-7fa2-8b73-1b80fd2d98a6
+--------
+user
+Jsi nezávislý kontrolor pokusu. Pracuješ JEN PRO ČTENÍ a kontrola má být krátká (do 10 minut).
+
+Pravidla (závazná):
+- Nic neměň, nevytvářej ani nemaž žádné soubory (ani AGENTS.md), nespouštěj git příkazy, které něco mění, nic neinstaluj.
+- Nečti soubory .env, nic ve složce %USERPROFILE%\.kaggle ani jiné přihlašovací údaje a tokeny.
+- Nepočítej nic na testovacích letech 2021–2025 (žádné předpovědi ani metriky), nespouštěj src/porovnej.py s --test.
+- Neuronovou síť netrénuj. Smíš spustit krátký Python skript jen pro čtení (C:\Users\danie\.venvs\hackathon\Scripts\python.exe)
+  na letech 2006–2020, nic nezapisuj na disk. Velké datové soubory neotvírej celé.
+- Výstup: seznam nálezů. Každý nález = soubor, řádek, závažnost (kritická / vysoká / střední / nízká), co je špatně, proč,
+  návrh opravy. Na konci jedna věta celkového hodnocení. Česky, stručně.
+
+Kontext: Týmová neuronová síť (src/models/mlp.py, scikit-learn MLPRegressor) pro stav Labe v Děčíně/Ústí se porovnává ve dvou
+variantách vstupů: a) beze změny (98 týmových sloupců z src/features.py), b) + průtoky 18 nových stanic ČHMÚ (126 sloupců
+<stanice>_Q_<zpoždění>, zpoždění 0–36 h) z vlastní tabulky sit_dan/tabulka/labe_ridge.parquet, spojené podle času UTC.
+Kód: sit_dan/beh_sit.py (úlohy, trénink, vyhodnocení), sit_dan/spolecne.py (data, CV, metriky; zkopírované beze změny
+z jiné větve), sit_dan/hodnoceni.py (bloky CV, metriky), sit_dan/data_ridge.py (načtení tabulky), sit_dan/kaggle/kernel/sit_kaggle.py
+(spouštěč na Kaggle). Týmové soubory src/ se nemění. Týmové číslo sítě (seed 42, průměr mae_povodne přes 6 kombinací) je 17,83 cm.
+
+Zkontroluj jen tohle:
+1. Liší se varianty a a b JEN vstupy (stejná funkce mlp.fit, parametry, seed, cíl, transformace)? Zpracuje síť nové stanice
+   stejně jako ostatní stanice (odmocnina a škálování)? Dává varianta a totéž co týmový model v src/porovnej.py?
+2. Běží obě varianty na STEJNÝCH řádcích ve validaci i v CV (stejné bloky, stejné indexy předpovědí)?
+3. Vstupují nové stanice jen z času <= t (žádný posun do budoucnosti, správné časové pásmo, reindex)?
+4. Počítají se metriky stejně jako v src/porovnej.py / spolecne.py a nesahá se na test 2021–2025?
+
+codex
+Provedu krátkou kontrolu jen pro čtení: projdu kód modelu, vstupů, časového spojení a metrik. Síť nebudu trénovat ani počítat předpovědi či metriky pro test 2021–2025.
+
+exec
+"C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -Command "Get-Location; rg --files -g AGENTS.md -g '*.py' -g '"'!**/.env*'"' -g '"'!**/.kaggle/**'"' -g '"'!**/.venv/**'"' -g '"'!**/venv/**'"'" in C:\Users\danie\Documents\hackathon-2026-sit
+ succeeded in 521ms:
+
+src\vysvetli_mlp.py
+src\uloz_model.py
+src\stanice_hydro.py
+src\stahni_chmu_meteo.py
+src\stahni_chmu_hydro.py
+src\rozbor_lgbm.py
+src\procenta.py
+src\porovnej.py
+src\pokus_meteo.py
+src\pokus_dest_horizonty.py
+src\pokus_dest_dopredu.py
+src\parovani_stanic.py
+src\nejistota.py
+src\models\zaklad_trend.py
+src\models\zaklad_ridge.py
+src\models\ridge_zmena.py
+src\models\ridge_vahy20.py
+src\models\ridge_vahy.py
+src\models\ridge_doba_stala.py
+src\models\ridge_doba.py
+src\models\ridge_brany.py
+src\models\ridge_alpha100.py
+src\models\ridge_alpha10.py
+src\models\ridge_alpha01.py
+src\models\ridge.py
+src\models\mlp_vahy.py
+src\models\mlp_v1.py
+src\models\mlp_alpha1.py
+src\models\mlp.py
+src\models\lgbm_v2.py
+src\models\lgbm_v1.py
+src\models\lgbm_doba.py
+src\models\lgbm_c_stop.py
+src\models\lgbm_c_ridge.py
+src\models\lgbm_c_regularizace.py
+src\models\lgbm_c_monotonni.py
+src\models\lgbm_c_list7.py
+src\models\lgbm_c_list200.py
+src\models\lgbm_c_linear.py
+src\models\lgbm_c.py
+src\models\lgbm_a.py
+src\models\lgbm.py
+src\models\jako_ted.py
+src\models\fyzika_dve_vrstvy.py
+src\models\fyzika.py
+src\meteo.py
+src\kolik_dat.py
+src\graf_test.py
+src\graf_srovnani.py
+src\graf_povoden.py
+src\graf_dest_boris.py
+src\grafy_slajdy.py
+src\grafy_ridge.py
+src\features.py
+src\evaluate.py
+src\doba_dobehu.py
+src\data.py
+sit_dan\stanice.py
+sit_dan\spolecne.py
+kaggle\train\train.py
+kaggle\push.py
+app\test_app.py
+app\rozliv.py
+app\predikce.py
+app\pocasi.py
+app\mapa.py
+app\app.py
+app\animace.py
+app\aktualni.py
+sit_dan\beh_sit.py
+sit_dan\data_ridge.py
+sit_dan\hodnoceni.py
+kaggle\gpu-test\gpu_test.py
+sit_dan\kaggle\kernel\sit_kaggle.py
+Path                                       
+----                                       
+C:\Users\danie\Documents\hackathon-2026-sit
+
+
+
+exec
+"C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -Command '$paths = @('"'AGENTS.md','sit_dan/AGENTS.md','sit_dan/kaggle/AGENTS.md','sit_dan/kaggle/kernel/AGENTS.md','src/AGENTS.md','src/models/AGENTS.md','sit_dan/beh_sit.py','sit_dan/spolecne.py','sit_dan/hodnoceni.py','sit_dan/data_ridge.py'); foreach ("'$p in $paths) { if (Test-Path -LiteralPath $p) { Write-Output "FILE $p"; $n=0; Get-Content -LiteralPath $p | ForEach-Object { $n++; '"'{0,4}: {1}' -f "'$n,$_ } } }' in C:\Users\danie\Documents\hackathon-2026-sit
+ succeeded in 704ms:
+FILE sit_dan/beh_sit.py
+   1: """T��mov�� neuronov�� s�� (src/models/mlp.py, beze zm�>ny) s r��zn��mi vstupy: CV v tr�cninku a validace. Test 2021�?"2025 ne.
+   2: 
+   3: python beh_sit.py --prace 4 --vystup DIR               natr�cnuje v��echno a vyhodnot�� (na Kaggle)
+   4: python beh_sit.py --jen-vyhodnot --vystup DIR          jen vyhodnot�� sta��en�c p�tedpov�>di
+   5: python beh_sit.py --zkouska --prace 1 --vystup DIR     rychl�� zkou��ka cel�cho �tet�>zce (3 epochy, D�>����n +24 h)
+   6: 
+   7: Varianty se li���� jen vstupy, �t��dky jsou pro v��echny stejn�c (spolecne.data). Ka��d�� tr�cnink je samostatn�� ƭloha,
+   8: ulo���� jen p�tedpov�>�� (pred_<varianta>_<seed>_<cast>_<cil>_<h>[_<blok>].parquet), metriky se z nich po����taj�� potom.
+   9: Po�tad�� ƭloh: nejd�t��v validace varianty a se seedem 42, aby byla reprodukce t��mov�cho ����sla (17,83 cm) vid�>t hned.
+  10: """
+  11: import os
+  12: 
+  13: for k in ("OMP_NUM_THREADS", "OPENBLAS_NUM_THREADS", "MKL_NUM_THREADS"):
+  14:     os.environ[k] = "1"  # n�>kolik tr�cnink�� soub�>��n�>, ka��d�� na jednom j��d�te
+  15: 
+  16: import argparse  # noqa: E402
+  17: import json  # noqa: E402
+  18: import time  # noqa: E402
+  19: import warnings  # noqa: E402
+  20: from functools import cache  # noqa: E402
+  21: from multiprocessing import Pool  # noqa: E402
+  22: from pathlib import Path  # noqa: E402
+  23: 
+  24: import numpy as np  # noqa: E402
+  25: import pandas as pd  # noqa: E402
+  26: 
+  27: import spolecne as S  # noqa: E402
+  28: import data_ridge  # noqa: E402
+  29: from evaluate import povodne  # noqa: E402
+  30: from models import mlp  # noqa: E402
+  31: 
+  32: warnings.filterwarnings("ignore")
+  33: SEEDY = (42, 43, 44)
+  34: VARIANTY = {"a": "beze zm�>ny (98 t��mov��ch vstup��)", "b": "+ pr��toky 18 nov��ch stanic (224 vstup��)"}
+  35: TYM_42 = 17.83  # results/2026-10-23_195305_mlp.json, Ondra, verze 9a31181e
+  36: ZKOUSKA = False
+  37: 
+  38: 
+  39: @cache
+  40: def data(cil, h):
+  41:     return S.data(cil, h)
+  42: 
+  43: 
+  44: def vstupy(varianta, cil, h):
+  45:     X, Xn, y, c = data(cil, h)
+  46:     return {"a": X, "b": Xn}[varianta], y, c
+  47: 
+  48: 
+  49: def ulohy(varianty, seedy, kombinace=S.VSE, bloky=range(6)):
+  50:     prvni = [(varianty[0], seedy[0], "val", cil, h, None) for cil, h in kombinace]
+  51:     ostatni = [(v, s, "val", cil, h, None) for v in varianty for s in seedy for cil, h in kombinace]
+  52:     ostatni += [(v, s, "cv", "decin", 24, k) for v in varianty for s in seedy for k in bloky]
+  53:     return prvni + [u for u in ostatni if u not in prvni]
+  54: 
+  55: 
+  56: def soubor(adresar, u):
+  57:     v, s, cast, cil, h, k = u
+  58:     return Path(adresar) / f"pred_{v}_{s}_{cast}_{cil}_{h}{'' if k is None else f'_{k}'}.parquet"
+  59: 
+  60: 
+  61: def trenuj(u, adresar):
+  62:     v, s, cast, cil, h, k = u
+  63:     if soubor(adresar, u).exists():
+  64:         return u, 0.0
+  65:     if ZKOUSKA:
+  66:         mlp.PARAMETRY["max_iter"] = 3
+  67:     A, y, c = vstupy(v, cil, h)
+  68:     t = time.time()
+  69:     if cast == "val":
+  70:         tr, ev = c == "train", c == "val"
+  71:         pred, idx = mlp.fit(A[tr], y[tr], cil, h, seed=s)(A[ev]), A.index[ev]
+  72:     else:
+  73:         tr = c == "train"
+  74:         At, yt = A[tr], y[tr]
+  75:         _, f_tr, f_drz = S.Hd.bloky_cv(At.index)[k]
+  76:         pred, idx = mlp.fit(At[f_tr], yt[f_tr], cil, h, seed=s)(At[f_drz]), At.index[f_drz]
+  77:     pred = np.asarray(pred, dtype=float)
+  78:     assert np.isfinite(pred).all(), u
+  79:     pd.DataFrame({"pred": pred}, index=idx).to_parquet(soubor(adresar, u))
+  80:     return u, round(time.time() - t, 1)
+  81: 
+  82: 
+  83: def _trenuj(arg):
+  84:     return trenuj(*arg)
+  85: 
+  86: 
+  87: def _nastav(zkouska):
+  88:     global ZKOUSKA
+  89:     ZKOUSKA = zkouska
+  90: 
+  91: 
+  92: def nacti_pred(adresar, u, index):
+  93:     p = pd.read_parquet(soubor(adresar, u)).pred
+  94:     assert p.index.equals(index), u
+  95:     return p
+  96: 
+  97: 
+  98: def povoden(y, pred, mesic):
+  99:     """Stejn�c jako spolecne.povoden_2006, pro libovolnou valida��n�� povode�? nad 2. SPA (nap�t. '2010-09')."""
+ 100:     v = next(v for v in povodne(y, 490) if f"{v:%Y-%m}" == mesic)
+ 101:     okno = (y.index >= v - S.Hd.E.PRED) & (y.index <= v + S.Hd.E.PO)
+ 102:     stoupa = okno & (y.index < v - pd.Timedelta(hours=24))
+ 103:     d = pred - y
+ 104:     r = mesic[:4]
+ 105:     return {f"mae_{r}": round(float(d[okno].abs().mean()), 1), f"mae_{r}_stoupani": round(float(d[stoupa].abs().mean()), 1),
+ 106:             f"max_prestreleni_{r}": round(float(d[stoupa].max()), 1), f"bias_{r}": round(float(d[okno].mean()), 1)}
+ 107: 
+ 108: 
+ 109: def vyhodnot_val(adresar, v, s, kombinace=S.VSE):
+ 110:     H = data_ridge.nacti()["decin_H"]
+ 111:     radky, d24 = [], {}
+ 112:     for cil, h in kombinace:
+ 113:         A, y, c = vstupy(v, cil, h)
+ 114:         ye = y[c == "val"]
+ 115:         pred = nacti_pred(adresar, (v, s, "val", cil, h, None), ye.index)
+ 116:         radky.append(dict(cil=cil, horizont=h, **S.vyhodnot(ye, pred, cil, h)))
+ 117:         if (cil, h) == ("decin", 24):
+ 118:             d24 = S.Hd.metriky(ye, pred, H, cil, h) | S.povoden_2006(ye, pred, H) | povoden(ye, pred, "2010-09")
+ 119:             assert d24["mae_2006"] == povoden(ye, pred, "2006-04")["mae_2006"]
+ 120:     df = pd.DataFrame(radky)
+ 121:     return dict(prumer_povodne=round(df.mae_povodne.mean(), 2), prumer_mae=round(df.mae.mean(), 2),
+ 122:                 spa2_propasnuto=int(df.spa2_propasnuto.sum()), spa2_plane=int(df.spa2_plane_poplachy.sum()),
+ 123:                 spa3_propasnuto=int(df.spa3_propasnuto.sum()), spa3_plane=int(df.spa3_plane_poplachy.sum()),
+ 124:                 spa2_predstih_h=round(df.spa2_predstih_h.mean(), 1), spa3_predstih_h=round(df.spa3_predstih_h.mean(), 1),
+ 125:                 decin24=d24, kombinace=radky)
+ 126: 
+ 127: 
+ 128: def vyhodnot_cv(adresar, v, s, bloky=range(6)):
+ 129:     A, y, c = vstupy(v, "decin", 24)
+ 130:     yt = y[c == "train"]
+ 131:     casti = []
+ 132:     for k in bloky:
+ 133:         _, _, f_drz = S.Hd.bloky_cv(yt.index)[k]
+ 134:         casti.append(nacti_pred(adresar, (v, s, "cv", "decin", 24, k), yt.index[f_drz]))
+ 135:     pred = pd.concat(casti).reindex(yt.index)
+ 136:     assert pred.notna().all()
+ 137:     return S.cv_skore(yt, pred, A.loc[yt.index, "decin_H_0"])
+ 138: 
+ 139: 
+ 140: def vyhodnot(adresar, varianty, seedy, kombinace=S.VSE, bloky=range(6)):
+ 141:     vysledky = []
+ 142:     for v in varianty:
+ 143:         for s in seedy:
+ 144:             z = dict(varianta=v, popis=VARIANTY[v], seed=s, vstupu=vstupy(v, "decin", 24)[0].shape[1],
+ 145:                      radku_val_decin24=int((vstupy(v, "decin", 24)[2] == "val").sum()))
+ 146:             z |= {"val": vyhodnot_val(adresar, v, s, kombinace), "cv": vyhodnot_cv(adresar, v, s, bloky)}
+ 147:             vysledky.append(z)
+ 148:             d = z["val"]["decin24"]
+ 149:             print(f"{v} seed {s}: CV povodn�> {z['cv']['cv_povodne']:.2f}, VAL prumer_povodne {z['val']['prumer_povodne']}, "
+ 150:                   f"za����tek vzestupu {d['mae_zacatek']}, 2006 {d['mae_2006']}, 2010 {d['mae_2010']}, "
+ 151:                   f"2. SPA prop��snuto/plan�c {z['val']['spa2_propasnuto']}/{z['val']['spa2_plane']}", flush=True)
+ 152:     with open(Path(adresar) / "vysledky_sit.json", "w", encoding="utf-8") as f:
+ 153:         json.dump(vysledky, f, ensure_ascii=False, indent=1, default=float)
+ 154:     return vysledky
+ 155: 
+ 156: 
+ 157: def kontrola_radku():
+ 158:     """V��echny varianty maj�� stejn�c �t��dky a varianta a stejn�c jako t��mov�� tabulka (features.tabulka)."""
+ 159:     for cil, h in S.VSE:
+ 160:         X, Xn, y, c = data(cil, h)
+ 161:         Xt, _ = S.tabulka(cil, h)
+ 162:         assert X.index.equals(Xn.index) and len(X) == len(Xt) and X.equals(Xt[X.columns].loc[X.index]), (cil, h)
+ 163:         print(f"�t��dky {cil} +{h} h: {len(X)} (stejn�> jako t��mov�� tabulka), vstupy a {X.shape[1]}, b {Xn.shape[1]}, "
+ 164:               f"train {int((c == 'train').sum())}, val {int((c == 'val').sum())}", flush=True)
+ 165: 
+ 166: 
+ 167: if __name__ == "__main__":
+ 168:     p = argparse.ArgumentParser()
+ 169:     p.add_argument("--vystup", required=True)
+ 170:     p.add_argument("--prace", type=int, default=4)
+ 171:     p.add_argument("--varianty", default=",".join(VARIANTY))
+ 172:     p.add_argument("--jen-vyhodnot", action="store_true")
+ 173:     p.add_argument("--zkouska", action="store_true")
+ 174:     a = p.parse_args()
+ 175:     ZKOUSKA = a.zkouska
+ 176:     varianty = a.varianty.split(",")
+ 177:     kombinace, bloky, seedy = (([("decin", 24)], range(6), (42,)) if a.zkouska else (S.VSE, range(6), SEEDY))
+ 178:     Path(a.vystup).mkdir(parents=True, exist_ok=True)
+ 179:     if not a.zkouska:
+ 180:         kontrola_radku()
+ 181:     if not a.jen_vyhodnot:
+ 182:         seznam = ulohy(varianty, seedy, kombinace, bloky)
+ 183:         print(f"{len(seznam)} tr�cnink��, {a.prace} soub�>��n�>", flush=True)
+ 184:         t0, hotovo, prvni = time.time(), 0, {}
+ 185:         with Pool(a.prace, initializer=_nastav, initargs=(ZKOUSKA,)) as pool:
+ 186:             for u, sekund in pool.imap_unordered(_trenuj, [(u, a.vystup) for u in seznam]):
+ 187:                 hotovo += 1
+ 188:                 print(f"[{hotovo}/{len(seznam)} {time.time() - t0:.0f} s] {u} {sekund} s", flush=True)
+ 189:                 if u[:3] == (varianty[0], seedy[0], "val"):
+ 190:                     prvni[u[3:5]] = u
+ 191:                     if len(prvni) == len(kombinace):
+ 192:                         z = vyhodnot_val(a.vystup, varianty[0], seedy[0], kombinace)
+ 193:                         print(f"REPRODUKCE: {varianty[0]} seed {seedy[0]} prumer_povodne {z['prumer_povodne']} "
+ 194:                               f"(t��m {TYM_42}), po kombinac��ch {[r['mae_povodne'] for r in z['kombinace']]}", flush=True)
+ 195:     vyhodnot(a.vystup, varianty, seedy, kombinace, bloky)
+FILE sit_dan/spolecne.py
+   1: """Spole��n�� z��klad pro srovn��n�� �?�beze zm�>ny�?� vs �?�+ 18 nov��ch stanic�?� u v��ech ��ty�t t��mov��ch model��.
+   2: 
+   3: T��mov�c vstupy beze zm�>ny (src/features.py nad Ondrovou tabulkou), k nim se podle ��asu UTC p�tipoj�� pr��toky 18 nov��ch
+   4: stanic z vlastn�� tabulky (ridge_dan/tabulka/labe_ridge.parquet) se stejn��mi zpo��d�>n��mi jako ostatn�� pr��toky.
+   5: Rozd�>len�� a metriky jsou t��mov�c (src/evaluate.py). Ob�> varianty se hodnot�� na stejn��ch �t��dc��ch.
+   6: """
+   7: import os
+   8: import sys
+   9: from pathlib import Path
+  10: 
+  11: os.environ.setdefault("OPENBLAS_NUM_THREADS", "4")
+  12: 
+  13: ZDE = Path(__file__).resolve().parent
+  14: RIDGE_DAN = ZDE.parent
+  15: sys.path[:0] = [str(RIDGE_DAN.parent / "src"), str(RIDGE_DAN)]
+  16: 
+  17: import numpy as np  # noqa: E402
+  18: import pandas as pd  # noqa: E402
+  19: 
+  20: import data_ridge  # noqa: E402
+  21: import hodnoceni as Hd  # noqa: E402
+  22: from evaluate import casti, povodne, vyhodnot  # noqa: E402
+  23: from features import ZPOZDENI_Q, tabulka  # noqa: E402
+  24: from stanice import HYDRO, TYM  # noqa: E402
+  25: 
+  26: NOVE = [k for k, _ in HYDRO.values() if k not in TYM]
+  27: assert len(NOVE) == 18
+  28: # Plou��nice a B��lina se vl�cvaj�� pod ��st��m, do ��st�� z nich nic nete��e (t��mov�c Ridge a s�� ale d��vaj�� v��echny stanice
+  29: # ob�>ma c��l��m, i D�>����n ��st��; u nich se nov�c p�tid��vaj�� taky v��echny, u model�� s dobou dob�>hu jen ty nad c��lem)
+  30: POD_USTIM = ["benesov_pl", "struznice", "ceska_lipa", "trmice"]
+  31: VSE = [(c, h) for c in ("decin", "usti") for h in (12, 24, 36)]
+  32: 
+  33: 
+  34: def nove_sloupce():
+  35:     T = data_ridge.nacti()
+  36:     return pd.DataFrame({f"{s}_Q_{z}": T[f"{s}_Q"].shift(z) for s in NOVE for z in ZPOZDENI_Q})
+  37: 
+  38: 
+  39: def data(cil, horizont):
+  40:     """X (t��mov��ch 98 sloupc��), Xn (98 + 126 nov��ch), y, c; v��echno na STEJNƜCH �t��dc��ch."""
+  41:     X, y = tabulka(cil, horizont)
+  42:     N = nove_sloupce().reindex(X.index)
+  43:     ok = N.notna().all(axis=1)
+  44:     X, y, N = X[ok], y[ok], N[ok]
+  45:     c = casti(cil, horizont).reindex(X.index)
+  46:     return X, pd.concat([X, N], axis=1), y, c
+  47: 
+  48: 
+  49: def val_metriky(y, pred, cil, horizont, H=None):
+  50:     """T��mov�c metriky (vyhodnot) a pro D�>����n nav��c vzestup, za����tek vzestupu, klid a 1. SPA (hodnoceni.metriky)."""
+  51:     pred = pd.Series(np.asarray(pred, dtype=float), index=y.index)
+  52:     m = vyhodnot(y, pred, cil, horizont)
+  53:     if H is not None:
+  54:         m = Hd.metriky(y, pred, H, cil, horizont)
+  55:     return m
+  56: 
+  57: 
+  58: def cv_predikce(fit, X, y, c, cil, horizont):
+  59:     """��asov�� CV v tr�cninku (bloky let s mezerou 10 dn��, hodnoceni.bloky_cv): p�tedpov�>di pro tr�cninkov�c �t��dky."""
+  60:     tr = c == "train"
+  61:     Xt, yt = X[tr], y[tr]
+  62:     pred = pd.Series(np.nan, index=yt.index)
+  63:     for _, f_tr, f_drz in Hd.bloky_cv(Xt.index):
+  64:         predict = fit(Xt[f_tr], yt[f_tr], cil, horizont)
+  65:         pred[f_drz] = np.asarray(predict(Xt[f_drz]), dtype=float)
+  66:     return yt, pred
+  67: 
+  68: 
+  69: def cv_skore(yt, pred, Xt_ted):
+  70:     """Stejn�� ����sla jako ridge_dan/pokus.py: pr��m�>r p�tes povodn�> nad 400 cm (okno 7 dn�� p�ted a�� 5 po vrcholu),
+  71:     velk�c povodn�> nad 490 cm, rychl�c stoup��n��; nav��c p�test�telen�� na povodn��ch (95. percentil a maximum pred �?' y)."""
+  72:     e = (pred - yt).abs().to_numpy()
+  73:     rozdil = (pred - yt).to_numpy()
+  74:     ud, velke, prestrel = {}, [], []
+  75:     for _, _, f_drz in Hd.bloky_cv(yt.index):
+  76:         yy = yt[f_drz]
+  77:         for v in povodne(yy, 400):
+  78:             pos = np.flatnonzero(np.asarray(f_drz) & (yt.index >= v - Hd.E.PRED) & (yt.index <= v + Hd.E.PO))
+  79:             ud[f"{v:%Y-%m-%d}"] = e[pos].mean()
+  80:             prestrel.append(rozdil[pos].max())
+  81:             if yt.to_numpy()[pos].max() >= 490:
+  82:                 velke.append(e[pos].mean())
+  83:     vz = ((yt - Xt_ted) >= 50).to_numpy()
+  84:     return dict(cv_povodne=float(np.mean(list(ud.values()))), cv_velke=float(np.mean(velke)),
+  85:                 cv_vzestup=float(e[vz].mean()), cv_bias_vzestup=float(rozdil[vz].mean()), cv_mae=float(e.mean()),
+  86:                 cv_max_prestreleni=float(np.mean(prestrel)), cv_udalosti={k: round(float(v), 2) for k, v in ud.items()})
+  87: 
+  88: 
+  89: def povoden_2006(y, pred, H):
+  90:     """Jarn�� povode�? 2006 (t��n��) v D�>����n�>: chyba v okn�>, chyba na stoup��n�� a nejv�>t���� p�test�telen�� na stoup��n��."""
+  91:     pred = pd.Series(np.asarray(pred, dtype=float), index=y.index)
+  92:     v = povodne(y, 490)[0]
+  93:     assert f"{v:%Y-%m}" == "2006-04", v
+  94:     okno = (y.index >= v - Hd.E.PRED) & (y.index <= v + Hd.E.PO)
+  95:     stoupa = okno & (y.index < v - pd.Timedelta(hours=24))
+  96:     d = (pred - y)
+  97:     return dict(mae_2006=round(float(d[okno].abs().mean()), 1), mae_2006_stoupani=round(float(d[stoupa].abs().mean()), 1),
+  98:                 max_prestreleni_2006=round(float(d[stoupa].max()), 1), bias_2006=round(float(d[okno].mean()), 1))
+FILE sit_dan/hodnoceni.py
+   1: """Rozd�>len�� a metriky, stejn�c jako t��mov�c src/evaluate.py, jen na vlastn�� tabulce.
+   2: 
+   3: evaluate.casti() si stav D�>����na ��te z Ondrovy tabulky, proto je tady p�tevzat�c �t��dek po �t��dku (stejn�c konstanty
+   4: z evaluate.py), jen se mu stav pod��. overeni_splitu() kontroluje, ��e d��v�� stejn�c zna��ky jako origin��l.
+   5: Metriky povodn�� a varov��n�� bere p�t��mo z evaluate.py (vyhodnot, varovani, povodne), ty jsou na datech nez��visl�c.
+   6: 
+   7: Otisk evaluate.py: git blob 5fde7d8d (commit 418debf, Ondra p�� 19:58), stejn�� na Windows i Macu.
+   8: """
+   9: import sys
+  10: from pathlib import Path
+  11: 
+  12: import numpy as np
+  13: import pandas as pd
+  14: 
+  15: sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
+  16: import evaluate as E  # noqa: E402
+  17: from data import SPA  # noqa: E402
+  18: 
+  19: OTISK_EVALUATE = "5fde7d8d4a406c2034e9e08cf3d2547b6825be10"
+  20: 
+  21: 
+  22: def casti(H, horizont, nejstarsi, finalni=False):
+  23:     """Stejn�c jako evaluate.casti(), H = stav c��le (hodinov�� �tada v UTC), nejstarsi = nejstar���� zpo��d�>n�� vstup��."""
+  24:     c = pd.Series("train", index=H.index)
+  25:     if not finalni:
+  26:         vrcholy = [H[pd.Timestamp(d, tz="UTC") - pd.Timedelta(days=3):][:144].idxmax() for d in E.POVODNE_VAL]
+  27:         for v in vrcholy:
+  28:             c[v - E.OKNO_VAL - E.VYNECHAT: v + E.PO + E.VYNECHAT] = ""
+  29:         c[E.KLID_VAL[0]:E.KLID_VAL[1]] = "val"
+  30:         for v in vrcholy:
+  31:             c[v - E.OKNO_VAL: v + E.PO] = "val"
+  32:     c[E.TEST_OD:] = "test"
+  33:     ok = (c == c.shift(-horizont)) & (c == c.shift(nejstarsi))
+  34:     return c.where(ok, "")
+  35: 
+  36: 
+  37: def overeni_splitu(H, horizont=24):
+  38:     """Porovn�� zna��ky s origin��lem evaluate.casti() (ten ��te Ondrovu tabulku, jen pro kontrolu)."""
+  39:     moje = casti(H, horizont, 36)
+  40:     jeho = E.casti("decin", horizont)
+  41:     spolecne = moje.index.intersection(jeho.index)
+  42:     return int((moje[spolecne] != jeho[spolecne]).sum()), len(spolecne)
+  43: 
+  44: 
+  45: def metriky(y, pred, H, cil="decin", horizont=24):
+  46:     """T��mov�c metriky (vyhodnot) + klid, vzestup a varov��n�� pro v��echny t�ti stupn�>.
+  47: 
+  48:     y: skute��n�� stav v t + horizont, pred: p�tedpov�>��, index = ��as vyd��n�� t. H: cel�� hodinov�� �tada stavu c��le.
+  49:     """
+  50:     pred = pd.Series(np.asarray(pred, dtype=float), index=y.index)
+  51:     m = E.vyhodnot(y, pred, cil, horizont)
+  52:     e = (pred - y).abs()
+  53:     ted = H.reindex(y.index)
+  54:     zmena = y - ted
+  55:     klid = ((y.index >= pd.Timestamp(E.KLID_VAL[0], tz="UTC"))
+  56:             & (y.index < pd.Timestamp(E.KLID_VAL[1], tz="UTC") + pd.Timedelta(days=1)))
+  57:     # rychl�c stoup��n��: za horizont hodin stoupne aspo�? o 50 cm; za����tek: v posledn��ch 6 h je��t�> skoro nestoupalo
+  58:     vzestup = zmena >= 50
+  59:     zacatek = vzestup & ((ted - H.shift(6).reindex(y.index)) < 10)
+  60:     nizko = (y < 300) & (ted < 300)  # klid pou��iteln�� i pro test (tam nejsou roky 2019�?"2020)
+  61:     m |= dict(mae_klid=round(e[klid].mean(), 1) if klid.any() else None, mae_pod_300=round(e[nizko].mean(), 1),
+  62:               mae_vzestup=round(e[vzestup].mean(), 1), bias_vzestup=round((pred - y)[vzestup].mean(), 1),
+  63:               n_vzestup=int(vzestup.sum()),
+  64:               mae_zacatek=round(e[zacatek].mean(), 1), bias_zacatek=round((pred - y)[zacatek].mean(), 1),
+  65:               n_zacatek=int(zacatek.sum()))
+  66:     for n, prah in zip((1, 2, 3), SPA[cil]):
+  67:         v = E.varovani(y, pred, prah, horizont)
+  68:         m |= {f"spa{n}_{k}": x for k, x in v.items()}
+  69:     return m
+  70: 
+  71: 
+  72: def bloky_cv(index_train):
+  73:     """��asov�� k�t��ov�� validace uvnit�t tr�cninku: bloky po letech, kolem dr��en�cho bloku mezera 10 dn��."""
+  74:     bloky = [(2006, 2007), (2008, 2009), (2010, 2011), (2012, 2013), (2014, 2015), (2016, 2018)]
+  75:     mezera = pd.Timedelta(days=10)
+  76:     out = []
+  77:     for a, b in bloky:
+  78:         od, do = pd.Timestamp(f"{a}-01-01", tz="UTC"), pd.Timestamp(f"{b}-12-31 23:00", tz="UTC")
+  79:         drz = (index_train >= od) & (index_train <= do)
+  80:         tr = (index_train < od - mezera) | (index_train > do + mezera)
+  81:         out.append((f"{a}-{b}", tr, drz))
+  82:     return out
+  83: 
+  84: 
+  85: def skore_cv(y, pred, prah=400):
+  86:     """Chyba v oknech kolem vrchol�� nad 1. stupn�>m (7 dn�� p�ted a�� 5 po) v dr��en�cm bloku; v��c povodn�� ne�� nad 2. SPA."""
+  87:     pred = pd.Series(np.asarray(pred, dtype=float), index=y.index)
+  88:     okno = pd.Series(False, index=y.index)
+  89:     for v in E.povodne(y, prah):
+  90:         okno[v - E.PRED: v + E.PO] = True
+  91:     e = (pred - y).abs()
+  92:     return dict(mae=e.mean(), mae_povodne=e[okno].mean() if okno.any() else np.nan, n_okno=int(okno.sum()))
+FILE sit_dan/data_ridge.py
+   1: """Vlastn�� hodinov�� tabulka 2006�?"2025 v UTC z otev�ten��ch dat ��HM�� (CC BY 4.0): stavy a pr��toky + denn�� sr��ky.
+   2: 
+   3: python data_ridge.py    postav�� tabulka/labe_ridge.parquet (nen�� v Gitu) z cache/ (stahni_hydro.py, stahni_srazky.py)
+   4: 
+   5: Sloupce:
+   6: - <stanice>_H stav v cm (jen D�>����n a ��st��), <stanice>_Q pr��tok v m3/s, ��as m�>�ten�� v UTC (��HM�� d��v�� 'Z')
+   7: - sra_<povod��>: pr��m�>rn�� denn�� ƭhrn sr��ek v povod�� za posledn�� UKON��ENƜ m�>�tic�� den, jak by byl zn��m�� v ��ase t.
+   8:   Denn�� hodnota s raz��tkem D 06:00Z je sou��et hodinov��ch sr��ek D 07:00Z �?| D+1 06:00Z (ov�>�teno na hodinov��ch
+   9:   datech 2019, overeni_srazek()). Do tabulky proto vstupuje a�� od D+1 07:00 UTC (hodina rezervy) a plat�� 24 h.
+  10: """
+  11: import glob
+  12: import json
+  13: import re
+  14: from functools import cache
+  15: from pathlib import Path
+  16: 
+  17: import numpy as np
+  18: import pandas as pd
+  19: 
+  20: from stanice import CILE, HYDRO
+  21: 
+  22: ZDE = Path(__file__).resolve().parent
+  23: CACHE = ZDE / "cache"
+  24: SOUBOR = ZDE / "tabulka/labe_ridge.parquet"
+  25: OD, DO = "2006-01-01", "2025-12-31"
+  26: DOSTUPNE_PO = pd.Timedelta(hours=25)  # od raz��tka denn��ho ƭhrnu do chv��le, kdy ho sm��me pou����t
+  27: 
+  28: 
+  29: def hydro():
+  30:     keys = {dbc: k for dbc, (k, _) in HYDRO.items()}
+  31:     parts = {}
+  32:     for f in glob.glob(str(CACHE / "hydrology/historical/data/hourly/H_0-203-1-*_HQ_*.json")):
+  33:         dbc, rok = re.search(r"1-(\d+)_HQ_(\d{4})", f).groups()
+  34:         if dbc not in keys or not OD[:4] <= rok <= DO[:4]:
+  35:             continue
+  36:         for ts in json.loads(Path(f).read_text(encoding="utf-8"))["tsList"]:
+  37:             veliciny = "HQ" if keys[dbc] in CILE else "Q"
+  38:             if ts["tsConID"][0] in veliciny:
+  39:                 v = pd.DataFrame(ts["tsData"]["data"]["values"], columns=["t", "v"])
+  40:                 parts.setdefault(f"{keys[dbc]}_{ts['tsConID'][0]}", []).append(v)
+  41:     D = pd.DataFrame({
+  42:         k: pd.concat(v).assign(t=lambda x: pd.to_datetime(x.t, utc=True)).drop_duplicates("t").set_index("t").v
+  43:         for k, v in parts.items()
+  44:     }).sort_index()
+  45:     D = D.reindex(pd.date_range(OD, f"{DO} 23:00", freq="h", tz="UTC"))
+  46:     # stejn�� oprava jako v t��mov�c tabulce: v D�>����n�> stav a�� 1 019 cm p�ti pr��toku kolem 120 m3/s (led), nebereme
+  47:     D.loc["2006-02-05":"2006-02-08 09:00", "decin_H"] = np.nan
+  48:     poradi = [f"{k}_{v}" for k in CILE for v in "HQ"] + [f"{k}_Q" for k, _ in HYDRO.values() if k not in CILE]
+  49:     return D[[c for c in poradi if c in D]]
+  50: 
+  51: 
+  52: def denni(slozka, prvek, wsi):
+  53:     """Denn�� hodnoty prvku po stanic��ch (index = raz��tko ��HM�� v UTC), sloupce wsi. Chyb�>j��c�� soubor p�tesko����."""
+  54:     out = {}
+  55:     for w in wsi:
+  56:         f = CACHE / f"meteorology/climate/historical_csv/data/daily/{slozka}/dly-{w}-{prvek}.csv"
+  57:         if not f.exists():
+  58:             continue
+  59:         d = pd.read_csv(f)
+  60:         d = d[d.ELEMENT == prvek]
+  61:         out[w] = d.assign(DT=pd.to_datetime(d.DT, utc=True)).drop_duplicates("DT").set_index("DT").VALUE
+  62:     return pd.DataFrame(out).sort_index()["2005-12-01":]
+  63: 
+  64: 
+  65: def teplota_terminy(skupiny, hodiny):
+  66:     """Teplota z term��n�� 06, 13 a 20 UTC (okam��it�� m�>�ten��): pr��m�>r posledn��ch t�t�� term��n�� (�%? posledn��ch 24 h),
+  67:     pou��iteln�� hodinu po posledn��m z nich. Denn�� pr��m�>r AVG (raz��tko D 00:00Z) se nepou����v��."""
+  68:     out = {}
+  69:     for s in sorted(skupiny.unique()):
+  70:         rady = []
+  71:         for w in skupiny.index[skupiny == s]:
+  72:             f = CACHE / f"meteorology/climate/historical_csv/data/daily/temperature/dly-{w}-T.csv"
+  73:             if not f.exists():
+  74:                 continue
+  75:             d = pd.read_csv(f)
+  76:             d = d[(d.ELEMENT == "T") & d.TIMEFUNC.isin(["06:00", "13:00", "20:00"])]
+  77:             d = d.assign(DT=pd.to_datetime(d.DT, utc=True)).drop_duplicates("DT").set_index("DT").VALUE.sort_index()
+  78:             d = d["2005-12-01":]
+  79:             # t�ti po sob�> jdouc�� term��ny mus�� le��et do 24 h, jinak je v �tad�> d��ra
+  80:             ok = (d.index.to_series().diff(2) <= pd.Timedelta(hours=24)).to_numpy()
+  81:             d = d.rolling(3).mean().where(ok)
+  82:             d.index = d.index + pd.Timedelta(hours=1)
+  83:             rady.append(d.rename(w))
+  84:         if rady:
+  85:             out[f"tep_{s}"] = pd.concat(rady, axis=1, sort=True).mean(axis=1).reindex(hodiny, method="ffill", limit=11)
+  86:     out = pd.DataFrame(out, index=hodiny)
+  87:     # vybran�c teplom�>ry Labe pod M�>ln��kem m�>�t�� jen do roku 2005, Jizera a�� od 2015: teplota je plo��n�> hladk��,
+  88:     # vezme se ze sousedn��ho povod�� (B��lina, st�tedn�� Labe)
+  89:     for s, soused in (("labe_dolni", "bilina"), ("jizera", "labe_stredni")):
+  90:         out[f"tep_{s}"] = out.get(f"tep_{s}", pd.Series(np.nan, index=hodiny)).combine_first(out[f"tep_{soused}"])
+  91:     return out
+  92: 
+  93: 
+  94: def srazky_denni():
+  95:     S = pd.read_csv(ZDE / "srazkove_stanice.csv")
+  96:     return denni("precipitation", "SRA", S.wsi), S.set_index("wsi").skupina
+  97: 
+  98: 
+  99: def po_povodich(dny, skupiny, hodiny, predpona, posun):
+ 100:     """Pr��m�>r p�tes stanice povod��, posunut�� o `posun` od raz��tka (kdy je hodnota zn��m��), podr��en�� 24 h."""
+ 101:     out = {}
+ 102:     for s in sorted(skupiny.unique()):
+ 103:         sl = [w for w in skupiny.index[skupiny == s] if w in dny]
+ 104:         if not sl:
+ 105:             continue
+ 106:         d = dny[sl].mean(axis=1)
+ 107:         d.index = d.index + posun
+ 108:         out[f"{predpona}_{s}"] = d.reindex(hodiny, method="ffill", limit=23)
+ 109:     return pd.DataFrame(out, index=hodiny)
+ 110: 
+ 111: 
+ 112: def srazky_hodinove(denni_sra, skupiny, hodiny):
+ 113:     return po_povodich(denni_sra, skupiny, hodiny, "sra", DOSTUPNE_PO)
+ 114: 
+ 115: 
+ 116: def overeni_srazek():
+ 117:     """Pr��m�>rn�� rozd��l denn��ho ƭhrnu a sou��tu hodinov��ch pro r��zn�c za����tky intervalu (��st��-Ko��kov, 05�?"08/2019)."""
+ 118:     fs = sorted(glob.glob(str(CACHE / "meteorology/climate/historical_csv/data/1hour/precipitation/2019/*11502*")))
+ 119:     h = pd.concat([pd.read_csv(f) for f in fs]).assign(DT=lambda x: pd.to_datetime(x.DT, utc=True)).set_index("DT").VALUE
+ 120:     d = pd.read_csv(CACHE / "meteorology/climate/historical_csv/data/daily/precipitation/dly-0-20000-0-11502-SRA.csv")
+ 121:     d = d[d.ELEMENT == "SRA"].assign(DT=lambda x: pd.to_datetime(x.DT, utc=True)).set_index("DT").VALUE
+ 122:     d = d["2019-05-03":"2019-08-28"]
+ 123:     c = h.cumsum()
+ 124:     out = {}
+ 125:     for p in range(-26, 4):
+ 126:         s = c.reindex(d.index + pd.Timedelta(hours=24 + p)).to_numpy() - c.reindex(d.index + pd.Timedelta(hours=p)).to_numpy()
+ 127:         out[p] = round(float(np.nanmean(np.abs(s - d.to_numpy()))), 3)
+ 128:     return pd.Series(out, name="mm")
+ 129: 
+ 130: 
+ 131: def postav():
+ 132:     D = hydro()
+ 133:     sra, skupiny = srazky_denni()
+ 134:     R = srazky_hodinove(sra, skupiny, D.index)
+ 135:     # v���ka sn�>hu: pozorov��n�� v 06:00Z, bereme konzervativn�> a�� od dal����ho dne 07:00Z jako sr��ky
+ 136:     snih = po_povodich(denni("snow", "SCE", skupiny.index), skupiny, D.index, "sce", DOSTUPNE_PO)
+ 137:     teplota = teplota_terminy(skupiny, D.index)
+ 138:     T = pd.concat([D, R, snih, teplota], axis=1).astype("float32").rename_axis("cas")
+ 139:     SOUBOR.parent.mkdir(exist_ok=True)
+ 140:     T.to_parquet(SOUBOR)
+ 141:     return T
+ 142: 
+ 143: 
+ 144: @cache
+ 145: def nacti():
+ 146:     return pd.read_parquet(SOUBOR).astype("float64")
+ 147: 
+ 148: 
+ 149: if __name__ == "__main__":
+ 150:     T = postav()
+ 151:     print(f"{len(T)} hodin, {T.shape[1]} sloupc��, {SOUBOR.stat().st_size / 1e6:.1f} MB")
+ 152:     print("chyb�� (hodin):", T.isna().sum()[lambda s: s > 0].to_dict())
+ 153:     o = overeni_srazek()
+ 154:     print("denn�� ƭhrn vs. hodinov�c, posun za����tku intervalu proti raz��tku (h) ��' pr��m�>rn�� rozd��l mm:")
+ 155:     print(o[o.index >= -3].to_string())
+
+exec
+"C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -Command '$paths = @('"'src/models/mlp.py','src/porovnej.py','src/features.py','src/evaluate.py','src/data.py','sit_dan/kaggle/kernel/sit_kaggle.py','sit_dan/stanice.py'); foreach ("'$p in $paths) { Write-Output "FILE $p"; $n=0; Get-Content -Encoding UTF8 -LiteralPath $p | ForEach-Object { $n++; '"'{0,4}: {1}' -f "'$n,$_ } }' in C:\Users\danie\Documents\hackathon-2026-sit
+ succeeded in 611ms:
+FILE src/models/mlp.py
+   1: """Neuronov� s�� (MLP 128-64, alpha=1) na zm�nu hladiny, odmocnina pr�tok�, �k�lovan� vstupy i c�l."""
+   2: import numpy as np
+   3: from sklearn.compose import TransformedTargetRegressor
+   4: from sklearn.neural_network import MLPRegressor
+   5: from sklearn.pipeline import make_pipeline
+   6: from sklearn.preprocessing import FunctionTransformer, StandardScaler
+   7: 
+   8: from data import SPA
+   9: 
+  10: PARAMETRY = dict(vrstvy=(128, 64), alpha=1.0, early_stopping=True, max_iter=300, seed=42, cil="zm�na hladiny")
+  11: 
+  12: 
+  13: def odmocnina_prutoku(X):
+  14:     return X.assign(**{c: np.sqrt(X[c].clip(lower=0)) for c in X if "_Q_" in c})
+  15: 
+  16: 
+  17: def fit(X, y, cil, horizont, vrstvy=PARAMETRY["vrstvy"], alpha=PARAMETRY["alpha"], seed=PARAMETRY["seed"],
+  18:         vaha_povodni=1.0):
+  19:     sit = MLPRegressor(hidden_layer_sizes=vrstvy, alpha=alpha, early_stopping=True,
+  20:                        max_iter=PARAMETRY["max_iter"], random_state=seed)
+  21:     m = TransformedTargetRegressor(
+  22:         make_pipeline(FunctionTransformer(odmocnina_prutoku), StandardScaler(), sit),
+  23:         transformer=StandardScaler(),
+  24:     )
+  25:     # hodiny nad 1. stupn�m povod�ov� aktivity m��ou m�t p�i tr�ninku v�t� v�hu
+  26:     vahy = np.where(y >= SPA[cil][0], vaha_povodni, 1.0)
+  27:     m.fit(X, y - X[f"{cil}_H_0"], mlpregressor__sample_weight=vahy)
+  28:     return lambda X: X[f"{cil}_H_0"] + m.predict(X)
+FILE src/porovnej.py
+   1: """Natr�nuje a vyhodnot� modely ze src/models/ na spole�n�m rozd�len� a ulo�� v�sledky do results/.
+   2: 
+   3: python src/porovnej.py jako_ted ridge      D؟�n a �st� za 12, 24 a 36 h, validace
+   4: python src/porovnej.py ridge --rychle      jen D؟�n za 24 h
+   5: python src/porovnej.py --prehled           posledn� v�sledek ka�d�ho modelu vedle sebe
+   6: python src/porovnej.py ridge --test        fin�ln� test, spou�t� jen Ondra
+   7: 
+   8: Model je soubor src/models/<nazev>.py s funkc� fit(X, y, cil, horizont), kter� vr�t� funkci predict(X).
+   9: Voliteln� PARAMETRY = {...}, ulo�� se k v�sledku.
+  10: """
+  11: import argparse
+  12: import hashlib
+  13: import importlib
+  14: import json
+  15: import subprocess
+  16: import time
+  17: from datetime import datetime
+  18: from pathlib import Path
+  19: 
+  20: import numpy as np
+  21: import pandas as pd
+  22: 
+  23: from evaluate import casti, vyhodnot
+  24: from features import tabulka
+  25: 
+  26: ROOT = Path(__file__).resolve().parents[1]
+  27: RESULTS = ROOT / "results"
+  28: VSE = [(c, h) for c in ("decin", "usti") for h in (12, 24, 36)]
+  29: SLOUPCE = ["mae", "mae_povodne", "bias_povodne", "chyba_vrcholu", "spa2_predstih_h", "spa2_propasnuto", "spa2_plane_poplachy",
+  30:            "spa3_predstih_h", "spa3_propasnuto", "trenink_s"]
+  31: 
+  32: 
+  33: def verze():
+  34:     """Otisk dat, vstup� a vyhodnocen�. V�sledky s jin�m otiskem --prehled nem�ch� s nov�mi."""
+  35:     h = hashlib.sha1()
+  36:     for f in ("data/external/labe_hodinove.parquet", "src/features.py", "src/evaluate.py"):
+  37:         h.update((ROOT / f).read_bytes())
+  38:     return h.hexdigest()[:8]
+  39: 
+  40: 
+  41: def spust(nazev, test=False, rychle=False):
+  42:     model = importlib.import_module(f"models.{nazev}")
+  43:     cast = "test" if test else "val"
+  44:     radky, predpovedi = [], []
+  45:     for cil, h in [("decin", 24)] if rychle else VSE:
+  46:         X, y = tabulka(cil, h)
+  47:         c = casti(cil, h, finalni=test).reindex(X.index)
+  48:         tr, ev = c == "train", c == cast
+  49:         t0 = time.time()
+  50:         predict = model.fit(X[tr], y[tr], cil=cil, horizont=h)
+  51:         t1 = time.time()
+  52:         pred = pd.Series(np.asarray(predict(X[ev]), dtype=float), index=X.index[ev])
+  53:         assert np.isfinite(pred).all(), f"{nazev} vr�til NaN nebo nekone�no ({cil} +{h} h)"
+  54:         m = vyhodnot(y[ev], pred, cil, h)
+  55:         radky.append(dict(model=nazev, cil=cil, horizont=h, **m, trenink_s=round(t1 - t0, 1),
+  56:                           predpoved_s=round(time.time() - t1, 2)))
+  57:         predpovedi.append(pd.DataFrame({"cil": cil, "horizont": h, "skutecnost": y[ev], "predpoved": pred}))
+  58:         print(f"  {nazev} {cil} +{h} h: MAE {m['mae']} cm, na povodn�ch {m['mae_povodne']} cm")
+  59: 
+  60:     cas = datetime.now()
+  61:     autor = subprocess.run(["git", "config", "user.name"], capture_output=True, text=True).stdout.strip()
+  62:     zaznam = dict(autor=autor, cas=cas.isoformat(timespec="seconds"), verze=verze(), model=nazev, cast=cast, rychle=rychle,
+  63:                   popis=(model.__doc__ or "").strip().split("\n")[0],
+  64:                   parametry=getattr(model, "PARAMETRY", {}), vysledky=radky)
+  65:     RESULTS.mkdir(exist_ok=True)
+  66:     soubor = RESULTS / f"{cas:%Y-%m-%d_%H%M%S}_{nazev}{'_test' if test else ''}.json"
+  67:     soubor.write_text(json.dumps(zaznam, ensure_ascii=False, indent=1), encoding="utf-8")
+  68:     if not rychle:
+  69:         (RESULTS / "predpovedi").mkdir(exist_ok=True)
+  70:         pd.concat(predpovedi).rename_axis("cas_vydani").to_parquet(
+  71:             RESULTS / "predpovedi" / f"{nazev}{'_test' if test else ''}.parquet")
+  72:     print(f"ulo�eno {soubor.relative_to(ROOT)}")
+  73:     return pd.DataFrame(radky)
+  74: 
+  75: 
+  76: def prehled(cast="val"):
+  77:     posledni, stare = {}, set()
+  78:     for f in sorted(RESULTS.glob("*.json")):
+  79:         b = f.read_bytes()
+  80:         try:
+  81:             z = json.loads(b.decode("utf-8"))
+  82:         except UnicodeDecodeError:  # star� v�sledky z Windows bez UTF-8
+  83:             z = json.loads(b.decode("cp1250"))
+  84:         if z["cast"] != cast or z.get("rychle"):
+  85:             continue
+  86:         if z.get("verze") == verze():
+  87:             posledni[z["model"]] = z
+  88:         else:
+  89:             stare.add(z["model"])
+  90:     if stare - set(posledni):
+  91:         print("jen se starou verz� dat nebo vyhodnocen� (pus� je znovu):", ", ".join(sorted(stare - set(posledni))))
+  92:     if not posledni:
+  93:         return pd.DataFrame()
+  94:     return pd.DataFrame([r for z in posledni.values() for r in z["vysledky"]])
+  95: 
+  96: 
+  97: def tisk(df):
+  98:     if df.empty:
+  99:         print("zat�m ��dn� v�sledky")
+ 100:         return
+ 101:     print(df.set_index(["cil", "horizont", "model"]).sort_index()[SLOUPCE].to_string())
+ 102: 
+ 103: 
+ 104: if __name__ == "__main__":
+ 105:     p = argparse.ArgumentParser()
+ 106:     p.add_argument("modely", nargs="*")
+ 107:     p.add_argument("--rychle", action="store_true")
+ 108:     p.add_argument("--prehled", action="store_true")
+ 109:     p.add_argument("--test", action="store_true")
+ 110:     a = p.parse_args()
+ 111:     if a.prehled:
+ 112:         tisk(prehled("test" if a.test else "val"))
+ 113:     else:
+ 114:         df = pd.concat([spust(m, test=a.test, rychle=a.rychle) for m in a.modely])
+ 115:         tisk(df)
+ 116:         if not a.rychle:
+ 117:             print("\nprumer_povodne (pr�m�r mae_povodne p�es v�ech 6 kombinac�):")
+ 118:             print(df.groupby("model").mae_povodne.mean().round(1).sort_values().to_string())
+FILE src/features.py
+   1: """Vstupy a c�l pro p�edpov�� stavu v D؟�n� nebo v �st� za `horizont` hodin. Stejn� pro v�echny modely.
+   2: 
+   3: ��dek je okam�ik t, kdy p�edpov�� vyd�v�me (index, UTC). Sloupce:
+   4: - decin_H_<z>, usti_H_<z>: stav v cm p�ed z hodinami
+   5: - <stanice>_Q_<z>: pr�tok v m3/s p�ed z hodinami, v�ech 12 stanic (seznam v data.py)
+   6: y je stav v cm v �ase t + horizont. Ve vstupech je jen to, co je v �ase t u� zm��en�.
+   7: """
+   8: import pandas as pd
+   9: 
+  10: from data import CILE, PROTI_PROUDU, nacti
+  11: 
+  12: ZPOZDENI_H = (0, 1, 2, 3, 6, 12, 24)
+  13: ZPOZDENI_Q = (0, 3, 6, 12, 18, 24, 36)
+  14: NEJSTARSI = max(ZPOZDENI_H + ZPOZDENI_Q)
+  15: 
+  16: 
+  17: def tabulka(cil, horizont):
+  18:     D = nacti()
+  19:     X = pd.DataFrame(
+  20:         {f"{s}_H_{z}": D[f"{s}_H"].shift(z) for s in CILE for z in ZPOZDENI_H}
+  21:         | {f"{s}_Q_{z}": D[f"{s}_Q"].shift(z) for s in CILE | PROTI_PROUDU for z in ZPOZDENI_Q}
+  22:     )
+  23:     y = D[f"{cil}_H"].shift(-horizont).rename("y")
+  24:     ok = X.notna().all(axis=1) & y.notna()
+  25:     return X[ok], y[ok]
+FILE src/evaluate.py
+   1: """Spole�n� rozd�len� na train / val / test a vyhodnocen�. Nikdo ho nem�n� jen pro sv�j model.
+   2: 
+   3: - train: 2006-2018 bez valida�n�ch povodn� a 20 dn� kolem nich
+   4: - val: 4 vynechan� povodn� (16 dn� p�ed vrcholem a� 5 dn� po n�m) a klidn� roky 2019-2020
+   5: - test: 2021-2025 (povodn� 12/2023 a 9/2024), pou�t� se jednou na konci, rozhoduje Ondra.
+   6:   Fin�ln� model se pak tr�nuje na v�em do konce 2020.
+   7: """
+   8: import numpy as np
+   9: import pandas as pd
+  10: 
+  11: from data import SPA, nacti
+  12: from features import NEJSTARSI
+  13: 
+  14: POVODNE_VAL = ["2006-04-03", "2009-03-07", "2010-09-29", "2011-01-17"]
+  15: KLID_VAL = ("2019-01-01", "2020-12-31")
+  16: TEST_OD = "2021-01-01"
+  17: OKNO_VAL, PRED, PO, VYNECHAT = pd.Timedelta(days=16), pd.Timedelta(days=7), pd.Timedelta(days=5), pd.Timedelta(days=20)
+  18: 
+  19: 
+  20: def povodne(H, prah):
+  21:     """Vrcholy povodn�, kdy stav p�e�el pr�h (v�c ne� 7 dn� od sebe = r�zn� povodn�)."""
+  22:     s = H[H >= prah]
+  23:     useky = []
+  24:     for t in s.index:
+  25:         if useky and t - useky[-1][1] <= pd.Timedelta(days=7):
+  26:             useky[-1][1] = t
+  27:         else:
+  28:             useky.append([t, t])
+  29:     return [H[a:b].idxmax() for a, b in useky]
+  30: 
+  31: 
+  32: def casti(cil, horizont, finalni=False):
+  33:     """Pro ka�dou hodinu 'train', 'val', 'test' nebo '' (nepou��t)."""
+  34:     H = nacti()[f"{cil}_H"]
+  35:     c = pd.Series("train", index=H.index)
+  36:     if not finalni:
+  37:         vrcholy = [H[pd.Timestamp(d, tz="UTC") - pd.Timedelta(days=3):][:144].idxmax() for d in POVODNE_VAL]
+  38:         for v in vrcholy:
+  39:             c[v - OKNO_VAL - VYNECHAT: v + PO + VYNECHAT] = ""
+  40:         c[KLID_VAL[0]:KLID_VAL[1]] = "val"
+  41:         for v in vrcholy:
+  42:             c[v - OKNO_VAL: v + PO] = "val"
+  43:     c[TEST_OD:] = "test"
+  44:     # vstupy (a� 36 h zp�t) i c�l (t + horizont) mus� le�et ve stejn� ��sti, jinak ��dek vynech�me
+  45:     ok = (c == c.shift(-horizont)) & (c == c.shift(NEJSTARSI))
+  46:     return c.where(ok, "")
+  47: 
+  48: 
+  49: def varovani(y, pred, prah, horizont):
+  50:     """Varov�n� p�ed p�ekro�en�m prahu. y a pred: index je �as vyd�n� t, hodnota je stav v t + horizont.
+  51: 
+  52:     P�edstih je nejv�� horizont: d��v�j� varov�n� znamen�, �e model ohl�sil povode� d��v, ne� mohla p�ij�t.
+  53:     Prop�snut� povode� se do pr�m�rn�ho p�edstihu po��t� jako 0.
+  54:     """
+  55:     hodiny = pd.date_range(y.index.min(), y.index.max(), freq="h")
+  56:     y, pred = y.reindex(hodiny), pred.reindex(hodiny)
+  57:     alarm = (pred >= prah).astype(int)
+  58:     # za��tek povodn�: skute�n� stav p�ejde pr�h a 4 dny p�edt�m byl zm��en� a pod n�m
+  59:     pod = (y < prah).astype(float).where(y.notna())
+  60:     zacatky = hodiny[(y >= prah) & (pod.shift(1).rolling(96, min_periods=96).min() == 1)]
+  61:     predstih, propasnuto = [], 0
+  62:     for t in zacatky:
+  63:         vydane = alarm[t - pd.Timedelta(hours=48): t + pd.Timedelta(hours=horizont - 1)]
+  64:         if vydane.any():
+  65:             predstih.append(min(horizont, horizont - (vydane.idxmax() - t) / pd.Timedelta(hours=1)))
+  66:         else:
+  67:             predstih.append(0.0)
+  68:             propasnuto += 1
+  69:     # plan� poplach: souvisl� �sek varov�n� (mezery do 6 h spoj�me), b�hem kter�ho ani den po n�m
+  70:     # skute�n� stav pr�h nep�ekro�il (y[t] je stav v t + horizont, proto od s - horizont)
+  71:     a = alarm.rolling(7, min_periods=1).max()
+  72:     starty = hodiny[(a == 1) & (a.shift(1, fill_value=0) == 0)]
+  73:     konce = hodiny[(a == 1) & (a.shift(-1, fill_value=0) == 0)]
+  74:     plane = sum(not (y[s - pd.Timedelta(hours=horizont): e + pd.Timedelta(hours=24)] >= prah).any()
+  75:                 for s, e in zip(starty, konce))
+  76:     return dict(povodni=len(zacatky), predstih_h=round(float(np.mean(predstih)), 1) if predstih else None,
+  77:                 propasnuto=propasnuto, plane_poplachy=int(plane))
+  78: 
+  79: 
+  80: def vyhodnot(y, pred, cil, horizont):
+  81:     """Metriky jedn� p�edpov�di (stav v cm). y a pred maj� stejn� index, �as vyd�n� p�edpov�di."""
+  82:     pred = pd.Series(np.asarray(pred, dtype=float), index=y.index)
+  83:     e = (pred - y).abs()
+  84:     spa1, spa2, spa3 = SPA[cil]
+  85:     okno = pd.Series(False, index=y.index)
+  86:     vrcholy = []
+  87:     for v in povodne(y, spa2):
+  88:         okno[v - PRED: v + PO] = True
+  89:         # p�edpov�� vydan� horizont hodin p�ed vrcholem, kladn� = nadhodnotil
+  90:         vrcholy.append(pred[v] - y[v])
+  91:     out = dict(
+  92:         mae=round(e.mean(), 1),
+  93:         mae_povodne=round(e[okno].mean(), 1),
+  94:         # kladn� = model na povodn�ch soustavn� nadhodnocuje (pozor, nadhodnocov�n� zlep�uje p�edstih)
+  95:         bias_povodne=round((pred - y)[okno].mean(), 1),
+  96:         mae_nad_1spa=round(e[y >= spa1].mean(), 1),
+  97:         chyba_vrcholu=round(float(np.mean(np.abs(vrcholy))), 1),
+  98:         vrcholy_o_kolik=[round(float(v)) for v in vrcholy],
+  99:         radku=len(y),
+ 100:     )
+ 101:     for n, prah in ((2, spa2), (3, spa3)):
+ 102:         out |= {f"spa{n}_{k}": v for k, v in varovani(y, pred, prah, horizont).items()}
+ 103:     return out
+FILE src/data.py
+   1: """Hodinov� tabulka stav� a pr�tok� na Labi a p��toc�ch nad D؟�nem, 2006-2025.
+   2: 
+   3: `python src/data.py` ji postav� z data/raw/chmu_hydro/ (st�hne src/stahni_chmu_hydro.py) a ulo��
+   4: do data/external/labe_hodinove.parquet. Ten je v Gitu, tak�e ostatn� nic stahovat nemus� a �tou ho p�es nacti().
+   5: """
+   6: import glob
+   7: import json
+   8: import re
+   9: from functools import cache
+  10: from pathlib import Path
+  11: 
+  12: import pandas as pd
+  13: 
+  14: ROOT = Path(__file__).resolve().parents[1]
+  15: RAW = ROOT / "data/raw/chmu_hydro"
+  16: SOUBOR = ROOT / "data/external/labe_hodinove.parquet"
+  17: 
+  18: # kl�� stanice: (��slo �HM�, n�zev). U c�l� bereme stav i pr�tok, u ostatn�ch jen pr�tok.
+  19: CILE = {"decin": ("240000", "D؟�n (Labe)"), "usti": ("221000", "�st� nad Labem (Labe)")}
+  20: PROTI_PROUDU = {
+  21:     "louny": ("219000", "Louny (Oh�e)"),
+  22:     "melnik": ("204000", "M�ln�k (Labe)"),
+  23:     "vranany": ("203000", "Vra�any (Vltava)"),
+  24:     "kostelec": ("104400", "Kostelec nad Labem (Labe)"),
+  25:     "praha": ("200100", "Praha-Chuchle (Vltava)"),
+  26:     "nymburk": ("080000", "Nymburk (Labe)"),
+  27:     "jizera": ("101800", "P�edm��ice (Jizera)"),
+  28:     "beroun": ("198000", "Beroun (Berounka)"),
+  29:     "sazava": ("167200", "Nespeky (S�zava)"),
+  30:     "prelouc": ("061000", "P�elou� (Labe)"),
+  31: }
+  32: # stupn� povod�ov� aktivity v cm (metadata �HM�)
+  33: SPA = {"decin": (400, 490, 560), "usti": (450, 530, 600)}
+  34: OD, DO = "2006-01-01", "2025-12-31"  # Kostelec a pr�tok v M�ln�ku a Nymburku za��naj� a� 2006
+  35: 
+  36: 
+  37: def postav():
+  38:     keys = {dbc: k for k, (dbc, _) in (CILE | PROTI_PROUDU).items()}
+  39:     parts = {}
+  40:     for f in glob.glob(str(RAW / "H_0-203-1-*_HQ_*.json")):
+  41:         dbc, rok = re.search(r"1-(\d+)_HQ_(\d{4})", f).groups()
+  42:         if dbc not in keys or not OD[:4] <= rok <= DO[:4]:
+  43:             continue
+  44:         for ts in json.load(open(f))["tsList"]:
+  45:             veliciny = "HQ" if keys[dbc] in CILE else "Q"
+  46:             if ts["tsConID"][0] in veliciny:
+  47:                 v = pd.DataFrame(ts["tsData"]["data"]["values"], columns=["t", "v"])
+  48:                 parts.setdefault(f"{keys[dbc]}_{ts['tsConID'][0]}", []).append(v)
+  49:     D = pd.DataFrame({
+  50:         k: pd.concat(v).assign(t=lambda x: pd.to_datetime(x.t, utc=True)).drop_duplicates("t").set_index("t").v
+  51:         for k, v in parts.items()
+  52:     }).sort_index()
+  53:     D = D.reindex(pd.date_range(OD, f"{DO} 23:00", freq="h", tz="UTC"))
+  54:     # chyba m��en�: v D؟�n� stav a� 1 019 cm p�i pr�toku kolem 120 m3/s, �st� p�itom 161 cm,
+  55:     # a do 8. 2. dopoledne hladina nesed� s pr�tokem (nejsp�� led). Nedopl�ujeme, surov� data jinak d�ry nemaj�.
+  56:     D.loc["2006-02-05":"2006-02-08 09:00", "decin_H"] = None
+  57:     cols = [f"{k}_{v}" for k in CILE for v in "HQ"] + [f"{k}_Q" for k in PROTI_PROUDU]
+  58:     D[cols].astype("float32").rename_axis("cas").to_parquet(SOUBOR)
+  59:     return D[cols]
+  60: 
+  61: 
+  62: @cache
+  63: def nacti():
+  64:     """Hodinov� tabulka, index je �as v UTC, sloupce <stanice>_H (cm) a <stanice>_Q (m3/s)."""
+  65:     return pd.read_parquet(SOUBOR).astype("float64")
+  66: 
+  67: 
+  68: if __name__ == "__main__":
+  69:     D = postav()
+  70:     print(f"{len(D)} hodin, {D.shape[1]} sloupc�, �pln�ch ��dk� {int(D.notna().all(axis=1).sum())}")
+  71:     print("chyb� (hodin):", D.isna().sum()[lambda s: s > 0].to_dict())
+  72:     print(f"{SOUBOR.relative_to(ROOT)}: {SOUBOR.stat().st_size / 1e6:.1f} MB")
+FILE sit_dan/kaggle/kernel/sit_kaggle.py
+   1: """Spou�t؟ na Kaggle: zkop�ruje k�d a data z datasetu do /tmp/repo, srovn� scikit-learn s verz� na Danov� notebooku
+   2: a pust� sit_dan/beh_sit.py (tolik tr�nink� soubاn�, kolik je jader). V�stup do /kaggle/working/vystup.
+   3: 
+   4: S�� je scikit-learn (MLPRegressor), po��t� na procesoru, GPU nevyu�ije.
+   5: """
+   6: import os
+   7: import shutil
+   8: import subprocess
+   9: import sys
+  10: from pathlib import Path
+  11: 
+  12: print(sys.version, flush=True)
+  13: subprocess.run(["nvidia-smi", "-L"])
+  14: print("jader:", os.cpu_count(), flush=True)
+  15: subprocess.run(["free", "-g"])
+  16: 
+  17: zdroj = next(Path("/kaggle/input").rglob("beh_sit.py")).parents[1]
+  18: shutil.copytree(zdroj, "/tmp/repo")
+  19: print("k�d a data z", zdroj, flush=True)
+  20: 
+  21: import sklearn  # noqa: E402
+  22: 
+  23: if sklearn.__version__ != "1.9.1":
+  24:     print("p�edinstalovan� scikit-learn", sklearn.__version__, "-> instaluji 1.9.1", flush=True)
+  25:     subprocess.run([sys.executable, "-m", "pip", "install", "-q", "scikit-learn==1.9.1"])
+  26: subprocess.run([sys.executable, "-c", "import sys, sklearn, pandas, numpy; "
+  27:                 "print('verze:', sys.version.split()[0], sklearn.__version__, pandas.__version__, numpy.__version__)"])
+  28: 
+  29: r = subprocess.run([sys.executable, "beh_sit.py", "--prace", str(os.cpu_count()), "--vystup", "/kaggle/working/vystup"],
+  30:                    cwd="/tmp/repo/sit_dan")
+  31: sys.exit(r.returncode)
+FILE sit_dan/stanice.py
+   1: """Kter� stanice �HM� bereme. Vybran� podle doby dob�hu do D؟�na a podle toho, jestli maj� �ady cel� 2006-2025.
+   2: 
+   3: D؟�n (240000, ��slo hydrologick�ho po�ad� 1-14-04-0010, plocha povod� 50 974 km2) le�� POD soutokem
+   4: s Plou�nic� (1-14-03) i s B�linou (1-14-01), ob� se vl�vaj� mezi �st�m a D؟�nem. Kamenice (H�ensko) je pod
+   5: D؟�nem, ta n�s nezaj�m�. Doln� Oh�e pod Louny (Terez�n) a Labe v Litom��ic�ch maj� data a� od 2013 a 2017,
+   6: valida�n� povodn� 2006-2011 by bez nich ne�ly, proto chyb�.
+   7: """
+   8: # DBC: (kl��, n�zev)
+   9: HYDRO = {
+  10:     # stejn� jako t�mov� tabulka (src/data.py)
+  11:     "240000": ("decin", "D؟�n (Labe)"),
+  12:     "221000": ("usti", "�st� nad Labem (Labe)"),
+  13:     "219000": ("louny", "Louny (Oh�e)"),
+  14:     "204000": ("melnik", "M�ln�k (Labe)"),
+  15:     "203000": ("vranany", "Vra�any (Vltava)"),
+  16:     "104400": ("kostelec", "Kostelec nad Labem (Labe)"),
+  17:     "200100": ("praha", "Praha-Chuchle (Vltava)"),
+  18:     "080000": ("nymburk", "Nymburk (Labe)"),
+  19:     "101800": ("jizera", "Tu�ice-P�edm��ice (Jizera)"),
+  20:     "198000": ("beroun", "Beroun (Berounka)"),
+  21:     "167200": ("sazava", "Nespeky (S�zava)"),
+  22:     "061000": ("prelouc", "P�elou� (Labe)"),
+  23:     # p��toky mezi �st�m a D؟�nem, kde dnes vlna "vznik� z ni�eho"
+  24:     "239000": ("benesov_pl", "Bene�ov nad Plou�nic� (Plou�nice)"),
+  25:     "238000": ("struznice", "Stru�nice (Plou�nice)"),
+  26:     "235000": ("ceska_lipa", "�esk� L�pa (Plou�nice)"),
+  27:     "226000": ("trmice", "Trmice (B�lina)"),
+  28:     # d�l proti proudu, del� n�skok
+  29:     "216000": ("zatec", "�atec (Oh�e)"),
+  30:     "214000": ("karlovy_vary", "Karlovy Vary (Oh�e)"),
+  31:     "194500": ("zbecno", "Zbe�no (Berounka)"),
+  32:     "191000": ("liblin", "Libl�n (Berounka)"),
+  33:     "186000": ("plzen", "Plze�-B�l� Hora (Berounka)"),
+  34:     "190000": ("plasy", "Plasy (St�ela)"),
+  35:     "197300": ("litavka", "Beroun (Litavka)"),
+  36:     "169000": ("zbraslav", "Praha-Zbraslav (Vltava)"),
+  37:     "165000": ("kacov", "K�cov (S�zava)"),
+  38:     "161000": ("zruc", "Zru� nad S�zavou (S�zava)"),
+  39:     # N�m�ice (042000) sta�eny, ale vy�azen�: d�ra 170 h v 10/2020 (val) by vyhodila ��dky, P�elou� je hned pod nimi
+  40:     "059000": ("nemosice", "Nemo�ice (Chrudimka)"),
+  41:     "037000": ("tyniste", "T�ni�t� nad Orlic� (Orlice)"),
+  42:     "075000": ("sany", "S�ny (Cidlina)"),
+  43:     "098000": ("bakov", "Bakov nad Jizerou (Jizera)"),
+  44: }
+  45: TYM = ["decin", "usti", "louny", "melnik", "vranany", "kostelec", "praha", "nymburk", "jizera", "beroun", "sazava",
+  46:        "prelouc"]
+  47: CILE = ["decin", "usti"]
+  48: ROKY = range(2006, 2026)
+
+codex
+Obě varianty používají stejnou funkci `mlp.fit`; nové sloupce `_Q_` procházejí odmocninou i škálováním. Shodné jsou také masky validace a funkce pro CV bloky. Teď ověřím na datech do roku 2020, zda nové stanice nevyřazují řádky, a prověřím reprodukovatelnost týmového výsledku.
+
+exec
+"C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -Command "@'
+import pyarrow.parquet as pq
+from pathlib import Path
+for f in ['data/external/labe_hodinove.parquet','sit_dan/tabulka/labe_ridge.parquet']:
+ p=Path(f)
+ q=pq.ParquetFile(p)
+ print(f, 'bytes',p.stat().st_size,'rows',q.metadata.num_rows,'rowgroups',q.num_row_groups)
+ print(q.schema_arrow.names)
+ print(q.schema_arrow.metadata.get(b'pandas',b'').decode()[-700:])
+'@ | & 'C:\\Users\\danie\\.venvs\\hackathon\\Scripts\\python.exe' -B -" in C:\Users\danie\Documents\hackathon-2026-sit
+ succeeded in 953ms:
+data/external/labe_hodinove.parquet bytes 4772920 rows 175320 rowgroups 1
+['decin_H', 'decin_Q', 'usti_H', 'usti_Q', 'louny_Q', 'melnik_Q', 'vranany_Q', 'kostelec_Q', 'praha_Q', 'nymburk_Q', 'jizera_Q', 'beroun_Q', 'sazava_Q', 'prelouc_Q', 'cas']
+ame": "jizera_Q", "field_name": "jizera_Q", "pandas_type": "float32", "numpy_type": "float32", "metadata": null}, {"name": "beroun_Q", "field_name": "beroun_Q", "pandas_type": "float32", "numpy_type": "float32", "metadata": null}, {"name": "sazava_Q", "field_name": "sazava_Q", "pandas_type": "float32", "numpy_type": "float32", "metadata": null}, {"name": "prelouc_Q", "field_name": "prelouc_Q", "pandas_type": "float32", "numpy_type": "float32", "metadata": null}, {"name": "cas", "field_name": "cas", "pandas_type": "datetimetz", "numpy_type": "datetime64[us]", "metadata": {"timezone": "UTC"}}], "attributes": {}, "creator": {"library": "pyarrow", "version": "26.0.0"}, "pandas_version": "3.1.0"}
+sit_dan/tabulka/labe_ridge.parquet bytes 10762490 rows 175320 rowgroups 1
+['decin_H', 'decin_Q', 'usti_H', 'usti_Q', 'louny_Q', 'melnik_Q', 'vranany_Q', 'kostelec_Q', 'praha_Q', 'nymburk_Q', 'jizera_Q', 'beroun_Q', 'sazava_Q', 'prelouc_Q', 'benesov_pl_Q', 'struznice_Q', 'ceska_lipa_Q', 'trmice_Q', 'zatec_Q', 'karlovy_vary_Q', 'zbecno_Q', 'liblin_Q', 'plzen_Q', 'plasy_Q', 'litavka_Q', 'zbraslav_Q', 'kacov_Q', 'zruc_Q', 'nemosice_Q', 'tyniste_Q', 'sany_Q', 'bakov_Q', 'sra_berounka', 'sra_bilina', 'sra_jizera', 'sra_labe_dolni', 'sra_labe_horni', 'sra_labe_stredni', 'sra_ohre', 'sra_ploucnice', 'sra_sazava', 'sra_vltava_dolni', 'sra_vltava_horni', 'sce_berounka', 'sce_bilina', 'sce_jizera', 'sce_labe_dolni', 'sce_labe_horni', 'sce_labe_stredni', 'sce_ohre', 'sce_ploucnice', 'sce_sazava', 'sce_vltava_dolni', 'sce_vltava_horni', 'tep_berounka', 'tep_bilina', 'tep_jizera', 'tep_labe_dolni', 'tep_labe_horni', 'tep_labe_stredni', 'tep_ohre', 'tep_ploucnice', 'tep_sazava', 'tep_vltava_dolni', 'tep_vltava_horni', 'cas']
+oucnice", "pandas_type": "float32", "numpy_type": "float32", "metadata": null}, {"name": "tep_sazava", "field_name": "tep_sazava", "pandas_type": "float32", "numpy_type": "float32", "metadata": null}, {"name": "tep_vltava_dolni", "field_name": "tep_vltava_dolni", "pandas_type": "float32", "numpy_type": "float32", "metadata": null}, {"name": "tep_vltava_horni", "field_name": "tep_vltava_horni", "pandas_type": "float32", "numpy_type": "float32", "metadata": null}, {"name": "cas", "field_name": "cas", "pandas_type": "datetimetz", "numpy_type": "datetime64[us]", "metadata": {"timezone": "UTC"}}], "attributes": {}, "creator": {"library": "pyarrow", "version": "26.0.0"}, "pandas_version": "3.1.0"}
+
+exec
+"C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -Command "@'
+import sys
+from pathlib import Path
+import pandas as pd
+root=Path.cwd()
+sys.path[:0]=[str(root/'src'),str(root/'sit_dan')]
+import data as D
+import data_ridge as R
+import stanice
+end=pd.Timestamp('2021-01-01',tz='UTC')
+filters=[('cas','<',end)]
+team=pd.read_parquet(D.SOUBOR,filters=filters).astype('float64')
+new=[k for k,_ in stanice.HYDRO.values() if k not in stanice.TYM]
+cols=['decin_H']+[s+'_Q' for s in new]
+extra=pd.read_parquet(R.SOUBOR,columns=cols,filters=filters).astype('float64')
+D.nacti=lambda:team
+R.nacti=lambda:extra
+import spolecne as S
+import beh_sit as B
+from models import mlp
+for name,df in [('team',team),('extra',extra)]:
+ print(name,'rows',len(df),'tz',str(df.index.tz),'unique',df.index.is_unique,'sorted',df.index.is_monotonic_increasing,'hourly',bool((df.index.to_series().diff().dropna()==pd.Timedelta(hours=1)).all()))
+print('aux_decin_H_equal',team.decin_H.equals(extra.decin_H))
+N=S.nove_sloupce()
+for c,h in S.VSE:
+ X0,y0=S.tabulka(c,h)
+ X,Xn,y,parts=S.data(c,h)
+ p0=S.casti(c,h).reindex(X0.index)
+ print(c,h,'cols',X.shape[1],Xn.shape[1],'removed',len(X0)-len(X),'removed_train',int(((p0=='train')&~X0.index.isin(X.index)).sum()),'removed_val',int(((p0=='val')&~X0.index.isin(X.index)).sum()),'same_X',X.equals(X0),'same_y',y.equals(y0),'rows_equal',X.index.equals(Xn.index))
+ if (c,h)==('decin',24):
+  tr=parts=='train'
+  folds=S.Hd.bloky_cv(X.index[tr])
+  coverage=sum((f[2].astype(int) for f in folds))
+  print('CV_each_row_once',bool((coverage==1).all()),'fold_sizes',[(name,int(a.sum()),int(b.sum())) for name,a,b in folds])
+Q=mlp.odmocnina_prutoku(N.iloc[100:102])
+print('new_Q_transform_ok',bool((Q.to_numpy()**2-N.iloc[100:102].clip(lower=0).to_numpy()).max()<1e-8))
+print('mlp_module',mlp.__file__)
+print('versions',sys.version.split()[0])
+import sklearn,numpy
+print('sklearn',sklearn.__version__,'numpy',numpy.__version__,'pandas',pd.__version__)
+'@ | & 'C:\\Users\\danie\\.venvs\\hackathon\\Scripts\\python.exe' -B -" in C:\Users\danie\Documents\hackathon-2026-sit
+ succeeded in 16131ms:
+team rows 131496 tz UTC unique True sorted True hourly True
+extra rows 131496 tz UTC unique True sorted True hourly True
+aux_decin_H_equal True
+decin 12 cols 98 224 removed 0 removed_train 0 removed_val 0 same_X True same_y True rows_equal True
+decin 24 cols 98 224 removed 0 removed_train 0 removed_val 0 same_X True same_y True rows_equal True
+CV_each_row_once True fold_sizes [('2006-2007', 91593, 15829), ('2008-2009', 91163, 16019), ('2010-2011', 92712, 14470), ('2012-2013', 89638, 17544), ('2014-2015', 89662, 17520), ('2016-2018', 81142, 26280)]
+decin 36 cols 98 224 removed 0 removed_train 0 removed_val 0 same_X True same_y True rows_equal True
+usti 12 cols 98 224 removed 0 removed_train 0 removed_val 0 same_X True same_y True rows_equal True
+usti 24 cols 98 224 removed 0 removed_train 0 removed_val 0 same_X True same_y True rows_equal True
+usti 36 cols 98 224 removed 0 removed_train 0 removed_val 0 same_X True same_y True rows_equal True
+new_Q_transform_ok True
+mlp_module C:\Users\danie\Documents\hackathon-2026-sit\src\models\mlp.py
+versions 3.12.10
+sklearn 1.9.1 numpy 2.5.2 pandas 3.1.0
+
+exec
+"C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -Command "rg --files sit_dan results -g '"'!**/cache/**'"' -g '"'!**/*.parquet'"' -g '"'!**/.env*'"' -g '"'!**/*test*'"' -g '"'!**/.kaggle/**'"'; rg -n '17\\.83|9a31181e|PYTHONHASHSEED|zkouska|vystup|spolecne' sit_dan -g '*.md' -g '*.json' -g '*.ps1' -g '*.sh' -g '"'!**/cache/**'"' -g '"'!**/.env*'"'" in C:\Users\danie\Documents\hackathon-2026-sit
+ succeeded in 586ms:
+results\2026-10-23_1913_jako_ted.json
+results\2026-10-23_1928_jako_ted.json
+sit_dan\stanice.py
+sit_dan\spolecne.py
+sit_dan\PRUBEH.md
+results\2026-10-23_1954_lgbm_c_regularizace.json
+results\2026-10-23_1941_lgbm_a.json
+results\2026-10-23_1954_lgbm_c_linear.json
+results\2026-10-23_1940_lgbm_v2.json
+results\2026-10-23_195410_mlp_v1.json
+results\2026-10-23_1939_ridge_zmena.json
+results\2026-10-23_1953_lgbm_c_ridge.json
+results\2026-10-23_195305_mlp.json
+results\2026-10-23_1939_ridge_brany.json
+results\2026-10-23_195248_mlp_alpha1.json
+results\2026-10-23_1938_ridge_alpha100.json
+results\2026-10-23_1951_lgbm_c_list7.json
+results\2026-10-23_1938_ridge_alpha10.json
+results\2026-10-23_195106_jako_ted.json
+results\2026-10-23_1938_ridge_alpha01.json
+results\2026-10-23_1950_lgbm_c_monotonni.json
+results\2026-10-23_1938_ridge.json
+results\2026-10-23_1948_lgbm_c_list200.json
+results\2026-10-23_1938_lgbm_v1.json
+results\2026-10-23_1947_mlp_alpha1.json
+results\2026-10-23_1936_ridge.json
+results\2026-10-23_1947_lgbm_c.json
+results\2026-10-23_1936_fyzika_tri_vrstvy.json
+results\2026-10-23_1946_fyzika_dve_vrstvy.json
+results\2026-10-23_1936_fyzika.json
+results\2026-10-23_1946_fyzika.json
+results\2026-10-23_1943_mlp.json
+results\2026-10-23_1942_lgbm_c.json
+results\2026-10-23_200958_lgbm.json
+results\2026-10-23_200913_lgbm_c.json
+results\2026-10-23_200829_lgbm_a.json
+results\2026-10-23_200756_lgbm_v2.json
+results\2026-10-23_200717_lgbm.json
+results\2026-10-23_200633_lgbm_v1.json
+results\2026-10-23_200506_zaklad_ridge.json
+results\2026-10-23_200448_zaklad_trend.json
+results\2026-10-23_2000_lgbm.json
+results\2026-10-23_200025_lgbm_c.json
+results\2026-10-23_195925_ridge_alpha100.json
+results\2026-10-23_195924_ridge_alpha10.json
+results\2026-10-23_195922_ridge_alpha01.json
+results\2026-10-23_195920_ridge_brany.json
+results\2026-10-23_195919_ridge_zmena.json
+results\2026-10-23_195919_fyzika_dve_vrstvy.json
+results\2026-10-23_1935_fyzika.json
+results\2026-10-23_195917_ridge.json
+results\2026-10-23_195916_fyzika.json
+results\2026-10-23_195736_mlp_vahy.json
+results\2026-10-23_1955_lgbm_c_stop.json
+results\2026-10-23_204029_lgbm_doba.json
+results\2026-10-23_1933_zaklad_trend.json
+results\2026-10-23_201506_jako_ted.json
+results\2026-10-23_1933_zaklad_ridge.json
+results\2026-10-23_201412_lgbm_c_stop.json
+results\2026-10-23_1931_fyzika.json
+results\2026-10-23_201353_lgbm_c_regularizace.json
+results\2026-10-23_201351_ridge.json
+results\2026-10-23_201325_lgbm_c_linear.json
+results\2026-10-23_204702_ridge_vahy20.json
+results\2026-10-23_204657_ridge_vahy.json
+results\2026-10-23_204140_jako_ted.json
+results\2026-10-23_204122_ridge_doba.json
+results\2026-10-23_204113_ridge_doba_stala.json
+results\2026-10-23_205805_ridge_doba.json
+results\2026-10-23_205804_lgbm_doba.json
+results\2026-10-23_205807_ridge_doba_stala.json
+results\2026-10-23_201233_lgbm_c_ridge.json
+results\2026-10-23_201149_lgbm_c_list7.json
+results\2026-10-23_201123_lgbm_c_monotonni.json
+results\2026-10-23_201042_lgbm_c_list200.json
+sit_dan\beh_sit.py
+sit_dan\data_ridge.py
+sit_dan\hodnoceni.py
+sit_dan\kaggle\kernel\sit_kaggle.py
+sit_dan\kaggle\kernel\kernel-metadata.json
+results\kolik_dat\2026-10-23_204319_kolik_dat.json
+results\kolik_dat\2026-10-23_204319_kolik_dat.csv
+sit_dan\codex\spust_codex.ps1
+sit_dan\codex\prompt_sit.txt
+sit_dan\codex\kontrola_sit.md.log
+sit_dan\PRUBEH.md:6:- 22:55 Společný modul zkopírovaný beze změny: `spolecne.py` z `hackathon-2026-ridge/ridge_dan/stanice_vsem/` a jeho závislosti `hodnoceni.py`, `stanice.py`, `data_ridge.py`. Tabulka `labe_ridge.parquet` zkopírovaná do `sit_dan/tabulka/` (md5 0afaca07…, shodná s originálem, není v Gitu). Ze složek ridge a srazky jen čtu.
+sit_dan\PRUBEH.md:7:- 22:56 Týmové číslo sítě pro kontrolu: `results/2026-10-23_195305_mlp.json` (Ondra, verze dat 9a31181e, stejná jako teď v main), seed 42, `prumer_povodne` 17,83 cm (9,3 / 18,4 / 25,7 / 9,0 / 16,5 / 28,1).
+sit_dan\PRUBEH.md:11:- Rozhodnutí: nové stanice dostanou stejné zpracování jako ostatní stanice v síti. Sloupce `<stanice>_Q_<zpoždění>` se zpožděními 0–36 h ze `spolecne.data`, síť na ně sama dá odmocninu a škálování (`mlp.odmocnina_prutoku` bere všechny sloupce `_Q_`).
+
+codex
+Na datech 2006–2020 se v žádné ze šesti kombinací nevyřadil žádný týmový řádek; vstupy varianty a i cíle jsou shodné s týmovou tabulkou. Obě časové osy jsou pravidelné hodinové řady v UTC a každý tréninkový řádek patří právě do jednoho drženého CV bloku. Našel jsem ale riziko záměny výsledků: běžný běh může převzít uložené předpovědi ze zkoušky se třemi iteracemi.
+
+codex
+- **[sit_dan/beh_sit.py:63](C:/Users/danie/Documents/hackathon-2026-sit/sit_dan/beh_sit.py:63) — vysoká:** Existující předpovědi se přebírají pouze podle názvu souboru. `--zkouska` používá stejné názvy, přestože nastavuje jen 3 iterace (ř. 66). Následný plný běh tak může vyhodnotit zkušební model nebo smíchat výsledky různých nastavení; kontrola indexu to neodhalí. **Oprava:** oddělit zkušební výstupy a před opětovným použitím ověřovat otisk kódu, dat a parametrů.
+
+- **[sit_dan/data_ridge.py:146](C:/Users/danie/Documents/hackathon-2026-sit/sit_dan/data_ridge.py:146) — nízká:** Načítá se celá tabulka včetně testu 2021–2025; obdobně `src/data.py:65`. Předpovědi ani metriky se pro test v kontrolovaném spouštěči nepočítají, ale úplné oddělení testových dat zajištěno není. **Oprava:** pro tento experiment filtrovat načítání na čas před rokem 2021.
+
+Celkově jsou na ověřených datech 2006–2020 varianty shodné kromě vstupů, mají stejné řádky a CV bloky, správné transformace, kauzální zpoždění v UTC i týmové validační metriky; číselnou reprodukci 17,83 cm jsem bez trénování neověřoval.
+tokens used
+34 608
+- **[sit_dan/beh_sit.py:63](C:/Users/danie/Documents/hackathon-2026-sit/sit_dan/beh_sit.py:63) — vysoká:** Existující předpovědi se přebírají pouze podle názvu souboru. `--zkouska` používá stejné názvy, přestože nastavuje jen 3 iterace (ř. 66). Následný plný běh tak může vyhodnotit zkušební model nebo smíchat výsledky různých nastavení; kontrola indexu to neodhalí. **Oprava:** oddělit zkušební výstupy a před opětovným použitím ověřovat otisk kódu, dat a parametrů.
+
+- **[sit_dan/data_ridge.py:146](C:/Users/danie/Documents/hackathon-2026-sit/sit_dan/data_ridge.py:146) — nízká:** Načítá se celá tabulka včetně testu 2021–2025; obdobně `src/data.py:65`. Předpovědi ani metriky se pro test v kontrolovaném spouštěči nepočítají, ale úplné oddělení testových dat zajištěno není. **Oprava:** pro tento experiment filtrovat načítání na čas před rokem 2021.
+
+Celkově jsou na ověřených datech 2006–2020 varianty shodné kromě vstupů, mají stejné řádky a CV bloky, správné transformace, kauzální zpoždění v UTC i týmové validační metriky; číselnou reprodukci 17,83 cm jsem bez trénování neověřoval.
+EXIT 0 za 78 s

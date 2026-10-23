@@ -46,6 +46,13 @@ def vstupy(varianta, cil, h):
     return {"a": X, "b": Xn}[varianta], y, c
 
 
+@cache
+def osa(cil, h):
+    """Pro vyhodnocení stačí y, rozdělení, stav teď a počty vstupů (řádky jsou pro všechny varianty stejné)."""
+    X, Xn, y, c = S.data(cil, h)
+    return y, c, X[f"{cil}_H_0"], {"a": X.shape[1], "b": Xn.shape[1]}
+
+
 def ulohy(varianty, seedy, kombinace=S.VSE, bloky=range(6)):
     prvni = [(varianty[0], seedy[0], "val", cil, h, None) for cil, h in kombinace]
     ostatni = [(v, s, "val", cil, h, None) for v in varianty for s in seedy for cil, h in kombinace]
@@ -60,8 +67,6 @@ def soubor(adresar, u):
 
 def trenuj(u, adresar):
     v, s, cast, cil, h, k = u
-    if soubor(adresar, u).exists():
-        return u, 0.0
     if ZKOUSKA:
         mlp.PARAMETRY["max_iter"] = 3
     A, y, c = vstupy(v, cil, h)
@@ -110,7 +115,7 @@ def vyhodnot_val(adresar, v, s, kombinace=S.VSE):
     H = data_ridge.nacti()["decin_H"]
     radky, d24 = [], {}
     for cil, h in kombinace:
-        A, y, c = vstupy(v, cil, h)
+        y, c, _, _ = osa(cil, h)
         ye = y[c == "val"]
         pred = nacti_pred(adresar, (v, s, "val", cil, h, None), ye.index)
         radky.append(dict(cil=cil, horizont=h, **S.vyhodnot(ye, pred, cil, h)))
@@ -126,7 +131,7 @@ def vyhodnot_val(adresar, v, s, kombinace=S.VSE):
 
 
 def vyhodnot_cv(adresar, v, s, bloky=range(6)):
-    A, y, c = vstupy(v, "decin", 24)
+    y, c, ted, _ = osa("decin", 24)
     yt = y[c == "train"]
     casti = []
     for k in bloky:
@@ -134,15 +139,15 @@ def vyhodnot_cv(adresar, v, s, bloky=range(6)):
         casti.append(nacti_pred(adresar, (v, s, "cv", "decin", 24, k), yt.index[f_drz]))
     pred = pd.concat(casti).reindex(yt.index)
     assert pred.notna().all()
-    return S.cv_skore(yt, pred, A.loc[yt.index, "decin_H_0"])
+    return S.cv_skore(yt, pred, ted.loc[yt.index])
 
 
 def vyhodnot(adresar, varianty, seedy, kombinace=S.VSE, bloky=range(6)):
     vysledky = []
     for v in varianty:
         for s in seedy:
-            z = dict(varianta=v, popis=VARIANTY[v], seed=s, vstupu=vstupy(v, "decin", 24)[0].shape[1],
-                     radku_val_decin24=int((vstupy(v, "decin", 24)[2] == "val").sum()))
+            z = dict(varianta=v, popis=VARIANTY[v], seed=s, vstupu=osa("decin", 24)[3][v],
+                     radku_val_decin24=int((osa("decin", 24)[1] == "val").sum()))
             z |= {"val": vyhodnot_val(adresar, v, s, kombinace), "cv": vyhodnot_cv(adresar, v, s, bloky)}
             vysledky.append(z)
             d = z["val"]["decin24"]

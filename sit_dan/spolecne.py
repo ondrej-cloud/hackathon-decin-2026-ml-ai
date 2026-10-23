@@ -68,22 +68,26 @@ def cv_predikce(fit, X, y, c, cil, horizont):
 
 def cv_skore(yt, pred, Xt_ted):
     """Stejná čísla jako ridge_dan/pokus.py: průměr přes povodně nad 400 cm (okno 7 dní před až 5 po vrcholu),
-    velké povodně nad 490 cm, rychlé stoupání; navíc přestřelení na povodních (95. percentil a maximum pred − y)."""
+    velké povodně nad 490 cm, rychlé stoupání; navíc přestřelení v oknech povodní (pred − y): průměr největších
+    přestřelení jednotlivých povodní, 95. percentil přes všechny hodiny oken a největší přestřelení vůbec."""
     e = (pred - yt).abs().to_numpy()
     rozdil = (pred - yt).to_numpy()
-    ud, velke, prestrel = {}, [], []
+    ud, velke, prestrel, v_oknech = {}, [], [], []
     for _, _, f_drz in Hd.bloky_cv(yt.index):
         yy = yt[f_drz]
         for v in povodne(yy, 400):
             pos = np.flatnonzero(np.asarray(f_drz) & (yt.index >= v - Hd.E.PRED) & (yt.index <= v + Hd.E.PO))
             ud[f"{v:%Y-%m-%d}"] = e[pos].mean()
             prestrel.append(rozdil[pos].max())
+            v_oknech.append(rozdil[pos])
             if yt.to_numpy()[pos].max() >= 490:
                 velke.append(e[pos].mean())
     vz = ((yt - Xt_ted) >= 50).to_numpy()
     return dict(cv_povodne=float(np.mean(list(ud.values()))), cv_velke=float(np.mean(velke)),
                 cv_vzestup=float(e[vz].mean()), cv_bias_vzestup=float(rozdil[vz].mean()), cv_mae=float(e.mean()),
-                cv_max_prestreleni=float(np.mean(prestrel)), cv_udalosti={k: round(float(v), 2) for k, v in ud.items()})
+                cv_prumer_max_prestreleni=float(np.mean(prestrel)),
+                cv_p95_prestreleni=float(np.percentile(np.concatenate(v_oknech), 95)),
+                cv_max_prestreleni=float(np.max(prestrel)), cv_udalosti={k: round(float(v), 2) for k, v in ud.items()})
 
 
 def povoden_2006(y, pred, H):
