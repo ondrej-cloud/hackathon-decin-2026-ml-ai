@@ -33,6 +33,26 @@ Každý trénink a pokus, i nepovedený, jako nový záznam na konec souboru. Ni
 - Výsledek na val (chyba na povodních, Děčín +12 / +24 / +36 h): „jako teď“ 23,0 / 44,4 / 65,6 cm, trend 18,0 / 36,1 / 60,0 cm, Ridge 9,0 / 15,5 / 26,0 cm. `prumer_povodne`: „jako teď“ 44,3, trend 39,4, Ridge 17,1. Trend nic nepropásl, ale má plané poplachy před 2. stupněm (Děčín 2 / 5 / 16), Ridge žádné.
 - Závěr: Ridge na změnu stavu dává na cm stejná čísla jako Ondrův Ridge na stav, řetězec u mě běží stejně. Trend je lepší než „jako teď“ jen díky tomu, že zachytí začínající stoupání, ale přestřeluje a dělá plané poplachy. Laťka pro LightGBM je Ridge se 17,1 cm.
 - Soubory: `src/models/zaklad_trend.py`, `src/models/zaklad_ridge.py`, `results/2026-10-23_1933_zaklad_trend.json`, `results/2026-10-23_1933_zaklad_ridge.json`, `results/predpovedi/zaklad_*.parquet`
+## pá 19:28 · Tobias · doby putování vody pro fyzikální model
+- Otázka: za kolik hodin se změna průtoku na stanici proti proudu projeví v Ústí a v Děčíně?
+- Data a rozdělení: `labe_hodinove.parquet`, jen train z `src/evaluate.py` (2006–2018 bez validačních povodní).
+- Vstupy: průtoky vyhlazené klouzavým průměrem 12 h, z nich změna za 6 h. Pro každou dvojici stanic posun 0–48 h s největší korelací změn. Zvlášť pro celý train a pro vysokou vodu (průtok v Ústí nad 75. percentilem).
+- Model a nastavení: žádný model, jen korelace.
+- Kde a jak dlouho: MacBook M4, pár sekund.
+- Výsledek (vysoká voda): Kostelec → Ústí 5 h (r 0,58), Vraňany → Ústí 10 h (0,59), Louny → Ústí 12 h (0,43), Mělník → Ústí 8 h (0,83), Ústí → Děčín 4 h (0,98). Dál proti proudu: Praha → Vraňany 5 h (0,95), Beroun → Vraňany 12 h, Sázava → Vraňany 8 h, Nymburk → Kostelec 6 h (0,90), Jizera → Kostelec 6 h, Přelouč → Kostelec 16 h (0,80).
+- Závěr: bez vyhlazení vycházely korelace jen 0,2–0,46 a Nymburk dokonce rychlejší než Kostelec pod ním, to ruší hodinové kolísání (nejspíš elektrárny na Vltavě). Po vyhlazení časy dávají smysl a sedí na dolní hranu odhadů ze zadání. Ohře má nejslabší vztah, je nejdál a mezi Louny a Ústím ještě něco přitéká. Tyhle časy použije `src/models/fyzika.py`.
+- Soubory: zatím jen tenhle zápis, výpočet bude v `src/models/fyzika.py`.
+
+## pá 19:31 · Tobias · fyzikální model, první běh a měrná křivka
+- Otázka: kolik umí samotná fyzika bez učení, jen doby putování a měrná křivka?
+- Data a rozdělení: společné z `src/evaluate.py`, Děčín +24 h (`--rychle`).
+- Vstupy: průtok v cíli teď, průtoky bran Vraňany, Kostelec, Louny a nad nimi Praha, Nymburk, Jizera v zpožděních z `features.py`, hladina v cíli teď.
+- Model a nastavení: průtok v cíli za h = průtok teď + přírůstky z bran posunuté o dobu putování (když voda nedotekla ani k bráně, vezme se stanice nad ní). Na hladinu přes měrnou křivku: medián hladiny v 80 pásmech podle logaritmu průtoku, jen rostoucí, nad maximem přímka. Předpověď = hladina teď + rozdíl křivky, takže se zachová, co je na stanici právě jinak. Doby putování si model spočítá z trénovacích dat (do Děčína Vraňany 13 h, Kostelec 8 h, Louny 16 h, Praha 17 h, Nymburk a Jizera 14 h).
+- Měrná křivka a odlehlé hodnoty: první pokus s pásmy podle počtu bodů měl na vysoké vodě jedno pásmo 800–3700 m³/s, křivka byla plochá a vrchol 2013 ujel o 6 m. Vypadalo to jako odlehlé body, ale byla to chyba křivky. Opravdu odlehlých hodnot skoro není, typická odchylka od křivky je 1,4 cm (ČHMÚ počítá průtok z hladiny). Minimum hodin v pásmu na val při průtoku nad 1000 m³/s: 6 h dává chybu 2,7 cm, 24 h 6,7 cm, 72 h 23,6 cm (křivka končí na 1080 m³/s). K přeučení nedochází, beru 6. Koryto se za 2006–2018 posunulo jen o ±2 cm.
+- Kde a jak dlouho: MacBook M4, trénink 0,1 s.
+- Výsledek na val: na povodních 24,1 cm proti 44,4 cm u „jako teď“, celková MAE 11,4 proti 12,7 cm. Před 2. stupněm varoval 26 h předem, 0 propásnutých, 1 planý poplach. Před 3. stupněm 17 h předem, 0 propásnutých.
+- Závěr: samotná fyzika chybu na povodních skoro půlí. Proti rychlému lineárnímu modelu (15,5 cm) je horší, nejspíš proto, že neví o přítocích mezi branami a Ústím a doby putování se mezi povodněmi mění. Dál: všech 6 kombinací a varianta bez stanic proti proudu.
+- Soubory: `src/models/fyzika.py`, `results/2026-10-23_1931_fyzika.json`.
 Následující pokusy jsou doplněné zpětně (pá 19:55). Všechny byly před společným rozdělením, čísla proto nejdou přímo srovnat s výsledky v `results/`. Podrobnosti v `docs/NAPAD_LABE.md`.
 
 ## pá 17:46 · Ondra · lineární model na šesti povodních
@@ -98,6 +118,16 @@ Následující pokusy jsou doplněné zpětně (pá 19:55). Všechny byly před 
 - Výsledek na val (`prumer_povodne`, c 22,8): list 200 hodin 22,2, monotónní 23,8, 7 listů 23,4 (a 2 plané poplachy před 2. stupněm na 24 h).
 - Závěr: nic neprošlo. List 200 hodin je lepší jen o 0,6 cm, pod hranicí 1 cm. Monotónní omezení a menší stromy jsou horší. Zjednodušení stromů nestačí, problém je spíš v tom, že strom dává schody a nad tím, co viděl, neumí pokračovat.
 - Soubory: `src/models/lgbm_c_list200.py`, `src/models/lgbm_c_monotonni.py`, `src/models/lgbm_c_list7.py`, `results/2026-10-23_1948_lgbm_c_list200.json`, `results/2026-10-23_1950_lgbm_c_monotonni.json`, `results/2026-10-23_1951_lgbm_c_list7.json`
+## pá 19:36 · Tobias · fyzikální model, všech 6 kombinací a třetí vrstva stanic
+- Otázka: proč model podhodnocuje vrcholy a pomůže víc stanic proti proudu?
+- Data a rozdělení: společné z `src/evaluate.py`, všech 6 kombinací.
+- Úprava podle nových pravidel: doby putování se měří s vyhlazením jen z minulosti (dřív vycentrované, ovlivňovalo jen odhad doby putování na trénovacích datech). Výsledek se nezměnil.
+- Základ `fyzika` (brány + jedna vrstva nad nimi): `prumer_povodne` 26,6 cm, „jako teď“ zhruba 44 cm. Na povodních Děčín 13,5 / 24,1 / 42,3 cm na 12 / 24 / 36 h, Ústí 14,4 / 23,8 / 41,5 cm. Žádná propásnutá povodeň, 1 planý poplach (Děčín +24 h).
+- Přeučení: chyba na tréninku je vyšší než na validaci (Děčín +24 h na povodních 30,6 proti 24,1 cm, v tréninku je povodeň 2013), model má jen doby putování a křivku, nemá se co naučit nazpaměť.
+- Kde chybuje: `vrcholy_o_kolik` je skoro všude záporné, vrcholy podhodnocuje, nejvíc na 36 h. Nejdelší doba putování do Děčína je 17 h (Praha), takže na 36 h model víc než polovinu času předpokládá, že se průtok proti proudu nezmění. Při stoupající povodni ale voda dál přibývá.
+- Varianta `fyzika_tri_vrstvy`: navíc Beroun a Sázava nad Prahou a Přelouč nad Nymburkem, známá část se prodlouží na 21–25 h. `prumer_povodne` 24,8 cm (−1,8 cm). Na 36 h Děčín 38,5 a Ústí 37,5 cm (−4 cm), na 12 h beze změny (tam stačí brány). Propásnuté 0, plané poplachy 0. Varování před 2. stupněm v Děčíně ale přichází později (+24 h: 17,5 místo 26 h předem).
+- Závěr: varianta prošla (zlepšení přes 1 cm, varování nehorší). Potvrzuje Ondrovo zjištění, že na delší horizont pomáhá každá vrstva stanic. Na 36 h je pořád velká chyba, protože ani třetí vrstva nesahá na 36 h dopředu.
+- Soubory: `src/models/fyzika.py`, `src/models/fyzika_tri_vrstvy.py`, `results/` (fyzika a fyzika_tri_vrstvy).
 ## pá 19:36 · Honza · lineární regrese (Ridge) v1
 - Otázka: jak dobře předpovídá lineární model a sedí to s Ondrovou kontrolou řetězce?
 - Data a rozdělení: společné (`src/evaluate.py`), train 2006–2018 bez validačních povodní, val 4 povodně a 2019–2020, asi 108 tisíc řádků train.
@@ -155,3 +185,8 @@ Následující pokusy jsou doplněné zpětně (pá 19:55). Všechny byly před 
 - Výsledek na val (`prumer_povodne`, c 22,8, Ridge 17,1): zbytek po Ridge 18,9, přímky v listech 111,8, regularizace 22,2, zastavení 22,4 (zastaveno po 63–212 stromech). Zbytek po Ridge má proti c navíc 2 plané poplachy před 2. stupněm (Děčín 24 a 36 h) a 1 propásnutou povodeň (Ústí 36 h).
 - Závěr: neprošlo nic. Nejzajímavější je zbytek po Ridge: proti c pomohl o 3,9 cm, ale samotný Ridge zhoršil o 1,8 cm a přidal plané poplachy. Opravy, které se stromy naučí na povodních z tréninku, na jiné povodně nesedí. Přímky v listech při velké vodě ujely až o 3 m, protože přímka naučená na úzkém kousku dat se za jeho hranou nekontrolovaně prodlouží. Regularizace a zastavení pomohly jen o 0,4–0,6 cm, pod hranicí 1 cm. Zastavení se navíc řídí suchými roky 2017–2018 bez povodně, takže o povodních nic neví. Podle pravidel tady ladění končí, nejlepší LightGBM zůstává c.
 - Soubory: `src/models/lgbm_c_ridge.py`, `src/models/lgbm_c_linear.py`, `src/models/lgbm_c_regularizace.py`, `src/models/lgbm_c_stop.py`, `results/2026-10-23_1953_lgbm_c_ridge.json`, `results/2026-10-23_1954_lgbm_c_linear.json`, `results/2026-10-23_1954_lgbm_c_regularizace.json`, `results/2026-10-23_1955_lgbm_c_stop.json`
+## pá 19:48 · Tobias · fyzikální model, finální varianta a grafy
+- Nejlepší varianta (3 vrstvy stanic) je teď `src/models/fyzika.py`, první verze se dvěma vrstvami zůstává pro srovnání jako `src/models/fyzika_dve_vrstvy.py`. Po přejmenování znovu spuštěno: `prumer_povodne` 24,8 a 26,6 cm, stejně jako předtím.
+- `docs/grafy/fyzika_merna_krivka.png`: měrná křivka Děčína se stupni povodňové aktivity. Body z povodní leží přesně na křivce, nad 3 710 m³/s (nejvyšší průtok v tréninku) je křivka prodloužená přímkou.
+- `docs/grafy/fyzika_vetve.png`: tři větve (Vltava, Labe, Ohře) s dobami putování mezi stanicemi a do Děčína. Nejdál dopředu vidí Beroun a Přelouč, 24 h.
+- `docs/grafy/fyzika_povoden_2006.png`: validační povodeň 2006, Děčín +24 h. Při stoupání model sleduje skutečnost, „jako teď“ se opožďuje o celý den. Těsně před vrcholem model krátce přestřelí asi o 50 cm, při opadání se opožďuje.

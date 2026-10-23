@@ -26,7 +26,7 @@ Nejvíc bodů je za odbornost a pořadatelé řekli rovnou: radši jednodušší
 - **Data:** `data/external/labe_hodinove.parquet` (v Gitu): hodinové hladiny Děčín a Ústí a průtoky 12 stanic na Labi, Vltavě, Ohři a přítocích, 2006–2025, z otevřených dat ČHMÚ. Načíst přes `nacti()` ze `src/data.py`. Podrobnosti v `docs/DATA.md`, sekce Labe.
 - **Metrika:** průměrná chyba hladiny v cm během povodní (`mae_povodne`), k tomu předstih varování před 2. a 3. stupněm povodňové aktivity a plané poplachy. Srovnáváme s „bude jako teď“ (`src/models/jako_ted.py`), Děčín +24 h: 44,4 cm.
 - **Rozdělení a vyhodnocení:** `src/evaluate.py` (train 2006–2018, val 4 vynechané povodně a 2019–2020, test 2021–2025). Model je `src/models/<nazev>.py` s `fit(X, y, cil, horizont)`, která vrátí `predict(X)`. Spouští se `python src/porovnej.py <nazev>`, srovnání `--prehled`, `--test` jen Ondra. Na Windows před tím `$env:PYTHONUTF8=1`, jinak spadne zápis JSON na kódování. Zadání modelů pro všechny v `docs/UKOL_MODELY.md`.
-- **Propojení modelu a aplikace:** (co předpověď bere a vrací, kde je)
+- **Propojení modelu a aplikace:** `models/<model>_<cil>_<h>.joblib` je objekt s `predict(X)`, X má 98 sloupců z `features.tabulka(cil, h)`, vrací hladinu v cm v čase vydání + h. Aplikace nejdřív přidá `src/` do `sys.path`. Ridge uloží `python src/uloz_model.py` (5 s; soubory nejsou v Gitu, aplikace si je při chybění vytvoří sama). Zadání aplikace v `docs/UKOL_APLIKACE.md`.
 - **Kdo teď na čem dělá:**
     - Ondra: neuronová síť `src/models/mlp.py`, ve 21:00 srovnání a výběr
     - Dan: LightGBM `src/models/lgbm.py`
