@@ -121,6 +121,24 @@ Začneme jen s tím, co jsme dostali, ukážeme, kde to nestačí, a přidávám
 - Průtoky jdou do modelu jako odmocnina. Výška hladiny neroste s průtokem rovnoměrně, protože se řeka při velké vodě rozlije do šířky. Bez odmocniny Mělník a Praha na 12 h chybu zhoršily (model při velké vodě přestřeloval).
 - **Pozor:** odmocninu jsme zatím vybrali podle stejných povodní, na kterých ji měříme. Ve finále ji vybrat na validačních povodních (do 2016) a testovat jen na 2023 a 2024.
 
+## Stačí data z balíčku? Čas proti prostoru
+
+Čtyři varianty, všechny testované na stejných 6 povodních v Děčíně, které model při tréninku neviděl. „Balíček“ jsou stejné stanice z kraje (Děčín, Ústí, Louny na Ohři) a stejné období jako v balíčku (2024–2025), data ČHMÚ. Lineární regrese, průtoky jako odmocnina.
+
+| Varianta | Chyba +12 h | Chyba +24 h |
+|---|---|---|
+| „bude jako teď“ | 30,3 cm | 58,0 cm |
+| A: jen kraj, 2 roky (balíček) | 23,0 | 43,0 |
+| B: kraj + stanice proti proudu, 2 roky | 17,2 | 28,2 |
+| C: jen kraj, 20 let | 19,0 | 38,3 |
+| D: kraj + stanice proti proudu, 20 let | **13,7** | **24,3** |
+
+- **Trénovat jen na balíčku dává smysl.** Model je výrazně lepší než „bude jako teď“ (43 proti 58 cm), i když se učil skoro bez povodní. Funguje, protože se učí putování vody, a to se děje i za běžného stavu.
+- **Prostor je důležitější než čas.** Dva roky se stanicemi proti proudu (B, 28 cm) jsou lepší než 20 let jen z kraje (C, 38 cm). Kde voda teče teď, řekne víc než dlouhá historie.
+- **Nejlepší je obojí** (D, 24 cm).
+- **Historie je potřeba hlavně k ověření.** V balíčku je jediná povodeň, takže samotný balíček neumí ukázat, jestli model na povodních funguje. Tyhle výsledky máme jen díky starým povodním od ČHMÚ.
+- Pozor: období balíčku jsme vzali z dat ČHMÚ (2024–2025), ne přímo ze souboru balíčku (ten má navíc rok 2026 po 10 minutách, víc přítoků a počasí).
+
 ## Brány proti proudu: předpověď pro celý kraj
 
 Labe do kraje přitéká z Vltavy (s Berounkou a Sázavou), z horního Labe (s Jizerou) a z Ohře. Na každé větvi bereme stanice v několika vzdálenostech, „branách“. Stahuje je `src/stahni_chmu_hydro.py` (16 stanic, hodinově zhruba 2002–2025, 168 MB).
