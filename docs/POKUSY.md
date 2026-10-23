@@ -389,3 +389,14 @@ Následující pokusy jsou doplněné zpětně (pá 19:55). Všechny byly před 
 - Výsledek na val, Děčín (bez srážek → horní mez): 12 h 9,0 → 8,7, 24 h 15,5 → 14,6, 36 h 26,0 → 24,9, 48 h 40,3 → 39,4, 72 h 78,0 → 76,8 cm. Na dešťové povodni 9/2010 víc: 24 h 20,8 → 17,8, 36 h 31,6 → 26,6, 72 h 79,7 → 69,8 cm.
 - Závěr: srážky v reálném čase by v průměru pomohly nejvýš o 1 cm, na dešťové povodni o 3–10 cm. Zkusit je pořádně nejde, archiv je krátký. Do prezentace jako „co dál“ spolu s předpovědí srážek.
 - Soubory: `src/pokus_dest_horizonty.py`
+
+## pá 23:27 · Ondra · vícenásobná validace, každá povodeň jednou vynechaná
+- Otázka: vyhrává lineární regrese jen díky tomu, které čtyři povodně jsme dali do validace, nebo obecně? A jak moc se chyba liší mezi povodněmi?
+- Data a rozdělení: 8 povodní nad 2. stupněm v Děčíně 2006–2020 (4/2006, 6/2006, 3/2009, 8/2010, 9/2010, 1/2011, 2/2013, 6/2013 se dvěma vrcholy jako jeden blok). Pro každou: validace = 16 dní před vrcholem až 5 po, trénink = zbytek 2006–2020 bez 20 dní kolem ní, stejná ochranná pásma jako v `evaluate.py`. Test 2021–2025 se nepoužil. Model se učí i na povodních, které přišly po vynechané, u fyzikálních vztahů v řece to nevadí.
+- Vstupy: 98 společných sloupců, modely beze změny (`jako_ted`, `ridge`, `mlp`, `lgbm`, `fyzika`).
+- Model a nastavení: 8 povodní × 2 cíle × 3 horizonty × 5 modelů = 240 tréninků, seed 42.
+- Kde a jak dlouho: MacBook M1, asi 18 minut.
+- Výsledek (chyba v okně kolem vrcholu, průměr 6 kombinací, pak přes povodně, ± směrodatná odchylka): lineární regrese 20,1 ± 7,7 cm, síť 21,0 ± 8,0, LightGBM 22,7 ± 8,6, fyzikální 26,7 ± 10,0, „jako teď“ 45,2 ± 13,9. Lineární regrese je o 56 % lepší než „jako teď“ (validace 61 %, test 55 %). Nejlepší byla na 4 povodních z 8, síť na 3, LightGBM na 1. Proti síti vyhrála 5 z 8, proti LightGBM 6 z 8. Nejlehčí povodeň 3/2009 (11,2 cm), nejtěžší 6/2013 (33,9 cm, vrchol 1 072 cm, když se vynechá, model nikdy tak vysokou vodu neviděl) a 8/2010 (28,6 cm, déšť blízko Děčína).
+- Varování (součet přes 48 běhů): lineární regrese 1 propásnutí (Děčín +12 h, 8/2010) a 3 plané poplachy, síť 4 a 5, LightGBM 0 a 4, fyzikální 0 a 4, „jako teď“ 72 propásnutí. Skoro všechny plané poplachy jsou Ústí 6/2006, kdy voda vystoupala na 525 cm, 5 cm pod 2. stupeň.
+- Závěr: pořadí z validace platí i přes 8 povodní, lineární regrese je nejlepší v průměru i v nejvíc párových srovnáních a má nejmíň chyb ve varování mezi učenými modely. Rozdíl proti síti (0,9 cm) je ale menší než rozdíly mezi povodněmi, takže jsou prakticky stejně dobré. Chyba záleží víc na povodni (11 až 34 cm) než na modelu. Graf `docs/grafy/krizova_validace.png`.
+- Soubory: `src/krizova_validace.py`, `src/graf_krizova_validace.py`, `results/krizova_validace/2026-10-23_232649.csv`

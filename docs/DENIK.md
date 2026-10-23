@@ -272,3 +272,11 @@ Následující záznamy jsou doplněné zpětně (pá 19:35) podle commitů, ať
 - Zjištění: s dokonalou předpovědí deště se dešťová povodeň 9/2010 zlepší o 23 % na 36 h a o 40 % na 72 h. Povodně z tání sněhu (2006, 2009, 2011) se nezlepší. Naměřené denní srážky nepomáhají vůbec, známe je až ráno po konci dne, kdy voda už teče v řekách.
 - Rozhodnutí: finální model zůstává bez srážek, test už proběhl a výběr neměníme. Do prezentace jako „co dál“: s předpovědí srážek od ČHMÚ by šlo dešťové povodně předpovídat na 2–3 dny. Vlastní model předpovědi deště neděláme, potřebuje modely atmosféry.
 - Pro porotu: „Proč nepoužíváte předpověď deště?“ Na 12–24 h by nepomohla, voda už je v řekách. Na 2–3 dny a u dešťových povodní ano, i s dokonalou předpovědí by to ale byl jen odhad horní meze z jedné povodně a skutečné historické předpovědi deště na trénink nemáme.
+
+## pá 23:27 · Ondra · Rozbor: vícenásobná validace
+- Co jsme udělali: každou z 8 povodní 2006–2020 jsme jednou vynechali, modely naučili na zbytku a změřili na ní. Test se nepoužil.
+- Jak to funguje, jednoduše: s jednou validací můžeme mít štěstí nebo smůlu na to, které povodně v ní jsou. Povodně jsou různě těžké (3/2009 11 cm, 6/2013 34 cm), takže se vyzkouší všechny a výsledek se zprůměruje.
+- Proč tak a ne jinak: náhodné dělení po hodinách by bylo špatně, sousední hodiny jsou skoro stejné a model by „viděl“ odpověď. Proto po celých povodních s 20 dny odstupu.
+- Výsledek a co znamená: lineární regrese 20,1 ± 7,7 cm, síť 21,0, LightGBM 22,7, fyzikální 26,7, „jako teď“ 45,2. Regrese je o 56 % lepší než „jako teď“, stejně jako na testu (55 %). Výběr modelu tedy nebyl náhoda výběru povodní.
+- Slabiny a co může být špatně: model se učí i na povodních po té vynechané (budoucnost v tréninku). Pro vztahy v řece to nevadí, ale přísnější by bylo učit jen na minulosti, na to máme málo povodní. Regrese a síť se liší míň, než kolísá chyba mezi povodněmi.
+- Otázka poroty a odpověď: „Nemáte výsledek jen ze šťastně vybrané validace?“ Ne, ověřili jsme to na všech 8 povodních 2006–2020, každá jednou vynechaná. Pořadí modelů i zlepšení proti „jako teď“ zůstalo stejné a sedí s testem.
