@@ -65,7 +65,7 @@ Ověřeno:
 - Mezi lety 2016 a 2020 nepřekročilo Labe v Děčíně ani 1. stupeň povodňové aktivity, byla to suchá léta.
 - Stupně povodňové aktivity (metadata ČHMÚ): Děčín 400 / 490 / 560 cm, Ústí 450 / 530 / 600 cm.
 
-**Kontrola správnosti** (pá 19:45, ověřeno):
+**Kontrola správnosti** (pá 19:30, ověřeno):
 - Data ČHMÚ jsou za 2024–2025 na hodinu i na centimetr stejná jako balíček od pořadatelů (Děčín, Ústí, Louny, 17 544 hodin, rozdíl 0, bez časového posunu).
 - Bilance vody sedí každý rok: Mělník = Vraňany + Kostelec (poměr 1,00), Ústí = 1,01–1,04 × (Mělník + Louny), Děčín = 1,04–1,08 × Ústí. Navíc přitékají menší přítoky (Bílina, Ploučnice). Žádná stanice nemá v některém roce průtok posunutý.
 - Měrná křivka se nemění: při průtoku 250–300 m³/s je hladina v Děčíně každý rok 204–214 cm, v Ústí 234–242 cm. V Děčíně za 20 let klesla asi o 5 cm, nejspíš kvůli dnu řeky (domněnka).

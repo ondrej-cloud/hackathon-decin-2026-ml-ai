@@ -36,12 +36,12 @@ Po každém dokončeném kusu práce rozbor, aby ho pochopil i ten, kdo u toho n
 - Slabiny a co může být špatně: ve validaci jsou jen 4 povodně, čísla berte jako směr. Odmocnina na hladinu (místo jen na průtok) zkazila vrchol 2006 o metr, pozor na to v každém modelu.
 - Otázka poroty a odpověď: „Proč netestujete na náhodně vybraných hodinách?“ Sousední hodiny jsou skoro stejné, model by je znal z tréninku a výsledek by byl falešně dobrý. Proto dělíme v čase a kolem validačních povodní vynecháváme 20 dní.
 
-## pá 19:45 · Ondra
+## pá 19:30 · Ondra
 - Co: zkontroloval jsem správnost dat (shoda s balíčkem pořadatelů, bilance vody mezi stanicemi, měrné křivky, časy, odlehlé hodnoty). Data jsou v pořádku, nic se neměnilo. Podrobnosti v `docs/DATA.md`, sekce Labe.
 - Co: do zadání modelů přibyla pravidla, jak dlouho iterovat (jedna změna s důvodem, zlepšení aspoň o 1 cm v `prumer_povodne`, konec po 3 neúspěšných variantách, 10 variantách nebo ve 20:50).
 - Proč: validace má jen 4 povodně, nekonečné ladění by našlo variantu, která na nich vyjde náhodou dobře.
 
-Následující záznamy jsou doplněné zpětně (pá 19:55) podle commitů, ať je vidět celý postup od výběru úlohy.
+Následující záznamy jsou doplněné zpětně (pá 19:35) podle commitů, ať je vidět celý postup od výběru úlohy.
 
 ## pá 17:10 · Ondra
 - Co: zvažovali jsme úlohu Ovzduší, sepsali tři pojetí (předpověď znečištění, otisky zdrojů, měřicí síť) a spárovali stanice ovzduší s meteostanicemi ČHMÚ.
@@ -76,7 +76,25 @@ Následující záznamy jsou doplněné zpětně (pá 19:55) podle commitů, ať
 - Co: rozhodli jsme, že začneme rovnou na Labi, ne na malých řekách. Každý vyzkouší jiný model, malé řeky budou jen druhá zkouška.
 - Proč: na malých řekách voda doteče za 0–7 h a rozhoduje déšť, je to jiný problém. Model vybraný tam by se pro Labe musel vybírat znovu.
 
-## pá 20:05 · Ondra
+## pá 19:40 · Ondra
 - Co: ověřili jsme, jestli do modelu nepatří přítoky Labe v kraji (Bílina, Ploučnice). Nepatří, na validaci nepomohly (`docs/POKUSY.md`).
 - Proč: přidají jen 2–13 % vody při vrcholu a doteče z nich za pár hodin. Velké přítoky nad krajem (Vltava s Berounkou a Sázavou, Jizera, horní Labe, Ohře) v modelu jsou.
 - Limit pro prezentaci: povodeň z lokálních dešťů v kraji, jako v srpnu 2010, model bez srážek dopředu nevidí.
+
+## pá 20:00 · Ondra
+- Co: nezávislá kontrola společného řetězce (únik dat, rozdělení, vyhodnocení, data proti surovým souborům) dopadla „platí“. Opravili jsme, co našla:
+  - validační okna na 16 dní, jinak u Děčína +36 h vypadla povodeň 2006 z varování,
+  - předstih varování je nejvýš horizont a přibyl `bias_povodne`, protože soustavné nadhodnocování dřív předstih uměle zlepšovalo,
+  - předpověď s NaN shodí běh místo tichého vynechání,
+  - data se už nedoplňují interpolací (díry v nich nejsou a doplňování bralo hodnotu z budoucnosti), chyba v Děčíně z 2/2006 vyřazená až do 8. 2. dopoledne,
+  - výsledky si ukládají otisk verze dat a vyhodnocení a `--prehled` staré verze nemíchá s novými.
+- Proč: všichni čtyři porovnávají modely na stejném řetězci, chyba v něm by zkreslila všechno. Kontrolní hodnota „jako teď“ (44,4 cm) se nezměnila.
+- Dopad: výsledky spočítané před touto opravou `--prehled` ignoruje. Modely je potřeba pustit znovu, srovnání ve 21:00 děláme na jednom počítači.
+
+## pá 20:00 · Ondra · Rozbor: neuronová síť
+- Co jsme udělali: malá neuronová síť (dvě vrstvy, 128 a 64 neuronů), čtyři varianty podle pravidel iterace.
+- Jak to funguje, jednoduše: síť je hodně lineárních regresí poskládaných za sebou s ohyby mezi nimi, takže umí i zakřivené vztahy. Učí se, o kolik hladina za h hodin stoupne nebo klesne.
+- Proč tak a ne jinak: chtěli jsme zjistit, jestli složitější model přidá něco proti lineární regresi. Data jsou malá, stačí procesor.
+- Výsledek a co znamená: na povodních 17,8 cm proti 44,3 cm u „jako teď“, chyba menší o 60 %. Ze 24 nástupů povodní (4 povodně × 6 kombinací cíle a horizontu) žádný nepropásla, jeden planý poplach. Když je voda nad 1. stupněm, vejde se do ±20 cm 90 % předpovědí na 12 h, 58–70 % na 24 h a 46–51 % na 36 h („jako teď“: 51 %, 22–24 %, 12–14 %).
+- Slabiny a co může být špatně: síť se snadno přeučí, na povodních pořád podhodnocuje (o 5–13 cm na 24 a 36 h), validace má jen 4 povodně a hůř se vysvětluje než lineární model.
+- Otázka poroty a odpověď: „Proč nepoužijete rovnou tu neuronovou síť?“ Je zhruba stejně dobrá jako lineární model, ale hůř se vysvětluje a víc kolísá podle náhody. Když je jednodušší model stejně dobrý, bereme jednodušší.

@@ -24,7 +24,7 @@ Každý trénink a pokus, i nepovedený, jako nový záznam na konec souboru. Ni
 - Závěr: řetězec funguje. Lineární model je zatím jasně nejlepší, LightGBM je za 24 h dokonce horší než „jako teď“, Dan zjistí proč. Odmocnina se smí dávat jen na průtoky, na hladině zkazila vrchol 2006 o metr.
 - Soubory: `results/2026-10-23_1913_jako_ted.json`, `src/models/jako_ted.py`; Ridge a LightGBM jen jako kontrola, nejsou uložené, udělají je Honza a Dan.
 
-Následující pokusy jsou doplněné zpětně (pá 19:55). Všechny byly před společným rozdělením, čísla proto nejdou přímo srovnat s výsledky v `results/`. Podrobnosti v `docs/NAPAD_LABE.md`.
+Následující pokusy jsou doplněné zpětně (pá 19:35). Všechny byly před společným rozdělením, čísla proto nejdou přímo srovnat s výsledky v `results/`. Podrobnosti v `docs/NAPAD_LABE.md`.
 
 ## pá 17:46 · Ondra · lineární model na šesti povodních
 - Otázka: funguje předpověď z Ústí, Mělníka a Prahy na povodních, které model neviděl?
@@ -55,15 +55,31 @@ Následující pokusy jsou doplněné zpětně (pá 19:55). Všechny byly před 
 - Výsledek (+3 h, „jako teď“ / vlastní historie / + horní stanice, m³/s): Kamenice 1,10 / 0,88 / 0,39, Ohře Žatec → Louny 1,72 / 1,55 / 1,05, Chomutovka 0,28 / 0,27 / 0,23, Bílina 0,58 / 0,53 / 0,52, Mandava 1,04 / 0,71 / 0,63. Voda z horní stanice doteče za 0–7 h.
 - Závěr: na malých řekách jde předpovídat jen pár hodin dopředu a rozhoduje déšť. Jako start se nehodí, jako druhá zkouška modelů ano (Kamenice).
 
-## pá 19:35 · Ondra · jak dlouho trvá trénink
+## pá 19:30 · Ondra · jak dlouho trvá trénink
 - Otázka: stačí počítače, nebo je potřeba Kaggle?
 - Výsledek (MacBook M1, Děčín +24 h, 108 tisíc řádků): lineární regrese 0,2 s, LightGBM asi 7 s, MLP (64, 32) 17 s (82 epoch).
 - Závěr: všechno lokálně, Kaggle by jen zdržel nahráváním a frontou.
 
-## pá 20:05 · Ondra · přítoky v kraji (Bílina, Ploučnice)
+## pá 19:40 · Ondra · přítoky v kraji (Bílina, Ploučnice)
 - Otázka: pomůže modelu průtok přítoků, které do Labe ústí mezi Ústím a Děčínem?
 - Data a rozdělení: společné rozdělení (`src/evaluate.py`), navíc průtok Bílina-Trmice a Ploučnice-Benešov z ČHMÚ, zpoždění 0, 3, 6 a 12 h.
 - Model a nastavení: Ridge(alpha=1), odmocnina průtoků, StandardScaler, seed 42 (stejný jako kontrola řetězce).
 - Výsledek na val (chyba na povodních bez / s přítoky): Děčín +6 h 4,6 / 4,8 cm, +12 h 9,0 / 9,5, +24 h 15,5 / 16,0; Ústí +6 h 7,3 / 7,5, +12 h 9,6 / 10,1, +24 h 15,7 / 16,2. Při vrcholech povodní přidaly přítoky 2–13 % vody, nejvíc v 8/2010.
 - Závěr: nepomohly, do společných vstupů je nepřidáváme. Jejich voda doteče za pár hodin a na delší horizont rozhoduje déšť. Limit: povodeň z lokálních dešťů v kraji (jako 8/2010) model bez srážek dopředu nevidí.
 - Soubory: jen kontrola, model není uložený.
+
+## pá 20:00 · Ondra · neuronová síť (MLP), varianty v1–v4
+- Otázka: přidá neuronová síť něco, co lineární model neumí?
+- Data a rozdělení: společné rozdělení, opravená verze vyhodnocení (validační okna 16 dní, předstih nejvýš horizont, bias na povodních).
+- Vstupy: všech 98 sloupců, odmocnina průtoků, StandardScaler. Cíl je změna hladiny (y − hladina teď), škálovaná.
+- Model a nastavení: `MLPRegressor`, early stopping, max 300 epoch, seed 42. MacBook M1, 10–40 s na jeden trénink.
+- Výsledek na val (`prumer_povodne`, propásnuto + plané poplachy u 2. stupně, součet přes 6 kombinací):
+  - „jako teď“: 44,3 cm, propásne všech 24 nástupů povodní
+  - v1 `mlp_v1` (64-32, alpha 0,0001): 26,0 cm, 4. Přeučená: na tréninku při velké vodě chyba 5 cm, na validaci 22 cm (Děčín +24 h).
+  - v2 `mlp_alpha1` (alpha 1 proti přeučení): 18,7 cm, 2. Zlepšení o 7,3 cm.
+  - v3 `mlp` (větší síť 128-64): 17,8 cm, 1. Zlepšení jen o 0,9 cm, pod hranicí 1 cm.
+  - v4 `mlp_vahy` (hodiny nad 1. stupněm s váhou 5, protože síť na povodních podhodnocovala): 18,2 cm, 1. Bez zlepšení.
+  - mřížka na Děčín +24 h (3 velikosti × alpha 0,0001–10): nejlepší alpha 1, alpha 10 už je málo přizpůsobivá.
+  - stabilita v3, seedy 42 / 43 / 44: 18,1 / 19,0 / 18,3 cm (před opravou vyhodnocení), rozptyl 0,9 cm.
+- Závěr: hlavní byl boj s přeučením, regularizace pomohla nejvíc. v2 a v3 jsou v rámci náhody stejné. Jako hlavní necháváme v3, protože má méně chyb ve varování a menší podhodnocení na 36 h. v2 je rovnocenná jednodušší záloha. Po dvou variantách bez zlepšení konec ladění. Síť nejvíc používá hladinu v Děčíně a Ústí a průtok v Praze, Vraňanech, Lounech, Mělníku a Kostelci, vzdálené přítoky málo (`docs/grafy/mlp_dulezitost_stanic.png`). Graf povodně 1/2011 (`docs/grafy/mlp_povoden_2011.png`): síť stoupání předbíhá o 24 h, „jako teď“ je o 24 h pozadu.
+- Soubory: `src/models/mlp.py`, `mlp_v1.py`, `mlp_alpha1.py`, `mlp_vahy.py`, `src/vysvetli_mlp.py`, `results/*_mlp*.json`.
