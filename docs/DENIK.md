@@ -260,3 +260,9 @@ Následující záznamy jsou doplněné zpětně (pá 19:35) podle commitů, ať
 - Co: grafy do prezentace v jednom stylu jsou v `docs/grafy/slajdy/` (vyrábí `src/grafy_slajdy.py` jen z uložených výsledků): srovnání modelů (61 % méně), test 2021–2025 (55 % méně, Boris 27 h předem), učicí křivka, váhy Děčín +24 h, Boris 2024, povodeň 2011, co jsme zkoušeli a nepomohlo, pokrytí rozmezí nejistoty. 16:9, nadpis jako tvrzení, zdroj a podmínky pod grafem, šedá = jako teď, modrá = lineární regrese, oranžová = ostatní.
 - Proč: slajdy mají působit jako jeden celek; dosud byly grafy ve třech stylech. Tobias bere do prezentace tyhle.
 - Pozor: balíček 2 roky jen kraj je v grafech 44,6 cm (opravená verze učicí křivky), ne 45,1 z prvního běhu; LightGBM je „o 48 % méně“ (podíl průměrů), v PREHLED.md 49 % (průměr procent); povodeň 2011 hlásil model 15 h předem, ne „den“.
+
+## pá 22:46 · Ondra · srážky: kdy dávají smysl
+- Co: Ondra navrhl předpovídat déšť a přes něj průtok a hladinu dřív. Vyzkoušeli jsme to na horizontech až 72 h (`docs/POKUSY.md`, pá 22:46).
+- Zjištění: s dokonalou předpovědí deště se dešťová povodeň 9/2010 zlepší o 23 % na 36 h a o 40 % na 72 h. Povodně z tání sněhu (2006, 2009, 2011) se nezlepší. Naměřené denní srážky nepomáhají vůbec, známe je až ráno po konci dne, kdy voda už teče v řekách.
+- Rozhodnutí: finální model zůstává bez srážek, test už proběhl a výběr neměníme. Do prezentace jako „co dál“: s předpovědí srážek od ČHMÚ by šlo dešťové povodně předpovídat na 2–3 dny. Vlastní model předpovědi deště neděláme, potřebuje modely atmosféry.
+- Pro porotu: „Proč nepoužíváte předpověď deště?“ Na 12–24 h by nepomohla, voda už je v řekách. Na 2–3 dny a u dešťových povodní ano, i s dokonalou předpovědí by to ale byl jen odhad horní meze z jedné povodně a skutečné historické předpovědi deště na trénink nemáme.
