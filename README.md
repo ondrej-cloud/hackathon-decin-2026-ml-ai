@@ -2,7 +2,7 @@
 
 FJFI ČVUT Děčín, od pátku 23. 10. 14:00 do soboty 24. 10. 17:00. Soutěž startuje v pátek v 16:00. V sobotu ve 14:00 odevzdáváme a od 14:30 prezentujeme porotě, každý tým nejvýš 15 minut. Ceny jsou 25, 15 a 10 tisíc Kč.
 
-Každý má svou roli, svůj počítač a své soubory ve společném soukromém repozitáři na GitHubu. Pracujeme paralelně a nepřepisujeme si práci.
+Každý má výchozí zaměření, ale role se budou míchat podle toho, co je zrovna potřeba a co nás během práce napadne. Pracujeme ve společném soukromém repozitáři, každý na své větvi.
 
 ## Jak se tu vyhrávalo
 
@@ -17,50 +17,38 @@ V roce 2024 porota hodnotila čtyři věci: splnění zadání, zvolený postup 
 ### Co z toho plyne pro nás
 
 1. **Za mentory chodit od první hodiny.** Sedí v porotě a vědí, co zadavatel opravdu potřebuje. Chodíme za nimi s konkrétními otázkami: na začátku s nápadem, večer s prvními výsledky, ráno s finální verzí.
-2. **Každé kritérium má svého člověka.** Splnění zadání ověří Ondra u mentora hned na začátku a pak ho hlídá. Za postup odpovídají Ondra a Dan. Odbornost znamená, že každý umí vysvětlit svou část a Ondra celek. Prezentace je Tobiasova.
-3. **Demo, kterému rozumí laik.** V roce 2023 se hodnotilo grafické rozhraní, v roce 2025 porota ocenila srozumitelný výstup. Tohle zajistí Honzova aplikace.
+2. **Pokrýt všechna čtyři kritéria.** Splnění zadání si ověříme u mentora hned na začátku. Postup a odbornost znamenají, že každý umí vysvětlit, co dělal, a Ondra celek. Na prezentaci potřebujeme čas, ne jen poslední hodinu.
+3. **Demo, kterému rozumí laik.** V roce 2023 se hodnotilo grafické rozhraní, v roce 2025 porota ocenila srozumitelný výstup.
 4. **Úloha, ve které budeme mít ve 21:00 celý řetězec.** V roce 2024 vyhrála úloha od Datového centra. Rozhoduje ale hlavně to, jestli v ní stihneme ověřený výsledek a jestli k ní máme ochotného mentora.
 5. **Počet lidí nerozhoduje.** V roce 2024 vzaly 1. i 2. místo dvoučlenné týmy. Naše výhoda jsou tři účty Claude Max, díky kterým zkusíme víc přístupů. AI ale nejspíš budou používat i ostatní, takže rozhodne poctivé ověření, to, že řešení rozumíme, a prezentace.
 6. **Dotáhnout to do konce.** V roce 2024 porota veřejně pokárala tým, který soutěž nebral vážně, a v roce 2025 jeden tým nedokončil. Celý řetězec ve 21:00 je naše pojistka.
 
-## Kdo co dělá
+## Tým
 
-| Kdo | Počítač | Claude | Role |
+| Kdo | Počítač | Claude | Výchozí zaměření |
 |---|---|---|---|
-| Ondra | MacBook M1, 16 GB | Max 20x | vedení, ověřování, data |
-| Dan | Lenovo Yoga 7i (Core Ultra 7 155H) | Max 20x | model a trénink |
-| Honza | starší notebook | Max 20x | aplikace a vizualizace |
-| Tobias | MacBook M4, 16 GB | Pro | prezentace, deník, počítač na demo |
+| Ondra | MacBook M1, 16 GB | Max 20x | vedení a ověřování výsledků |
+| Dan | Lenovo Yoga 7i (Core Ultra 7 155H, bez NVIDIA) | Max 20x | modely a trénink |
+| Honza | starší notebook | Max 20x | aplikace a grafy |
+| Tobias | MacBook M4, 16 GB | Pro | prezentace a pohled uživatele |
 
-**Ondra: vedení, ověřování, data**
-- vede výběr tématu a rozhovory s mentory, hlídá čas a rozhoduje, když se neshodneme
-- v první hodině rozdělí data na trénovací, validační a testovací část a napíše `evaluate.py`, jediné měření pro všechny
-- výsledek se počítá, až ho zkontroluje: správná data, žádný únik testovacích dat, čísla dávají smysl
-- testovací sadu pustí jen jednou, na finální model
-- mezitím upravuje data a vymýšlí nové veličiny (`features.py`)
-- rozumí celému řešení a odpovídá porotě na technické otázky
+Zaměření je jen výchozí bod. Kdo má hotovo nebo dostane nápad, vezme si další věc, a na čem kdo dělá, se bude během noci měnit. Na kontrolních bodech si práci přerozdělíme. Kdo na čem zrovna dělá, píšeme do sekce **Stav** v `CLAUDE.md`, aktualizovat ji může kdokoli.
 
-**Dan: model a trénink**
-- začne jednoduchým modelem a postupuje k nejlepšímu, každý pokus vyhodnotí přes `evaluate.py`
-- tabulková data a gradient boosting běží na procesoru Yogy, GPU na to není potřeba
-- neuronové sítě trénuje zdarma na GPU na Kaggle nebo v Google Colabu, menší pokusy může pustit na Tobiasově M4
-- před spaním pošle dlouhý trénink na Kaggle, kde běží, i když notebook spí
-- dodá `predict.py` a finální model
+Pevné je jen tohle: Ondra vede (téma, mentoři, čas, rozhodnutí, když se neshodneme) a hlídá, aby výsledky byly poctivě ověřené.
 
-**Honza: aplikace a vizualizace**
-- od první hodiny staví aplikaci ve Streamlitu s falešnou předpovědí, později napojí skutečný model
-- dělá grafy, kterým rozumí i člověk mimo obor
-- aplikace musí jít spustit na Tobiasově Macu, ze kterého budeme prezentovat (Honzův notebook finální model utáhnout nemusí)
-- natočí záložní video dema pro případ, že na prezentaci něco selže
+**Oblasti práce**, mezi kterými se budeme přesouvat:
 
-**Tobias: prezentace, deník, uživatel**
-- hned po výběru tématu sepíše zadání do `CLAUDE.md`
-- hlídá otázku, kterou zdůrazňují pořadatelé: komu řešení pomáhá a jak poznáme, že funguje
-- vede deník `docs/DENIK.md` (co se změnilo, proč a s jakým výsledkem) a zkouší aplikaci jako laik
-- chodí s Ondrou za mentory a zapisuje, co řekli
-- skládá prezentaci, jeho M4 je počítač na demo
+- **Data:** rozbor dat, společné rozdělení na trénovací, validační a testovací část, úprava dat a nové veličiny.
+- **Ověřování:** jedno společné vyhodnocení, kontrola výsledků a úniku dat, finální test.
+- **Modely:** od jednoduchého základu (baseline) k lepším přístupům.
+- **Aplikace a grafy:** demo pro laika, grafy do prezentace, záložní video dema.
+- **Prezentace a příběh:** komu řešení pomáhá, deník, poznámky od mentorů, slajdy, nácvik.
 
-Pokud vybereme úlohu s chatbotem: Dan postaví vyhledávání v dokumentech a napojení na jazykový model, Ondra připraví testovací otázky se správnými odpověďmi a měření, Honza chatovací rozhraní.
+Co víme o počítačích:
+- Tabulková data a gradient boosting stačí na procesoru, na neuronové sítě je GPU zdarma na Kaggle nebo v Colabu. Lokálně mají GPU jen Macy (MPS).
+- Nejvýkonnější Mac je Tobiasův M4, demo na prezentaci nejspíš poběží z něj.
+- Honzův notebook je starší, těžký trénink na něm nepouštíme.
+- Tobias má Claude Pro s menším limitem, takže na něj nedáváme práci, která spotřebuje hodně Claude.
 
 ## Pátek do 17:30: výběr tématu
 
@@ -68,77 +56,77 @@ Pokud vybereme úlohu s chatbotem: Dan postaví vyhledávání v dokumentech a n
 
 **15:30–17:30:**
 1. Představení témat. Všichni poslouchají a píšou si.
-2. Projdeme každé téma: jaká jsou data, co z toho jde za 22 hodin udělat, komu to pomůže. Vybereme jedno.
+2. Projdeme každé téma: jaká jsou data, co z toho jde za 22 hodin udělat, komu to pomůže. Pomůže `/temata`. Vybereme jedno.
 3. Brainstorming: komu řešení pomáhá a proč, kdo je cílový uživatel, jak to bude fungovat a jak poznáme, že funguje (metrika).
 4. S prvním návrhem za mentory a upravit ho podle jejich zpětné vazby. Když se nápad nelíbí, vracíme se k bodu 2.
-5. Nejpozději v 17:30 je rozhodnuto. Domluvíme, co bere a co vrací `predict.py`, a jdeme pracovat. Kdybychom se rozhodovali déle, nestihneme mít ve 21:00 celý řetězec.
+5. Nejpozději v 17:30 je rozhodnuto. Domluvíme, kdo začne na čem a jak propojíme model s aplikací (co předpověď bere a vrací), zapíšeme to do Stavu a jdeme pracovat. Kdybychom se rozhodovali déle, nestihneme mít ve 21:00 celý řetězec.
 
 ## Harmonogram
 
-Kontrolní body, kde se všichni na 10 minut sejdeme:
+Kontrolní body, kde se všichni na 10 minut sejdeme (`/stav`) a případně přerozdělíme práci:
 
 | Čas | Co musí platit |
 |---|---|
-| 19:00 | data jsou rozdělená, `evaluate.py` hotové, máme první jednoduchý model a kostru aplikace |
+| 19:00 | data jsou rozdělená, společné vyhodnocení hotové, máme první jednoduchý model a kostru aplikace |
 | 21:00 | celý řetězec od dat po aplikaci funguje, i když je model ještě slabý |
-| 0:00 | stav a plán na noc, Dan chystá dlouhý trénink |
+| 0:00 | stav a plán na noc, chystáme dlouhý trénink |
 | 8:00 | výsledky z noci, vybíráme finální přístup |
 | 11:00 | konec nových funkcí, dál už jen opravy a nácvik |
 | 14:00 | odevzdání prezentace |
 
-| Čas | Ondra | Dan | Honza | Tobias |
-|---|---|---|---|---|
-| 17:30–19:00 | rozbor dat, rozdělení dat, `evaluate.py` | první jednoduchý model | kostra aplikace s falešnou předpovědí | zadání do `CLAUDE.md`, komu řešení pomáhá |
-| 19:00–21:00 | nové veličiny, kontrola prvních výsledků | pokusy s různými modely | napojení prvního modelu | deník, s Ondrou za mentory, osnova prezentace |
-| 21:00–1:00 | kontrola úniku dat, plán na noc | ladění, v 1:00 pošle dlouhý trénink | grafy pro laiky | prezentace podle deníku |
-| 1:00–5:00 | další úprava dat, hlídá noční trénink | spí | spí | grafika a texty prezentace |
-| 5:00–8:00 | spí | vyhodnotí noční trénink | ladění aplikace | spí |
-| 8:00–11:00 | výběr finálního modelu, jeden test na testovací sadě | finální model do `predict.py` | finální model v aplikaci na Tobiasově Macu | výsledky a grafy do prezentace |
-| 11:00–14:00 | otázky poroty, nácvik | jen opravy, nácvik | záložní video dema, nácvik | dva nácviky celé prezentace, odevzdání |
+Co se kdy hlavně děje:
+
+| Čas | Hlavní práce |
+|---|---|
+| 17:30–19:00 | rozbor a rozdělení dat, společné vyhodnocení, první jednoduchý model, kostra aplikace s falešnou předpovědí, sepsat zadání a komu řešení pomáhá |
+| 19:00–21:00 | pokusy s modely, napojení aplikace, za mentory s prvními výsledky |
+| 21:00–1:00 | zlepšování, kontrola úniku dat, osnova prezentace, plán na noc |
+| 1:00–8:00 | spíme ve dvou směnách (domluvíme na místě), přes noc běží dlouhý trénink |
+| 8:00–11:00 | výběr finálního přístupu, jeden test na testovací části, finální model v aplikaci, výsledky do prezentace |
+| 11:00–14:00 | jen opravy, záložní video dema, dva nácviky prezentace, odevzdání |
 
 Na jídlo podle programu (večeře 18–19, snídaně 7:30–9, oběd 12–13) chodíme postupně, ať práce nestojí.
 
 ## Repozitář
 
-Každý soubor má jednoho vlastníka a jen ten ho mění, ostatní ho jen čtou. Tím odpadne většina konfliktů v Gitu.
+Výchozí struktura. Klidně ji měňte, přejmenovávejte a přidávejte, co bude potřeba. Když se změní něco, co používají ostatní, zapište to do Stavu.
 
 ```
 hackathon-decin-2026-ml-ai/
-├── CLAUDE.md          Tobias   kontext a pravidla pro Claude, sekce Stav
-├── .claude/           Ondra    role, příkazy a nastavení pro Claude
+├── CLAUDE.md          kontext pro Claude, sekce Stav
+├── .claude/           role, příkazy a nastavení pro Claude
 ├── data/
-│   ├── raw/           nikdo    data od pořadatelů, NE do Gitu
-│   └── split/         Ondra    pevné rozdělení train / val / test
-├── src/
-│   ├── evaluate.py    Ondra    jediné měření úspěšnosti
-│   ├── features.py    Ondra    úprava dat a nové veličiny
-│   ├── train_*.py     Dan      jeden soubor na přístup
-│   └── predict.py     Dan      predict(vstup) -> výstup, používá aplikace
-├── results/           všichni  jeden nový soubor na pokus
-├── models/            Dan      malé modely, velké přes Google Disk
-├── app/               Honza    Streamlit aplikace
-└── docs/              Tobias   DENIK.md, prezentace, otázky poroty
+│   ├── raw/           data od pořadatelů, NE do Gitu
+│   └── split/         společné rozdělení train / val / test
+├── src/               kód: příprava dat, vyhodnocení, modely, předpověď
+├── results/           výsledky pokusů, každý jako nový soubor
+├── models/            malé modely, velké přes Google Disk
+├── app/               aplikace
+└── docs/              deník, poznámky od mentorů, prezentace, podklady
 ```
 
-Tři pravidla:
+Pár pravidel, která platí, ať se struktura změní jakkoli:
 
-1. **Testovací sadu má na starosti Ondra.** Při ladění se používá jen validační část. Test se pustí jednou, na finální model.
-2. **Jedno měření pro všechny.** Každý pokus se hodnotí přes `src/evaluate.py` a uloží jako nový soubor `results/<jméno>-<čas>-<popis>.json`. Když má každý pokus vlastní soubor, nevznikají konflikty.
-3. **`predict.py` je dohoda mezi modelem a aplikací.** Honza zatím používá falešnou verzi, Dan ji pak vymění za skutečnou.
+1. **Testovací část dat se nepoužívá k ladění.** Pustí se jednou, na finální model, a rozhoduje o tom Ondra.
+2. **Jedno společné vyhodnocení.** Všichni měří stejně, jinak nejdou výsledky srovnat. Každý pokus se uloží jako nový soubor do `results/`, takže nevznikají konflikty.
+3. **Propojení modelu a aplikace je dohoda.** Co předpověď bere a vrací, je zapsané ve Stavu. Dokud model není, aplikace jede s falešnou předpovědí.
+4. **Data a klíče nikdy do Gitu.**
+
+Když dva lidé potřebují stejný soubor, stačí si to říct. Git změny většinou spojí sám, a když ne, Claude konflikt vyřeší.
 
 ## Claude Code v repozitáři
 
-Claude Code při každém startu sám načte `CLAUDE.md`: kontext hackathonu, pravidla, dohody v kódu, harmonogram a tento plán. Všichni čtyři Claude tak vědí totéž. Na začátku relace napiš svoje jméno jako příkaz a Claude se dozví tvou roli a úkoly.
+Claude Code při každém startu sám načte `CLAUDE.md`: kontext hackathonu, pravidla, aktuální Stav, harmonogram a tento plán. Všichni čtyři Claude tak vědí totéž. Na začátku relace napiš svoje jméno jako příkaz. Claude se dozví, kdo jsi, na jakém počítači a s jakým účtem pracuješ a jaké je tvoje výchozí zaměření. Na čem děláš teď, zjistí ze Stavu nebo se zeptá.
 
-| Příkaz | Kdo | Co dělá |
+| Příkaz | Kdy | Co dělá |
 |---|---|---|
-| `/ondra`, `/dan`, `/honza`, `/tobias` | každý svůj | role, úkoly a postup daného člověka |
-| `/sync` | všichni | commit vlastních souborů, stažení práce ostatních, push vlastní větve |
-| `/sync main` | všichni | totéž a hotovou práci pošle i do `main` |
+| `/ondra`, `/dan`, `/honza`, `/tobias` | začátek relace | kdo jsi, tvůj počítač, účet a výchozí zaměření |
+| `/sync` | průběžně | commit tvé práce, stažení práce ostatních, push tvé větve |
+| `/sync main` | když je něco hotové | totéž a hotovou práci pošle i do `main` |
 | `/temata <text zadání>` | pátek 15:30 | rozbor témat a návrhy nápadů podle vzorců vítězů |
-| `/stav` | kontrolní body | přehled, co kdo má hotové a co ho blokuje |
-| `/denik` | Tobias | zápis změn do `docs/DENIK.md` |
-| `/kontrola` | Ondra | kontrola výsledků ostatních (únik dat, rozdělení, metrika) |
+| `/stav` | kontrolní body | přehled, co je hotové, kdo na čem dělá a co blokuje |
+| `/denik` | jednou za hodinu | zápis změn do `docs/DENIK.md` |
+| `/kontrola` | po nových výsledcích | kontrola výsledků (únik dat, rozdělení, metrika) |
 | `/porota` | sobota ráno | nácvik otázek poroty |
 
 Subagent `kontrolor` nezávisle zkontroluje jeden pokus. Commity z Claude jsou bez podpisu Claude, jen pod jménem autora.
@@ -147,11 +135,9 @@ V `.claude/settings.json` je povolené spouštět Python, Streamlit, Kaggle a b�
 
 ## Git
 
-Každý má svou větev: `ondra`, `dan`, `honza`, `tobias`. Na ni pushuje kdykoli a nikomu tím nic nerozbije. Do `main` posíláme to, co funguje a co potřebují ostatní, nejméně na každém kontrolním bodě. Soubory má každý své, takže slučování bývá bez konfliktů.
+Každý má svou větev: `ondra`, `dan`, `honza`, `tobias`. Na ni pushuje kdykoli a nikomu tím nic nerozbije. Do `main` posíláme to, co funguje a co se hodí ostatním, nejméně na každém kontrolním bodě. Na stejných souborech může pracovat víc lidí. Čím častěji `/sync`, tím menší konflikty.
 
-**Dnes večer, Ondra:** v Settings → Collaborators pozvat ostatní tři. Repozitář i větve jsou připravené.
-
-**Dnes večer, každý:**
+**Před odjezdem, každý:**
 
 1. Přijmout pozvánku z e-mailu od GitHubu.
 2. Přihlásit se: `gh auth login` (nebo přes GitHub Desktop).
@@ -162,47 +148,43 @@ Každý má svou větev: `ondra`, `dan`, `honza`, `tobias`. Na ni pushuje kdykol
 
 **Pracovní cyklus během hackathonu** (celý ho udělá `/sync`):
 
-1. commit jen vlastních souborů na vlastní větvi
+1. commit tvé práce na tvé větvi
 2. `git fetch` a `git merge origin/main` stáhne práci ostatních
 3. `git push origin <větev>`
 4. s `/sync main` navíc `git push origin HEAD:main`
 
-`/sync` spouštěj po každém funkčním kroku, nejméně jednou za hodinu. `/sync main` vždy, když máš něco, co potřebují ostatní (rozdělení dat, `evaluate.py`, `predict.py`, sekce Stav).
+`/sync` spouštěj po každém funkčním kroku, nejméně jednou za hodinu. `/sync main` vždy, když máš něco, co potřebují ostatní.
 
 **Když něco nejde:**
 - Push do `main` je odmítnutý: někdo byl rychlejší, pusť `/sync main` znovu.
 - Konflikt: řekni Claude „vyřeš konflikt a zachovej změny obou stran“. Nikdy `git push --force`.
 - Data a velké modely: přes AirDrop, flashku nebo Google Disk, u všech do stejné složky `data/raw/`.
 
-## Deník a přehled
+## Deník a prezentace
 
-Tobias každou hodinu spustí `/denik`. Claude projde změny na všech větvích, jednoduše je vysvětlí a připíše do `docs/DENIK.md`. Čemu Tobias nerozumí, na to se zeptá v týmu. Dvě věty vysvětlení ušetří půl hodiny čtení kódu.
-
-Ondra deník průběžně čte a opravuje, co v něm technicky nesedí.
+Jednou za hodinu někdo spustí `/denik`, nejlépe ten, kdo zrovna dělá na prezentaci. Claude projde změny na všech větvích, jednoduše je vysvětlí a připíše do `docs/DENIK.md`. Čemu nerozumíme, na to se zeptáme v týmu. Dvě věty vysvětlení ušetří půl hodiny čtení kódu.
 
 ```markdown
 ## 21:15
-- Změna: Dan přešel z Random Forest na LightGBM
+- Změna: přechod z Random Forest na LightGBM
 - Proč: o 6 % lepší F1 na validačních datech
 - Výsledek: F1 0,81 (results/dan-2110-lgbm.json)
 - Otázka pro mentory: je F1 pro zadavatele ta správná metrika?
 ```
 
-**Prezentace:** Od 21:00 ji Tobias skládá z deníku v tomto pořadí: problém, pro koho, data, postup, výsledek a jak víme, že funguje, demo, co dál. V sobotu ráno s Ondrou sepíšou 15–20 pravděpodobných otázek poroty a nechají Claude hrát porotu.
+Od 21:00 se z deníku skládá prezentace v tomto pořadí: problém, pro koho, data, postup, výsledek a jak víme, že funguje, demo, co dál. V sobotu ráno sepíšeme 15–20 pravděpodobných otázek poroty a necháme Claude hrát porotu (`/porota`).
 
 ## Claude
 
 Každý má vlastní účet, a tedy i vlastní limit. Počítá se v pětihodinových oknech a k tomu je týdenní strop, stav ukáže příkaz `/usage`.
 
-| Kdo | Model | Agentů najednou |
+| Účet | Model | Agentů najednou |
 |---|---|---|
-| Ondra | Opus na rozbor dat a kontroly, Sonnet na rutinu | 1–2 |
-| Dan | Opus na návrh a ladění modelů, Sonnet na rutinu | 2–3 |
-| Honza | Sonnet, Opus jen na těžké chyby | 1–2 |
-| Tobias | Sonnet (přepnout příkazem `/model`) | 1 |
+| Max 20x (Ondra, Dan, Honza) | Opus na náročné věci (rozbor, návrh modelů, těžké chyby), Sonnet na rutinu | 1–3 podle toho, kolik stíháš kontrolovat |
+| Pro (Tobias) | Sonnet (přepnout příkazem `/model`) | 1 |
 
 - Spouštěj jen tolik agentů, kolik stíháš kontrolovat. Neověřený kód nepushuj.
-- Každý moc dobrý výsledek je podezřelý, dokud ho Ondra nezkontroluje.
+- Každý moc dobrý výsledek je podezřelý, dokud ho nezkontroluje Ondra nebo subagent `kontrolor`.
 - U každé větší změny ať Claude napíše do commitu co a proč. Porota se bude ptát „proč zrovna tohle?“.
 - Bez internetu Claude nefunguje. Na místě hned ověřit Wi-Fi, zálohou je hotspot z mobilu.
 
@@ -214,17 +196,15 @@ Kaggle má příkaz `kaggle`, přes který Claude Code umí poslat skript na GPU
 
 Pokud vybereme úlohu s textem (chatbot nad dokumenty), může být jazykový model přímo součástí řešení. Aplikace pak potřebuje API klíč placený zvlášť podle spotřeby (předplatné ho nepokrývá), nebo lokální model přes Ollamu. Klíč patří do `.env`, nikdy do Gitu.
 
-## Dnes večer
+## Před odjezdem
 
-- [ ] Ondra: pozvat ostatní do repozitáře
-- [ ] Všichni: naklonovat, přepnout na svou větev, spustit `claude` se svým příkazem a zkušební `/sync` (postup v sekci Git)
+- [ ] Všichni: přijmout pozvánku, naklonovat, přepnout na svou větev, spustit `claude` se svým příkazem a zkušební `/sync` (postup v sekci Git)
 - [ ] Všichni: Python 3.11 nebo novější, virtuální prostředí a balíčky níž
 - [ ] Všichni: Claude Code nainstalovaný, přihlášený a vyzkoušený
 - [ ] Všichni: účet Google kvůli Colabu a Disku
-- [ ] Dan: účet na Kaggle s ověřeným telefonem (bez něj nejde GPU), API token, vyzkoušet poslat skript na GPU
-- [ ] Ondra a Tobias: ověřit, že PyTorch vidí GPU Macu (příkaz níž)
-- [ ] Honza: spustit ukázkovou aplikaci `streamlit hello`; PyTorch instalovat nemusí, finální demo poběží u Tobiase
-- [ ] Tobias: vyzkoušet `/denik`, založí `docs/DENIK.md`
+- [ ] Kdo bude trénovat na Kaggle: účet s ověřeným telefonem (bez něj nejde GPU), API token, vyzkoušet poslat skript na GPU
+- [ ] Majitelé Maců: ověřit, že PyTorch vidí GPU (příkaz níž)
+- [ ] Všichni: vyzkoušet `streamlit hello`
 - [ ] Všichni: přečíst [článek Datového centra](https://dcuk.cz/novinky/od-otazky-k-prototypu-co-se-da-vytvorit-za-jeden-hackathon/)
 - [ ] Sbalit nabíječky, prodlužku, flashku, spacák a karimatku
 
@@ -236,6 +216,8 @@ pip install pandas numpy scikit-learn lightgbm matplotlib plotly streamlit jupyt
 # Mac: vidí PyTorch GPU? Má vypsat True.
 python -c "import torch; print(torch.backends.mps.is_available())"
 ```
+
+Na starším notebooku stačí bez `torch torchvision`.
 
 ## Zdroje
 

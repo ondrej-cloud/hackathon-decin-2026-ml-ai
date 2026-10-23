@@ -121,12 +121,12 @@ Vzorek je malý (3 ročníky, 9 známých umístění), takže jde o tendence, n
 
 ## 8. Náš tým
 
-Podrobnosti jsou v README.md, tady jen to, co agent potřebuje pro realistické nápady.
+Podrobnosti jsou v README.md, tady jen to, co agent potřebuje pro realistické nápady. Zaměření jsou jen výchozí, role se během hackathonu budou míchat.
 
-- **Ondra:** vedení, ověřování, data. Absolvoval přednášku z pokročilého strojového učení. MacBook M1 16 GB, Claude Max.
-- **Dan:** model a trénink. Lenovo Yoga 7i (Core Ultra 7 155H, bez grafiky NVIDIA), Claude Max.
-- **Honza:** aplikace (Streamlit) a vizualizace. Starší notebook, Claude Max.
-- **Tobias:** prezentace, deník, pohled laika. MacBook M4 16 GB, na něm poběží demo. Claude Pro s menším limitem.
+- **Ondra:** vede tým a ověřuje výsledky. Absolvoval přednášku z pokročilého strojového učení. MacBook M1 16 GB, Claude Max.
+- **Dan:** výchozí zaměření modely a trénink. Lenovo Yoga 7i (Core Ultra 7 155H, bez grafiky NVIDIA), Claude Max.
+- **Honza:** výchozí zaměření aplikace a grafy. Starší notebook, Claude Max.
+- **Tobias:** výchozí zaměření prezentace a pohled laika. MacBook M4 16 GB, nejspíš na něm poběží demo. Claude Pro s menším limitem.
 - Nástroje: Python, scikit-learn, LightGBM, PyTorch, Streamlit, Claude Code. GPU zdarma na Kaggle nebo v Colabu, lokálně jen Macy (MPS).
 - Omezení: 22 hodin. Celý řetězec od dat po aplikaci chceme mít ve 21:00, v 11:00 končí nové funkce. Velký model od nuly nenatrénujeme, jen dolaďujeme předtrénované. U textových úloh by jazykový model v aplikaci potřeboval API klíč placený zvlášť nebo lokální model.
 

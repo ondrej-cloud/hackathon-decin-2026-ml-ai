@@ -1,26 +1,23 @@
 ---
 name: tobias
-description: Role Tobiase – prezentace, deník, pohled uživatele. Spouští Tobias na začátku relace.
+description: Kontext pro Tobiase – výchozí zaměření prezentace a pohled uživatele. Spouští Tobias na začátku relace.
 disable-model-invocation: true
 model: sonnet
 ---
 
-Pracuješ s Tobiasem. Má na starosti prezentaci, deník a pohled běžného uživatele. Bude prezentovat, takže mu všechno vysvětluj jednoduše, aby to porotě uměl říct vlastními slovy.
+Pracuješ s Tobiasem. Má MacBook M4 16 GB (nejvýkonnější Mac v týmu, nejspíš z něj poběží demo) a Claude Pro s menším limitem. Jeho výchozí zaměření je prezentace a pohled běžného uživatele, ale role se v týmu míchají, takže může dělat cokoli, co je zrovna potřeba. Vysvětluj mu věci jednoduše, aby je porotě uměl říct vlastními slovy.
 
-Tobias má Claude Pro s menším limitem:
+Šetři jeho limit:
 - Hned mu připomeň, ať přepne model příkazem `/model sonnet`.
 - Odpovídej stručně, čti jen to, co je potřeba (diffy a výsledky, ne celé soubory), a nespouštěj paralelní agenty.
+- Když je potřeba velký kus práce s kódem, navrhni, ať ho vezme někdo s účtem Max.
 
 Nejdřív:
 1. Když nejsi na větvi `tobias`, přepni se (`git switch tobias`). Pak `git fetch origin` a `git merge origin/main`.
-2. Jednou nebo dvěma větami shrň stav a co je podle harmonogramu teď na řadě.
+2. Jednou nebo dvěma větami shrň stav a co je podle harmonogramu na řadě. Když ve Stavu není, na čem Tobias teď dělá, zeptej se.
 
-Úkoly:
-1. Hned po výběru tématu vyplň sekci Stav v CLAUDE.md (zadání, komu řešení pomáhá, data, metrika, predict.py) podle toho, co tým domluvil, a pošli ji přes `/sync main`. Potřebují ji všichni.
-2. Každou hodinu spusť `/denik`.
-3. Poznámky od mentorů zapisuj do `docs/mentori.md`: kdo, kdy, co řekl a co z toho plyne.
-4. Od 21:00 skládej osnovu prezentace v `docs/prezentace.md`: problém → pro koho → data → postup → výsledek a jak víme, že funguje → demo → co dál. Celá prezentace má max. 15 minut. Čísla ber jen z výsledků, které uznal Ondra.
-5. Zkoušej aplikaci jako laik a piš Honzovi, čemu nerozumíš.
-6. V sobotu ráno s Ondrou `/porota`, pak dva nácviky celé prezentace a ve 14:00 odevzdání.
-
-Tobiasův Mac s M4 je počítač, ze kterého poběží demo.
+Když jde o prezentaci:
+- Hlídej otázku, kterou zdůrazňují pořadatelé: komu řešení pomáhá a jak poznáme, že funguje.
+- Deník (`/denik`), poznámky od mentorů (kdo, kdy, co řekl, co z toho plyne) a osnova prezentace patří do `docs/`.
+- Pořadí prezentace: problém → pro koho → data → postup → výsledek a jak víme, že funguje → demo → co dál. Nejvýš 15 minut. Čísla ber jen z výsledků, které zkontroloval Ondra.
+- Zkoušej aplikaci jako laik a řekni, čemu nerozumíš.

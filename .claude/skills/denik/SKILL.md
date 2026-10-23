@@ -1,6 +1,6 @@
 ---
 name: denik
-description: Zapíše do docs/DENIK.md, co se v týmu změnilo od posledního zápisu. Spouští Tobias každou hodinu.
+description: Zapíše do docs/DENIK.md, co se v týmu změnilo od posledního zápisu. Spouští se jednou za hodinu.
 disable-model-invocation: true
 model: sonnet
 ---
@@ -17,7 +17,7 @@ model: sonnet
 - Otázka pro mentory: … (jen když dává smysl)
 ```
 
-4. Piš jednoduše, aby to Tobias mohl říct porotě. Odborné výrazy vysvětli v závorce.
+4. Piš jednoduše, aby se to dalo říct porotě. Odborné výrazy vysvětli v závorce.
 5. Změň jen `docs/DENIK.md` a pak proveď `/sync`.
 
 Šetři limit: čti jen diffy a výsledky, ne celé soubory.

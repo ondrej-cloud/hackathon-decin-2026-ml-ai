@@ -1,6 +1,6 @@
 ---
 name: kontrola
-description: Ondrova kontrola nových výsledků a kódu ostatních – únik dat, rozdělení, metrika, baseline.
+description: Kontrola nových výsledků a kódu – únik dat, rozdělení, metrika, baseline. Obvykle ji spouští Ondra.
 argument-hint: "[co zkontrolovat]"
 disable-model-invocation: true
 ---

@@ -12,7 +12,9 @@ Připrav podklad na desetiminutovou poradu:
 4. Porovnej to s harmonogramem v CLAUDE.md: co mělo být k tomuto času hotové.
 
 Výstup:
-- tabulka Kdo | Hotovo | Rozpracované | Co ho blokuje
-- nejlepší výsledek zatím (a jestli ho Ondra uznal)
+- tabulka Kdo | Na čem dělal | Hotovo | Co ho blokuje
+- nejlepší výsledek zatím (a jestli ho Ondra zkontroloval)
 - největší rizika
-- co musí být hotové do dalšího kontrolního bodu
+- co musí být hotové do dalšího kontrolního bodu a návrh, kdo by co mohl vzít
+
+Nabídni, že po poradě zapíšeš nové rozdělení práce do Stavu (Kdo teď na čem dělá).
