@@ -1,0 +1,230 @@
+# Otázky poroty a odpovědi
+
+40 pravděpodobných otázek po 7 minutách prezentace. Odpověď je na 15–30 s, s čísly a zdrojem. Čísla jsou chyba
+hladiny během povodní v cm. „Validace“ = 4 vynechané povodně 2006–2011 a klidné roky 2019–2020, průměr přes Děčín
+a Ústí × 12 / 24 / 36 h, pokud není napsáno jinak. „D24“ = jen Děčín za 24 h.
+
+Nejpravděpodobnější podle `docs/PREZENTACE_7MIN.md`: 15, 29, 17, 12, 13, 1.
+
+## Data a jejich kvalita
+
+**1. Odkud máte data a proč ne jen z balíčku?**
+Hodinový archiv ČHMÚ 2006–2025, 12 stanic na Labi, Vltavě, Ohři a přítocích. Za 2024–2025 je na hodinu i na centimetr
+stejný jako balíček (17 544 hodin, rozdíl 0). Balíček má nejvýš proti proudu Ústí (4 h před Děčínem) a jedinou povodeň.
+Jen s ním (2 roky, stanice v kraji) by chyba byla 44,6 cm a propásli bychom 12 z 24 povodní, stejně jako „bude jako teď“
+(44,3). *Zdroj: docs/PREHLED.md (Data), docs/DATA.md (Kontrola správnosti), docs/CESTA_MODELU.md §4.*
+
+**2. Jak víte, že data jsou správná?**
+Bilance vody sedí každý rok (Mělník = Vraňany + Kostelec, poměr 1,00; Děčín = 1,04–1,08 × Ústí), měrná křivka se
+nemění (při 250–300 m³/s je Děčín každý rok 204–214 cm), voda z Ústí do Děčína doteče každý rok za 4–5 h, žádné nulové
+ani záporné hodnoty. Jediná chyba: Děčín 5.–8. 2. 2006, hladina 1 019 cm při průtoku 120 m³/s (led), vyřazená.
+*Zdroj: docs/DATA.md, sekce Labe.*
+
+**3. Neořezali jste povodně jako odlehlé hodnoty?**
+Ne, povodně jsou to, co předpovídáme. Vyřadili jsme jen ověřenou chybu z 2/2006. Jednohodinové výkyvy (Vraňany 35 hodin
+za 20 let, nejspíš jezy) jsme nechali, na model vliv nemají. *Zdroj: docs/DATA.md.*
+
+**4. Proč až od roku 2006 a ne s povodní 2002?**
+Hodinově je celá sada stanic až od 2006 (Kostelec, Nymburk). Povodeň 8/2002 nemá v hodinových datech hladinu v Děčíně
+ani v Ústí. Denní data od 1887 by rozmazala vlnu, která do Děčína putuje 4–40 h. *Zdroj: docs/DATA.md (Starší povodně).*
+
+**5. Co je měřené, hladina, nebo průtok?**
+Hladinu ČHMÚ měří čidlem na vodočtu, průtok z ní dopočítá měrnou křivkou. Předpovídáme hladinu v cm (podle ní se
+vyhlašují stupně), proti proudu bereme průtoky, protože se po proudu sčítají a hladina je místní (koryto, jezy).
+*Zdroj: docs/DATA.md, docs/PREHLED.md (Co ve vstupech není).*
+
+## Únik informací
+
+**6. Nepoužívá model informace z budoucnosti?**
+Vstupy jsou jen to, co je v čase vydání změřené: hladina a průtok teď a 1–36 h zpět. Řádky, jejichž vstupy nebo cíl
+zasahují do jiné části dat, vyhazujeme, škálování se učí jen na tréninku. Kontrola našla dvě pasti a obě jsme opravili:
+doplňování děr (bralo hodnotu z budoucnosti) a denní srážky (úhrn je známý až další den v 07:00 UTC).
+*Zdroj: docs/CESTA_MODELU.md §3, docs/PREZENTACE_7MIN.md (slajd 6), ridge_dan/ZPRAVA.md (Data).*
+
+**7. Proč model pro Ústí používá Děčín, který je níž po proudu?**
+Hladina v Děčíně je známá ve stejném okamžiku, není z budoucnosti. Je to tatáž voda změřená o 4 h později, model si tím
+vyhlazuje šum měření. *Zdroj: docs/POROZUMENI.md.*
+
+**8. Jak víte, že jste se nenaladili na validaci?**
+Pravidla jsme dali předem: jedna změna s důvodem, zlepšení aspoň o 1 cm, po třech neúspěších konec. Finální model jsme
+zapsali před testem (pá 20:58) a test pustil jen Ondra, jednou (21:00). Danovy pokusy rozhodovala jen CV v tréninku
+a LOFO, do validace nahlédl 4× a všechna nahlédnutí zapsal. *Zdroj: docs/PREHLED.md (Rozhodnutí), ridge_dan/ZPRAVA.md.*
+
+**9. Kontroloval to někdo jiný než autor?**
+Ano. Nezávislá kontrola řetězce (subagent kontrolor) a u Danových větví Codex, jen pro čtení. Našly třeba povodeň, která
+u 36 h vypadla z varování, a dobu doběhu LightGBM odhadnutou i z drženého bloku CV. Vše opraveno a přepočítáno.
+*Zdroj: docs/CESTA_MODELU.md §3, ridge_dan/STANICE_VSEM.md (Nálezy Codexu).*
+
+## Rozdělení a validace
+
+**10. Proč nedělíte data náhodně?**
+Sousední hodiny jsou skoro stejné. Model by je znal z tréninku a výsledek by byl falešně dobrý. Dělíme v čase a kolem
+validačních povodní vynecháváme 20 dní. *Zdroj: docs/DENIK.md (pá 19:20, Ondra).*
+
+**11. Proč validujete na starých povodních, a ne na posledních letech?**
+V letech 2016–2020 nebyla v Děčíně ani jedna povodeň. Validace jsou proto 4 vynechané povodně (4/2006, 3/2009, 9/2010,
+1/2011) a klidné roky 2019–2020. Test je 2021–2025 s povodněmi 2/2021, 12/2023, 2/2024 a 9/2024. *Zdroj: docs/PREHLED.md.*
+
+**12. Nemáte výsledek jen ze šťastně vybrané validace?**
+Ověřili jsme to dvakrát. Ve vícenásobné validaci (každá z 8 povodní 2006–2020 jednou vynechaná) má regrese 20,1 ± 7,7 cm
+a „jako teď“ 45,2 cm, tedy o 55 % méně, stejně jako na testu. Danova LOFO přes 22 povodní: týmová regrese D24 15,29 cm.
+Chyba víc záleží na povodni (3/2009 11 cm, 6/2013 34 cm) než na modelu. *Zdroj: docs/PREHLED.md, ridge_dan/ZLEPSENI.md.*
+
+**13. Proč hodnotíte chybu jen během povodní?**
+Na klidné řece je skoro přesné i „bude jako teď“: celková chyba 12,8 cm proti 8,2 cm u regrese. Při povodni se ale plete
+o metr. Hodnotíme proto okno 7 dní před vrcholem až 5 dní po něm a varování před 2. a 3. stupněm. *Zdroj: docs/POKUSY.md
+(pá 20:15, srovnání čtyř modelů), docs/PREHLED.md.*
+
+**14. Čtyři povodně na validaci, není to málo?**
+Je, proto rozdíly do 1–2 cm bereme jako náhodu a zlepšení počítáme až od 1 cm. Proto jsme přidali vícenásobnou validaci
+(8 povodní) a Dan LOFO (22 povodní). *Zdroj: docs/POROZUMENI.md, ridge_dan/ZLEPSENI.md.*
+
+## Proč lineární model
+
+**15. Proč lineární regrese, a ne neuronová síť?**
+Fyzika je součet: voda v Děčíně je zhruba Vltava + horní Labe + Ohře, každá posunutá o dobu doběhu. Přesně to je
+lineární regrese a ohyb měrné křivky dostane přes odmocninu průtoků. Ověřeno třikrát: validace 17,1 (síť 17,8),
+vícenásobná validace 20,1 (21,0), test 22,4 (21,3). Síť je stejná jen v rámci náhody. Regrese je jednodušší, má méně
+chyb ve varování a každou váhu vysvětlíme. *Zdroj: docs/POROZUMENI.md, docs/CESTA_MODELU.md §7.*
+
+**16. Proč ne LightGBM, když bývá na tabulková data nejlepší?**
+Stromy předpovídají jen hodnoty, které viděly: u povodně 2013 vrchol 823 místo 1 072 cm. Na 98 syrových vstupech si
+pamatoval povodně z tréninku (trénink 4,7 cm, validace 27,8 cm). S fyzikálně připravenými vstupy 23,1 cm, pořád o 6 cm
+horší než regrese. A když opravoval zbytek po regresi, ještě ji zhoršil (17,1 → 18,7).
+*Zdroj: docs/POKUSY.md (pá 19:45–20:15, so 0:48), docs/CESTA_MODELU.md §1.*
+
+**17. Nepřeučil se váš model?**
+Ne. Na trénovacích povodních má chybu 19,7 cm, na validačních 15,5 cm (D24), bez regularizace vyjde totéž. 98 vah se
+odhaduje ze 108 tisíc hodin. Přeučení jsme viděli u sítě 64-32 (trénink 5, validace 22 cm) a u polynomu (19,9 a 22,8).
+*Zdroj: docs/POKUSY.md (so 0:48), docs/CESTA_MODELU.md §2.*
+
+**18. Proč jsou některé váhy záporné?**
+Sousední zpoždění jsou skoro stejná (průtok v Praze teď a před 3 h má korelaci 0,998). Model odečítá starší hodnotu od
+novější, takže počítá, jestli voda stoupá. *Zdroj: docs/POKUSY.md (so 0:48), docs/POROZUMENI.md.*
+
+**19. Co znamená „Ridge“ a jak jste zvolili alphu?**
+Ridge mírně penalizuje velké váhy. Na našich datech na alfě skoro nezáleží (alpha 0,1 až 10 dává stejný výsledek), je to
+pojistka proti velkým protichůdným vahám u skoro stejných zpoždění. *Zdroj: docs/POROZUMENI.md, docs/CESTA_MODELU.md §2.*
+
+## Výběr modelu a test
+
+**20. Kdy a jak jste vybrali finální model?**
+V pátek ve 20:58, zapsané před testem: lineární regrese, protože je nejlepší na validaci, nejjednodušší a bez planých
+poplachů. Test 2021–2025 jednou ve 21:00: 22,4 cm proti 50,2 u „jako teď“, o 55 % méně. *Zdroj: docs/PREHLED.md.*
+
+**21. Síť byla na testu lepší (21,3). Proč jste ji nevzali?**
+Kdybychom vybírali podle testu, test by přestal být nezávislý. Rozdíl 1,1 cm je v rámci náhody: ve vícenásobné validaci
+byla síť o 0,9 cm horší a mezi seedy kolísá na validaci až o 2,8 cm. *Zdroj: docs/PREHLED.md, sit_dan/SIT_VARIANTY.md.*
+
+**22. Dan má směs G3, která je v LOFO lepší. Proč není finální?**
+G3 (½ regrese s 30 stanicemi + ½ LightGBM s 30 stanicemi) má v LOFO 13,94 proti 15,29 cm, lepší u 20 z 22 povodní. Na
+validaci je ale horší (18,2 proti 15,5), v oknech povodní má víc planých poplachů (6 proti 4), jsou to dva modely a nemá
+nezávislý test. Ve vícenásobné validaci 19,6 proti 20,1, lepší 6 z 8 (p ≈ 0,29, náhoda). Ukazujeme ji jako ověřený směr,
+ne jako finále. *Zdroj: ridge_dan/ZLEPSENI.md, ridge_dan/VALIDACE_ONDRA.md.*
+
+**23. Jak model dopadl na testu podrobně?**
+Děčín +12 / +24 / +36 h: 10,2 / 17,5 / 29,9 cm („jako teď“ 23,3 / 44,8 / 65,5). Před 3. stupněm varoval pokaždé (3 z 3),
+v průměru 11 / 21 / 27 h předem. Boris 9/2024: 3. stupeň 27 h předem, vrchol 649 cm předpověděl na 611 cm.
+*Zdroj: docs/PREHLED.md (Finální model na testu podrobně).*
+
+## Fyzika a doba doběhu
+
+**24. Za jak dlouho doteče voda do Děčína?**
+Podle korelace změn průtoku na trénovací části: Ústí 4 h, Kostelec a Nymburk 10 h, Mělník a Vraňany 13 h, Louny 16 h,
+Praha-Chuchle 17 h, Jizera a Přelouč 18 h, Beroun 23 h, Sázava 25 h. Vrcholy velkých povodní putují různě, z Vraňan do
+Ústí jednou 12 h, jindy 45 h. *Zdroj: docs/DATA.md (Doba doběhu), docs/POROZUMENI.md, graf grafy/G1.*
+
+**25. Proč předpovídáte nejvýš 36 h dopředu?**
+Voda, která do Děčína přijde za víc než den a půl, ještě neprotekla žádnou naší stanicí. Je v potocích nebo ještě nespadla.
+Proto je chyba na 36 h skoro dvojnásobná (Děčín, validace 26,0 proti 15,5 cm na 24 h). *Zdroj: docs/POROZUMENI.md,
+docs/PREHLED.md, graf grafy/G2.*
+
+**26. Když se vlna při povodni zpomalí, proč to model nepoužívá?**
+Zkusili jsme to a nepomohlo to (21,8 vs 22,2 cm, pod hranicí 1 cm). Lineární model má 98 zpožděných hodnot (z každé
+stanice 7 zpoždění 0–36 h) a dobu doběhu včetně roztažení vlny si z vah najde sám. Zpomalení při velkých povodních nejde
+spolehlivě změřit – nad 1 500 m³/s je v tréninku jen jedna povodeň (6/2013, 227 h). *Zdroj: docs/POROZUMENI.md,
+docs/POKUSY.md (pá 20:45).*
+
+**27. K čemu je fyzikální model, když je nejhorší?**
+Ukazuje, že učené modely nedělají nic magického. Samotné doby putování a měrná křivka dají 24,8 cm (o 44 % méně než
+„jako teď“), regrese je fyziku jen zpřesňuje na 17,1. *Zdroj: docs/PREHLED.md, docs/CESTA_MODELU.md §2.*
+
+**28. Jak víte hladinu, když neznáte šířku a tvar koryta?**
+Šířku potřebujeme jen tam, kde hladinu předpovídáme, a tam ji model zná z 20 let hodin (Děčín 76 až 1 072 cm). Proti
+proudu bereme průtok v m³/s a ten na šířce koryta nezávisí. Selže, když se koryto změní (led 2/2006) nebo když voda
+vystoupí výš než kdy v tréninku. *Zdroj: docs/POROZUMENI.md.*
+
+## Srážky
+
+**29. Proč nepoužíváte srážky?**
+Zkusili jsme je třikrát. Denní srážky, sníh a teplota z 25 stanic: 17,1 → 17,4. Dokonalá předpověď deště na 3 dny:
+jen −1,0 cm a varování nepřišlo dřív. Šestihodinové srážky ze SYNOP: beze změny u všech tří modelů. Na 12–36 h je voda
+z deště už v řekách a model ji vidí v průtocích proti proudu.
+*Zdroj: docs/PREHLED.md, docs/CESTA_MODELU.md §6, srazky_dan/ZPRAVA_SRAZKY.md.*
+
+**30. Povodně ale dělá déšť, ne?**
+Ano, ale předpovídáme jen 12–36 h a na to stačí změřit, co z deště už teče. U Borise přestalo pršet 17. 9. ráno a vrchol
+649 cm byl 18. 9. v 18:00 UTC: kdo předpovídal vrchol 24 h předem, žádný další déšť nečekal. Srážky by pomohly na 2–5 dní
+u dešťových povodní (9/2010 s dokonalou předpovědí o 23 % lépe na 36 h a o 40 % na 72 h), jenže archiv předpovědí na
+trénink nemáme. *Zdroj: docs/POROZUMENI.md, docs/CESTA_MODELU.md §6.*
+
+**31. Proč nepomohly ani šestihodinové srážky, které jsou známé hned?**
+Úplnou řadu má jen 9 stanic (2 u Děčína, 7 proti proudu), u 12 z 21 stanic v NOAA ISD po roce ~2013 chybí suché termíny.
+Na bouřky je to málo bodů a déšť, který spadl dřív, už ukážou vodoměry. LightGBM se srážkami přestřelil 9/2010 (575 místo
+526 cm) a dal 4 plané poplachy 3. stupně. *Zdroj: srazky_dan/ZPRAVA_SRAZKY.md.*
+
+## Nejistota
+
+**32. Jak moc se předpovědi dá věřit?**
+Rozmezí „nejspíš od–do“ je z 5. a 95. percentilu chyb na tréninku podle výšky hladiny. Na validaci se do něj vejde
+89–92 % hodnot celkem, na povodních 76–88 %. Šířka na povodních: Děčín 33 / 53 / 72 cm (12 / 24 / 36 h). Na povodních je
+užší, než by mělo být (8 z 10 místo 9 z 10), protože validační povodně jsou vyšší než trénovací. Tak to i říkáme.
+*Zdroj: docs/POKUSY.md (pá 20:40, Honza).*
+
+**33. Je chyba 16 cm hodně?**
+Za 24 h se voda při povodni změní v průměru o 35 cm a nejvíc o 1,7 m. Stupně v Děčíně jsou od sebe 90 a 70 cm
+(400 / 490 / 560), chyba 14 cm je menší. Do ±20 cm je 76 % předpovědí na 24 h. *Zdroj: docs/POROZUMENI.md (Jak číst výsledky).*
+
+## Slabiny
+
+**34. Kde model selhává?**
+Na 36 h (validace 26,0 cm, jen 51 % do ±20 cm). Vrcholy vyšší, než viděl, podhodnocuje (test 9/2024: 649 cm předpovězeno
+na 611, na testu D24 v průměru o 10,5 cm níž). Povodně z deště v kraji (8/2010) nevidí. Na testu propásl 2. stupeň v únoru
+2024 (vrchol 496 cm, práh 490). *Zdroj: docs/PREHLED.md, docs/POROZUMENI.md (Co model umí a co ne).*
+
+**35. Proč je na testu chyba větší než na validaci (22,4 proti 17,1)?**
+Testové povodně stoupaly rychleji, i „jako teď“ je na testu horší (50,2 proti 44,3). Zlepšení proti laťce je podobné
+(55 % proti 61 %). *Zdroj: docs/CESTA_MODELU.md §5.*
+
+**36. Co byste dělali dál?**
+Předpověď srážek ČHMÚ pro 2–3 dny u dešťových povodní. Víc stanic proti proudu: Danova regrese s 30 stanicemi dala na
+jednorázovém testu D24 16,1 proti 17,5 cm a nejvíc pomáhá na začátku vzestupu (27,0 proti 32,0). Dvoustupňové varování:
+předběžné podle horní meze nejistoty, ostré podle předpovědi. *Zdroj: docs/CESTA_MODELU.md §8, ridge_dan/ZPRAVA.md.*
+
+## Aplikace a provoz
+
+**37. Funguje to i dnes na živých datech?**
+Ano. Přepínač „Dnešek“ stáhne operativní data ČHMÚ (10–30 min stará, vydání je 1–2 h za skutečným časem) a vedle naší
+předpovědi ukáže oficiální předpověď ČHMÚ. Mělník a Nymburk operativně nejsou celé, dopočítáme je z bilance vody. Na
+validaci to D24 zhorší z 15,5 na 16,9 cm. *Zdroj: docs/DENIK.md (pá 21:30, Honza).*
+
+**38. Ta modrá plocha na mapě je váš hydraulický model?**
+Ne. Model předpoví hladinu, převedeme ji na průtok (naše měrná křivka, do 3 % od oficiální) a ukážeme oficiální záplavové
+území DIBAVOD pro nejbližší N-letou vodu. Plynulý rozliv po 10 cm je z výškového modelu ČÚZK DMR 5G, s DIBAVOD se shoduje
+na IoU 0,82–0,90. Vlastní hydrauliku jsme záměrně nedělali. *Zdroj: docs/DENIK.md (pá 21:40), docs/DATA.md, CLAUDE.md (Stav).*
+
+**39. Jak rychlé je to a jak to udržujete aktuální?**
+Regrese se natrénuje za 1 s (všech 6 kombinací), předpověď je okamžitá. Pro dnešek je model přetrénovaný na všech datech
+do 2025 (`src/uloz_model.py --vse`), pro přehrávání povodní na datech do 2018. *Zdroj: docs/POKUSY.md (pá 20:15), CLAUDE.md (Stav).*
+
+## Odpovědnost za varování a licence
+
+**40. Kdo odpovídá za to, když model nevaruje? A smíte data ČHMÚ použít?**
+Náš model není oficiální předpověď a za oficiální ho nevydáváme, proto aplikace vedle něj ukazuje předpověď ČHMÚ. Je to
+doplňková informace na přípravu den předem. Oficiální hydrologické předpovědi vydává ČHMÚ a stupně povodňové aktivity
+vyhlašují povodňové orgány obcí a krajů podle vodního zákona (č. 254/2001 Sb.). Tohle v repu podložené nemáme, je to
+obecná znalost a je dobré ji ověřit u mentora. Data: otevřená data ČHMÚ jsou pod licencí CC BY 4.0, stačí uvést zdroj
+(v aplikaci „Měření a N-leté průtoky © ČHMÚ“). Open-Meteo je pod CC BY 4.0, záplavová území DIBAVOD (VÚV TGM) uvádíme,
+DMR 5G jsou otevřená data ČÚZK, srážky NOAA ISD jsou volné (dílo vlády USA, výměna dat WMO).
+*Zdroj: docs/DENIK.md (pá 21:30), ridge_dan/ZPRAVA.md (Data), app/mapbox_mapa.py (atribuce), docs/DATA.md,
+srazky_dan/ZPRAVA_SRAZKY.md.*
