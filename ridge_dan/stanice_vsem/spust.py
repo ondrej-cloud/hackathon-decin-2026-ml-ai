@@ -16,7 +16,9 @@ import pandas as pd
 import spolecne as S
 import data_ridge
 
-SEEDY = (42, 43, 44)
+# LightGBM v týmovém nastavení nemá náhodný výběr řádků ani vstupů: seedy 42/43/44 dávaly přesně stejné výsledky
+# (vysledky.jsonl, běh 22:43–22:52), proto už jen seed 42
+SEEDY = (42,)
 LOG = S.ZDE / "vysledky.jsonl"
 
 
@@ -80,8 +82,12 @@ if __name__ == "__main__":
     p = argparse.ArgumentParser()
     p.add_argument("model")
     p.add_argument("--bez-cv", action="store_true")
+    p.add_argument("--jen-cv", action="store_true")
+    p.add_argument("--varianta", help="jen tuto variantu")
     a = p.parse_args()
     for varianta, seed, fit, nove in varianty(a.model):
+        if a.varianta and varianta != a.varianta:
+            continue
         zakl = dict(cas=datetime.now().isoformat(timespec="seconds"), model=a.model, varianta=varianta, seed=seed,
                     nove_stanice=nove)
         if not a.bez_cv:
@@ -89,6 +95,8 @@ if __name__ == "__main__":
             zapis(z)
             print(f"{varianta} seed {seed}: CV povodně {z['cv_povodne']:.2f}, velké {z['cv_velke']:.2f}, "
                   f"vzestup {z['cv_vzestup']:.2f} ({z['sekund']} s)", flush=True)
+        if a.jen_cv:
+            continue
         z = zakl | val(varianta, seed, fit, nove)
         zapis(z)
         d = z["decin24"]

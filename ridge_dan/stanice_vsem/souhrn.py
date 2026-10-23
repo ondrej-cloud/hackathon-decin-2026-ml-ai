@@ -19,7 +19,8 @@ def nacti():
     posl = {}
     for r in (S.ZDE / "vysledky.jsonl").read_text(encoding="utf-8").splitlines():
         z = json.loads(r)
-        posl[(z["varianta"], z["seed"], z["cast"])] = z
+        if z["seed"] in (None, 42):  # LightGBM po opravě jen seed 42 (43 a 44 dávaly totéž)
+            posl[(z["varianta"], z["seed"], z["cast"])] = z
     return posl
 
 
@@ -29,7 +30,9 @@ def radek(zz):
     va = [z for z in zz if z["cast"] == "val"]
     hodnoty = {
         "CV povodně": [z["cv_povodne"] for z in cv], "CV velké": [z["cv_velke"] for z in cv],
-        "CV vzestup": [z["cv_vzestup"] for z in cv], "CV přestřelení": [z["cv_max_prestreleni"] for z in cv],
+        "CV vzestup": [z["cv_vzestup"] for z in cv],
+        "CV přestřelení p95/max": [f"{z['cv_p95_prestreleni']:.0f}/{z['cv_max_prestreleni']:.0f}" for z in cv
+                                   if "cv_p95_prestreleni" in z],
         "VAL prumer_povodne": [z["prumer_povodne"] for z in va],
         "VAL Děčín +24": [z["decin24"]["mae_povodne"] for z in va],
         "VAL začátek vzestupu": [z["decin24"]["mae_zacatek"] for z in va],

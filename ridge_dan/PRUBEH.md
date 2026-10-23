@@ -34,3 +34,13 @@
 - pá 21:49 · JEDNORÁZOVÝ TEST 2021–2025 (commit 97c2f6e): můj Ridge 16,1 cm na povodních, týmový Ridge 17,5, „jako teď“ 44,8; začátek vzestupu 27,0 vs 32,0; předstih 2. SPA 14,5 vs 12,5 h; propásnuto i plané stejně (1 a 1). Po testu se model už neměnil.
 - pá 21:53 · ZPRAVA.md hotová (srovnání val + test, co pomohlo a co ne, začátek vzestupu, poplachy, nálezy Codexu, adaptér pro aplikaci ověřený na datech 2020).
 - pá 21:53 · konec dřív než po 5 h: v CV už nic nepřekročilo hranici a test proběhl, po něm se model měnit nesmí. Větev mění jen `ridge_dan/` (ověřeno proti bodu větvení b9d263c), data, cache ani joblib nejsou v Gitu, hlavní složka zůstala na větvi `dan` beze změn.
+- pá 22:25 · nový úkol: 18 nových stanic ve všech týmových modelech; do `dan-ridge` sloučen `origin/main` (ca44f54, merge), týmový kód beze změny.
+- pá 22:31 · společný základ `stanice_vsem/spolecne.py`: týmové vstupy + 126 sloupců nových stanic podle času UTC, u všech 6 kombinací identické řádky, nové stanice bez děr.
+- pá 22:36 · síť: jeden trénink 102 s (tým) a 310 s (+18) → celé srovnání ~4 h, nepouštím; později pokyn síť vynechat úplně (počítá se na Kaggle, větev `dan-sit`).
+- pá 22:41 · Ridge 2 × 2 hotový, týmový Ridge přesně reprodukovaný (17,08, Děčín +24 15,5).
+- pá 22:52 · LightGBM hotový (reprodukce 23,07), seedy 42/43/44 totožné.
+- pá 22:53 · společný modul pushnutý (c8ddf17) pro další session; Codex (d) a fyzika souběžně na pozadí.
+- pá 22:55 · fyzika hotová (reprodukce 24,75), zapojitelných 8 z 18 stanic; pushnuto (0994aba).
+- pá 22:56 · Codex (d): 1 vysoký nález (únik doby doběhu do CV u LightGBM), opravuji a přepočítávám CV všech variant s opravenou metrikou přestřelení.
+- pá 23:04 · přepočet po opravě: LightGBM s dobou doběhu jen z trénovací části foldu CV 16,01 (bylo 16,20), val 22,08; CV všech variant s opravenou metrikou přestřelení.
+- pá 23:08 · STANICE_VSEM.md hotová: nové stanice pomáhají podle CV Ridge a LightGBM, fyzice pod hranicí 1 cm, všem na začátku vzestupu; síť zvlášť na Kaggle.

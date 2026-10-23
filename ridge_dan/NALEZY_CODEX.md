@@ -36,3 +36,13 @@ Přímý únik nenašel, StandardScaler se učí jen na tréninku.
 | 2. Aplikace (`app/predikce.py`) nový model sama nenačte: nepřidá `ridge_dan/` do `sys.path`, hledá jinde a dává 98 týmových vstupů | střední | Aplikaci podle zadání neměním; v ZPRAVA.md je popsaný adaptér (přidat `ridge_dan` do `sys.path`, `joblib.load`, `predikuj(T)` z tabulky `data_ridge`). |
 | 3. Otisk běhu má jen commit a příznak změn, ne obsahové hashe | střední | Opraveno pro test: značka i výsledek testu obsahují sha1 všech použitých souborů (konce řádků sjednocené na LF) a tabulky; před testem je vše commitnuté. |
 | 4. Alpha 100 v textu 14,46, v záznamech 14,45 | nízká | Opraveno. |
+
+## (d) 18 nových stanic ve všech týmových modelech, pá 22:53–22:56 (`codex/kontrola_d_stanice_vsem.md`)
+Celkově: na letech 2006–2020 potvrdil shodné řádky obou variant, shodu základních variant s původními modely,
+spojení podle času bez budoucích vstupů a strom fyzikálního modelu bez zjevného dvojího počítání vody.
+
+| Nález | Závažnost | Co jsem udělal |
+|---|---|---|
+| 1. LightGBM: doby doběhu nových stanic odhadnuté z celého tréninku včetně drženého bloku CV, cache sdílená mezi foldy | vysoká | Opraveno: doby se odhadují uvnitř `fit()` jen z hodin, na kterých se model učí (v CV z trénovací části foldu). CV i validace `lgbm_30` přepočítané. Týmové pevné doby `lgbm_a.DOBA` jsou z celého tréninku taky, to je vlastnost týmového modelu a nechávám ji (v CV tedy obě varianty mají u týmových stanic stejnou drobnou výhodu). |
+| 2. `cv_max_prestreleni` byl průměr maxim po povodních, slibovaný 95. percentil chyběl | střední | Opraveno: `cv_prumer_max_prestreleni`, `cv_p95_prestreleni` (přes všechny hodiny oken) a `cv_max_prestreleni` (největší vůbec); CV všech variant přepočítaná. |
+| 3. Seedy 42/43/44 u LightGBM dávají totožné výsledky, nejsou to tři nezávislá ověření | nízká | Souhlasím: týmový LightGBM nemá náhodný výběr řádků ani vstupů, takže seed nic nemění. Dál jen seed 42, ve zprávě uvedeno „rozptyl 0, model je deterministický“. |

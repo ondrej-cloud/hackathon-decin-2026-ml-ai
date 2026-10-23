@@ -1,0 +1,7 @@
+- **Vysoká — `ridge_dan/stanice_vsem/lgbm_stanice.py:25–28`: únik do CV.** Doby doběhu se odhadují z celého tréninku, tedy i z právě hodnoceného bloku, a cache je sdílí mezi foldy. CV proto neověřuje celý postup na neviděných datech. **Oprava:** odhadovat nové doby uvnitř `fit` pouze z trénovací části foldu; obdobné omezení uvést u původních pevných `lgbm_a.DOBA`.
+
+- **Střední — `ridge_dan/stanice_vsem/spolecne.py:86`: zavádějící maximum přestřelení.** `cv_max_prestreleni` vrací průměr maxim jednotlivých povodní, takže může zakrýt nejhorší přestřelení; dokumentovaný 95. percentil chybí. **Oprava:** současnou metriku přejmenovat a skutečné maximum i percentil počítat samostatně.
+
+- **Nízká — `ridge_dan/stanice_vsem/spust.py:19,35`: tři seedy neposkytují tři odlišné výsledky.** Záznamy pro 42/43/44 mají totožné CV skóre i validační metriky; nelze je vydávat za nezávislé ověření stability. Při současném nastavení se neuplatňuje náhodné vzorkování řádků ani příznaků ([dokumentace LightGBM](https://github.com/lightgbm-org/LightGBM/blob/main/docs/Parameters.rst)). **Oprava:** ponechat jeden seed a výsledky neinterpretovat jako tři nezávislé pokusy.
+
+Celkově kontrola let 2006–2020 potvrdila shodné řádky, soulad základních variant s originály, časové spojení bez budoucích vstupů a strom bez zjevného dvojího započtení vody; souhrny JSONL sedí, `STANICE_VSEM.md` zatím neexistuje a závěry z CV LightGBM vyžadují opravu.

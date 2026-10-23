@@ -2,10 +2,10 @@
 
 Nové stanice dostanou totéž co týmové v lgbm_a.vstupy: průtok, který do cíle doteče za horizont, a jeho rozdíl proti
 průtoku, který do cíle dotéká teď. Doba doběhu stejnou metodou jako src/doba_dobehu.py (posun 0–48 h s největší
-korelací změn průtoku za 6 h na trénovací části), jen nad vlastní tabulkou; jen stanice nad cílem.
+korelací změn průtoku za 6 h), jen nad vlastní tabulkou a jen stanice nad cílem. Odhaduje se uvnitř fit() z hodin,
+na kterých se model učí (v CV jen z trénovací části foldu, ne z drženého bloku). Týmové doby (lgbm_a.DOBA) zůstávají
+pevné jako v týmovém modelu.
 """
-from functools import cache
-
 import pandas as pd
 from lightgbm import LGBMRegressor
 
@@ -17,12 +17,12 @@ from spolecne import NOVE, POD_USTIM
 ZMENA_H, MAX_POSUN = 6, 48
 
 
-@cache
-def doby(cil):
-    """Doba doběhu do cíle (h) pro všechny stanice z vlastní tabulky, na trénovací části (casti(cil, 0))."""
+def doby(cil, hodiny=None):
+    """Doba doběhu do cíle (h) pro stanice z vlastní tabulky. hodiny: na kterých hodinách (index), jinak celá
+    trénovací část (casti(cil, 0)), to jen pro kontrolu proti týmovým lgbm_a.DOBA."""
     T = data_ridge.nacti()
     dQ = T.filter(like="_Q").diff(ZMENA_H)
-    ok = (casti(cil, 0) == "train").reindex(T.index, fill_value=False)
+    ok = (casti(cil, 0) == "train").reindex(T.index, fill_value=False) if hodiny is None else T.index.isin(hodiny)
     c = dQ[f"{cil}_Q"].where(ok)
     stanice = ([] if cil == "usti" else ["usti"]) + list(lgbm_a.DOBA[cil]) + NOVE
     return {s: int(pd.Series({k: c.corr(dQ[f"{s}_Q"].shift(k)) for k in range(MAX_POSUN + 1)}).idxmax())
@@ -33,9 +33,8 @@ def nove_nad(cil):
     return [s for s in NOVE if not (cil == "usti" and s in POD_USTIM)]
 
 
-def vstupy(X, cil, horizont):
+def vstupy(X, cil, horizont, d):
     V = lgbm_c.vstupy(X, cil, horizont)
-    d = doby(cil)
     for s in nove_nad(cil):
         za_h = X[f"{s}_Q_{lgbm_a.nejblizsi(max(d[s] - horizont, 0))}"]
         V[f"{s}_Q"] = za_h
@@ -49,6 +48,8 @@ def fit_tym(seed):
 
 def fit_stanice(seed):
     def fit(X, y, cil, horizont):
-        m = LGBMRegressor(**lgbm_c.PARAMETRY | dict(random_state=seed)).fit(vstupy(X, cil, horizont), y - X[f"{cil}_H_0"])
-        return lambda X: X[f"{cil}_H_0"] + m.predict(vstupy(X, cil, horizont))
+        d = doby(cil, X.index)
+        fit.doby = d
+        m = LGBMRegressor(**lgbm_c.PARAMETRY | dict(random_state=seed)).fit(vstupy(X, cil, horizont, d), y - X[f"{cil}_H_0"])
+        return lambda X: X[f"{cil}_H_0"] + m.predict(vstupy(X, cil, horizont, d))
     return fit

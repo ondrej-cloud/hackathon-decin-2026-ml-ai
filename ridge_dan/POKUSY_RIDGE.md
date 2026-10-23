@@ -205,3 +205,20 @@ Váhy na vzestup zmenšují podhodnocení na stoupání (−21 → −16 cm), al
 - Po povodních: 12/2023 11,9 (15,0), 2/2024 9,7 (12,6), 9/2024 26,8 (25,0, horší kolem vrcholu 45,8 vs 32,2).
 - Co z toho plyne: test potvrdil směr CV, ne validace. Stejný vzor jako na validaci: lepší stoupání a varování,
   horší samotné vrcholy velkých povodní. Po testu se model už neměnil.
+
+## pá 22:25–23:08 · 18 nových stanic ve všech týmových modelech (`stanice_vsem/`, souhrn `STANICE_VSEM.md`)
+- Otázka: pomůžou nové stanice i síti, LightGBM a fyzikálnímu modelu, nebo jen mému Ridge?
+- Co: každý týmový model ve dvou variantách na identických řádcích, „beze změny“ = původní kód (reprodukuje uložené
+  výsledky přesně: Ridge 17,08, LightGBM 23,07, fyzika 24,75), „+ stanice“ = jen nové stanice zpracované jako ostatní
+  v daném modelu. Rozhoduje CV Děčín +24 h, validace jako `porovnej.py`, hranice 1 cm. Síť vynechaná (jeden trénink
+  2–5 min, celé srovnání ~4 h), počítá se zvlášť na Kaggle (větev dan-sit).
+- Výsledek (CV povodně / VAL prumer_povodne / VAL začátek vzestupu Děčín +24):
+  Ridge 15,64 → 14,17 / 17,08 → 18,48 / 35,4 → 28,1; LightGBM 18,05 → 16,01 / 23,07 → 22,08 / 36,3 → 28,1;
+  fyzika (8 z 18 stanic jde zapojit do stromu) 18,53 → 17,88 / 24,75 → 23,40 / 37,1 → 32,3.
+  Ridge 2 × 2: odmocnina je zásadní (CV −7,5), nové stanice pomáhají jen s ní (bez ní +1,5).
+- Závěr: podle CV pomáhají Ridge a LightGBM (−1,5 a −2,0 cm, stabilně po blocích), fyzice pod hranicí (−0,7).
+  Začátek vzestupu se zlepší všem (−5 až −8 cm na validaci). Přestřelení 2006 není obecný problém nových stanic
+  (u LightGBM se zmenší, v CV 95. percentil přestřelení klesne u všech). LightGBM má na validaci 3 plané poplachy
+  2. stupně navíc (36 h).
+- Codex (d): vysoký nález, únik doby doběhu z drženého bloku do CV u LightGBM; opraveno (CV 16,20 → 16,01).
+- Soubory: `stanice_vsem/*.py`, `stanice_vsem/vysledky.jsonl`, `STANICE_VSEM.md`, `codex/kontrola_d_stanice_vsem.md`.
