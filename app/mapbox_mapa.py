@@ -11,6 +11,7 @@ V aplikaci (stejné argumenty jako mapa.deck):
 import json
 import re
 from datetime import date, datetime, time
+from functools import cache
 from html import escape
 
 import pandas as pd
@@ -35,8 +36,9 @@ KAMERY = {
 TLACITKA = [("celé povodí", "Celé povodí"), ("Ústí nad Labem", "Ústí nad Labem"), ("Děčín", "Děčín")]
 
 
+@cache
 def _uzemi():
-    """Záplavová území Q5, Q20, Q100 ve 2D (Mapbox je sám položí na terén); aktivní zóny vynecháváme jako rozliv.vrstvy."""
+    """Záplavová území Q5, Q20, Q100 ve 2D, na terén je položí Mapbox sám. Aktivní zóny vynecháváme jako rozliv.vrstvy."""
     uzemi = []
     for f in json.loads(SOUBOR_UZEMI.read_text(encoding="utf-8"))["features"]:
         p = f["properties"]
@@ -177,7 +179,7 @@ html, body { margin: 0; height: 100%; background: var(--pozadi); color: var(--te
 .mapboxgl-popup-anchor-right .mapboxgl-popup-tip { border-left-color: #172b3a; }
 @media (max-width: 720px) {
   .panel { top: auto; bottom: 12px; left: 12px; right: 12px; width: auto; }
-  .legenda, .veta { display: none; }
+  .legenda, .veta, .mapboxgl-ctrl-group { display: none; }
 }
 </style>
 </head>
@@ -193,8 +195,9 @@ const css = c => `rgb(${c[0]},${c[1]},${c[2]})`;
 const cislo = v => v == null ? '–' : Math.round(v).toLocaleString('cs-CZ');
 
 function kamera(pohled) {
-  // střed záběru vlevo od panelu; celé povodí se musí vejít i do užšího okna
-  const k = {...D.kamery[pohled], padding: {top: 0, bottom: 0, left: 0, right: innerWidth > 720 ? 340 : 0}};
+  // střed záběru mimo panel (vpravo, na úzké obrazovce dole); celé povodí se musí vejít i do užšího okna
+  const siroko = innerWidth > 720;
+  const k = {...D.kamery[pohled], padding: {top: 0, left: 0, right: siroko ? 340 : 0, bottom: siroko ? 0 : 200}};
   if (pohled === 'celé povodí') k.zoom += Math.max(-1.3, Math.log2(Math.min(1, innerWidth / 1270)));
   return k;
 }
@@ -204,6 +207,7 @@ const map = new mapboxgl.Map({
   container: 'mapa', style: D.styl, ...kamera(D.pohled), minZoom: 6, maxPitch: 75,
   customAttribution: 'Měření a N-leté průtoky © ČHMÚ · Záplavová území DIBAVOD (VÚV TGM)'
 });
+map.setPadding(kamera(D.pohled).padding);  // konstruktor odsazení nebere
 map.addControl(new mapboxgl.NavigationControl({visualizePitch: true}), 'bottom-right');
 
 map.on('style.load', () => {
@@ -230,7 +234,7 @@ map.on('style.load', () => {
     // řeky jsou zjednodušené, ve městě je přesnější satelit
     'line-opacity': ['interpolate', ['linear'], ['zoom'], 10, 0.9, 13, 0.3]
   }}, popisky);
-  if (!map.getSource('composite')) map.addSource('composite', {type: 'vector', url: 'mapbox://mapbox.mapbox-streets-v8'});
+  // zdroj composite (Mapbox Streets) je součástí stylu satellite-streets
   map.addLayer({id: 'budovy', type: 'fill-extrusion', source: 'composite', 'source-layer': 'building', minzoom: 14,
     filter: ['==', ['get', 'extrude'], 'true'], paint: {
       'fill-extrusion-color': '#d9dcdf',
@@ -264,8 +268,10 @@ map.on('style.load', () => {
 });
 
 const KLIKACI = ['stanice', 'uzemi'];
+// území se překrývají: přednost má stanice, pak vyplněné území, pak menší N
+const poradi = f => f.layer.id === 'stanice' ? 0 : f.properties.plne ? 1 : 1 + f.properties.N;
 map.on('click', e => {
-  const f = map.queryRenderedFeatures(e.point, {layers: KLIKACI})[0];
+  const f = map.queryRenderedFeatures(e.point, {layers: KLIKACI}).sort((a, b) => poradi(a) - poradi(b))[0];
   if (!f) return;
   new mapboxgl.Popup({maxWidth: '330px'})
     .setLngLat(f.layer.id === 'stanice' ? f.geometry.coordinates : e.lngLat)
