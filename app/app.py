@@ -11,7 +11,9 @@ from datetime import date, datetime, time
 import pandas as pd
 import plotly.graph_objects as go
 import streamlit as st
+import streamlit.components.v1 as components
 
+import animace
 from mapa import deck as mapa_deck, mapbox_token
 from predikce import (BARVY, HORIZONTY, KDE, NAZEV, ROOT, SPA, STUPNE, interval, modely, nacti, nacti_model, stupen,
                       vstupy, vysvetleni)
@@ -42,6 +44,12 @@ def model_c(nazev, cil, h):
 @st.cache_data
 def predpovedi_val(nazev):
     return pd.read_parquet(ROOT / "results/predpovedi" / f"{nazev}.parquet")
+
+
+@st.cache_data
+def animace_html(povoden, nazev):
+    od, do = animace.okno(povoden)
+    return animace.html(od, do, nazev)
 
 
 @st.cache_data
@@ -99,7 +107,8 @@ radek = X.loc[[cas]]
 ted = float(radek[f"{cil}_H_0"].iloc[0])
 pred = {h: float(model_c(nazev, cil, h).predict(radek)[0]) for h in HORIZONTY}
 
-tab_ted, tab_kvalita, tab_mapa = st.tabs(["Teď", "Jak dobře to funguje", "Mapa povodí"])
+tab_ted, tab_kvalita, tab_mapa, tab_animace = st.tabs(["Teď", "Jak dobře to funguje", "Mapa povodí",
+                                                        "Animace povodně"])
 
 with tab_ted:
     st.subheader(f"{jmeno(cil)}, {cesky(cas):%d. %m. %Y %H:%M} českého času")
@@ -211,3 +220,13 @@ with tab_mapa:
                + ("Snímky a výšky © Mapbox, © Maxar. " if mapbox_token() else
                   "Podklad © OpenStreetMap, výšky Mapzen / AWS Terrain Tiles. ")
                + "Měření ČHMÚ. Dlaždice se stahují z internetu.")
+
+with tab_animace:
+    povoden_a = st.selectbox("Povodeň", list(POVODNE), index=3, key="animace_povoden")
+    st.markdown("**Co teče proti proudu, dorazí k nám.** Kapky tečou po skutečných řekách rychlostí podle změřené "
+                "doby putování a nesou průtok ze stanice proti proudu: víc vody, víc a jasnějších kapek. Tlačítko "
+                "spustí čas, posuvník ho posune. V panelu vpravo je předpověď modelu za 24 h a stupeň; skutečnou "
+                "hladinu o 24 h později známe jen zpětně, v provozu by tam nebyla.")
+    getattr(st, "iframe", components.html)(animace_html(povoden_a, nazev), height=720)
+    st.caption("Řeky © OpenStreetMap (ODbL), snímky a výšky © Mapbox, © Maxar, měření ČHMÚ. Doby putování mezi "
+               "stanicemi jsou odhad z našich dat (např. Praha → Vraňany 4,5 h, Mělník → Ústí 12 h, Ústí → Děčín 4 h).")
