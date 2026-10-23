@@ -256,10 +256,10 @@ def predpovedi_pro_mapu(t):
 
 
 with tab_mapa:
-    st.markdown(f"**Co teče proti proudu, dorazí k nám.** Sloupce jsou průtoky 12 stanic "
-                f"{cesky(cas):%d. %m. %Y %H:%M} (výška sloupce = průtok), barva je stupeň povodňové aktivity. "
-                "U Děčína a Ústí je v popisku předpověď modelu za 24 h. Okamžik se mění v levém menu, terén je "
-                "2,5× zvýšený.")
+    st.markdown(f"**Co teče proti proudu, dorazí k nám.** Stanice {cesky(cas):%d. %m. %Y %H:%M}: velikost podle "
+                "průtoku, barva podle stupně povodňové aktivity, u Děčína a Ústí předpověď modelu za 24 h. Pohled "
+                "Děčín nebo Ústí přiblíží město s 3D budovami a oficiálním záplavovým územím, které předpovědi "
+                "odpovídá. Okamžik se mění v levém menu.")
     pohled = st.radio("Pohled", list(POHLEDY), horizontal=True, key="mapa_pohled",
                       help="Přiblížení na město ukáže oficiální záplavové území podle předpovědi.")
     misto = st.empty()
