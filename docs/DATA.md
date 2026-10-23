@@ -13,6 +13,8 @@ Co víme o datech. Kdo něco zjistí, doplní nebo opraví příslušnou sekci. 
 
 **Souřadnice stanic:** `data/external/stanice_hydro.csv` (v Gitu, 12 řádků): klíč jako v `data.py`, číslo ČHMÚ, název, tok, zeměpisná šířka a délka (`lat`, `lon`) a stupně povodňové aktivity v cm. Vytaženo z metadat ČHMÚ v balíčku pořadatelů (`meta1-20260930.json`, 545 profilů) skriptem `src/stanice_hydro.py`. Ověřeno: stupně pro Děčín a Ústí souhlasí s `data.SPA`. Předměřice (Jizera) stupně v metadatech nemají. Pro mapu v aplikaci.
 
+**Hladina je měřená, průtok dopočtený** (ověřeno pá 22:48). Hladinu ČHMÚ měří čidlem na vodočtu, průtok z ní počítá měrnou křivkou, kterou sestaví z občasných měření rychlosti vody a průřezu koryta. Šířku ani tvar koryta v datech nemáme, v metadatech stanic (`meta1-20260930.json`) jsou jen poloha a stupně povodňové aktivity. Že je průtok dopočtený, je vidět na datech: v jednom roce se hladina v Děčíně i Ústí při stejném průtoku liší o 1 cm (medián), u 99 % hodin nejvýš o 5–10 cm. Mezi roky se křivka trochu posouvá, jak se mění koryto a jak ČHMÚ křivku upravuje: při 300 m³/s je Děčín 218–227 cm a Ústí 248–257 cm, při 1 000 m³/s Děčín 453–478 cm a Ústí 486–513 cm. Graf křivky Děčína je `docs/grafy/fyzika_merna_krivka.png`.
+
 ### Přidaná data ČHMÚ: co, odkud a proč
 
 **Odkud:** otevřená data ČHMÚ, https://opendata.chmi.cz/hydrology/historical/data/hourly/. Soubory jsou `H_0-203-1-<číslo stanice>_HQ_<rok>.json` s hodinovou hladinou (H) a průtokem (Q). Zdarma a bez registrace, v prezentaci uvést zdroj ČHMÚ. Stáhli jsme 26 stanic (`src/stahni_chmu_hydro.py`), do společné tabulky bereme 12.
