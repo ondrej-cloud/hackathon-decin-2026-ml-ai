@@ -164,6 +164,13 @@ Následující záznamy jsou doplněné zpětně (pá 19:35) podle commitů, ať
 - Zjištění: denní úhrn srážek ČHMÚ s časem „den D 06:00“ je déšť za následujících 24 h, ne za předchozích (ověřeno na hodinových srážkách v Praze 5–7/2020). Kdybychom ho brali od jeho časové značky, model by viděl den deště z budoucnosti. Bereme ho až od D+1 07:00.
 - Proč: graf o množství dat odpovídá na otázku poroty, proč nestačil balíček. Inventura dat je podklad pro slajd „Jaká data jsme použili“, který zadání výslovně chce.
 
+## pá 20:44 · Honza · Rozbor: kolik let dat model potřebuje
+- Co jsme udělali: nezměněnou lineární regresi jsme naučili na 1, 2, 3, 5, 8 a 13 letech do konce 2018, vždy jen na třech stanicích z kraje a pak na všech 12. Celkem 72 tréninků, stejná validace a společné vyhodnocení.
+- Jak to funguje, jednoduše: měníme jen to, kolik minulých let a odkud model dostane měření. Stejné čtyři povodně mu při učení pokaždé schováme. Graf `docs/grafy/kolik_dat.png` ukazuje, jak klesá chyba.
+- Proč tak a ne jinak: oddělíme přínos delší historie od přínosu stanic proti proudu, aniž bychom ladili model nebo nahlíželi do finálního testu. Pokus běžel v oddělené pracovní kopii kvůli souběžným úpravám aplikace.
+- Výsledek a co znamená: všechny stanice a 8 / 13 let mají chybu 16,6 / 17,1 cm proti 44,3 cm u „bude jako teď“, bez propásnutí i planých poplachů. Dva roky všech stanic mají podobnou chybu jako 13 let jen z kraje (26,9 / 27,8 cm), ale propásnou 4 z 24 hodnocených nástupů; dlouhý kraj nepropásne žádný, má však dva plané poplachy. Osm a třináct let se liší méně než o 1 cm, finální model necháváme beze změny.
+- Slabiny a co může být špatně: krátká okna do pěti let nemají ani jednu hodinu na 2. stupni; delší zahrnují povodeň 2013. Nerozhoduje tedy jen počet let, ale i zastoupení povodní. Validace je retrospektivní, některé povodně jsou starší než trénink. Čtyři povodně nedokazují, že osm let stačí všude; test 2021–2025 jsme nepoužili. Nezávislá kontrola potvrdila stejné validační řádky, správné hranice oken i shodu plného tréninku s Ridge 17,1 cm.
+- Otázka poroty a odpověď: „Takže model potřebuje přesně osm let?“ Ne. Na této validaci osm let funguje podobně jako třináct, ale tato okna už obsahují velkou povodeň 2013. Dva suché roky mohou stačit k menší průměrné chybě, přesto některá povodňová varování propásnou. Historii potřebujeme i k nezávislému ověření na několika povodních.
 ## pá 20:55 · Honza · Rozbor: kolik let dat model potřebuje
 - Co jsme udělali: učicí křivku lineární regrese: trénink na 1 až 13 letech před validací, jednou jen se stanicemi z balíčku (Děčín, Ústí, Louny), jednou se všemi 12. Graf `docs/grafy/kolik_dat.png`.
 - Jak to funguje, jednoduše: stejný model, jen mu dáváme méně historie nebo méně stanic, a měříme chybu na stejných 4 povodních.
@@ -176,6 +183,10 @@ Následující záznamy jsou doplněné zpětně (pá 19:35) podle commitů, ať
 - Proč: otestovali jsme názor, že přesnější model potřebuje všechny faktory povodní. Na horizontu 12–36 h je ale voda z deště a tání už v řekách a model ji vidí v průtocích proti proudu. Faktory, které se nemění (sklon, půda, tvar povodí), jsou už ve změřené době putování a měrné křivce. Víc vstupů při stejném počtu povodní znamená hlavně riziko přeučení (síť se zhoršila o 3,4 cm).
 - Pro porotu: „Zkoušeli jste srážky?“ Ano, z 25 stanic za 20 let, a nepomohly, ani kdybychom znali déšť den dopředu. Proto zůstáváme u jednoduššího modelu.
 
+## pá 20:46 · Honza · sjednocení učicí křivky při synchronizaci
+- Co: zachovali jsme oba záznamy souběžných pokusů; výsledný `src/kolik_dat.py` ukládá metriky a hlídá, aby z vybraného období pocházelo i všech 36 hodin historie. Graf obsahuje chybu i počty propásnutí.
+- Proč se čísla trochu lišila: starší maska připouštěla u krátkých oken prvních 36 řádků se vstupy z předchozího roku. Oprava mění jen krátká okna (kraj a dva roky 45,1 → 44,6 cm), ne 8 a 13 let ani počty propásnutí.
+- Pro porotu: dva roky všech stanic dávají podobnou chybu jako 13 let jen kraje, nikoli průkazně lepší. „Dva roky“ jsou zde 2017–2018; výsledek není měřením skutečného balíčku 2024–2026. Nevyvozujeme obecné minimum osmi let.
 ## pá 21:20 · Ondra
 - Co: vlastní model na předpověď deště dělat nebudeme.
 - Proč: myšlenkový pokus ukázal, že ani dokonalá předpověď srážek na den dopředu by nezlepšila chybu o víc než 0,8 cm (`docs/POKUSY.md`, pá 21:15). Náš vlastní model deště by byl horší než dokonalý, takže by přinesl ještě méně. Předpověď počasí navíc potřebuje modely atmosféry (tlakové pole, družice), které z dat ze stanic za večer neuděláme.
