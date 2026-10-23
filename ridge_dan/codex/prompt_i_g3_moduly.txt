@@ -1,0 +1,28 @@
+Jsi nezávislý kontrolor. Pracuješ JEN PRO ČTENÍ.
+
+Pravidla (závazná): nic neměň, nevytvářej ani nemaž soubory, žádné git příkazy, které něco mění, nic neinstaluj,
+žádný internet. Nečti .env, nic ve %USERPROFILE%\.kaggle ani jiné přihlašovací údaje. Nepočítej nic na letech
+2021–2025. Smíš spustit krátký Python skript jen pro čtení (C:\Users\danie\.venvs\hackathon\Scripts\python.exe -B,
+z adresáře src), nic nezapisuj, žádné dlouhé trénování (nanejvýš jeden fit). Časový limit 10 minut.
+Výstup: seznam nálezů (soubor, řádek, závažnost kritická/vysoká/střední/nízká, co je špatně, návrh opravy), na konci
+jedna věta, jestli jsou moduly připravené pro src/krizova_validace.py. Česky, stručně.
+
+Kontrolují se dva NOVÉ moduly modelů: src/models/ridge30.py a src/models/g3.py. Budou se spouštět Ondrovou
+vícenásobnou validací src/krizova_validace.py (ta volá fit(X[tr], y[tr], cil=cil, horizont=h) a pak predict(X[ev]),
+X = 98 týmových vstupů ze src/features.py, index = čas vydání t v UTC). ridge30 = týmový src/models/ridge.py na
+týmových vstupech + průtoky 18 nových stanic, které ridge30.pridej_stanice připojuje podle indexu z vlastní tabulky
+(ridge_dan/stanice_vsem/spolecne.py: nove_sloupce, data ridge_dan/data_ridge.py, ridge_dan/tabulka/labe_ridge.parquet).
+g3 = ½ ridge30 + ½ LightGBM 30 (ridge_dan/stanice_vsem/lgbm_stanice.py: fit_stanice, vstupy, doby; obal kolem
+src/models/lgbm_c.py a lgbm_a.py).
+
+Zkontroluj:
+1. Únik z budoucnosti: dívá se něco v řádku t na data po t (shift, reindex, doba doběhu, sezónnost)? Odhaduje se
+   doba doběhu v LightGBM jen z tréninkových hodin předaných do fit? Neovlivňují predikci val řádků hodnoty cíle?
+2. Správné připojení stanic: stejné časy (UTC), stejná zpoždění jako týmové průtoky, žádné posunutí o hodinu, žádné
+   NaN; pro Děčín i Ústí stejně; LightGBM jen stanice nad cílem.
+3. Shodné rozhraní s ostatními modely v src/models (fit(X, y, cil, horizont) → funkce predict(X) → pole délky len(X)),
+   nic nemění vstupní X, funguje s tr/val podmnožinou řádků.
+4. Shoduje se G3 s popisem v ridge_dan/ZLEPSENI.md (pevná váha 0,5, Ridge 30 alpha 1 s odmocninou, LightGBM 30
+   seed 42 s týmovými parametry)?
+5. Vedlejší účinky importu (sys.path, proměnné prostředí), které by mohly změnit chování jiných modelů v témže běhu
+   krizova_validace (ridge, lgbm), třeba přebití modulu stejného jména.

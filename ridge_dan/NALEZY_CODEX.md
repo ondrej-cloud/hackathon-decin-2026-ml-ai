@@ -56,3 +56,14 @@ stanicemi, závěr odpovídá hranici 1 cm. Jediný nález (nízký): CV vzestup
 Dva vysoké nálezy: únik ve vnitřním hodnocení vnořených výběrů (okno j bez ohledu na mezeru k) a H30 jako výsledek
 s návrhem z hodnocené povodně. Motor opraven, verdikt přepsán (H30 průzkumně), podrobně v ZLEPSENI.md.
 Codex G (směsi) pracoval jako experimentátor se zápisem jen do `ridge_dan/smesi/`, 35 min, G1 a G2.
+
+## (i) moduly g3.py a ridge30.py před Ondrovou vícenásobnou validací, so 01:12–01:14 (`codex/kontrola_i_g3_moduly.md`)
+Celkově: rozhraní připravené pro `src/krizova_validace.py`; ověřil shodné indexy (UTC, hodinové), žádné NaN
+v připojených 126 sloupcích pro všech 6 kombinací, posuny ani sezónnost bez budoucnosti, LightGBM vynechává 4 stanice
+pod Ústím, parametry G3 odpovídají ZLEPSENI.md; fit Ridge30 na nesouvislé podmnožině vrátil správnou délku a vstup nezměnil.
+
+| Nález | Závažnost | Co jsem udělal |
+|---|---|---|
+| Odhad doby doběhu nových stanic počítá `diff(6)` a `shift(k)` přes okraje tréninku (dvojice, kde část zdrojových časů leží mimo předané tréninkové hodiny) | střední | Opraveno pro G3: `lgbm_stanice.doby(..., prisne=True)` bere do korelace jen dvojice se všemi časy (t, t − 6, t − k, t − k − 6) v tréninku, `g3.py` ji používá. Pohled do budoucnosti řádku to nebyl, 20denní mezera vynechanou povodeň chránila. Na foldu 2006 se tím změnila jen doba z Bíliny (32 → 33 h). Dřívější běhy (STANICE_VSEM, ZLEPSENI) použily volnou variantu, ta zůstává výchozí kvůli opakovatelnosti jejich čísel. |
+| Týmové doby doběhu (`lgbm_a.DOBA`) jsou pevné z původního splitu, který obsahuje některé povodně vynechávané v krizova_validace | střední | Zděděná vlastnost týmového LightGBM, týká se stejně Ondrova `lgbm` i G3. Týmový kód se nemění, zapsáno jako výhrada ve VALIDACE_ONDRA.md. |
+| Importy mění `sys.path` a nastavují `OPENBLAS_NUM_THREADS`, hrozí kolize jmen modulů | střední | Ověřeno, že žádný modul v `ridge_dan/` a `ridge_dan/stanice_vsem/` nemá stejné jméno jako modul v `src/` (src: data, evaluate, features, …; ridge_dan: data_ridge, hodnoceni, spolecne, …), `ridge30.py` cesty jen přidává na konec. `OPENBLAS_NUM_THREADS` se nastavuje `setdefault` až po načtení numpy v krizova_validace, tedy bez účinku; běh se spouští s 4 vlákny výslovně. Shoda `ridge` a `lgbm` s Ondrovým uloženým během (níž) potvrzuje, že se týmové modely nezměnily. |

@@ -58,3 +58,8 @@
 - so 00:22 · verdikt: 24 h žádná varianta průkazně (H30 jen průzkumně), 36 h Ridge 30 stanic splní (−2,43, 17 z 22); LightGBM a směsi G3/G4 nedoběhly.
 - so 00:28 · LightGBM 30 doběhl (LOFO 16,06, +0,78); směs G3 = ½ Ridge 30 + ½ LightGBM 30 (pevně) pravidlo splní: −1,35 cm, 20 z 22, nejhorší +8,2, val 18,2; G4 (váha 0,6) totéž. Kontrola Codexu G3 neviděla.
 - so 00:31 · LightGBM 12 doběhl (16,94); nové stanice LightGBM zlepší o 0,88 cm (15 z 22), pod hranicí.
+- so 01:10 · nový úkol: G3 přes Ondrovu vícenásobnou validaci (`src/krizova_validace.py`, 8 povodní × Děčín/Ústí × 12/24/36 h); sloučen `origin/main` (4437a3e), Ondrův skript, evaluate, features, data i týmové modely beze změny.
+- so 01:12 · nové moduly `src/models/ridge30.py` a `src/models/g3.py` (jen přidané); kontrola na bloku 2006 Děčín +24: ridge 16,7, ridge30 23,3 (= LOFO), g3 24,5.
+- so 01:14 · Codex (i): rozhraní v pořádku, bez pohledu do budoucnosti; 3 střední nálezy, oprava přísného odhadu doby doběhu pro G3, zbytek zdůvodněn (NALEZY_CODEX.md).
+- so 01:17 · běh `python src/krizova_validace.py ridge lgbm ridge30 g3` (síť a fyzika z Ondrova uloženého CSV), odhad ~50 min.
+- so 01:41 · vícenásobná validace hotová: G3 19,6 ± 7,1 cm proti Ridge 20,1 ± 7,7 (−0,5 cm, lepší v 6 z 8 povodní, nejlepší v 5 z 8, horší u tání 2006 a 2011); jako_ted, ridge a lgbm přesně shodné s Ondrovým během; VALIDACE_ONDRA.md.
