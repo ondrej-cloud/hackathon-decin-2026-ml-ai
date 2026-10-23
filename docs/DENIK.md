@@ -141,3 +141,7 @@ Následující záznamy jsou doplněné zpětně (pá 19:35) podle commitů, ať
 - Návrh: finální model je lineární regrese. Nejlepší a nejjednodušší, trénuje se za sekundu, nemá planý poplach a každou váhu vysvětlíme. Síť je stejná jen v rámci náhody a průměr obou nepomohl (16,9 cm).
 - Zjištění: čtyři různé modely skončily blízko sebe. Strop dělají vstupy, ne model. Další zlepšení by přinesly srážky v povodí, ne složitější model.
 - Problém: výsledky z Windows byly uložené v kódování cp1250. Převedli jsme je na UTF-8 a `porovnej.py` je teď ukládá i čte správně.
+
+## pá 20:30 · Ondra
+- Co: sepsali jsme celkový přehled řešení `docs/PREHLED.md`: co předpovídáme, které vstupy každý model používá, co jsme nevzali a proč, rozdělení, výsledky a tabulku všech rozhodnutí s důvody.
+- Proč: rozhodnutí byla rozesetá po deníku, pokusech a datech. Pro prezentaci a otázky poroty je potřebujeme pohromadě.
