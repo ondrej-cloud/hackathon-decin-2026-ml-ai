@@ -75,3 +75,15 @@ Následující záznamy jsou doplněné zpětně (pá 19:55) podle commitů, ať
 ## pá 18:52 · Ondra
 - Co: rozhodli jsme, že začneme rovnou na Labi, ne na malých řekách. Každý vyzkouší jiný model, malé řeky budou jen druhá zkouška.
 - Proč: na malých řekách voda doteče za 0–7 h a rozhoduje déšť, je to jiný problém. Model vybraný tam by se pro Labe musel vybírat znovu.
+
+## pá 19:35 · Honza
+- Problém: `src/porovnej.py` na Windows spadne při ukládání JSON (`UnicodeEncodeError`, výchozí kódování cp1252). Obcházím to proměnnou `PYTHONUTF8=1`, soubor neměním. Oprava pro Ondru: `write_text(..., encoding="utf-8")`. Dan na Windows narazí na totéž, zapsáno do Stavu.
+
+## pá 19:50 · Honza · Rozbor: lineární regrese (Ridge)
+- Co jsme udělali: lineární model `src/models/ridge.py` pro Děčín a Ústí na 12, 24 a 36 h, k tomu varianty (síla regularizace, změna hladiny jako cíl, výběr stanic podle horizontu), graf vah a graf dvou povodní.
+- Jak to funguje, jednoduše: předpověď je vážený součet. Každá stanice a každé zpoždění má jednu váhu, model vstupy vynásobí a sečte. Průtoky bere jako odmocninu (hladina roste s průtokem zhruba jako odmocnina), hladiny nechává. Váhy si našel z let 2006–2018.
+- Proč tak a ne jinak: jediný druh modelu, u kterého jde ukázat celou rovnici na jednom obrázku, a v kontrole řetězce vyšel nejlíp. Varianty jsme zkoušeli po jedné a s důvodem, žádná nezlepšila průměrnou chybu na povodních o 1 cm, tak zůstala nejjednodušší.
+- Výsledek a co znamená: chyba na povodních průměrně 17,1 cm proti 44,3 cm u „jako teď“ (6 kombinací), Děčín +24 h 15,5 cm. Varování před 2. stupněm 11–37 h předem, nic nepropásnuto, žádný planý poplach. Chyba na tréninku a na validaci je stejná, přeučení není.
+- Slabiny a co může být špatně: 36 h je skoro dvakrát horší než 24 h, protože ta voda ještě neteče ani Prahou a srážky nemáme. Vrcholy nad rámec tréninku (2006, 875 cm) model podhodnotí o 20 cm. Model pro Ústí hodně používá hladinu v Děčíně, který je po proudu: je to druhé měření téže vody, ne únik z budoucnosti, ale porota se zeptá. Vstup z času t bereme jako známý v čase t; ČHMÚ ale zveřejňuje hodinové průměry se zpožděním, v provozu by model měl vstupy asi o hodinu starší, čísla na validaci se nemění, jen by se zkrátil předstih.
+- Otázka pro mentory: s jakým zpožděním jsou hodinová data ČHMÚ v provozu dostupná?
+- Otázka poroty a odpověď: „Proč lineární model a ne něco chytřejšího?“ Protože na povodních, které model neviděl, vyhrál (15,5 cm proti 50 cm u stromů v kontrole řetězce), nemá se na čem přeučit a každou váhu umíme vysvětlit fyzikálně: průtok v Praze teď je hladina v Děčíně za den.
