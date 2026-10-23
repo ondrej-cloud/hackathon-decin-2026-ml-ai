@@ -163,3 +163,11 @@ Následující záznamy jsou doplněné zpětně (pá 19:35) podle commitů, ať
 - Co: Honza dostal vedle aplikace úkol „kolik let dat model potřebuje“ (učicí křivka lineární regrese, jen kraj proti všem stanicím, zadání v `docs/UKOL_MODELY.md`). Sepsali jsme inventuru všech dat `docs/ZDROJE_DAT.md`: co je v balíčku, kolik z toho používáme a proč, co jsme přidali a jaké parametry modely dostávají.
 - Zjištění: denní úhrn srážek ČHMÚ s časem „den D 06:00“ je déšť za následujících 24 h, ne za předchozích (ověřeno na hodinových srážkách v Praze 5–7/2020). Kdybychom ho brali od jeho časové značky, model by viděl den deště z budoucnosti. Bereme ho až od D+1 07:00.
 - Proč: graf o množství dat odpovídá na otázku poroty, proč nestačil balíček. Inventura dat je podklad pro slajd „Jaká data jsme použili“, který zadání výslovně chce.
+
+## pá 20:55 · Honza · Rozbor: kolik let dat model potřebuje
+- Co jsme udělali: učicí křivku lineární regrese: trénink na 1 až 13 letech před validací, jednou jen se stanicemi z balíčku (Děčín, Ústí, Louny), jednou se všemi 12. Graf `docs/grafy/kolik_dat.png`.
+- Jak to funguje, jednoduše: stejný model, jen mu dáváme méně historie nebo méně stanic, a měříme chybu na stejných 4 povodních.
+- Proč tak a ne jinak: porota se zeptá, proč jsme nevystačili s balíčkem. Odpověď chceme ukázat číslem, ne tvrdit.
+- Výsledek a co znamená: balíček (2 roky, jen kraj) = 45 cm, horší než „jako teď“ (44,3), a 12 z 24 nástupů povodní propásne. Stanice proti proudu srazí chybu na 27 cm i se 2 roky; velká povodeň v tréninku (2013) srazí propásnuté na 0; obojí dohromady 17 cm. Víc stanic pomohlo víc než víc let.
+- Slabiny a co může být špatně: krátká okna končí vždy rokem 2018, takže „2 roky“ znamená 2017–2018 (suchá léta); jiné dva roky by vyšly jinak. Validace má 4 povodně.
+- Otázka poroty a odpověď: „Nestačila by data, která jste dostali?“ Ne. S nimi by model nebyl lepší než „bude jako teď“ a propásl by polovinu povodní, protože v letech 2024–2026 je jediná povodeň a stanice jen v kraji. Proto jsme přidali 20 let a 9 stanic z otevřených dat ČHMÚ.
