@@ -18,10 +18,10 @@
 | 0,01 | 15,02 | −0,26 | 16 | +4,4 | ne | 38,7 | 21,1 | 3 |
 
   (týmový Ridge: začátek vzestupu 41,9, 2006 16,7, plané 2. SPA 4)
-- Vnořená varianta B a validace: CHYBÍ, výpočet do termínu 00:05 nedoběhl (stroj měl volných jen ~0,5 GB RAM,
-  vnitřní foldy se odkládaly na disk; první běh čekal 20 min na paměť a pak skončil bez hlášky). Skript `pokus_B.py`
-  ji spočítá a zapíše do `vysledky_B.json`. Na závěru to nic nemění: vnořený výběr volí po foldech jen z těchto
-  hodnot f a žádné f se k hranici −1 cm ani nepřiblíží.
+- Vnořená varianta B (doběhla 00:05): ve všech 22 foldech vnitřní LOFO vybralo f = 1, takže B = Ridge 30:
+  LOFO 14,79, rozdíl −0,49, zlepšeno 15 z 22, nejhorší zhoršení +6,5, nesplňuje. Validace B (vnořený výběr na
+  týmovém splitu) do termínu nedoběhla, dopočítá ji `pokus_B.py` do `vysledky_B.json`; při f = 1 je to Ridge 30
+  (val 17,8).
 - Závěr: silnější penalizace nových stanic průměr nezlepší (nejlíp f = 1, −0,49 cm). Zmenší jen nejhorší zhoršení
   (6,5 → 4,4 cm) a chybu 2006 (23,3 → 21,1), ale o tolik zhorší začátek vzestupu (34,1 → 38,7). Pravidlo nesplní
   žádné f.

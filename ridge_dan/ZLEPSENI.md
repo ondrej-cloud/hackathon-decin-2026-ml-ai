@@ -1,21 +1,37 @@
 # Dá se ze stanic vytěžit zlepšení, které projde přísným hodnocením?
 
-Dan, větev `dan-ridge`, pá 23. 10. 2026 23:15–00:30. Kód `ridge_dan/zlepseni/` (motor `lofo.py`, pokusy
+Dan, větev `dan-ridge`, pá 23. 10. 2026 23:15 – so 00:30. Kód `ridge_dan/zlepseni/` (motor `lofo.py`, pokusy
 `pokus_<X>.py`, výsledky `vysledky_<X>.json`, zápisy `pokus_<X>.md`), směsi od Codexu v `ridge_dan/smesi/`.
 Test 2021–2025 je spotřebovaný, nespouštěl se a nic se podle něj nerozhodovalo.
 
-## Verdikt (předběžný, 23:57)
+## Verdikt
 
-- **Děčín +24 h:** přísné pravidlo zatím splní jediná varianta, **H30 = Ridge 30 stanic + ukazatel útlumu v nivě**
-  (LOFO 14,15 proti 15,29, −1,13 cm, lepší 18 z 22 povodní, znaménkový test p = 0,004, nejhorší zhoršení +5,9 cm).
-  Výhrady: je těsně nad hranicí, je to doplňková hypotéza vzniklá z rozboru povodně 2006 (ta je ve validaci)
-  a na validaci je horší než týmový Ridge (17,5 proti 15,5). Samotných 30 stanic (−0,49), součty po povodích
-  (−0,67), vnořený výběr stanic (−0,61), silnější penalizace nových stanic (nejlíp −0,49) ani směsi Ridge 12 + 30
-  (−0,64 / −0,56) hranici 1 cm nedosáhnou, i když zlepší 15–18 z 22 povodní.
-- **Děčín +36 h:** pravidlo splní už **samotný Ridge s 30 stanicemi** (26,39 → 23,96, −2,43 cm, 17 z 22, nejhorší
-  +7,0 v roce 2006); delší zpoždění 48–72 h nic nepřidají. Na validaci 26,6 proti 26,0 (2006).
-- Ve všech variantách s novými stanicemi se výrazně zlepší začátek vzestupu (LOFO 41,9 → 33–37 cm) a zhorší se
-  povodeň 2006: přestřelení vzniká útlumem vlny v nivě Polabí, ne chybou dat (rozbor A).
+**Pro Děčín +24 h splní přísné pravidlo jediná varianta, H30 = Ridge s 30 stanicemi + ukazatel útlumu v nivě**
+(LOFO 14,15 proti 15,29 cm týmového Ridge, −1,13 cm, lepší 18 z 22 povodní, znaménkový test p = 0,004, žádná
+povodeň horší o víc než 5,9 cm). Je to ale těsně nad hranicí a s výhradami: H byla doplňková hypotéza vzniklá
+z rozboru povodně 2006 (ta je ve validaci) a na validaci je H30 horší než týmový Ridge (17,5 proti 15,5).
+Všechno ostatní hranici 1 cm nedosáhne, i když většina variant zlepší 15–18 z 22 povodní: samotných 30 stanic
+(−0,49), silnější penalizace nových stanic (vnořeně vybrala f = 1 ve všech foldech), součty po povodích (−0,67),
+vnořený výběr stanic (−0,61), Huber (+0,62, horší), směsi Ridge 12 + 30 (−0,64 / −0,56), směsi se sítí
+(−0,64 / −0,56), síť sama (−0,22, s novými stanicemi +0,76).
+
+**Pro Děčín +36 h splní pravidlo samotný Ridge s 30 stanicemi** (26,39 → 23,96, −2,43 cm, 17 z 22, nejhorší +7,0
+v roce 2006). Delší zpoždění 48–72 h nic nepřidají. Na validaci 26,6 proti 26,0, rozdíl zase dělá povodeň 2006.
+
+Ve všech variantách s novými stanicemi se výrazně zlepší začátek vzestupu (LOFO 41,9 → 33–37 cm) a zhorší se
+povodeň 2006. Přestřelení 2006 vzniká útlumem vlny v nivě Polabí, ne chybou dat (rozbor A).
+
+**Doporučení pro Ondru:** pro hlavní předpověď Děčín +24 h zůstat u týmového Ridge. Jediné zlepšení, které projde
+pravidlem (H30), je těsné, vzniklo z rozboru validační povodně a na validaci je horší; test, kterým by se dalo
+nezávisle ověřit, je spotřebovaný. Do prezentace patří jako ověřené zjištění dvě věci: (1) nové stanice proti proudu
+dávají spolehlivě dřívější a přesnější začátek vzestupu a pro 36 h projdou i přísným hodnocením
+(−2,4 cm, 17 z 22 povodní); (2) přestřelení velkých povodní (2006) je fyzika: vlna se rozlije do nivy a lineární
+model s tím nepočítá. Ukazatel útlumu (schodek průtoku v úseku) je rozumný kandidát na další práci, ne na finální model.
+
+Nedoběhlo do 00:30 (RAM ~0,5 GB volná, sdílená se session srážek a sítě): LOFO předpovědi LightGBM, a tím směsi
+G3 (Ridge 30 + LightGBM 30) a G4 (váha přibližně vnořeně), Huber s 30 stanicemi (F30), validace vnořené B
+(při f = 1 je to Ridge 30, 17,8). Žádný z nich by verdikt pro 24 h podle dílčích výsledků nezměnil (F12 je horší,
+silnější penalizace i směsi Ridge zůstávají pod hranicí); u G3/G4 to ověřené není.
 
 ## Protokol (pevný)
 
@@ -42,9 +58,39 @@ Test 2021–2025 je spotřebovaný, nespouštěl se a nic se podle něj nerozhod
 
 Ridge s 30 stanicemi tedy přísné pravidlo nesplní: zlepšení 0,49 cm je pod 1 cm, i když se zlepší 15 z 22 povodní.
 
+## Všechny varianty (Děčín +24 h, není-li uvedeno jinak; základ = týmový Ridge, LOFO 22 povodní)
+
+| Pokus | Varianta | LOFO 22 | rozdíl | zlepšeno z 22 | nejhorší zhoršení | znam. p | splňuje | val Děčín | začátek (LOFO) | 2006 (LOFO) | plané 2. SPA (LOFO) |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| — | týmový Ridge (12 stanic) | 15,29 | | | | | | 15,5 | 41,9 | 16,7 | 4 |
+| — | Ridge 30 stanic | 14,79 | −0,49 | 15 | +6,5 | 0,13 | ne | 17,8 | 34,1 | 23,3 | 3 |
+| B | penalizace nových stanic, f vnořeně (všude f = 1) | 14,79 | −0,49 | 15 | +6,5 | 0,13 | ne | (≈ 17,8) | 34,1 | 23,3 | 3 |
+| B | pevné f = 0,01 (diagnostika) | 15,02 | −0,26 | 16 | +4,4 | 0,05 | ne | | 38,7 | 21,1 | 3 |
+| C | C1 součet odmocnin po 8 povodích | 14,61 | −0,67 | 18 | +7,3 | 0,004 | ne | 17,4 | 33,9 | 24,0 | 3 |
+| C | C2 odmocnina součtu po 8 povodích | 14,63 | −0,65 | 18 | +6,5 | 0,004 | ne | 17,2 | 34,1 | 23,2 | 3 |
+| D | vnořený dopředný výběr stanic | 14,68 | −0,61 | 16 | +4,7 | 0,05 | ne | 17,2 | 36,1 | 21,4 | 3 |
+| F | Huber, 12 stanic | 15,91 | +0,62 | 3 | +5,2 | 0,001 | ne | 17,4 | 44,5 | 22,0 | 4 |
+| F | Huber, 30 stanic | nedoběhlo | | | | | | | | | |
+| G | G1 ½ Ridge 12 + ½ Ridge 30 | 14,65 | −0,64 | 17 | +2,4 | 0,017 | ne | 16,0 | 37,5 | 19,1 | 3 |
+| G | G2 váha Ridge 12/30 striktně vnořeně | 14,73 | −0,56 | 17 | +4,6 | 0,017 | ne | | 36,6 | 21,4 | 3 |
+| G | G3/G4 Ridge 30 + LightGBM 30 | nedoběhlo | | | | | | | | | |
+| G | síť beze změny | 15,07 | −0,22 | 14 | +6,4 | 0,29 | ne | | 39,2 | 15,6 | 3 |
+| G | síť + 18 stanic | 16,05 | +0,76 | 12 | +7,7 | 0,83 | ne | | 34,1 | 23,4 | 1 |
+| G | G5 ½ Ridge 30 + ½ síť + 18 | 14,65 | −0,64 | 16 | +5,7 | 0,05 | ne | | 33,6 | 22,4 | 0 |
+| G | G6 ½ Ridge 12 + ½ síť beze změny | 14,72 | −0,56 | 16 | +2,8 | 0,05 | ne | | 40,2 | 15,4 | 3 |
+| H | H12 týmový Ridge + útlum | 14,61 | −0,68 | 16 | +0,6 | 0,05 | ne | **14,8** | 41,0 | 14,3 | 6 |
+| H | **H30 Ridge 30 + útlum** | **14,15** | **−1,13** | **18** | +5,9 | 0,004 | **ano** | 17,5 | 33,5 | 22,6 | 4 |
+| E (36 h) | týmový Ridge 36 h | 26,39 | | | | | | 26,0 | 66,5 | 28,3 | 6 |
+| E (36 h) | **Ridge 30 stanic 36 h** | **23,96** | **−2,43** | **17** | +7,0 | 0,017 | **ano** | 26,6 | 53,5 | 35,3 | 7 |
+| E (36 h) | + zpoždění 48/60/72 h | 24,10 | −2,28 | 17 | +11,6 | 0,017 | ne | 27,1 | 53,6 | 40,0 | 8 |
+
+Plané poplachy z LOFO jsou jen v oknech povodní (2. SPA = 490 cm), validace je týmové rozdělení Děčín +24 h
+(u 36 h Děčín +36 h). Mnohonásobné porovnávání: na 24 h je to asi 15 variant; při tolika pokusech může jedna
+varianta těsně nad hranicí (H30, −1,13) vyjít i náhodou, proto výhrady ve verdiktu.
+
 ## Pokusy
 
-*(průběžně doplňováno; hotovo A, B (pevná f), C, D, E, F12, H, směsi G1, G2, G5, G6 a síť; nedoběhlo: B vnořeně, F30, LightGBM a směsi s ním G3–G4)*
+*(hotovo A, B, C, D, E, F12, H, směsi G1, G2, G5, G6 a síť; nedoběhlo: validace vnořené B, F30, LightGBM a směsi s ním G3–G4)*
 
 ### Pokus C: součty po dílčích povodích místo jednotlivých nových stanic
 
