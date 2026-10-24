@@ -96,6 +96,68 @@ Když si nic jiného nezapamatují, tohle stačí. Každý řečník ji má aspo
 - „Dál“ jednou větou: předpověď počasí na dva až tři dny, dvoustupňové varování.
 - Závěr, poslední mezerník: „Z otevřených dat zdarma: o povodni v Děčíně víte den předem, s modelem, který se vejde na jeden obrázek. Děkujeme.“ Stát, nehýbat se, počkat na potlesk.
 
+## Úderné verze: slajdy 1, 6, 7 a krok s rozlivem na slajdu 8
+
+Stejná čísla jako v `SLAJDY.md`, jen ostřejší věty a jasné pauzy. Kdo chce, může říct tyhle; časy drží.
+
+### 1 · Honza (0:00–0:40)
+
+Mezerník, video běží. Hned:
+
+> Dobrý den. Děčín, červen 2013. Největší povodeň za dvacet let, hodinu po hodině.
+
+Ticho. Nechte vodu dojít mezi domy, asi 12 sekund. Jakmile naskočí nadpis a 18 h:
+
+> Náš model tuhle povodeň nikdy neviděl. Přesto řekl „třetí stupeň“ osmnáct hodin předem. *(pauza)* Předpovídáme hladinu Labe v Děčíně a v Ústí na dvanáct, dvacet čtyři a třicet šest hodin a varujeme před druhým a třetím stupněm. Pro povodňovou komisi, hasiče a lidi u řeky je to den navíc. Jaká data na to stačí? Dan.
+
+### 6 · Honza (3:55–4:30)
+
+> Jak víme, že to není náhoda? *(pauza)* Data dělíme v čase. Nikdy náhodně: sousední hodiny jsou skoro stejné, náhodné dělení by modelu napovídalo. Ověřujeme jen na povodních, které model při učení neviděl, a to třikrát. *(tři prsty)* Model jsme vybrali na čtyřech vynechaných povodních. Pak jsme každou z osmi povodní 2006 až 2020 jednou vynechali a model naučili na zbytku. A test na letech 2021 až 2025 jsme pustili jednou. Na konci. Na model vybraný předem. *(pauza)* Funguje to doopravdy?
+
+### 7 · Honza (4:30–5:25)
+
+> Tohle je Boris, září 2024. Z testu, model ho nikdy neviděl. *(ukázat)* Černá je skutečnost. Modrá naše předpověď vydaná den předem, jde se skutečností. Šedá je odhad, že zítra bude stejně jako dnes, ten je vždycky o den pozadu. Třetí stupeň model hlásil *(pauza)* dvacet sedm hodin předem.
+
+[mezerník]
+
+> A není to jedna šťastná povodeň. Každou z osmi povodní jsme jednou vynechali: chyba byla menší na všech osmi, o 34 až 66 procent. Na testu 2021 až 2025 je 22,4 centimetru proti 50,2. O 55 procent. *(pauza)* Dvakrát stejné číslo, dvěma různými cestami.
+
+[mezerník]
+
+> A povodeň 2013 z úvodu: model nikdy neviděl vodu nad 875 centimetrů. Přesto ohlásil třetí stupeň 18 hodin předem. Vrchol podhodnotil o 120 centimetrů. To je náš limit a říkáme ho rovnou. Co z toho má město? Tobias.
+
+### 8 · Tobias, krok se schématem rozlivu (5:25–5:55)
+
+Na mapě:
+
+> Co z toho má město? Z předpovězené hladiny aplikace nakreslí, kam až voda dosáhne. Tady je Děčín na vrcholu povodně 2013, 1 072 centimetrů. Voda mezi domy, hodinu po hodině, živě na webu.
+
+[mezerník] (objeví se příčný řez údolím)
+
+> Jak se to počítá? Jednoduše. *(ukázat na modrou čáru)* Hladina u vodočtu je nula vodočtu, 120 metrů nad mořem, plus naměřených nebo předpovězených centimetrů. *(ukázat na terén)* Terén máme z laserového skenování, bod každé dva metry. Zaplavené je všechno, co je níž než hladina a je spojené s řekou. *(ukázat na šrafovanou prohlubeň)* Prohlubeň za valem je taky níž, ale suchá, voda se k ní nedostane. Proti úřední mapě záplavových území to sedí z 82 až 90 procent.
+
+Když zbude dech (jinak až na otázku): „Hladina podél řeky klesá, 44 centimetrů na kilometr, to máme z vlastních dat. Není to hydraulický model: nemá proudění ani objem vlny, hráze a zdi pod dva metry nevidí. Na den dopředu pro Děčín to stačí.“
+
+Čísla pro otázky k rozlivu: ČÚZK DMR 5G, rozlišení 2 m; nula vodočtu Děčín 120,07 m n. m.; sklon hladiny 0,44 m/km (medián z hodin 2006–2025, Ústí proti Děčínu o 4 h později, 25,4 km); polygony po 10 cm; nad jezem Střekov držíme hladinu zdrže 141,55 m n. m.; shoda s DIBAVOD IoU 0,82–0,90, Děčín Q5 (707 cm): 167 ha u nás, 183 ha úředně, 165 ha průnik; rozdíly: my zatékáme víc do údolí přítoků, úřední mapa má navíc úzké pásy podél břehů. Záložní slajd Z7.
+
+## Proč vyhrála lineární regrese: co říct (slajdy 4 a 5 i otázky)
+
+Krátká verze na slajd (Ondra, 20 sekund):
+
+> Vyhrála přímka, a ne proto, že bychom nic jiného neuměli. Zkusili jsme neuronovou síť, rozhodovací stromy i fyzikální model, každý z nás jeden, se stejnými daty a stejným ověřením. Přímka měla na povodních, které model neviděl, nejmenší chybu, žádný planý poplach, a každou její váhu umíme vysvětlit. A hlavně: voda v Děčíně opravdu je součet řek nad ním, posunutý o dobu, než doteče. To je přesně tvar lineární regrese. Složitější model se neměl co naučit navíc.
+
+Dlouhá verze na otázku (do 45 sekund), pět důvodů, říkat v tomhle pořadí:
+
+1. **Fyzika má tvar součtu.** Průtok v Děčíně je zhruba Vltava plus horní Labe plus Ohře, každá posunutá o 13 až 25 hodin. Hladina roste s průtokem jako odmocnina (měrná křivka), tu odmocninu modelu dáme na vstup, a zbytek je vážený součet. Nelinearita, která v úloze je, je tím vyřešená ručně, ne učením.
+2. **Vyhrála na ověření, ne na tréninku.** Validace 17,1 cm proti síti 17,8, LightGBM 23,1, fyzika 24,8. Vícenásobná validace přes osm povodní: nejlepší na čtyřech z osmi, průměr 20,1 proti 21,0 u sítě. Na testu byla síť o 1,1 cm lepší, ale výběr jsme udělali před testem a podle testu nic neměníme, jinak by test přestal být nezávislý.
+3. **Málo velkých povodní.** Nad třetím stupněm jsou v tréninku jen dvě povodně. Síť s 21 tisíci vahami si je zapamatuje (verze 64-32: 5 cm na tréninku, 22 cm na validaci), 98 vah ze 108 tisíc hodin se nepřeučí. Ridge navíc váhy drží u sebe, změna regularizace 0,1 až 100 výsledek nezmění.
+4. **Umí výš, než viděla.** Stromy předpoví nejvýš to, co bylo v tréninku: LightGBM dal vrchol 2013 na 823 místo 1 072 cm. Přímka pokračuje dál, proto dala 952. Pro povodeň, která bude jednou větší než všechny dosavadní, je to rozdíl mezi varováním a tichem.
+5. **Vysvětlitelnost je pro povodňovou komisi hodnota.** Každé číslo v předpovědi rozložíme: průměr 198 plus Děčín a Ústí 80, Vltava 89, horní Labe 116, Mělník 96, Ohře minus 2. Komise vidí, odkud voda jde. Síť tohle neřekne. A zadání samo říká: cílem není co nejsložitější model.
+
+Jednou větou, když není čas: „Voda v Děčíně je součet řek, přímka je součet, a na povodních, které model neviděl, byla nejlepší; složitější modely se neměly co naučit navíc a hůř se vysvětlují.“
+
+Pozor na slova: neříkat „lineární model“ jako „jednoduchý, protože jsme nic jiného neuměli“; říkat „jednoduchý, protože to tak funguje a dokázali jsme to na čtyřech modelech“. Když se zeptají na síť na testu (21,3 proti 22,4): rozdíl 1,1 cm je v rámci rozptylu mezi povodněmi (± 7,7 cm), na validaci i vícenásobné validaci byla síť horší, a model vybraný předem se podle testu nemění.
+
 ## Otázky: jak na ně
 
 Pravidla: odpovídá ten, kdo stojí nejblíž porotě, ne nutně autor; odpověď do 20 sekund; když existuje záložní slajd, Tobias ho otevře (Z1 až Z12, podle názvu v seznamu decku) a odpověď se řekne nad grafem. Nikdy neříkat „to nevíme“; říkat „to jsme neměřili, ale víme, co by to chtělo“. Podrobné odpovědi jsou v `OTAZKY.md`.

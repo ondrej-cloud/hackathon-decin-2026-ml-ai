@@ -214,6 +214,7 @@ Propásnutá varování jsou hraniční: tři jsou únor 2024 v Děčíně, kdy 
 - **Boris 9/2024 (test), Děčín:** 3. stupeň překročen 15. 9. 2024 ve 14:00 (12:00 UTC). Model varoval 10 h (předpověď na 12 h), 27 h (na 24 h) a 30 h (na 36 h) předem. Vrchol 649 cm předpověděl 24 h předem na 611 cm. Předpověď vydaná 14. 9. v 11:00 na 15. 9. v 11:00: z průměrné hladiny 198 cm přičetl Děčín a Ústí +80, Vltava +89, horní Labe +116, Mělník +96, Ohře −2, vyšlo 577 cm, nad 3. stupněm (560 cm). Skutečně bylo 551 cm.
 - **Vánoce 2023 (test), Děčín:** 3. stupeň varován 13, 21 a 29 h předem, vrchol 624 cm předpovězen na 614 cm.
 - **Leden 2011 (validace), Děčín:** 3. stupeň hlášen 15 h předem (předpověď na 24 h), vrchol 730 cm.
+- **Červen 2013 (největší povodeň v datech, 1 072 cm), Děčín:** je v tréninku, proto ji na webu, v mapě i v úvodním videu prezentace přehráváme modelem učeným na všem do 2020 bez této povodně a 20 dní kolem ní (`ridge_bez2013` v `app/predikce.py`, nejvyšší hladina, kterou při učení viděl, byla 875 cm). Výsledek na 24 h: 3. stupeň hlášen 18 h předem, vrchol předpovězen na 952 cm (o 120 cm méně), chyba při povodni 47,7 cm proti 97,4 cm u „jako teď“ (o 51 % méně); na 2. stupeň varoval jen 2 až 4 h předem, nástup byl rychlý. Čísla jsou v `web/data/metriky.json` (`2013-06`).
 
 Grafy `docs/grafy/povoden_2024-09_decin_24h.png`, `povoden_2023-12_decin_24h.png`, `povoden_2011-01_decin_24h.png`.
 

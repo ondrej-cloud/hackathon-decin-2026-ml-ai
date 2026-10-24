@@ -86,7 +86,7 @@ Ověřeno:
 
 **Rozdělení** (`src/evaluate.py`, dělení v čase, ne náhodně):
 - train: 2006–2018 bez validačních povodní a 20 dní kolem nich,
-- val: povodně 4/2006, 3/2009, 9/2010 a 1/2011 (14 dní před vrcholem až 5 dní po něm) a klidné roky 2019–2020,
+- val: povodně 4/2006, 3/2009, 9/2010 a 1/2011 (16 dní před vrcholem až 5 dní po něm) a klidné roky 2019–2020,
 - test: 2021–2025, povodně 12/2023 a 9/2024,
 - řádek, jehož vstupy (36 h zpět) nebo cíl (t + horizont) zasahují do jiné části, se vynechá.
 
