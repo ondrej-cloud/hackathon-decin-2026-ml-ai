@@ -14,7 +14,7 @@ Devět slajdů na 6:45, rezerva 15 s do 7:00, pak sedmnáct záložních. Každ�
 | 8 | 5:25–5:55 | Tobias | Co z toho má město? | Z předpovědi mapa: kam až voda dosáhne | 1 |
 | 9 | 5:55–6:45 | Tobias | Kde to selže? | Co neumíme a co dál | 7 |
 
-Celkem 799 slov, při 130 slovech za minutu 6:08 mluvení. Zbytek do 6:45 je ticho nad videem (asi 12 s) a pauzy na kroky decku.
+Celkem 823 slov, při 130 slovech za minutu 6:19 mluvení. Zbytek do 6:45 je ticho nad videem (asi 12 s) a pauzy na kroky decku.
 
 ## 1 · Den předem víme, kam v Děčíně dosáhne voda (0:00–0:40, Honza)
 
@@ -81,29 +81,29 @@ Po dohrání se video zmenší do karty, naskočí nadpis a 18 h:
 >
 > [mezerník]
 >
-> Pak čtyři modely, každý dělal jeden z nás, se stejnými pravidly: stejná data, stejné ověření a změna musí zlepšit aspoň o centimetr. Fyzikální model, 25 centimetrů: počítá s pevnou dobou putování vody, jenže ta se mezi povodněmi mění. LightGBM, rozhodovací stromy, 23: neumí předpovědět víc, než kdy viděly, u povodně 2013 daly vrchol o dva a půl metru níž. Neuronová síť, 18: skoro stejně dobrá, ale má přes dvacet tisíc vah na dvě velké povodně a snadno se přeučí. Lineární regrese, 17: nejlepší a nejjednodušší. Vybrali jsme ji před testem.
+> Pak čtyři modely, každý dělal jeden z nás, se stejnými pravidly: stejná data, stejné ověření a změna musí zlepšit aspoň o centimetr. Fyzikální model, 25 centimetrů: počítá s pevnou dobou putování vody, jenže ta se mezi povodněmi mění. LightGBM, rozhodovací stromy, 23: neumí předpovědět víc, než kdy viděly, u povodně 2013 daly vrchol o dva a půl metru níž. Neuronová síť, 18: skoro stejně dobrá, ale má přes dvacet tisíc vah a na ně je povodní málo. Lineární regrese, 17: nejlepší a nejjednodušší. Vybrali jsme ji před testem.
 >
 > [mezerník]
 >
-> Pak jsme zkoušeli vylepšit i ji: dobu putování podle průtoku, polynom, větší váhu povodní, všechna malá zlepšení dohromady. Nic nebylo lepší o víc než centimetr.
+> Zkoušeli jsme vylepšit i ji: polynom, větší váhu povodní, malá zlepšení dohromady. Nic nebylo lepší o víc než centimetr. Proč, ukážu na dalším slajdu.
 
-139 slov (strop 140).
+136 slov (strop 140).
 
 Zdroje: `docs/CESTA_MODELU.md` (sekce 1, 2 a 6). LightGBM a povodeň 2013: první pokus pá 17:46, vrchol 823 místo 1 072 cm. Síť 128-64 má asi 21 tisíc vah, verze 64-32 měla na tréninku 5 cm a na validaci 22 cm.
 
 ## 5 · Voda v Děčíně je součet řek (3:15–3:55, Ondra)
 
 - Otázka: Proč zrovna přímka?
-- Musí zaznít: voda v Děčíně je součet Vltavy, horního Labe a Ohře, lineární regrese je vážený součet; příklad Borise den předem 198 → 577 cm, nad 3. stupněm; každé číslo umíme vysvětlit; citát ze zadání.
+- Musí zaznít: voda v Děčíně je součet Vltavy, horního Labe a Ohře a lineární regrese je taky součet, takže tvar zná dopředu a učí se jen váhy, na což stačí i málo povodní; příklad Borise den předem 198 → 577 cm, nad 3. stupněm; citát ze zadání.
 - Na slajdu: `grafy/05_soucet_rek.png` (v HTML decku animovaný součet, šest kroků mezerníkem), vpravo číslo, které roste 198 → 577 cm, a štítek **3. stupeň · nad 560 cm**. Citát ze zadání na slajdu není, řečník ho jen řekne.
 
-> Proč vyhrála přímka? Voda v Děčíně je součet toho, co přiteče po Vltavě, horním Labi a Ohři, a lineární regrese je přesně takový vážený součet. Tady je skutečná předpověď z Borise, vydaná den předem. Začíná na průměru, 198 centimetrů.
+> Proč vyhrála přímka? Voda v Děčíně je součet toho, co přiteče po Vltavě, horním Labi a Ohři. Lineární regrese je taky součet, takže ten tvar zná dopředu a z dat se učí jen váhy. Na to stačí i těch pár povodní. Tady je skutečná předpověď z Borise, vydaná den předem. Začíná na průměru, 198 centimetrů.
 >
 > [mezerník] Děčín a Ústí přidají 80, [mezerník] Vltava 89, [mezerník] horní Labe 116, [mezerník] Mělník 96, [mezerník] Ohře ubere 2.
 >
-> [mezerník] Vyjde 577, nad třetím stupněm, a model varoval. Každé z těch čísel umíme vysvětlit. A zadání samo říká: cílem není co nejsložitější model.
+> [mezerník] Vyjde 577, nad třetím stupněm, a model varoval. A zadání samo říká: cílem není co nejsložitější model.
 
-77 slov (strop 86).
+87 slov (strop 86).
 
 ## 6 · Ověřeno třikrát na povodních, které model neviděl (3:55–4:30, Honza)
 
