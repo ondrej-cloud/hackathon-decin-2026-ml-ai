@@ -102,13 +102,19 @@ Stejná čísla jako v `SLAJDY.md`, jen ostřejší věty a jasné pauzy. Kdo ch
 
 ### 1 · Honza (0:00–0:40)
 
-Mezerník, video běží. Hned:
+Mezerník, video běží (24 s, voda stoupá od 1. 6. do vrcholu 6. 6.). Hned na začátku:
 
-> Dobrý den. Děčín, červen 2013. Největší povodeň za dvacet let, hodinu po hodině.
+> Dobrý den. Normálně je Labe na vodočtu v Děčíně necelé dva metry. Dívejte se, co se stalo v červnu 2013.
 
-Ticho. Nechte vodu dojít mezi domy, asi 12 sekund. Jakmile naskočí nadpis a 18 h:
+Mlčet a nechat vodu růst, asi 15 sekund. Až hladina v liště dojde na vrchol (6. 6., kolem 22. sekundy), pomalu:
 
-> Náš model tuhle povodeň nikdy neviděl. Přesto řekl „třetí stupeň“ osmnáct hodin předem. *(pauza)* Předpovídáme hladinu Labe v Děčíně a v Ústí na dvanáct, dvacet čtyři a třicet šest hodin a varujeme před druhým a třetím stupněm. Pro povodňovou komisi, hasiče a lidi u řeky je to den navíc. Jaká data na to stačí? Dan.
+> Deset metrů sedmdesát dva. (pauza) Dá se tohle vědět den předem?
+
+Video skončí, zmenší se do karty a naskočí 18 h:
+
+> Dá. Model, který tuhle povodeň nikdy neviděl, ohlásil třetí stupeň 18 hodin předem. Předpovídáme hladinu v Děčíně a Ústí na 12, 24 a 36 hodin a varujeme před druhým a třetím stupněm. Pro komisi, hasiče a lidi u řeky je to den navíc.
+
+Předávka: „Jaká data na to stačí? Dan.“ Celkem 73 slov, asi 34 s řeči + 15 s ticha; pokud se nestíhá, vynechat „je to den navíc“.
 
 ### 6 · Honza (3:55–4:30)
 
@@ -176,6 +182,40 @@ Pravidla: odpovídá ten, kdo stojí nejblíž porotě, ne nutně autor; odpově
 | Fungovalo by to v provozu? | Už funguje: web stahuje živá data ČHMÚ každou hodinu a počítá předpověď; zpoždění dat je 1 až 3 hodiny. | Honza, Z10 |
 | Jak jste na tom proti ČHMÚ? | Na starých povodních archiv předpovědí ČHMÚ nemáme, takže se poctivě srovnat neumíme; na dnešku je ukazujeme vedle sebe. | Ondra |
 | Proč ukazujete povodeň 2013, když je v tréninku? | Je jediná, kdy voda došla mezi domy; v mapě i ve videu ji počítá model učený bez ní, takže ji neviděl, a číslo 952 proti 1 072 říkáme nahlas. | Honza, 7 |
+
+## Trénink na záložní slajdy a otázky (20 minut ve třech)
+
+Jak to drilovat: jeden čte otázku (hraje porotu, klidně nepříjemně), druhý odpovídá do 20 sekund a třetí měří čas a hlídá, že odpověď začíná číslem nebo faktem, ne „no, my jsme…“. Záložní slajd otevírá Tobias: v decku jsou zálohy jako slajdy 10 až 21 (Z1 = 10 … Z12 = 21), nejrychleji klávesou End a šipkami zpět, nebo přepsáním `#10` až `#21` v adrese. Na slajdu vždycky ukázat rukou na číslo, o kterém se mluví. Po každé odpovědi jedna věta zpětné vazby a dál. Odpovědi doslova jsou v `OTAZKY.md` (čísla otázek níž), tady je verze na 15 sekund, na co ukázat a nejčastější dotírání.
+
+| Slajd | Otázka poroty | Kdo | Odpověď na 15 s | Na co ukázat | Dotírání a odpověď |
+|---|---|---|---|---|---|
+| Z1 | Proč lineární regrese a ne síť? (ot. 1) | Dan | Na čtyřech povodních, které model neviděl, vyšla nejlíp: 17,1 cm, síť 17,8, LightGBM 23,1, fyzikální 24,8. Velkých povodní je v tréninku málo, síť s 20 tisíci vahami se z nich naučí i náhodu, regrese má 98 vah a každou umíme vysvětlit. | sloupce čtyř modelů, modrý nejkratší | „Ale na testu byla síť lepší.“ → O 1,1 cm, ve vícenásobné validaci o 0,9 cm horší; model jsme vybrali před testem a podle testu se nemění (ot. 2, Z8). |
+| Z2 | Co je „zítra stejně jako dnes“ a proč se s tím srovnáváte? (ot. 11) | Ondra | Nejjednodušší možná předpověď: hladina za den bude jako teď. Na klidné řece je přesná, při povodni vždycky o den pozadu. Každý model ji musí porazit, jinak nemá smysl. | šedá čára zpožděná za černou | „Není to moc nízká laťka?“ → Proto máme i tři další modely a vícenásobnou validaci; a „bude jako teď“ je laťka, kterou hydrologové běžně používají. |
+| Z3 | Proč ne srážky? (ot. 14, 32) | Dan | Zkusili jsme horní mez: model dostal skutečný déšť na 3 dny dopředu, jako by předpověď byla dokonalá, a chyba klesla jen o 1 cm. Voda, která přijde za 12 až 36 h, už teče v řekách. Srážky by pomohly na 2 až 3 dny, ale archiv starých předpovědí na trénink nemáme. | graf: když se blíží vrchol, už neprší | „A hodinové srážky v reálném čase?“ → Nejvýš o 1 cm lépe, archiv ČHMÚ je až od 2018, na učení krátký. |
+| Z4 | Jak moc se dá předpovědi věřit? (ot. 16) | Honza | Ke každé předpovědi dáváme rozmezí od–do: 90 % chyb na tréninku podle výšky vody, ověřené na validaci. Na klidné vodě se skutečnost vejde v 9 z 10 hodin, na povodních, které model neviděl, asi v 8 z 10. | sloupce 87–92 %, čára 90 % | „Proč na povodních méně?“ → Validační povodně jsou vyšší než trénovací, rozmezí je tam o něco užší, než by mělo; proto říkáme 8 z 10, ne 9. |
+| Z5 | Funguje to i na jiné povodni než Boris? (ot. 12) | Ondra | Leden 2011 z validace: 3. stupeň hlášen 15 h předem, vrchol 730 cm. Na testu 2021–2025 model před 3. stupněm varoval pokaždé a ve vícenásobné validaci byl lepší na každé z 8 povodní. | modrá čára 24 h před černou u 3. stupně | „A Vánoce 2023?“ → Třetí stupeň 13, 21 a 29 h předem, vrchol 624 cm předpovězen na 614. |
+| Z6 | Podle čeho model rozhoduje a proč jsou váhy záporné? (ot. 4, 23) | Honza | 98 vah pro předpověď hladiny v Děčíně za 24 h. Nejvíc váží hladina v Děčíně teď (+88 cm) a průtok v Praze teď (+49), protože voda z Prahy doteče za 17 h. Oranžové políčko hned vedle modrého: model odečítá starší hodnotu od nové a počítá trend. | řádek Děčín teď, Praha teď, dvojice modrá–oranžová | „Proč Praha teď, a ne Praha před 24 h?“ → Před 24 h už je v dnešní hladině Děčína; zítřek dělá to, co teče teď. |
+| Z7 | Je rozliv hydraulický model? (ot. 19, 35–37) | Honza | Není. Výška terénu z laserového skenování (bod po 2 m) proti výšce hladiny, zaplavené jen to, co je níž a spojené s řekou. Proti úřední mapě shoda 82 až 90 %: při pětileté vodě 167 ha u nás, 183 úředně, 165 společných. | tři čísla ha | „A proudění, zdi, kanalizace?“ → Nic z toho: statický rozliv, hráze pod 2 m nevidí, krátká špička může zaplavit méně; na orientační mapu to stačí, na stavbu hrází ne. |
+| Z8 | Jak dopadl test? Síť byla lepší, ne? (ot. 2, 13) | Ondra | Test 2021–2025, jednou, na konci: regrese 22,4 cm proti 50,2 u „zítra jako dnes“, o 55 % méně. Síť 21,3, rozdíl 1,1 cm je v rámci rozptylu mezi povodněmi (± 7,7). Model byl vybraný předem a podle testu se nemění, jinak by test nebyl nezávislý. | sloupce po horizontech 12/24/36 h | „Kolikrát propásl?“ → 3. stupeň zachytil pokaždé, 2. stupeň 17 z 21 a propásnuté byly hraniční o pár cm (únor 2024: 496 proti hranici 490); plané poplachy tři. |
+| Z9 | Proč jen 36 hodin? Proč ne týden? (ot. 15, 40) | Dan | Z nejvzdálenějších stanic, Berounu a Nespek, doteče voda do Děčína za 23 až 25 h. Co přijde později, ještě neprotekla žádnou stanicí, je v potocích nebo v mracích. Proto je chyba na 36 h skoro dvakrát větší než na 24 h. Na týden je potřeba předpověď počasí, a ta je u srážek na 5 až 7 dní hodně nejistá. | sloupce dob doběhu, Beroun 23 h | „ČHMÚ přece předpovídá dál.“ → Ano, s předpovědí srážek, kterou my nemáme; na dnešek vyšli skoro stejně jako my (94 a 90 cm). |
+| Z10 | Jak vypadá aplikace dnes, proč ne živé demo? (ot. 18, 22) | Honza | Web se otevře na Dnešku: živá data ČHMÚ, naše předpověď vedle oficiální. Na snímku z rána: Děčín 84 cm, za 24 h 94, ČHMÚ 90. Data chodí se zpožděním 1 až 3 h. Web je otevřený v druhé kartě, rádi ho ukážeme. | čísla 84 / 94 / 90 | „Fungovalo by to v provozu?“ → Už funguje; Mělník a Nymburk operativně nejsou, dopočítáváme je z bilance vody (odchylka 0,5 a 8 %). |
+| Z11 | Když je to přímka, proč je předpověď křivka? (ot. 24, 29) | Ondra | Přímka je vztah mezi vstupem a hladinou, naučí se jednou: s jedním vstupem hladina za 24 h = 111 + 0,41 × průtok v Mělníku. Každou hodinu do ní dosadíme nová měření a vyjde bod; body za sebou v čase dají křivku. | levý graf přímka, pravý křivka | „Jak spočítáte sklon?“ → Nejmenší čtverce: sklon = kovariance děleno rozptyl vstupu, bias = průměr y − sklon × průměr x; s 98 vstupy je to 99 rovnic, vyřešené přesně za 0,4 s. |
+| Z12 | Jak vypadá přímka s 98 vstupy? (ot. 25, 26) | Ondra | Proti jednomu vstupu ji nakreslit nejde, potřebovala by 98 os. Na ose x je celý vážený součet, tedy předpověď, na ose y skutečnost: body leží těsně u úhlopříčky, chyba 7,5 cm proti 26,5 cm s jedním vstupem. | mrak bodů u úhlopříčky | „Proč zrovna 7 zpoždění?“ → Sousední hodiny jsou skoro stejná čísla (korelace 0,998), víc zpoždění by nic nepřidalo; síť, která si z 48 hodin vybírala sama, našla skoro stejné váhy a byla horší. |
+
+Rychlé kolo bez slajdů (každý odpovídá na dvě, které nejsou jeho; cíl do 15 s):
+
+1. Nepřeučil se model? (ot. 3, Ondra) → Na trénovacích povodních 19,7 cm, na validačních 15,5; přeučený model by byl na tréninku lepší, síť byla (5 proti 22). 98 vah ze 108 tisíc hodin.
+2. Jak víte, že nepoužíváte budoucnost? (ot. 9, Ondra) → Dělení v čase, kolem validačních povodní 20 dní vynecháno z učení, vstupy jen do okamžiku předpovědi; dvě pasti (doplňování děr, denní srážky) jsme našli a vyřadili.
+3. Proč bere Ústí i Děčín, který je po proudu? (ot. 5, Honza) → Tatáž voda změřená podruhé o 4 h později, vyhlazuje šum; známá v okamžiku předpovědi.
+4. Proč data mimo balíček? (ot. 7, Ondra) → Balíček má 2 roky a stanice z kraje; s tím 44,6 cm a polovina povodní propásnutá. Stejný zdroj, delší a víc stanic. Pozor: 44,6 je napodobenina balíčku (stejné stanice, roky 2017–2018).
+5. Den předem je jasné, že přijde povodeň; k čemu model? (ot. 39, Ondra) → Boris, předpověď ze 14. 9.: „zítra jako dnes“ 389 cm (žádné varování), model 577 (3. stupeň), skutečnost 551. Mezi 2. a 3. stupněm je 70 cm a podle toho se staví stěny a evakuuje.
+6. Proč má předpověď Borise zuby a zpoždění? (ot. 41, Honza) → Zuby při nízké vodě jsou elektrárny na Vltavě, hrb nad vrcholem je zploštění vlny v nivě, zpoždění na začátku voda, která ještě netekla stanicí; varování to nezměnilo.
+7. Co přesně model potřebuje? (ot. 33, Dan) → Jen hodinová měření ČHMÚ: průtok 12 stanic teď a před 3 až 36 h, hladina Děčín a Ústí teď a před 1 až 24 h. Žádné počasí, koryto ani povodí.
+8. Jak se model učí? (ot. 27, Ondra) → Odmocnina z průtoků, standardizace, nejmenší čtverce s pokutou za velké váhy (Ridge, alpha 1); jedna soustava 99 rovnic, 0,4 s.
+9. Učili jste i na povodních z deště v kraji? (ot. 38, Ondra) → Na všech hodinách; vybírat hezké povodně by bylo podvádění. Na 8/2010 je model slabší (34 % zlepšení) a je to v průměru −55 % započtené.
+10. Proti ČHMÚ? (ot. 17, Ondra) → Na dnešek vedle sebe (94 a 90 cm), na starých povodních archiv předpovědí ČHMÚ nemáme, srovnat se poctivě neumíme.
+
+Čeho se vyvarovat: neříkat „nevíme“ (říct „neměřili jsme, ale víme, co by to chtělo“), nepřebíjet se navzájem (odpovídá jeden, druhý nejvýš doplní číslo), nečíst ze slajdu, nezačínat „no“ a „vlastně“. Když otázka míří na něco, co není v tabulce, odpovídá Ondra a Tobias mezitím najde nejbližší záložní slajd.
 
 ## Když něco selže
 

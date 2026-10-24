@@ -23,15 +23,19 @@ Celkem 799 slov, při 130 slovech za minutu 6:08 mluvení. Zbytek do 6:45 je tic
 - Na slajdu: video rozlivu povodně 6/2013 přes celou obrazovku, bez zvuku (`web/prezentace/video/povoden_2013_decin_1080.mp4`, náhled `grafy/video_2013_poster.jpg`): Děčín hodinu po hodině od 1. 6. do vrcholu 6. 6. 2013, rozliv ze změřené hladiny, kamera se přibližuje k domům. Mezerník video spustí, po dohrání nebo dalším mezerníkem zůstane poslední snímek, nadpis a velké **18 h** („3. stupeň v Děčíně hlášen 18 hodin předem“).
 - Proč 2013: největší povodeň v našich datech (1 072 cm) a jediná, kdy voda v Děčíně došla mezi domy; při Borisovi (649 cm) zůstalo Labe skoro v korytě. Model ji nikdy neviděl: je učený na všem do 2020 bez této povodně a 20 dní kolem ní, nejvyšší hladina, kterou viděl, byla 875 cm. Číslo 27 h patří Borisovi a je na slajdu 7, pod videem 2013 by vypadalo jako číslo z roku 2013.
 
-Honza při spuštění videa, než se rozjede voda:
+Honza hned při spuštění videa:
 
-> Dobrý den. Červen 2013, největší povodeň za posledních dvacet let. Takhle stoupala voda v Děčíně hodinu po hodině.
+> Dobrý den. Normálně je Labe na vodočtu v Děčíně necelé dva metry. Dívejte se, co se stalo v červnu 2013.
 
-Pak asi 12 s ticho, voda se rozlévá mezi domy. Po dohrání, s nadpisem a 18 h:
+Pak asi 15 s ticho, voda stoupá. Až hladina v liště dojde na vrchol (kolem 22. sekundy), pomalu:
 
-> Model tuhle povodeň nikdy neviděl, a přesto ohlásil třetí stupeň 18 hodin předem. Předpovídáme hladinu v Děčíně a Ústí na 12, 24 a 36 hodin a varujeme před druhým a třetím stupněm. Pro komisi, hasiče a lidi u řeky.
+> Deset metrů sedmdesát dva. (pauza) Dá se tohle vědět den předem?
 
-59 slov (20 při startu videa, 39 po něm), asi 27 s mluvení a 12 s ticha.
+Po dohrání se video zmenší do karty, naskočí nadpis a 18 h:
+
+> Dá. Model, který tuhle povodeň nikdy neviděl, ohlásil třetí stupeň 18 hodin předem. Předpovídáme hladinu v Děčíně a Ústí na 12, 24 a 36 hodin a varujeme před druhým a třetím stupněm. Pro komisi, hasiče a lidi u řeky je to den navíc.
+
+73 slov (18 při startu, 9 na vrcholu, 46 po videu), asi 34 s mluvení a 15 s ticha.
 
 Čísla: `docs/POKUSY.md` so 9:30. Předpověď na 24 h vydaná 1. 6. ve 22:00 už byla nad 560 cm, voda 3. stupeň překročila 2. 6. v 16:00. Vrchol 6. 6. ve 2:00, 1 072 cm, předpověď vydaná 24 h předem 952 cm. Na 2. stupeň model varoval jen 2 až 4 h předem, nástup byl rychlý; kdyby se porota zeptala, říct to rovnou.
 
