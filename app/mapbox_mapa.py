@@ -522,7 +522,7 @@ const BUDOVY_OSM = D.budovy.length ? {type: 'FeatureCollection', features: D.bud
 const ATRIBUCE = ['Měření a N-leté průtoky © ČHMÚ', 'Záplavová území DIBAVOD (VÚV TGM)', DEM ? 'Terén ČÚZK DMR 5G' : '',
   BUDOVY_OSM ? 'Řeky a budovy © OpenStreetMap' : 'Řeky © OpenStreetMap'].filter(Boolean).map(t => t.replaceAll(' ', '\u00a0')).join('\u00a0· ');
 // pevný podklad: den, výchozí téma, 3D objekty a popisky míst; bez satelitu, názvů ulic a úředních území
-const N = {svetlo: 'day', tema: 'default', satelit: false, mista: true, poi: true, objekty: true, ulice: false, uredni: false};
+const N = {svetlo: 'day', tema: 'default', satelit: false, mista: true, poi: false, objekty: true, ulice: false, uredni: false};
 // vlastní budovy podle světla Standardu: den světle šedé jako Apple Maps, noc tmavě modrošedé; trocha svitu, ať jsou vidět i za šera
 const BUDOVY = {dawn: ['#e2e5ea', 0.45], day: ['#e6e6eb', 0.15], dusk: ['#d2d8e1', 0.7], night: ['#4a5b74', 0.8]};
 // popisky stanic: na světlé mapě tmavé s bílým lemem, za šera, v noci a na satelitu bílé s tmavým lemem
