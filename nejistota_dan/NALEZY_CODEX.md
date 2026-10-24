@@ -44,3 +44,19 @@ bere stav před 6 h správně z řádku vstupů.
 | nízká | `ZPRAVA_NEJISTOTA.md:122` Ústí +12 h 95 % v klidu 97, ne 98; rozsah 78–80, ne 79–80 | **Opraveno** (tabulka modelu aplikace je teď z přísné kontroly, rozsah 78–80 %) |
 | nízká | `nejistota_dan.py:98` vícerozměrná pole | **Opraveno**: `pasmo()` bere jen čísla a jednorozměrná pole, jinak výjimka |
 | nízká | `nejistota_dan.py:59` docstring slibuje pokrytí, ořez pořadí u malých vzorků | **Opraveno**: docstring bez záruky, na malý vzorek výjimka místo ořezu (skupiny pod 200 hodin stejně dostanou kvantily ze všech chyb) |
+
+## (d) Patche 01 a 10 a texty pro tým (so 04:38–04:40)
+
+Potvrdil: 01–10 jdou po sobě bez kolizí, 10 potřebuje 01; stav před 6 h správně v historii i Dnešku; patch 10 bere
+archiv a posun o horizont správně; šířky −9 až +24 a −30 až +56 cm sedí s `kvantily.json`.
+
+| Závažnost | Nález | Reakce |
+|---|---|---|
+| vysoká | `REVIZE_APLIKACE.md` 85–90 % neověřuje přímo nasazené pásmo (jiná kalibrace) | **Opraveno ve formulaci**: „kontrola metody“, nasazené kvantily jsou z 22 povodní včetně validačních |
+| vysoká | `PREZENTACE_PASMO.md` „8 z 10 podobných situací“ = podmíněné pokrytí | **Opraveno**: „zpětně asi v 8 z 10 hodin; při rychlém vzestupu jen asi ve 2 ze 3“ |
+| střední | srovnání s „dnešním pásmem“ používá 80% variantu týmové metody, ne skutečné 90% pásmo | **Opraveno**: dopočteno skutečné 90% pásmo (`vysledky/tym_pasmo_90.csv`: 72–83 %, rychlý vzestup 33–44 %), graf `pokryti.png` popisuje šedé sloupce jako „týmová metoda (také 80 %)“ |
+| střední | `01.patch` `popis_pasma()` nezná použitou větev a úroveň | **Opraveno**: `popis_pasma(nazev, uroven)` s úrovní v textu, volá se jen tam, kde `interval()` dostává stav před 6 h; poznámka o `ridge_vse` i u starého pásma |
+| střední | `01.patch` rozbitý `kvantily.json` shodí stránku | **Opraveno**: `_nejistota()` modul zkusí jedním voláním, při chybě zůstane staré pásmo (ověřeno s podvrženým rozbitým JSON) |
+| střední | `ZPRAVA_NEJISTOTA.md` šířka 32 cm je průměr, ne Děčín +24 h | **Opraveno**: 29 cm |
+| střední | `PREZENTACE_PASMO.md` „ani v Praze“ není v definici začátku vzestupu | **Opraveno** |
+| nízká | „trefíme se skoro na centimetry“ | **Opraveno**: „bývají chyby malé“ |

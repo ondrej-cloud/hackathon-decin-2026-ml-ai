@@ -56,13 +56,13 @@ a test a řekne, že předstih je nejvýš horizont a propásnutá povodeň = 0.
 (ČÚZK DMR 5G)** (`app.py:293–296, 339–342`; `mapbox_mapa.py:403` výchozí `uredni: false`). Patch `04.patch`.
 
 **V4. Pásmo „nejspíš“ slibuje víc, než platí, a na výchozí obrazovce ho skutečnost mine.** Popisek (`app.py:228`)
-„90 % chyb na tréninku; na povodních… asi 8 z 10“: vnořená kontrola na 22 povodních (`ZPRAVA_NEJISTOTA.md`) dává
-dnešnímu pásmu na povodních 59–72 % a na začátku vzestupu 15 %.
-- Patch `01.patch` napojí nové pásmo (`nejistota_dan.pasmo`, 80 %, ověřené 78–80 % na 22 povodních, na modelu aplikace
-  a neviděné validaci 85–90 %, při rychlém vzestupu ~2 ze 3). Legenda a popisky se berou z `popis_pasma()`, takže se
+„90 % chyb na tréninku; na povodních… asi 8 z 10“: vnořená kontrola na 22 povodních 2006–2020 dává tomuto 90% pásmu
+72–83 % hodin, při rychlém vzestupu 33–44 % a na začátku vzestupu 19–38 % (`vysledky/tym_pasmo_90.csv`).
+- Patch `01.patch` napojí nové pásmo (`nejistota_dan.pasmo`, 80 %, zpětně 78–80 % na 22 povodních, při rychlém vzestupu
+  ~2 ze 3; kontrola metody na modelu aplikace s kalibrací bez validace 85–90 %). Legenda a popisky se berou z `popis_pasma()`, takže se
   řídí tím, které pásmo se opravdu použilo; u `ridge_vse` je věta, že jde o neověřený odhad. Potřebuje sloučit
-  `nejistota_dan/` z větve `dan-nejistota` (modul + `kvantily.json`); bez nich zůstane staré pásmo i se starým
-  popiskem (ověřeno), nic nespadne.
+  `nejistota_dan/` z větve `dan-nejistota` (modul + `kvantily.json`); bez nich nebo s rozbitým `kvantily.json`
+  zůstane staré pásmo i se starým popiskem (ověřeno), nic nespadne.
 - Patch `10.patch` (jen po 01): pásmo i v grafu povodně na záložce Jak dobře to funguje. Snímky aplikace s 01 a 10
   z dočasné kopie mimo repo: `grafy/aplikace_ted.png`, `grafy/aplikace_povoden_2011.png`. Text pro prezentaci:
   `PREZENTACE_PASMO.md`.

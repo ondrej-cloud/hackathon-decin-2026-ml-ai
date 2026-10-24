@@ -1,0 +1,7 @@
+model,cil,horizont,varianta,uroven,pokryti,sirka,skore,pokryti_min_povoden,pokryti_zacatek,sirka_zacatek,n_zacatek,pokryti_pokles,pokryti_klid,pokryti_vzestup,pokryti_rychly_vzestup
+ridge,decin,12,tym_trenink,0.9,0.8293,26.8532,65.155,0.5398,0.375,24.197,112,0.8822,0.9239,0.7547,0.4427
+ridge,decin,24,tym_trenink,0.9,0.7702,40.5989,135.7174,0.4152,0.303,35.2233,406,0.8877,0.9065,0.6647,0.4029
+ridge,decin,36,tym_trenink,0.9,0.7219,58.4697,253.0069,0.4118,0.213,49.8931,756,0.8935,0.8838,0.6499,0.3297
+ridge,usti,12,tym_trenink,0.9,0.8215,37.4239,73.6741,0.5606,0.1901,29.4262,142,0.8577,0.941,0.7573,0.3801
+ridge,usti,24,tym_trenink,0.9,0.7768,50.2779,157.312,0.4948,0.2948,42.0688,458,0.8754,0.9169,0.6924,0.4144
+ridge,usti,36,tym_trenink,0.9,0.7205,64.1916,278.4592,0.4221,0.2067,55.678,808,0.8941,0.8929,0.6125,0.3249

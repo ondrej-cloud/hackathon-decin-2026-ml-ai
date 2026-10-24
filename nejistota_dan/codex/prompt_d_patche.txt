@@ -1,0 +1,7 @@
+Jsi nezávislý kontrolor. Zkontroluj návrhy oprav aplikace a texty, které uvidí tým ráno.
+
+PRAVIDLA: NIC neměň ani nezapisuj (žádné git apply do pracovního stromu, žádné měnící git příkazy), aplikaci nespouštěj; patche smíš ověřit jen `git apply --check` nebo čtením. Python jen krátce s -B. Nečti .env ani přihlašovací údaje. Test 2021–2025 nepoužívej. Nálezy: [závažnost] soubor:řádek – co – proč – jak opravit. Česky, nejvýš ~40 řádků.
+
+SOUBORY: nejistota_dan/patche/01.patch (pásmo nejistoty v app/predikce.py a app/app.py, funkce _nejistota, popis_pasma), nejistota_dan/patche/10.patch (pásmo v grafu povodně, má jít jen po 01), ostatní patche 02–09 jen pro kolize; nejistota_dan/REVIZE_APLIKACE.md, nejistota_dan/PREZENTACE_PASMO.md, nejistota_dan/ZPRAVA_NEJISTOTA.md (shrnutí), nejistota_dan/vysledky/kontrola_aplikace_prisne.csv.
+
+OVĚŘ: 1) Jsou patche 01 a 10 správné (stav před 6 h, záloha bez modulu nebo bez kvantily.json, popis_pasma podle použitého pásma, ridge_vse, Dnešek, pásmo v grafu povodně z archivu, ne z Dneška)? Nemůže něco shodit stránku? 2) Jdou 01–10 po sobě (`git apply --check` postupně jen v paměti nebo úvahou z kontextů)? 3) Sedí čísla v PREZENTACE_PASMO.md a shrnutí ZPRAVA_NEJISTOTA.md s CSV (vysledky/souhrn_variant.csv, kontrola_aplikace_prisne.csv, kvantily.json – šířky −9 až +24 a −30 až +56 cm pro ridge_decin_24 při 80 %)? 4) Přehání někde text?

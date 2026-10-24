@@ -100,12 +100,12 @@ def graf_pokryti():
     fig, ax = slajd("Nové pásmo sedí na povodních celkově, při rychlém vzestupu je pořád užší",
                     f"Kolik skutečných hladin se na 22 povodních 2006–2020 vešlo do pásma „80{NB}%“, týmová lineární"
                     " regrese",
-                    "Vnořeně: pásmo každé povodně jen z ostatních povodní · dnešní = chyby na učicích datech podle"
-                    " výšky hladiny · nové = chyby mimo trénink podle očekávané změny",
+                    "Vnořeně: pásmo každé povodně jen z ostatních · týmová metoda = chyby na učicích datech (také 80"
+                    f"{NB}%) · nové = chyby mimo trénink podle očekávané změny",
                     rect=(0.085, 0.17, 0.89, 0.585))
     x = np.array([0, 1, 2, 3.4, 4.4, 5.4])
     s = 0.27
-    rady = [("tym_trenink", "pokryti", "#c9c9c9", "dnešní, všechny hodiny"),
+    rady = [("tym_trenink", "pokryti", "#c9c9c9", "týmová metoda, všechny hodiny"),
             (v, "pokryti", MODRA, "nové, všechny hodiny"),
             (v, "pokryti_rychly_vzestup", MODRA_SVETLA, "nové, rychlý vzestup (≥ 50 cm)")]
     for i, (var, sl, barva, popis) in enumerate(rady):
