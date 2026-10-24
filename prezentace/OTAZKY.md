@@ -82,3 +82,6 @@ Hladina zítra je hladina teď plus to, o kolik se za den změní, dnešní voda
 **24. Když je to lineární regrese, proč je předpověď v grafu křivka?** (Ondra, slajd Z11)
 Přímka je vztah mezi vstupy a hladinou, naučí se jednou: zjednodušeně s jedním vstupem hladina za 24 h = 111 + 0,41 × průtok v Mělníku. Každou hodinu do ní dosadíme nová měření a vyjde jeden bod; body za sebou v čase dají křivku. Skutečný model dělá totéž s 98 vstupy najednou (vážený součet, slajd 5).
 
+**25. Jak vypadá ta přímka, když je vstupů 98?** (Ondra, slajd Z12)
+Proti jednomu vstupu ji nakreslit nejde, potřebovala by 98 os. Když na osu x dáme celý vážený součet (předpověď) a na osu y skutečnost, je to zase přímka a body leží těsně u úhlopříčky: na validaci průměrná chyba 7,5 cm proti 26,5 cm s jediným vstupem.
+

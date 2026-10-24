@@ -1,6 +1,6 @@
 # Slajdy a texty řečníků
 
-Devět slajdů na 6:45, rezerva 15 s do 7:00, pak jedenáct záložních. Každý slajd odpovídá na jednu otázku, kterou by porota položila; nadpis slajdu je odpověď a pod ním jsou věci, které musí zaznít. Text řečníka je napsaný tak, jak se říká nahlas, na zhruba 130 slov za minutu. `[mezerník]` je další krok decku. Živé demo neděláme, web otevíráme až při otázkách. Body zadání: 1 co řešíme, 2 data, 3 příprava dat, 4 vstupy, 5 model, 6 ověření, 7 limity.
+Devět slajdů na 6:45, rezerva 15 s do 7:00, pak dvanáct záložních. Každý slajd odpovídá na jednu otázku, kterou by porota položila; nadpis slajdu je odpověď a pod ním jsou věci, které musí zaznít. Text řečníka je napsaný tak, jak se říká nahlas, na zhruba 130 slov za minutu. `[mezerník]` je další krok decku. Živé demo neděláme, web otevíráme až při otázkách. Body zadání: 1 co řešíme, 2 data, 3 příprava dat, 4 vstupy, 5 model, 6 ověření, 7 limity.
 
 | # | Čas | Řečník | Otázka poroty | Nadpis (odpověď) | Bod |
 |---|---|---|---|---|---|
@@ -218,5 +218,11 @@ Web field-zero.netlify.app se otevře rovnou na Dnešku: hladina v Děčíně a 
 
 Graf `grafy/Z11_primka_a_krivka.png`. Odpovídá Ondra.
 
-Přímka je vztah mezi tím, co teče proti proudu, a hladinou v Děčíně, ne tvar v čase. Zjednodušeně s jedním vstupem: vlevo je každá hodina 2006–2018 jeden bod (průtok v Mělníku proti hladině v Děčíně o 24 h později) a přímka se jimi proloží jednou, hladina za 24 h = 111 + 0,41 × průtok v Mělníku. Vpravo se do té samé přímky každou hodinu dosadí nový průtok a body v čase dají křivku. Skutečný model má 98 vstupů, takže místo přímky v rovině je to vážený součet, který nejde nakreslit; pro jednu hodinu ho ukazuje slajd 5. Jedna stanice nestačí: po vrcholu jde jednovstupová přímka na 800 cm, protože nepozná, že voda už nepřibývá.
+Přímka je vztah mezi tím, co teče proti proudu, a hladinou v Děčíně, ne tvar v čase. Zjednodušeně s jedním vstupem: vlevo je každá hodina 2006–2018 jeden bod (průtok v Mělníku v tu hodinu a hladina v Děčíně o 24 h později, protože se učíme dvojice „co víme dnes“ a „co bylo zítra“) a přímka se jimi proloží jednou, hladina za 24 h = 111 + 0,41 × průtok v Mělníku. Vpravo se do té samé přímky každou hodinu dosadí nový průtok a body v čase dají křivku. Skutečný model má 98 vstupů, takže místo přímky v rovině je to vážený součet, který nejde nakreslit; pro jednu hodinu ho ukazuje slajd 5. Jedna stanice nestačí: po vrcholu jde jednovstupová přímka na 800 cm, protože nepozná, že voda už nepřibývá.
+
+### Z12 · Jak je to s přímkou, když je vstupů 98?
+
+Graf `grafy/Z12_jeden_a_98_vstupu.png`. Odpovídá Ondra.
+
+S 98 vstupy nejde nakreslit přímku proti jednomu z nich, potřebovala by 98 os. Když ale na osu x dáme celý vážený součet, tedy předpověď modelu, a na osu y skutečnou hladinu o 24 h později, je model zase přímka a přesná předpověď leží na úhlopříčce. Na validaci (hodiny, které model neviděl, Děčín +24 h): s jediným vstupem (průtok v Mělníku) jsou body rozházené, průměrná chyba 26,5 cm, a nad 1. stupněm se přímka ohýbá vedle; s 98 vstupy leží těsně u úhlopříčky, 7,5 cm. Je to chyba přes všechny hodiny, při povodních je u Děčína na 24 h 15,5 cm (naše hlavní číslo 17,1 cm je průměr přes Děčín, Ústí a 12, 24, 36 h). Každý vstup zvlášť barevně do jednoho grafu dát nejde: mají různé jednotky (cm a m³/s) a přímka patří k jejich součtu, ne k jednomu z nich; po řekách sečtené příspěvky pro jednu hodinu ukazuje slajd 5.
 
