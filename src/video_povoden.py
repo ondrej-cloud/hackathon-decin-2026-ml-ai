@@ -1,8 +1,8 @@
-"""Video povodně z 3D mapy (app/mapbox_mapa.py) pro úvod prezentace: hodina po hodině, střihy a přibližování podle hladiny.
+"""Video povodně z 3D mapy (app/mapbox_mapa.py) pro úvod prezentace: hodina po hodině, kamera se plynule přibližuje s hladinou.
 
 Rozliv ze změřené hladiny, dole přehrávač s grafem; boční boxy skryté. Playwright nafotí KROKU snímků na každou hodinu
-(voda se mění po hodinách, kamera jede plynule se zpomalením na začátku a konci záběru) a ffmpeg je složí beze změny,
-takže je obraz ostrý (60 fps, žádné prolínání). Vlevo nahoře je skleněná pilulka s datem a hodinou, boční boxy jsou skryté.
+(voda se mění po hodinách, kamera jede jedním plynulým průletem bez střihů, zpomalí jen na začátku a na konci) a ffmpeg
+je složí beze změny, takže je obraz ostrý (60 fps, žádné prolínání). Vlevo nahoře je skleněná pilulka s datem a hodinou, boční boxy jsou skryté.
 Volba --porovnani zapne režim vlevo předpověď 24 h předem, vpravo skutečnost (v prezentaci se nepoužívá).
 
 Spuštění z kořene repa (Windows: `$env:PYTHONUTF8=1; .venv\\Scripts\\python -u src\\video_povoden.py`, Mac: `.venv/bin/python -u src/video_povoden.py`):
@@ -15,6 +15,7 @@ Potřebuje MAPBOX_TOKEN v .env, Playwright (`pip install playwright`, Chrome v p
 Na Macu se stránka vykreslí v písmu San Francisco, na Windows v Interu. HTML s tokenem zůstává jen v dočasné složce.
 """
 import argparse
+import bisect
 import json
 import platform
 import re
@@ -39,17 +40,15 @@ LIMIT = 6000  # ms čekání na idle mapy u jednoho snímku
 KROKU = 11  # snímků na hodinu povodně; 133 hodin × 11 = 1 463 snímků, při 60 fps 24 s
 FPS = 60
 
-# Záběry pro Děčín 6/2013: k je číslo snímku (hodina od --od), kamera se uvnitř záběru plynule posouvá od "od" k "do".
-# Střih je mezi záběry. "stred": None = kamera města z mapy (D.kamery). Jiná povodeň nebo město: doladit přes --diag.
-ZABERY = [
-    {"nazev": "celé město", "k_od": 0, "k_do": 50, "stred": None,
-     "zoom": (13.6, 13.9), "bearing": (-10, -4), "pitch": 60},
-    {"nazev": "ohyb řeky a centrum", "k_od": 51, "k_do": 90, "stred": [14.2085, 50.7745],
-     "zoom": (14.35, 14.65), "bearing": (-28, -20), "pitch": 62},
-    {"nazev": "nábřeží zblízka", "k_od": 91, "k_do": 114, "stred": [14.2135, 50.7770],
-     "zoom": (15.0, 15.3), "bearing": (22, 30), "pitch": 64},
-    {"nazev": "vrchol mezi domy", "k_od": 115, "k_do": 132, "stred": [14.2150, 50.7762],
-     "zoom": (15.45, 15.8), "bearing": (-38, -28), "pitch": 66},
+# Průlet kamery pro Děčín 6/2013: k je hodina od --od, kamera prochází klíčovými pozicemi bez střihů. Zoom roste s hladinou
+# (od celého města k domům Starého Města) a kamera se celou dobu pomalu stáčí jedním směrem. Jiná povodeň nebo město:
+# doladit pozice přes --diag.
+KLICE = [
+    {"nazev": "celé město", "k": 0, "stred": [14.2040, 50.7730], "zoom": 13.6, "bearing": -10, "pitch": 58},
+    {"nazev": "město, voda stoupá", "k": 42, "stred": [14.2055, 50.7736], "zoom": 13.95, "bearing": -14, "pitch": 60},
+    {"nazev": "ohyb řeky a centrum", "k": 78, "stred": [14.2085, 50.7745], "zoom": 14.6, "bearing": -21, "pitch": 62},
+    {"nazev": "nábřeží zblízka", "k": 106, "stred": [14.2128, 50.7760], "zoom": 15.25, "bearing": -27, "pitch": 64},
+    {"nazev": "vrchol mezi domy", "k": 132, "stred": [14.2150, 50.7762], "zoom": 15.8, "bearing": -32, "pitch": 66},
 ]
 
 CEKEJ = """() => {
@@ -122,21 +121,25 @@ def cisty(text):
     return re.sub(r"(access_token=|pk\.)[A-Za-z0-9._-]+", r"\1***", str(text))
 
 
-def zaber(k):
-    for z in ZABERY:
-        if z["k_od"] <= k < z["k_do"] + 1:
-            return z
-    return ZABERY[-1]
+def hladce(xs, ys, x):
+    """Monotónní kubická interpolace (Fritsch a Carlson): rychlost bez skoků, bez přestřelení, na krajích zastaví."""
+    n = len(xs)
+    s = [(ys[i + 1] - ys[i]) / (xs[i + 1] - xs[i]) for i in range(n - 1)]
+    d = [0.0] + [0.0 if s[i - 1] * s[i] <= 0 else 2 / (1 / s[i - 1] + 1 / s[i]) for i in range(1, n - 1)] + [0.0]
+    i = max(0, min(n - 2, bisect.bisect_right(xs, x) - 1))
+    h = xs[i + 1] - xs[i]
+    t = max(0.0, min(1.0, (x - xs[i]) / h))
+    return ((2 * t**3 - 3 * t**2 + 1) * ys[i] + (t**3 - 2 * t**2 + t) * h * d[i]
+            + (-2 * t**3 + 3 * t**2) * ys[i + 1] + (t**3 - t**2) * h * d[i + 1])
 
 
 def kamera(k):
-    z = zaber(k)
-    t = 0 if z["k_do"] == z["k_od"] else (k - z["k_od"]) / (z["k_do"] - z["k_od"])
-    t = max(0.0, min(1.0, t))
-    t = t * t * (3 - 2 * t)  # zpomalení na začátku a konci záběru, působí filmově
-    lin = lambda a: a[0] + (a[1] - a[0]) * t  # noqa: E731
-    return {"center": z["stred"], "zoom": round(lin(z["zoom"]), 4), "bearing": round(lin(z["bearing"]), 3),
-            "pitch": z["pitch"], "zaber": z["nazev"]}
+    xs = [z["k"] for z in KLICE]
+    hod = lambda kl: hladce(xs, [kl(z) for z in KLICE], k)  # noqa: E731
+    nejbliz = min(KLICE, key=lambda z: abs(z["k"] - k))
+    return {"center": [round(hod(lambda z: z["stred"][0]), 6), round(hod(lambda z: z["stred"][1]), 6)],
+            "zoom": round(hod(lambda z: z["zoom"]), 4), "bearing": round(hod(lambda z: z["bearing"]), 3),
+            "pitch": round(hod(lambda z: z["pitch"]), 3), "zaber": nejbliz["nazev"]}
 
 
 class Natoceni:
@@ -209,7 +212,6 @@ class Natoceni:
             b, page, chyby, info = self.otevri(pw, rezim)
             if page is None:
                 return None
-            strihy = {z["k_od"] for z in ZABERY}
             page.evaluate(KROK, {"i": i0, "kamera": kamera(0), "limit": 20000})
             page.evaluate("() => cekej(10000)")
             casy, zaznamy = [], []
@@ -219,15 +221,12 @@ class Natoceni:
                     t = time.time()
                     kf = k + sub / KROKU  # kamera jede plynule i uvnitř hodiny, voda se mění po hodinách
                     kam = kamera(kf)
-                    strih = sub == 0 and k in strihy
-                    vysl = page.evaluate(KROK, {"i": i, "kamera": kam, "limit": 20000 if strih else LIMIT})
-                    if strih:
-                        page.evaluate("() => cekej(6000)")
+                    vysl = page.evaluate(KROK, {"i": i, "kamera": kam, "limit": LIMIT})
                     page.screenshot(path=str(self.snimky / f"{n:04d}.png"))
                     n += 1
                     casy.append(time.time() - t)
                     zaznamy.append({"n": n - 1, "k": k, "i": i, "zaber": kam["zaber"], **vysl, "s": round(casy[-1], 2)})
-                    if sub == 0 and (k % 12 == 0 or k < 3 or k in strihy):
+                    if sub == 0 and (k % 12 == 0 or k < 3):
                         tisk(f"  {k:3d} i={i} {vysl['datum']} {vysl['h']} cm / předpověď {vysl['p']} cm  {kam['zaber']}  {vysl['stav']}  {casy[-1]:.1f} s")
                 if rezim != "okno" and k == 2 and sum(casy) / len(casy) > POMALU:
                     tisk(f"{rezim} je pomalý ({sum(casy) / 3:.1f} s na snímek), zkusím další režim")
@@ -242,9 +241,12 @@ class Natoceni:
                        "zaznamy": zaznamy}
 
     def diag(self, i0, rezimy):
-        """Snímek začátku prvního záběru a konce každého záběru: diag_<n>_<nazev>.png v dočasné složce."""
+        """Snímek v každé klíčové pozici kamery a mezi nimi: diag_<n>_<nazev>.png v dočasné složce."""
         from playwright.sync_api import sync_playwright
-        body = [(0, "zacatek")] + [(z["k_do"], z["nazev"].replace(" ", "_")) for z in ZABERY]
+        body = []
+        for a, b in zip(KLICE, KLICE[1:]):
+            body += [(a["k"], a["nazev"].replace(" ", "_").replace(",", "")), ((a["k"] + b["k"]) // 2, "mezi")]
+        body.append((KLICE[-1]["k"], KLICE[-1]["nazev"].replace(" ", "_")))
         for rezim in rezimy:
             with sync_playwright() as pw:
                 b, page, chyby, info = self.otevri(pw, rezim)

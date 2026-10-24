@@ -559,8 +559,9 @@ const ATRIBUCE = ['Měření a N-leté průtoky © ČHMÚ', 'Záplavová území
   BUDOVY_OSM ? 'Řeky a budovy © OpenStreetMap' : 'Řeky © OpenStreetMap'].filter(Boolean).map(t => t.replaceAll(' ', '\u00a0')).join('\u00a0· ');
 // podklad: pevně soumrak a výchozí téma (nepřepínají se); zobrazení přepíná pravý box, výchozí jsou popisky míst a 3D objekty
 const N = {svetlo: 'dusk', tema: 'default', satelit: false, mista: true, poi: false, objekty: true, ulice: false, uredni: false};
-// vlastní budovy podle světla Standardu: den světle šedé jako Apple Maps, noc tmavě modrošedé; trocha svitu, ať jsou vidět i za šera
-const BUDOVY = {dawn: ['#e2e5ea', 0.45], day: ['#e6e6eb', 0.15], dusk: ['#d2d8e1', 0.7], night: ['#4a5b74', 0.8]};
+// vlastní budovy podle světla Standardu: den světle šedé jako Apple Maps, noc tmavě modrošedé. Za šera bez vlastního svitu,
+// takže je nasvítí stejné slunce jako budovy Standardu (hnědé se stíny) a při přiblížení přes zoom 15 není vidět přechod.
+const BUDOVY = {dawn: ['#e2e5ea', 0.45], day: ['#e6e6eb', 0.15], dusk: ['#e6e1da', 0], night: ['#4a5b74', 0.8]};
 // popisky stanic: na světlé mapě tmavé s bílým lemem, za šera, v noci a na satelitu bílé s tmavým lemem
 const popisky = m => m.satelit || N.svetlo === 'dusk' || N.svetlo === 'night'
   ? ['#ffffff', 'rgba(29, 29, 31, 0.9)'] : ['#1d1d1f', 'rgba(255, 255, 255, 0.95)'];
@@ -648,7 +649,7 @@ function pridejVrstvy(m) {
     paint: {
       'fill-extrusion-color': BUDOVY[N.svetlo][0], 'fill-extrusion-emissive-strength': BUDOVY[N.svetlo][1],
       'fill-extrusion-height': ['coalesce', ['get', 'height'], 9], 'fill-extrusion-base': ['coalesce', ['get', 'min_height'], 0],
-      'fill-extrusion-vertical-gradient': true, 'fill-extrusion-ambient-occlusion-intensity': 0.35,
+      'fill-extrusion-vertical-gradient': N.svetlo !== 'dusk', 'fill-extrusion-ambient-occlusion-intensity': 0.35,
       // satelit 3D budovy nemá, tam zůstanou naše; ve Standardu se prolnou s jeho budovami (ty najíždějí 15 až 15,3)
       'fill-extrusion-opacity': m.satelit ? 1 : ['interpolate', ['linear'], ['zoom'], 15, 1, 15.3, 0]
     }});

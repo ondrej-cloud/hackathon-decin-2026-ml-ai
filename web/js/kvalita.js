@@ -1,5 +1,5 @@
 // Stránka Přesnost: chyba a předstih varování při povodni proti odhadu beze změny, graf celé povodně a tabulka po dnech.
-import { typo, cislo, cm, jedn, parseIso, datum, denMesic } from "./typo.js";
+import { typo, cislo, cm, jedn, parseIso, denMesic } from "./typo.js";
 import { DATA, H, NAZVY, BARVY, nacti, stav, zapisStav, odznak } from "./data.js";
 import { $, hlaska, dlazdice, segmenty, naZmenu, oznam, hlava } from "./spolecne.js";
 import { graf } from "./graf.js";

@@ -6,8 +6,8 @@ Statický web ve složce `web/`. Na Netlify se publikuje celá složka tak, jak 
 
 | Cesta | Co to je | Odkud se bere |
 |---|---|---|
-| `web/index.html` | Teď: vodočet, odečty, stanice, povodně, přepínač Dnešek; bez `povoden` a `cas` v adrese se otevře Dnešek, `?povoden=…` nebo `?dnesek=0` historie | ručně |
-| `web/kvalita.html` | Jak dobře to funguje | ručně |
+| `web/index.html` | Předpověď: hladina teď a za 12, 24 a 36 h v jedné kartě, graf a vodočet, průtoky a srážky sbalené v Podrobnostech; přepínač Dnes / Povodně z historie (v historii posuvník času a v grafu i to, co pak přišlo); bez `povoden` a `cas` v adrese se otevře Dnes, `?povoden=…` nebo `?dnesek=0` historie | ručně |
+| `web/kvalita.html` | Přesnost: čtyři čísla povodně (chyba proti odhadu beze změny, varování, vrchol, plané poplachy), graf celé povodně, tabulka po dnech sbalená | ručně |
 | `web/mapa.html`, `web/animace.html` | karta s výběrem a iframe | ručně |
 | `web/prezentace/index.html` | HTML deck; otvírá se vždy jako `/prezentace/` (bez `index.html`, jinak server přesměruje a deck se nenačte); odkazy z decku do aplikace vedou na `../index.html?povoden=…` (na Netlify funguje bez přesměrování, ověřeno); lokální `npx serve` dotaz u `index.html` zahazuje, proto lokálně testovat přes `/?povoden=…` | ručně |
 | `web/css/`, `web/js/`, `web/fonts/`, `web/img/` | vzhled, skripty, písma (OFL), obrázky | ručně |
