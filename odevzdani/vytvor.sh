@@ -1,6 +1,6 @@
 #!/bin/bash
-# Čistá kopie k odevzdání: kód, výsledky, CSV, prezentace a dokumentace. Bez dat, vah modelů, .venv a interních
-# souborů týmu. Spouští se z kořene repa: bash odevzdani/vytvor.sh [cílová složka]
+# Čistá kopie k odevzdání: kód, výsledky, CSV, prezentace a dokumentace. Bez dat, vah modelů, .venv, interních
+# souborů týmu a pracovních snímků decku a webu. Spouští se z kořene repa: bash odevzdani/vytvor.sh [cílová složka]
 set -euo pipefail
 CIL=${1:-../hackathon-2026-odevzdani}
 TMP=$(mktemp -d)
@@ -10,7 +10,7 @@ TMP=$(mktemp -d)
 git ls-files -- app src web prezentace results models/ridge_intervaly.json data/external/README.md \
   data/external/nahled netlify.toml .streamlit/config.toml docs/grafy \
   docs/PREHLED.md docs/CESTA_MODELU.md docs/POKUSY.md docs/DENIK.md docs/DATA.md docs/POROZUMENI.md docs/WEB.md \
-  ':!results/predpovedi' ':!results/csv' > "$TMP/seznam"
+  ':!results/predpovedi' ':!results/csv' ':!docs/grafy/deck*' ':!docs/grafy/web*' ':!docs/grafy/ui*' > "$TMP/seznam"
 mkdir "$TMP/kopie"
 rsync -a --files-from="$TMP/seznam" . "$TMP/kopie/"
 mkdir -p "$TMP/kopie/results/csv"
