@@ -1,5 +1,7 @@
 # Prezentace na 7 minut: kostra
 
+Hotová prezentace na jednom místě (texty řečníků doslova, demo klik po kliku, otázky poroty a grafy) je ve složce `prezentace/`, tady zůstává kostra a proč je takhle postavená.
+
 Návrh Ondry (so 1:00, upraveno so 1:15). Vizuální jazyk, barvy, písma a stavba v Canvě zůstávají podle Honzova `docs/PREZENTACE.md`, ten plán je ale na 15 minut a 16 slajdů. Tady je zkrácený na 7 minut a 10 slajdů. Nezačínáme problémem, ale tím, co řešení umí: ukážeme rozliv a hned řekneme, komu pomáhá. Metody (dělení v čase, vícenásobná validace, test jednou, co všechno jsme zkoušeli) mají vlastní slajdy, protože za postup a odbornost je 30 bodů z 50.
 
 Zadání chce, aby v prezentaci zaznělo sedm věcí. U každého slajdu je číslo bodu, který pokrývá: 1 co řešíme, 2 data, 3 příprava dat, 4 vstupy, 5 model, 6 ověření, 7 limity.

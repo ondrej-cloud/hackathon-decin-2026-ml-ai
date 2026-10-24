@@ -1,0 +1,71 @@
+# Otázky poroty
+
+Nejpravděpodobnější otázky po 7 minutách, odpověď na dvě tři věty a kdo odpovídá. Kde je záložní slajd, ukázat ho rovnou (v decku End a šipkou zpět). Delší odpovědi jsou v `docs/POROZUMENI.md` (sekce Otázky, které čekáme od poroty) a celá cesta modelu v `docs/CESTA_MODELU.md`.
+
+Kdo odpovídá: Ondra data, ověřování a výsledky, Honza model jako součet, aplikace a rozliv, Dan modely, srážky a limity, Tobias uživatel a k čemu to je. Když řečník neví, předá Ondrovi.
+
+## Model
+
+**1. Proč lineární regrese a ne neuronová síť?** (Dan, slajd Z1)
+Na čtyřech povodních, které model neviděl, vyšla nejlíp: 17,1 cm, síť 17,8, LightGBM 23,1, fyzikální 24,8. Velkých povodní je v tréninku málo, síť s přes 20 tisíci vahami se z nich naučí i náhodu, regrese má 98 vah. A každou váhu umíme ukázat a vysvětlit.
+
+**2. Na testu vyšla síť lépe. Proč jste ji nevzali?** (Ondra)
+Finální model jsme zapsali před testem a podle testu ho neměníme, jinak by test přestal být nezávislý. Síť byla na testu o 1,1 cm lepší, ve vícenásobné validaci o 0,9 cm horší, je to v rámci náhody. Regrese je jednodušší a ve vícenásobné validaci se ve varování pletla méně (1 propásnutá a 3 plané proti 4 a 5 u sítě).
+
+**3. Nepřeučil se váš model?** (Ondra)
+Kontrolovali jsme to: v Děčíně na 24 h je chyba na trénovacích povodních 19,7 cm a na validačních 15,5, na tréninku tedy není lepší, jak by u přeučeného modelu byla (síť měla 5 proti 22 cm). 98 vah se odhaduje ze 108 tisíc hodin. Když jsme přidali stovky vstupů (polynom), přeučení se objevilo a model byl horší.
+
+**4. Proč jsou některé váhy záporné?** (Honza, slajd Z6)
+Model odečítá hodnotu před pár hodinami od hodnoty teď, tedy počítá trend: stoupá, nebo klesá. Proto je oranžové políčko vždycky hned vedle modrého.
+
+**5. Proč model pro Ústí bere i Děčín, který je po proudu?** (Honza)
+Hladina v Děčíně je tatáž voda změřená podruhé o 4 h později, model si tím vyhlazuje šum měření. Je to hodnota známá v okamžiku předpovědi, ne informace z budoucnosti.
+
+**6. Jak znáte hladinu, když neznáte šířku a tvar koryta?** (Honza)
+Šířku potřebujeme jen tam, kde hladinu předpovídáme, v Děčíně a v Ústí, a tam ji model zná z 20 let měření: kdy tekl jaký průtok a jaká byla hladina. ČHMÚ hladinu měří přímo a průtok z ní počítá přes měrnou křivku. Proti proudu bereme průtok v m³/s, a ten na šířce koryta nezávisí.
+
+## Data a ověření
+
+**7. Proč jste brali data mimo balíček?** (Ondra, slajd 3)
+Balíček má dva roky a stanice v kraji, nejvýš proti proudu je Ústí, 4 hodiny před Děčínem. S ním by model měl chybu 44,6 cm, stejně jako „bude jako teď“, a propásl by polovinu povodní. Archiv ČHMÚ je stejný zdroj, za 2024 a 2025 sedí s balíčkem na centimetr.
+
+**8. Jak jste data připravili?** (Ondra)
+Hodinové hladiny a průtoky ČHMÚ 2006–2025, každá hodnota je průměr za hodinu. Zkontrolovali jsme bilanci vody mezi stanicemi, měrné křivky a časy, vyřadili jsme jen 5. až 8. 2. 2006 v Děčíně (hladina 1 019 cm při průtoku 120 m³/s, nejspíš led). Díry nedoplňujeme a z průtoků bereme odmocninu, protože hladina roste s průtokem zhruba jako odmocnina.
+
+**9. Jak víte, že model nepoužívá informace z budoucnosti?** (Ondra, slajd 6)
+Dělíme v čase, nikdy náhodně, a kolem validačních povodní vynecháváme z učení 20 dní. Vstupy jsou jen hodnoty změřené do okamžiku předpovědi. Našli jsme dvě pasti, které budoucnost do vstupů pouštěly, doplňování děr a denní srážky, a obě jsme vyřadili.
+
+**10. Nemáte výsledek jen ze šťastně vybrané validace?** (Ondra, slajd 8)
+Proto vícenásobná validace: každou z 8 povodní 2006–2020 jsme jednou vynechali a model naučili na ostatních. Chyba 20,1 ± 7,7 cm proti 45,2 u „bude jako teď“, o 55 % méně, stejně jako na testu. Chyba víc záleží na povodni (11 až 34 cm) než na modelu.
+
+**11. Co je „bude jako teď“ a proč se s tím srovnáváte?** (Ondra, slajd Z2)
+Předpověď, že za 24 h bude stejně jako teď. Je to nejjednodušší možná předpověď, na klidné řece přesná, při povodni je vždycky o den pozadu. Každý model ji musí porazit, jinak nemá smysl.
+
+**12. Funguje to i na jiné povodni než Boris?** (Ondra, slajd Z5)
+Leden 2011 z validace: 3. stupeň hlášen 15 hodin předem. Na testu 2021–2025 model před 3. stupněm varoval pokaždé a ve vícenásobné validaci byl lepší než „bude jako teď“ na každé z 8 povodní.
+
+**13. Kolikrát model propásl povodeň nebo vyhlásil planý poplach?** (Ondra)
+Na testu 2021–2025 třetí stupeň zachytil pokaždé. U druhého stupně 17 z 21 případů a propásnuté byly hraniční o pár centimetrů (únor 2024 vrchol 496 cm, hranice 490), plané poplachy tři.
+
+## Limity a provoz
+
+**14. Proč ne srážky?** (Dan, slajd Z3)
+Zkusili jsme horní mez: model dostal skutečný déšť na 3 dny dopředu, jako by předpověď byla dokonalá, a chyba klesla jen o 1 cm. Voda, která přijde za 12 až 36 h, už teče v řekách a vidíme ji v průtocích proti proudu. Srážky by pomohly na 2 až 3 dny u dešťových povodní, jenže archiv starých předpovědí na trénink nemáme.
+
+**15. Proč jen 36 hodin dopředu?** (Dan)
+Nejvzdálenější stanice, Beroun, je od Děčína asi 40 h. Voda, která do Děčína přijde později, ještě neprotekla žádnou naší stanicí, je v potocích nebo ještě nespadla. Proto je chyba na 36 h skoro dvakrát větší než na 24 h.
+
+**16. Jak moc se dá předpovědi věřit?** (Honza, slajd Z4)
+K předpovědi ukazujeme rozmezí od–do, spočítané z 90 % chyb na tréninku podle výšky vody. Na povodních, které model neviděl, se do něj skutečnost vejde v 8 až 9 z 10 hodin.
+
+**17. Jak jste na tom proti oficiální předpovědi ČHMÚ?** (Ondra)
+V Dnešku ji ukazujeme hned vedle naší. Na starých povodních se srovnat neumíme, historické předpovědi ČHMÚ nemáme. ČHMÚ má navíc předpověď srážek, kterou my nemáme.
+
+**18. Fungovalo by to v provozu?** (Honza)
+Aplikace v Dnešku stahuje živá data ČHMÚ a předpověď počítá sama. ČHMÚ zveřejňuje hodinu až po jejím konci, data jsou staré 1 až 2 h a o to se předstih zkrátí. Průtok v Mělníku a Nymburce operativně nezveřejňuje, dopočítáváme ho z bilance vody (v archivu odchylka 0,5 a 8 %).
+
+**19. Je rozliv v mapě hydraulický model?** (Honza, slajd Z7)
+Není. Výška terénu z ČÚZK proti výšce hladiny, ověřená proti úřední mapě záplavových území: při pětileté vodě shoda 0,89. Zdi a hráze pod rozlišením terénu nevidí.
+
+**20. Komu to pomůže a co byste dělali dál?** (Tobias, dál Dan)
+Povodňové komisi města, hasičům a lidem u řeky: den navíc znamená odvézt auta, postavit pytle a vyklidit sklepy. Dál předpověď srážek na 2 až 3 dny, víc stanic proti proudu a dvoustupňové varování, nejdřív předběžná výstraha podle horní meze rozmezí, pak ostrá podle předpovědi.
