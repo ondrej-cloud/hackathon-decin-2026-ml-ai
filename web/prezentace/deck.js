@@ -18,22 +18,22 @@
   /* poznámky řečníka: čas, kdo, co říká; [mezerník] označuje krok */
   const POZNAMKY = [
     ['0:00–0:25 · Tobias', 'Video bez mluvení. Na konci videa (nebo mezerník) naskočí věta: Tohle je Děčín v září 2024. Náš model to hlásil 27 hodin předem.'],
-    ['0:25–0:55 · Tobias', 'Hladina v Děčíně a Ústí za 12, 24 a 36 h, varování před 2. a 3. stupněm a rozliv v mapě. Pro povodňovou komisi, hasiče a lidi u řeky. Den navíc znamená odvézt auta, postavit pytle, vyklidit sklepy.'],
-    ['0:55–1:40 · Ondra', 'Hodinový archiv ČHMÚ, 12 stanic na Vltavě, horním Labi a Ohři, 2006–2025. Stejný zdroj jako balíček, jen delší a s víc stanicemi.', '[mezerník] Odkryje třetí sloupec grafu.', 'S daty jen z balíčku (2 roky, stanice v kraji) by model byl stejně špatný jako „bude jako teď“ a propásl by polovinu povodní.'],
-    ['1:40–2:15 · Honza', '98 čísel, jen to, co je v tu chvíli změřené: hladina a průtok teď a za posledních 36 h. Lineární regrese je vážený součet.', '[mezerník × 6] Přidává řeky jednu po druhé, číslo vpravo roste.', 'Na Borisovi: z průměrné hladiny 198 cm model přičetl Děčín a Ústí +80, Vltavu +89, horní Labe +116, Mělník +96, Ohři −2, vyšlo 577 cm, nad 3. stupněm, a varoval.'],
-    ['2:15–2:55 · Dan', 'Čtyři modely (lineární regrese, neuronová síť, LightGBM, fyzikální) a k tomu srážky, sníh, víc stanic, polynom, váhy na povodně, spojení všech malých zlepšení. Nic nebylo lepší.', '[mezerník] Proč přímka.', 'Voda v Děčíně je součet Vltavy, Labe a Ohře posunutých o dobu putování, a velké povodně jsou v datech jen dvě, na složitý model málo.'],
-    ['2:55–3:30 · Ondra', 'Dělení v čase, nikdy náhodně. Model jsme vybrali na 4 vynechaných povodních, pak každou z 8 povodní 2006–2020 jednou vynechali (vícenásobná validace) a test 2021–2025 pustili jednou na konci.', '[mezerník] Dvě pasti.', 'Data jsme zkontrolovali a našli dvě pasti, které braly informaci z budoucnosti (doplňování děr, denní srážky).'],
-    ['3:30–4:10 · Ondra', 'Graf se kreslí v čase 3 s, pak samo naskočí 27 h (nebo mezerník).', 'Předpověď vydaná den předem jde se skutečností, „bude jako teď“ je vždycky o den pozadu. Vrchol 649 cm předpověděl na 611 cm. Model tuhle povodeň nikdy neviděl.'],
-    ['4:10–4:40 · Ondra', 'Test: 22,4 cm místo 50,2. Vícenásobná validace: 20,1 místo 45,2, na každé povodni o 34 až 66 % méně. Dvakrát stejné číslo, není to náhoda.', 'Když se nestíhá: jen jednou větou na slajdu 7.'],
-    ['4:40–5:50 · Honza', 'Dnešek: živá data ČHMÚ a naše předpověď vedle oficiální. Mapa Děčína: předpověď × skutečnost u Borise. Nacvičené kliknutí po kliknutí, nejvýš 70 s. Když se zasekne, pustit video a jet dál.', 'Pozor: po kliknutí do mapy patří klávesy mapě. Zpět tlačítkem Zavřít mapu vpravo nahoře.'],
+    ['0:25–0:55 · Tobias', 'Hladina v Děčíně a Ústí za 12, 24 a 36 h, varování před 2. a 3. stupněm a rozliv v mapě. Pro povodňovou komisi, hasiče a lidi u řeky. Den navíc znamená odvézt auta, postavit pytle, vyklidit sklepy.', 'Fotka: Děčín 17. 9. 2024, hladina 621 cm, rozliv z výškového modelu terénu po hodinách.'],
+    ['0:55–1:40 · Ondra', 'Hodinový archiv ČHMÚ, 12 stanic na Vltavě, horním Labi a Ohři, 2006–2025. Stejný zdroj jako balíček, jen 20 let a 12 stanic místo 2 let a 3 stanic. Z Prahy do Děčína teče voda 17 až 26 hodin, podle velikosti povodně.', '[mezerník] Odkryje třetí sloupec grafu.', 'S daty jen z balíčku (2 roky, stanice v kraji) by model byl stejně špatný jako „bude jako teď“ a propásl by polovinu povodní.'],
+    ['1:40–2:15 · Honza', '98 čísel, jen to, co je v tu chvíli změřené: hladina a průtok teď a za posledních 36 h. Lineární regrese je vážený součet: kolik centimetrů přidá každá řeka. Boris, testovací část, Děčín 24 h dopředu, model učený do roku 2020.', '[mezerník × 6] Přidává řeky jednu po druhé, číslo vpravo roste.', 'Na Borisovi: z průměrné hladiny 198 cm model přičetl Děčín a Ústí +80, Vltavu +89, horní Labe +116, Mělník +96, Ohři −2, vyšlo 577 cm, nad 3. stupněm, a varoval.'],
+    ['2:15–2:55 · Dan', '3 další modely: neuronová síť, LightGBM, fyzikální model. 8 úprav přímky: srážky, sníh a teplota, voda ve sněhu, víc stanic, polynom, součiny, větší váha povodní, doba putování podle průtoku, všechno dohromady. Nic nebylo lepší. Validace na 4 povodních 2006–2011, průměr Děčína a Ústí na 12, 24 a 36 h.', '[mezerník] Proč přímka.', 'Voda v Děčíně je součet Vltavy, Labe a Ohře posunutých o dobu putování, a velké povodně jsou v datech jen dvě, na složitý model málo.'],
+    ['2:55–3:30 · Ondra', 'Ověřujeme třikrát, pokaždé na povodních, které model neviděl. Dělení v čase, nikdy náhodně. Model jsme vybrali na 4 vynechaných povodních, pak každou z 8 povodní 2006–2020 jednou vynechali (vícenásobná validace) a test 2021–2025 pustili jednou na konci, na finální model.', '[mezerník] Dvě pasti.', 'Data jsme zkontrolovali a našli dvě pasti, které braly informaci z budoucnosti (doplňování děr, denní srážky).'],
+    ['3:30–4:10 · Ondra', 'Graf se kreslí v čase 3 s, pak samo naskočí 27 h (nebo mezerník).', 'Předpověď vydaná den předem jde se skutečností, „bude jako teď“ je vždycky o den pozadu. Vrchol 649 cm předpověděl na 611 cm. Model tuhle povodeň nikdy neviděl (testovací část 2021–2025, model učený do roku 2020). Stupně: 1. 400, 2. 490, 3. 560 cm.'],
+    ['4:10–4:40 · Ondra', 'O 55 % menší chyba na testu i na všech 8 povodních. Test 2021–2025: 22,4 cm místo 50,2. Vícenásobná validace: 20,1 místo 45,2, na každé povodni o 34 až 66 % méně. Dvakrát stejné číslo, není to náhoda. Průměrná chyba hladiny během povodní, Děčín a Ústí, 12, 24 a 36 h dopředu.', 'Když se nestíhá: jen jednou větou na slajdu 7.'],
+    ['4:40–5:50 · Honza', 'Boris v aplikaci: vodočet 14. 9. 2024 11:00, den před 3. stupněm. Dnešek: živá data ČHMÚ a naše předpověď vedle oficiální. Mapa Borise: Děčín, předpověď × skutečnost, rozliv po hodinách. Nacvičené kliknutí po kliknutí, nejvýš 70 s.', 'Když se zasekne: video ze slajdu 1 a jet dál.', 'Pozor: po kliknutí do mapy patří klávesy mapě. Zpět tlačítkem Zavřít mapu vpravo nahoře.'],
     ['5:50–7:00 · Dan, závěr Tobias', 'Na 36 h je chyba dvakrát větší, voda, která přijde, ještě neteče žádnou stanicí. Srážky na 12–36 h nepomáhají, voda už je v řekách. Vrcholy vyšší než kdy v tréninku podhodnotí, s oficiální předpovědí ČHMÚ se srovnat neumíme. Dál: předpověď srážek pro 2–3 dny, dvoustupňové varování.', '[mezerník] Závěrečná věta.', 'Z otevřených dat zdarma: o povodni v Děčíně den předem, s modelem, který se vejde na jeden obrázek. Děkujeme.'],
     ['Záloha · proč lineární regrese', 'Na povodních, které model neviděl, vyšla nejlíp (17,1 cm; síť 17,8, LightGBM 23,1, fyzikální 24,8). Nemá se na čem přeučit: Děčín 24 h má chybu na tréninku 19,7 cm a na validaci 15,5 cm (17,1 je průměr obou stanic a tří horizontů). Každou váhu vysvětlíme fyzikálně.'],
     ['Záloha · bude jako teď', 'Předpověď, že hladina za 24 h bude stejná jako teď. Při povodni vždycky o den pozadu, proto 44 až 50 cm chyby.'],
-    ['Záloha · proč ne srážky', 'Horní mez: model dostal skutečný déšť na 3 dny dopředu, jako by předpověď počasí byla dokonalá. Chyba klesla jen o 1 cm, varování nepřišlo dřív. První nárůst vidíme v průtocích proti proudu 12–40 h předem.'],
+    ['Záloha · proč ne srážky', 'Horní mez: model dostal skutečný déšť na 3 dny dopředu, jako by předpověď počasí byla dokonalá. Chyba klesla jen o 1 cm, varování nepřišlo dřív. Déšť, který spadne teď, doteče do Děčína až za víc než 36 h. První nárůst vidíme v průtocích proti proudu 12–40 h předem.'],
     ['Záloha · jak moc se pleteme', 'Rozmezí od–do z chyb na vynechaných povodních (90 % chyb). Skutečnost se do něj vejde v 8 až 9 z 10 hodin.'],
     ['Záloha · povodeň 2011', 'Validační povodeň leden 2011, 3. stupeň hlášen 15 h předem. Vrchol 730 cm.'],
-    ['Záloha · váhy modelu', 'Každé políčko je váha jednoho vstupu: o kolik cm se změní předpověď, když je hodnota o obvyklý rozkmit vyšší. Děčín teď +88, Praha teď +49. Oranžová vedle modré: model odečítá starší hodnotu od nové, počítá trend.'],
-    ['Záloha · rozliv', 'Není to hydraulický model. Výška terénu (ČÚZK DMR 5G) proti výšce hladiny, ověřená proti úřední mapě: při pětileté vodě 167 ha náš, 183 ha úřední, 165 ha průnik, shoda 0,89.'],
+    ['Záloha · váhy modelu', 'Každé políčko je váha jednoho vstupu: o kolik cm se změní předpověď, když je hodnota o obvyklý rozkmit vyšší. Děčín teď +88, Praha teď +49. Oranžová vedle modré: model odečítá starší hodnotu od nové, počítá, jestli voda stoupá. 98 vah: hladina v Děčíně a Ústí × 7 zpoždění 0 až 24 h, průtok 12 stanic × 7 zpoždění 0 až 36 h.'],
+    ['Záloha · rozliv', 'Není to hydraulický model. Výška terénu (ČÚZK DMR 5G, po 10 cm) proti výšce hladiny, ověřená proti úřední mapě: při pětileté vodě 167 ha náš, 183 ha úřední, 165 ha průnik, shoda 0,89.'],
   ];
 
   /* vodopád součtu na slajdu 4 (příspěvky z modelu pro předpověď vydanou 14. 9. 2024 11:00) */
@@ -86,9 +86,12 @@
       svg.appendChild(el('text', { x: L - 16, y: y(cm) + 10, 'text-anchor': 'end' }, String(cm)));
     }
     svg.appendChild(el('text', { x: 40, y: (T + B) / 2, 'text-anchor': 'middle', transform: `rotate(-90 40 ${(T + B) / 2})` }, 'hladina v Děčíně za 24 h (cm)'));
-    [[400, 'var(--spa1)', '1. stupeň'], [490, 'var(--spa2)', '2. stupeň'], [560, 'var(--spa3)', '3. stupeň']].forEach(([cm, barva, nazev]) => {
-      svg.appendChild(el('line', { x1: L, x2: R, y1: y(cm), y2: y(cm), class: 'spa', stroke: barva }));
-      svg.appendChild(el('text', { x: R + 14, y: y(cm) + 10, class: 'spa-text' }, nazev));
+    [[400, 'spa1', '1. stupeň'], [490, 'spa2', '2. stupeň'], [560, 'spa3', '3. stupeň']].forEach(([cm, trida, nazev]) => {
+      svg.appendChild(el('line', { x1: L, x2: R, y1: y(cm), y2: y(cm), class: 'spa ' + trida }));
+      const g = el('g', { class: 'spa-stitek ' + trida });
+      g.appendChild(el('rect', { x: R + 14, y: y(cm) - 21, width: 156, height: 42, rx: 21 }));
+      g.appendChild(el('text', { x: R + 14 + 78, y: y(cm) + 10, 'text-anchor': 'middle' }, nazev));
+      svg.appendChild(g);
     });
     const sloupec = (n, od, do_, barva, trida, krok) => {
       const top = Math.min(y(od), y(do_)), h = Math.max(Math.abs(y(od) - y(do_)), 3);
@@ -126,7 +129,7 @@
     praha: [30, 16, 'start', 'Praha-Chuchle'], nymburk: [26, -14, 'start', 'Nymburk'], jizera: [20, -32, 'middle', 'Předměřice'],
     beroun: [-24, 4, 'end', 'Beroun'], sazava: [28, 12, 'start', 'Nespeky'], prelouc: [-10, -28, 'end', 'Přelouč'],
   };
-  const NAZVY_REK = [['Vltava · 4,5 h', 300, 700], ['Labe · 12 h', 380, 330], ['4 h', 335, 160], ['Ohře · 12 h', 60, 330], ['Berounka', 290, 975], ['Sázava', 495, 962], ['horní Labe', 1040, 870]];
+  const NAZVY_REK = [['Vltava · 4,5 h', 215, 700], ['Labe · 12 h', 455, 330], ['4 h', 335, 160], ['Ohře · 12 h', 60, 330], ['Berounka', 290, 975], ['Sázava', 495, 962], ['horní Labe', 1040, 870]];
   function postavMapu() {
     const svg = document.getElementById('mapa'), R = window.REKA;
     if (!R) return;
@@ -236,6 +239,7 @@
   function nastavKrok(k, hned) {
     const s = slajdy[i];
     krok = k;
+    document.body.dataset.krokSlajdu = k;
     s.classList.toggle('hned', !!hned);
     s.querySelectorAll('[data-krok], [data-odkryj]').forEach(e => {
       const v = +(e.dataset.krok || e.dataset.odkryj);
@@ -288,6 +292,7 @@
     i = n;
     const s = slajdy[i];
     document.body.dataset.ton = s.classList.contains('tmavy') ? 'tmavy' : 'svetly';
+    document.body.classList.toggle('na-videu', s.classList.contains('video'));
     s.classList.add('aktivni');
     miniNastav(i, predchozi);
     nastavKrok(dozadu ? kroku(s) : 0, true);

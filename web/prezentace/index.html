@@ -5,43 +5,39 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Kolik vody přiteče do Děčína · prezentace</title>
 <meta name="description" content="Předpověď hladiny Labe v Děčíně a Ústí nad Labem na 12, 24 a 36 hodin z otevřených dat ČHMÚ. Prezentace na 7 minut.">
-<link rel="preload" href="../fonts/sofia-sans-extra-condensed-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="preload" href="../fonts/schibsted-grotesk-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preconnect" href="https://api.mapbox.com">
-<link rel="icon" href="data:image/svg+xml,%3Csvg viewBox='0 0 44 44' width='44' height='44' aria-hidden='true' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='44' height='44' rx='9' fill='%23111820'/%3E%3Crect x='12' y='3' width='20' height='38' rx='2' fill='%231a232d'/%3E%3Cg stroke='%23c8d1d9' stroke-width='1.2' stroke-opacity='.7'%3E%3Cline x1='14' x2='30' y1='6' y2='6'/%3E%3Cline x1='14' x2='22' y1='9' y2='9'/%3E%3Cline x1='14' x2='22' y1='12' y2='12'/%3E%3Cline x1='14' x2='22' y1='15' y2='15'/%3E%3Cline x1='14' x2='22' y1='18' y2='18'/%3E%3Cline x1='14' x2='30' y1='21' y2='21'/%3E%3Cline x1='14' x2='22' y1='24' y2='24'/%3E%3Cline x1='14' x2='22' y1='27' y2='27'/%3E%3Cline x1='14' x2='22' y1='30' y2='30'/%3E%3Cline x1='14' x2='22' y1='33' y2='33'/%3E%3Cline x1='14' x2='30' y1='36' y2='36'/%3E%3C/g%3E%3Crect x='12' y='25' width='20' height='16' fill='%233aa0c9' fill-opacity='.55'/%3E%3Cpath d='M4 25.5h36' stroke='%237cc6e4' stroke-width='2'/%3E%3C/svg%3E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg viewBox='0 0 44 44' width='44' height='44' aria-hidden='true' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='44' height='44' rx='11' fill='%23ffffff'/%3E%3Crect x='12' y='3' width='20' height='38' rx='3' fill='%23f5f5f7' stroke='%23d2d2d7'/%3E%3Cg stroke='%236e6e73' stroke-width='1.2' stroke-opacity='.8'%3E%3Cline x1='14' x2='30' y1='6' y2='6'/%3E%3Cline x1='14' x2='22' y1='9' y2='9'/%3E%3Cline x1='14' x2='22' y1='12' y2='12'/%3E%3Cline x1='14' x2='22' y1='15' y2='15'/%3E%3Cline x1='14' x2='22' y1='18' y2='18'/%3E%3Cline x1='14' x2='30' y1='21' y2='21'/%3E%3Cline x1='14' x2='22' y1='24' y2='24'/%3E%3C/g%3E%3Crect x='12' y='25' width='20' height='16' rx='3' fill='%239fcad8' fill-opacity='.8'/%3E%3Cpath d='M4 25.5h36' stroke='%23167c9c' stroke-width='2.5' stroke-linecap='round'/%3E%3C/svg%3E">
 <link rel="stylesheet" href="deck.css">
 </head>
-<body data-ton="tmavy">
+<body data-ton="svetly">
 <div class="jeviste">
 <div class="plocha">
 
 <!-- 1 · video -->
-<section class="slajd tmavy video" data-kroky="1" data-nazev="Video: Děčín v září 2024">
+<section class="slajd video" data-kroky="1" data-nazev="Video: Děčín v září 2024">
   <video id="video" muted playsinline preload="auto" poster="grafy/video_decin_poster.jpg">
-    <source src="video/boris_decin_720.mp4" type="video/mp4">
+    <source src="video/boris_decin_1080.mp4" type="video/mp4">
   </video>
   <img class="jen-tisk" src="grafy/video_decin_poster.jpg" alt="Rozliv Labe v Děčíně v září 2024, snímek z videa">
-  <div class="stin-dole"></div>
   <div class="stin-veta" data-krok="1"></div>
   <p class="veta" data-krok="1">Tohle je Děčín v&nbsp;září 2024.<br><b>Náš model to hlásil 27&nbsp;hodin předem.</b></p>
-  <p class="pata">Video: Mapbox, OpenStreetMap, terén ČÚZK DMR 5G · měření ČHMÚ</p>
+  <p class="pata" data-krok="1">Mapbox · OpenStreetMap · ČÚZK · ČHMÚ</p>
 </section>
 
 <!-- 2 · 27 h -->
-<section class="slajd tmavy pozadi" data-kroky="0" data-nazev="Den předem víte, kam až voda dosáhne">
-  <img class="podklad" src="grafy/boris_decin_110.jpg" alt="Rozliv Labe v Děčíně 17. září 2024, hladina 621 cm, snímek z videa">
-  <div class="stin-vlevo"></div>
-  <div class="obsah uzky">
-    <h1>Den předem víte, kam až voda dosáhne</h1>
-    <p class="obri"><span class="vstup-1">27</span><small class="vstup-1">h</small></p>
-    <p class="pod-obri vstup-2">3.&nbsp;stupeň v&nbsp;Děčíně hlášen 27&nbsp;hodin předem · Boris, září 2024</p>
-    <ul class="trojice vstup-3">
-      <li>Povodňová komise</li><li>Hasiči</li><li>Lidé u&nbsp;řeky</li>
-    </ul>
-    <p class="text vstup-4">Hladina v&nbsp;Děčíně a&nbsp;Ústí za 12, 24 a&nbsp;36&nbsp;h, varování před 2. a&nbsp;3.&nbsp;stupněm, rozliv v&nbsp;mapě.
-      Den navíc znamená odvézt auta, postavit pytle a&nbsp;vyklidit sklepy.</p>
+<section class="slajd" id="s-uvod" data-kroky="0" data-nazev="Den předem víte, kam až voda dosáhne">
+  <h1>Den předem víte, kam až voda dosáhne</h1>
+  <div class="radek uvod">
+    <div class="sloupec">
+      <p class="obri vstup-1"><span>27</span><small>h</small></p>
+      <p class="pod-obri vstup-2">3.&nbsp;stupeň v&nbsp;Děčíně hlášen 27&nbsp;hodin předem · Boris, září 2024</p>
+    </div>
+    <figure class="foto vstup-2">
+      <img src="grafy/boris_decin_110.jpg" alt="Rozliv Labe v Děčíně 17. září 2024, hladina 621 cm, snímek z videa">
+      <figcaption>Děčín 17.&nbsp;9.&nbsp;2024, 621&nbsp;cm</figcaption>
+    </figure>
   </div>
-  <p class="pata">Mapa: Mapbox, OpenStreetMap, terén ČÚZK DMR 5G, záplavová území DIBAVOD · měření ČHMÚ</p>
+  <p class="pata">Mapa: Mapbox, OpenStreetMap, ČÚZK, DIBAVOD · ČHMÚ</p>
 </section>
 
 <!-- 3 · řeka -->
@@ -49,8 +45,10 @@
   <h1>Co teče Prahou teď, je zítra v&nbsp;Děčíně.</h1>
   <div class="radek mapa-radek">
     <figure class="mapa-reky">
-      <svg id="mapa" viewBox="-30 20 1260 1010" role="img" aria-label="Mapa 12 stanic ČHMÚ na Vltavě, Labi a Ohři od Berouna a Přelouče po Děčín"></svg>
-      <figcaption>Hodinový archiv ČHMÚ, 12 stanic na Vltavě, horním Labi a&nbsp;Ohři. Z&nbsp;Prahy do Děčína teče voda 17 až 26&nbsp;hodin, podle velikosti povodně.</figcaption>
+      <div class="karta">
+        <svg id="mapa" viewBox="-30 20 1260 1010" role="img" aria-label="Mapa 12 stanic ČHMÚ na Vltavě, Labi a Ohři od Berouna a Přelouče po Děčín"></svg>
+      </div>
+      <figcaption>Z&nbsp;Prahy do Děčína teče voda 17 až 26&nbsp;hodin.</figcaption>
     </figure>
     <div class="sloupec">
       <ul class="trojcisli">
@@ -64,15 +62,17 @@
       </div>
     </div>
   </div>
-  <p class="pata">Stejný zdroj jako balíček, jen 20&nbsp;let a&nbsp;12&nbsp;stanic místo 2&nbsp;let a&nbsp;3&nbsp;stanic · řeky OpenStreetMap</p>
+  <p class="pata">Hodinový archiv ČHMÚ · řeky OpenStreetMap</p>
 </section>
 
 <!-- 4 · součet -->
-<section class="slajd" id="s-soucet" data-kroky="6" data-nazev="Předpověď je součet">
-  <h1>Předpověď je součet: kolik centimetrů přidá každá řeka</h1>
-  <p class="podtitul">98 vstupů: hladina a&nbsp;průtok teď a&nbsp;za posledních 36&nbsp;h, jen to, co je změřené. Lineární regrese je vážený součet.</p>
+<section class="slajd hlavni" id="s-soucet" data-kroky="6" data-nazev="Předpověď je součet">
+  <h1>Předpověď je součet</h1>
+  <p class="podtitul">98 vstupů, jen to, co je změřené.</p>
   <div class="radek soucet-radek">
-    <svg id="soucet" viewBox="0 0 1240 600" role="img" aria-label="Předpověď hladiny v Děčíně na 15. 9. 2024 jako součet příspěvků jednotlivých řek: 198 + 80 + 89 + 116 + 96 − 2 = 577 cm"></svg>
+    <div class="karta soucet-karta">
+      <svg id="soucet" viewBox="0 0 1240 600" role="img" aria-label="Předpověď hladiny v Děčíně na 15. 9. 2024 jako součet příspěvků jednotlivých řek: 198 + 80 + 89 + 116 + 96 − 2 = 577 cm"></svg>
+    </div>
     <div class="sloupec soucet-sloupec">
       <p class="stitek">Vydáno 14.&nbsp;9.&nbsp;2024 11:00 na 15.&nbsp;9. 11:00</p>
       <p class="cislo" id="soucet-cislo-blok"><span id="soucet-cislo">198</span><small>cm</small></p>
@@ -90,47 +90,45 @@
       </div>
     </div>
   </div>
-  <p class="pata">Boris 9/2024, testovací část · Děčín, předpověď 24&nbsp;h dopředu · model učený do roku 2020</p>
+  <p class="pata">Boris 9/2024, test · model učený do 2020</p>
 </section>
 
 <!-- 5 · 11 cest -->
-<section class="slajd" data-kroky="1" data-nazev="Žádná z 11 dalších cest nebyla lepší">
+<section class="slajd hlavni" data-kroky="1" data-nazev="Žádná z 11 dalších cest nebyla lepší">
   <h1>Žádná z&nbsp;11 dalších cest nebyla lepší</h1>
   <div class="radek uzsi">
     <div class="graf vlna"><div class="orez"><img src="grafy/05_co_jsme_zkouseli.png" alt="Průměrná chyba během povodní pro 12 variant modelu, lineární regrese 17,1 cm je nejlepší"></div></div>
     <div class="sloupec">
       <div class="blok">
         <p class="cislo mensi">3 <small>další modely</small></p>
-        <p class="text">neuronová síť, LightGBM, fyzikální model</p>
       </div>
       <div class="blok">
         <p class="cislo mensi">8 <small>úprav přímky</small></p>
-        <p class="text">srážky, sníh a&nbsp;teplota, voda ve sněhu, víc stanic, polynom, součiny, větší váha povodní, doba putování podle průtoku, všechno dohromady</p>
       </div>
       <div class="blok proc" data-krok="1">
         <p class="stitek">Proč přímka</p>
-        <p class="text">Voda v&nbsp;Děčíně je součet Vltavy, Labe a&nbsp;Ohře posunutých o&nbsp;dobu putování. Velké povodně jsou v&nbsp;datech jen dvě, na složitý model je to málo.</p>
+        <p class="text">Voda v&nbsp;Děčíně je součet tří řek posunutý o&nbsp;dobu putování.</p>
       </div>
     </div>
   </div>
-  <p class="pata">Validace: 4 povodně 2006–2011, průměr Děčína a&nbsp;Ústí na 12, 24 a&nbsp;36&nbsp;h</p>
+  <p class="pata">Validace: 4 povodně 2006–2011</p>
 </section>
 
 <!-- 6 · ověření -->
-<section class="slajd" id="s-overeni" data-kroky="1" data-nazev="Ověřujeme třikrát">
-  <h1>Ověřujeme třikrát, pokaždé na povodních, které model neviděl</h1>
+<section class="slajd hlavni" id="s-overeni" data-kroky="1" data-nazev="Ověřujeme třikrát">
+  <h1>Ověřujeme třikrát</h1>
   <div class="radek">
     <div class="graf"><div class="orez"><img src="grafy/06_jak_overujeme.png" alt="Časová osa 2006 až 2025: výběr modelu na 4 povodních, vícenásobná validace na 8 povodních, test 2021 až 2025"></div></div>
     <div class="sloupec">
       <ol class="overeni">
         <li><b>Výběr modelu</b><span>4 vynechané povodně</span></li>
-        <li><b>Vícenásobná validace</b><span>každou z&nbsp;8 povodní 2006–2020 jednou vynecháme</span></li>
-        <li><b>Test 2021–2025</b><span>jednou, na konci, na finální model</span></li>
+        <li><b>Vícenásobná validace</b><span>8 povodní, každá jednou</span></li>
+        <li><b>Test 2021–2025</b><span>jednou, na konci</span></li>
       </ol>
       <p class="text silny">Dělení v&nbsp;čase, nikdy náhodně.</p>
       <div class="blok proc" data-krok="1">
         <p class="stitek">Dvě pasti z&nbsp;budoucnosti</p>
-        <p class="text">Našli jsme je a&nbsp;vyřadili: doplňování děr v&nbsp;datech a&nbsp;denní srážky.</p>
+        <p class="text">Doplňování děr a&nbsp;denní srážky, obojí vyřazeno.</p>
       </div>
     </div>
   </div>
@@ -138,25 +136,23 @@
 </section>
 
 <!-- 7 · Boris -->
-<section class="slajd" id="s-boris" data-kroky="1" data-nazev="Boris: 3. stupeň hlášen 27 hodin předem">
+<section class="slajd hlavni" id="s-boris" data-kroky="1" data-nazev="Boris: 3. stupeň hlášen 27 hodin předem">
   <h1>Boris: 3.&nbsp;stupeň hlášen 27&nbsp;hodin předem</h1>
   <div class="radek boris-radek">
     <div class="graf vlna pomala"><div class="orez"><img src="grafy/07_boris_2024.png" alt="Hladina v Děčíně v září 2024: skutečnost, náš model 24 h předem a bude jako teď"></div></div>
     <div class="sloupec">
       <p class="cislo" data-krok="1"><span data-pocitej="27" data-od="0">27</span><small>h</small></p>
       <p class="pod-cislo" data-krok="1">před 3.&nbsp;stupněm v&nbsp;Děčíně</p>
-      <p class="text">Předpověď vydaná den předem jde se skutečností. „Bude jako teď“ je vždycky o&nbsp;den pozadu.</p>
-      <p class="text">Vrchol 649&nbsp;cm předpověděl na 611&nbsp;cm.</p>
       <p class="text silny">Model tuhle povodeň nikdy neviděl.</p>
     </div>
   </div>
-  <p class="pata">Testovací část 2021–2025, model učený do roku 2020 · 1.&nbsp;stupeň 400, 2.&nbsp;stupeň 490, 3.&nbsp;stupeň 560&nbsp;cm</p>
+  <p class="pata">Test 2021–2025, model učený do 2020</p>
 </section>
 
 <!-- 8 · −55 % -->
-<section class="slajd" data-kroky="0" data-nazev="O 55 % menší chyba">
+<section class="slajd hlavni" data-kroky="0" data-nazev="O 55 % menší chyba">
   <div class="hlava-s-cislem">
-    <h1>O&nbsp;55&nbsp;% menší chyba na testu i&nbsp;na všech 8 povodních</h1>
+    <h1>O&nbsp;55&nbsp;% menší chyba</h1>
     <p class="cislo modra">−<span data-pocitej="55" data-od="0">55</span><small>%</small></p>
   </div>
   <div class="dva-grafy">
@@ -166,58 +162,55 @@
     </figure>
     <figure>
       <div class="graf"><div class="orez"><img src="grafy/08b_vicenasobna_validace.png" alt="Vícenásobná validace na 8 povodních: chyba modelu 20,1 cm proti 45,2 cm"></div></div>
-      <figcaption><b>Vícenásobná validace, 8 povodní:</b> 20,1&nbsp;cm místo 45,2, na každé o&nbsp;34 až 66&nbsp;% méně</figcaption>
+      <figcaption><b>8 povodní:</b> 20,1&nbsp;cm místo 45,2</figcaption>
     </figure>
   </div>
   <p class="zaver-radek">Dvakrát stejné číslo. Není to náhoda.</p>
-  <p class="pata">Průměrná chyba hladiny během povodní, Děčín a&nbsp;Ústí, 12, 24 a&nbsp;36&nbsp;h dopředu</p>
+  <p class="pata">Průměrná chyba během povodní, Děčín a&nbsp;Ústí</p>
 </section>
 
 <!-- 9 · demo -->
-<section class="slajd tmavy pozadi" id="s-demo" data-kroky="0" data-nazev="Živé demo">
-  <img class="podklad slaba" src="grafy/boris_decin_060.jpg" alt="">
-  <div class="stin-cely"></div>
-  <div class="obsah">
-    <h1>Živé demo</h1>
-    <div class="radek demo-radek">
-      <div class="odkazy">
-        <a class="odkaz" href="../index.html?povoden=2024-09&amp;cil=decin&amp;cas=2024-09-14T11:00" target="_blank" rel="noopener">
-          <b>Boris v&nbsp;aplikaci</b><span>vodočet 14.&nbsp;9.&nbsp;2024 11:00, den před 3.&nbsp;stupněm</span>
-        </a>
-        <a class="odkaz" href="../index.html?dnesek=1" target="_blank" rel="noopener">
-          <b>Dnešek</b><span>živá data ČHMÚ, naše předpověď vedle oficiální</span>
-        </a>
-        <a class="odkaz" href="../mapa/2024-09_decin.html" target="_blank" rel="noopener">
-          <b>Mapa Borise</b><span>Děčín, předpověď × skutečnost, rozliv po hodinách</span>
-        </a>
-      </div>
-      <div class="ramec" id="ramec">
-        <button type="button" class="nacist" id="nacist-mapu">
-          <svg viewBox="0 0 24 24" width="40" height="40" aria-hidden="true"><path d="M6 3.5v17l14-8.5z" fill="currentColor"/></svg>
-          Načíst mapu Borise sem
-        </button>
-        <button type="button" class="zavrit" id="zavrit-mapu" hidden>Zavřít mapu</button>
-      </div>
+<section class="slajd" id="s-demo" data-kroky="0" data-nazev="Živé demo">
+  <h1>Živé demo</h1>
+  <div class="radek demo-radek">
+    <div class="odkazy">
+      <a class="odkaz" href="../index.html?povoden=2024-09&amp;cil=decin&amp;cas=2024-09-14T11:00" target="_blank" rel="noopener">
+        <b>Boris v&nbsp;aplikaci</b>
+      </a>
+      <a class="odkaz" href="../index.html?dnesek=1" target="_blank" rel="noopener">
+        <b>Dnešek</b>
+      </a>
+      <a class="odkaz" href="../mapa/2024-09_decin.html" target="_blank" rel="noopener">
+        <b>Mapa Borise</b>
+      </a>
+    </div>
+    <div class="ramec" id="ramec">
+      <img class="nahled" src="grafy/boris_decin_060.jpg" alt="">
+      <button type="button" class="nacist" id="nacist-mapu">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4.5v15l13-7.5z" fill="currentColor"/></svg>
+        Načíst mapu Borise sem
+      </button>
+      <button type="button" class="zavrit" id="zavrit-mapu" hidden>Zavřít mapu</button>
     </div>
   </div>
-  <p class="pata">Když se zasekne: video ze slajdu 1 a&nbsp;jet dál · v&nbsp;mapě patří klávesy mapě, zpět tlačítkem Zavřít · Mapa: Mapbox, OpenStreetMap, ČÚZK</p>
+  <p class="pata">Mapa: Mapbox, OpenStreetMap, ČÚZK</p>
 </section>
 
 <!-- 10 · co umíme -->
 <section class="slajd" id="s-zaver" data-kroky="1" data-nazev="Co umíme, co ne a co dál">
   <h1>Co umíme, co ne a&nbsp;co dál</h1>
   <div class="ctyri">
-    <div><b>Umíme</b><p>Hladinu v&nbsp;Děčíně a&nbsp;Ústí na 12, 24 a&nbsp;36&nbsp;h. Třetí stupeň den předem. Rozliv v&nbsp;mapě po hodinách.</p></div>
-    <div><b>Neumíme</b><p>Na 36&nbsp;h je chyba dvakrát větší: voda, která přijde, ještě neteče žádnou stanicí. Vrchol vyšší než kdy v&nbsp;tréninku podhodnotíme.</p></div>
-    <div><b>Proč ne srážky</b><p>Na 12 až 36&nbsp;h nepomáhají, voda už je v&nbsp;řekách. S&nbsp;oficiální předpovědí ČHMÚ se srovnat neumíme.</p></div>
-    <div><b>Dál</b><p>Předpověď srážek pro 2 až 3 dny dopředu. Dvoustupňové varování: dřív a&nbsp;jistěji.</p></div>
+    <div><b>Umíme</b><p>Třetí stupeň den předem, rozliv v&nbsp;mapě po hodinách.</p></div>
+    <div><b>Neumíme</b><p>Na 36&nbsp;h je chyba dvakrát větší.</p></div>
+    <div><b>Proč ne srážky</b><p>Na 12 až 36&nbsp;h už je voda v&nbsp;řekách.</p></div>
+    <div><b>Dál</b><p>Předpověď srážek na 2 až 3 dny, dvoustupňové varování.</p></div>
   </div>
   <div class="zaver" data-krok="1">
     <p class="zaver-veta">Z&nbsp;otevřených dat zdarma: o&nbsp;povodni v&nbsp;Děčíně den předem, s&nbsp;modelem, který se vejde na jeden obrázek.</p>
     <div class="dekujeme">
       <p>Děkujeme.</p>
       <a class="repo" href="https://github.com/ondrej-cloud/hackathon-decin-2026-ml-ai" target="_blank" rel="noopener">
-        <span id="qr"><svg viewBox="0 0 41 41" shape-rendering="crispEdges" aria-hidden="true"><path fill="#ffffff" d="M0 0h41v41H0z"/><path stroke="#1f2933" d="M4 4.5h7m1 0h4m1 0h2m1 0h6m1 0h1m2 0h7M4 5.5h1m5 0h1m1 0h1m1 0h4m2 0h3m1 0h2m1 0h2m1 0h1m5 0h1M4 6.5h1m1 0h3m1 0h1m2 0h1m2 0h1m2 0h1m2 0h1m1 0h1m3 0h1m1 0h1m1 0h3m1 0h1M4 7.5h1m1 0h3m1 0h1m1 0h3m1 0h1m1 0h1m1 0h2m1 0h1m2 0h1m1 0h1m1 0h1m1 0h3m1 0h1M4 8.5h1m1 0h3m1 0h1m2 0h2m1 0h1m1 0h1m2 0h1m1 0h2m3 0h1m1 0h1m1 0h3m1 0h1M4 9.5h1m5 0h1m4 0h1m1 0h2m3 0h2m1 0h2m1 0h1m1 0h1m5 0h1M4 10.5h7m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h7M12 11.5h2m1 0h1m5 0h1m1 0h1m3 0h2M4 12.5h1m1 0h2m1 0h3m3 0h1m2 0h1m1 0h4m1 0h2m1 0h1m1 0h1m2 0h1m1 0h2M6 13.5h1m1 0h1m2 0h1m2 0h1m5 0h2m1 0h2m2 0h1m2 0h2m1 0h2m1 0h1M5 14.5h1m1 0h2m1 0h1m2 0h3m2 0h1m2 0h2m4 0h1m3 0h3m1 0h2M6 15.5h1m1 0h1m2 0h2m2 0h4m3 0h1m1 0h1m4 0h1m1 0h1m1 0h1m1 0h1M6 16.5h3m1 0h7m4 0h1m1 0h2m1 0h4m1 0h3m2 0h1M4 17.5h1m3 0h1m2 0h1m1 0h5m2 0h2m1 0h3m2 0h1m2 0h1m1 0h1m1 0h1M4 18.5h1m2 0h2m1 0h1m2 0h9m1 0h1m1 0h1m4 0h1m1 0h2M5 19.5h1m6 0h1m2 0h1m1 0h1m2 0h1m1 0h2m1 0h1m3 0h2m2 0h2M5 20.5h2m1 0h1m1 0h1m2 0h2m3 0h2m2 0h1m1 0h4m1 0h2m1 0h3M5 21.5h3m1 0h1m1 0h2m1 0h2m1 0h3m1 0h1m2 0h7m1 0h2m1 0h2M4 22.5h1m1 0h5m2 0h3m2 0h3m3 0h1m1 0h1m1 0h5m1 0h2M5 23.5h1m2 0h1m2 0h2m2 0h5m1 0h1m1 0h1m3 0h3m2 0h1m2 0h1M4 24.5h1m3 0h3m1 0h1m1 0h3m3 0h2m2 0h3m4 0h1m1 0h2m1 0h1M4 25.5h1m1 0h4m1 0h1m1 0h5m1 0h1m2 0h2m1 0h1m1 0h1m2 0h1m3 0h1m1 0h1M6 26.5h1m1 0h3m2 0h1m1 0h2m1 0h1m1 0h3m1 0h2m1 0h5m2 0h3M5 27.5h1m1 0h1m4 0h1m2 0h1m1 0h1m2 0h1m1 0h2m4 0h1m1 0h1m1 0h2m1 0h2M4 28.5h1m1 0h1m3 0h7m1 0h1m2 0h1m4 0h7m3 0h1M12 29.5h1m6 0h2m2 0h3m2 0h1m3 0h2M4 30.5h7m1 0h1m9 0h3m2 0h2m1 0h1m1 0h1m2 0h1M4 31.5h1m5 0h1m1 0h6m1 0h2m3 0h5m3 0h3M4 32.5h1m1 0h3m1 0h1m6 0h3m2 0h2m1 0h1m1 0h6m1 0h3M4 33.5h1m1 0h3m1 0h1m1 0h1m1 0h1m1 0h4m1 0h1m3 0h1m1 0h1m3 0h1m2 0h1m1 0h1M4 34.5h1m1 0h3m1 0h1m1 0h5m2 0h4m3 0h1m3 0h2m1 0h1M4 35.5h1m5 0h1m2 0h2m2 0h1m3 0h1m1 0h2m1 0h4m1 0h2m3 0h1M4 36.5h7m1 0h3m5 0h2m1 0h1m1 0h1m3 0h2m1 0h1m1 0h1"/></svg></span><span>github.com/ondrej-cloud/<br>hackathon-decin-2026-ml-ai</span>
+        <span id="qr"><svg viewBox="0 0 41 41" shape-rendering="crispEdges" aria-hidden="true"><path fill="#ffffff" d="M0 0h41v41H0z"/><path stroke="#1d1d1f" d="M4 4.5h7m1 0h4m1 0h2m1 0h6m1 0h1m2 0h7M4 5.5h1m5 0h1m1 0h1m1 0h4m2 0h3m1 0h2m1 0h2m1 0h1m5 0h1M4 6.5h1m1 0h3m1 0h1m2 0h1m2 0h1m2 0h1m2 0h1m1 0h1m3 0h1m1 0h1m1 0h3m1 0h1M4 7.5h1m1 0h3m1 0h1m1 0h3m1 0h1m1 0h1m1 0h2m1 0h1m2 0h1m1 0h1m1 0h1m1 0h3m1 0h1M4 8.5h1m1 0h3m1 0h1m2 0h2m1 0h1m1 0h1m2 0h1m1 0h2m3 0h1m1 0h1m1 0h3m1 0h1M4 9.5h1m5 0h1m4 0h1m1 0h2m3 0h2m1 0h2m1 0h1m1 0h1m5 0h1M4 10.5h7m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h7M12 11.5h2m1 0h1m5 0h1m1 0h1m3 0h2M4 12.5h1m1 0h2m1 0h3m3 0h1m2 0h1m1 0h4m1 0h2m1 0h1m1 0h1m2 0h1m1 0h2M6 13.5h1m1 0h1m2 0h1m2 0h1m5 0h2m1 0h2m2 0h1m2 0h2m1 0h2m1 0h1M5 14.5h1m1 0h2m1 0h1m2 0h3m2 0h1m2 0h2m4 0h1m3 0h3m1 0h2M6 15.5h1m1 0h1m2 0h2m2 0h4m3 0h1m1 0h1m4 0h1m1 0h1m1 0h1m1 0h1M6 16.5h3m1 0h7m4 0h1m1 0h2m1 0h4m1 0h3m2 0h1M4 17.5h1m3 0h1m2 0h1m1 0h5m2 0h2m1 0h3m2 0h1m2 0h1m1 0h1m1 0h1M4 18.5h1m2 0h2m1 0h1m2 0h9m1 0h1m1 0h1m4 0h1m1 0h2M5 19.5h1m6 0h1m2 0h1m1 0h1m2 0h1m1 0h2m1 0h1m3 0h2m2 0h2M5 20.5h2m1 0h1m1 0h1m2 0h2m3 0h2m2 0h1m1 0h4m1 0h2m1 0h3M5 21.5h3m1 0h1m1 0h2m1 0h2m1 0h3m1 0h1m2 0h7m1 0h2m1 0h2M4 22.5h1m1 0h5m2 0h3m2 0h3m3 0h1m1 0h1m1 0h5m1 0h2M5 23.5h1m2 0h1m2 0h2m2 0h5m1 0h1m1 0h1m3 0h3m2 0h1m2 0h1M4 24.5h1m3 0h3m1 0h1m1 0h3m3 0h2m2 0h3m4 0h1m1 0h2m1 0h1M4 25.5h1m1 0h4m1 0h1m1 0h5m1 0h1m2 0h2m1 0h1m1 0h1m2 0h1m3 0h1m1 0h1M6 26.5h1m1 0h3m2 0h1m1 0h2m1 0h1m1 0h3m1 0h2m1 0h5m2 0h3M5 27.5h1m1 0h1m4 0h1m2 0h1m1 0h1m2 0h1m1 0h2m4 0h1m1 0h1m1 0h2m1 0h2M4 28.5h1m1 0h1m3 0h7m1 0h1m2 0h1m4 0h7m3 0h1M12 29.5h1m6 0h2m2 0h3m2 0h1m3 0h2M4 30.5h7m1 0h1m9 0h3m2 0h2m1 0h1m1 0h1m2 0h1M4 31.5h1m5 0h1m1 0h6m1 0h2m3 0h5m3 0h3M4 32.5h1m1 0h3m1 0h1m6 0h3m2 0h2m1 0h1m1 0h6m1 0h3M4 33.5h1m1 0h3m1 0h1m1 0h1m1 0h1m1 0h4m1 0h1m3 0h1m1 0h1m3 0h1m2 0h1m1 0h1M4 34.5h1m1 0h3m1 0h1m1 0h5m2 0h4m3 0h1m3 0h2m1 0h1M4 35.5h1m5 0h1m2 0h2m2 0h1m3 0h1m1 0h2m1 0h4m1 0h2m3 0h1M4 36.5h7m1 0h3m5 0h2m1 0h1m1 0h1m3 0h2m1 0h1m1 0h1"/></svg></span><span>github.com/ondrej-cloud/<br>hackathon-decin-2026-ml-ai</span>
       </a>
     </div>
   </div>
@@ -227,25 +220,25 @@
 <section class="slajd zaloha" data-kroky="0" data-nazev="Z1 · Proč jen lineární regrese?">
   <h1>Proč jen lineární regrese?</h1>
   <div class="graf siroky"><div class="orez"><img src="grafy/Z1_srovnani_ctyr_modelu.png" alt="Čtyři modely na validaci: lineární regrese 17,1 cm, neuronová síť, LightGBM a fyzikální model horší"></div></div>
-  <p class="odpoved">Na povodních, které model neviděl, vyšla nejlíp. Nemá se na čem přeučit a&nbsp;každou váhu vysvětlíme fyzikálně.</p>
+  <p class="odpoved">Na povodních, které model neviděl, vyšla nejlíp, a&nbsp;každou váhu vysvětlíme fyzikálně.</p>
   <p class="pata">Záložní slajd · validace, 4 povodně 2006–2011</p>
 </section>
 <section class="slajd zaloha" data-kroky="0" data-nazev="Z2 · Co znamená „bude jako teď“?">
   <h1>Co znamená „bude jako teď“?</h1>
   <div class="graf siroky"><div class="orez"><img src="grafy/Z2_co_je_jako_ted.png" alt="Bude jako teď: předpověď, že hladina zůstane stejná, při povodni je vždycky o den pozadu"></div></div>
-  <p class="odpoved">Předpověď, že hladina za 24&nbsp;h bude stejná jako teď. Nejjednodušší srovnání, při povodni je vždycky o&nbsp;den pozadu.</p>
+  <p class="odpoved">Předpověď, že hladina za 24&nbsp;h bude stejná jako teď; při povodni o&nbsp;den pozadu.</p>
   <p class="pata">Záložní slajd</p>
 </section>
 <section class="slajd zaloha" data-kroky="0" data-nazev="Z3 · Proč ne srážky?">
   <h1>Proč ne srážky?</h1>
   <div class="graf siroky"><div class="orez"><img src="grafy/Z3_proc_ne_srazky.png" alt="Když se blíží vrchol, už neprší: srážky a hladina v čase"></div></div>
-  <p class="odpoved">I&nbsp;s&nbsp;dokonalou předpovědí deště na 3 dny klesla chyba jen o&nbsp;1&nbsp;cm. Déšť, který spadne teď, doteče do Děčína až za víc než 36&nbsp;h.</p>
+  <p class="odpoved">I&nbsp;s&nbsp;dokonalou předpovědí deště na 3 dny klesla chyba jen o&nbsp;1&nbsp;cm.</p>
   <p class="pata">Záložní slajd</p>
 </section>
 <section class="slajd zaloha" data-kroky="0" data-nazev="Z4 · Jak moc se pletete?">
   <h1>Jak moc se pletete?</h1>
   <div class="graf siroky"><div class="orez"><img src="grafy/Z4_jak_moc_se_pleteme.png" alt="Jak často je skutečnost v rozmezí od do: 8 až 9 z 10 hodnot"></div></div>
-  <p class="odpoved">Do rozmezí od–do se vejde 8 až 9 z&nbsp;10 hodnot. Rozmezí počítáme z&nbsp;chyb na vynechaných povodních.</p>
+  <p class="odpoved">Do rozmezí od–do se vejde 8 až 9 z&nbsp;10 hodnot.</p>
   <p class="pata">Záložní slajd</p>
 </section>
 <section class="slajd zaloha" data-kroky="0" data-nazev="Z5 · Funguje to i na jiné povodni?">
@@ -257,20 +250,24 @@
 <section class="slajd zaloha" data-kroky="0" data-nazev="Z6 · Podle čeho model rozhoduje?">
   <h1>Podle čeho model rozhoduje?</h1>
   <div class="graf siroky"><div class="orez"><img src="grafy/Z6_vahy_modelu.png" alt="Váhy modelu pro Děčín za 24 h: 98 políček, Děčín teď +88 cm, Praha teď +49 cm"></div></div>
-  <p class="odpoved">Každé políčko je váha jednoho vstupu. Děčín teď +88&nbsp;cm, Praha teď +49&nbsp;cm. Oranžová vedle modré: model odečítá starší hodnotu od nové, počítá, jestli voda stoupá.</p>
-  <p class="pata">Záložní slajd · 98 vah: hladina v&nbsp;Děčíně a&nbsp;Ústí × 7 zpoždění 0 až 24&nbsp;h, průtok 12 stanic × 7 zpoždění 0 až 36&nbsp;h</p>
+  <p class="odpoved">Každé políčko je váha jednoho vstupu: Děčín teď +88&nbsp;cm, Praha teď +49&nbsp;cm.</p>
+  <p class="pata">Záložní slajd · 98 vah, zpoždění 0 až 36&nbsp;h</p>
 </section>
-<section class="slajd tmavy pozadi zaloha" data-kroky="0" data-nazev="Z7 · Je rozliv hydraulický model?">
-  <img class="podklad" src="grafy/mapbox3_decin.jpg" alt="Rozliv Labe v Děčíně na 3D mapě">
-  <div class="stin-vlevo"></div>
-  <div class="obsah uzky">
-    <h1>Je rozliv hydraulický model? Není.</h1>
-    <p class="text">Výška terénu (ČÚZK DMR 5G, po 10&nbsp;cm) proti výšce hladiny, ověřená proti úřední mapě záplavových území.</p>
-    <ul class="trojcisli tmava">
-      <li><b>167 <small>ha</small></b><span>náš rozliv při pětileté vodě</span></li>
-      <li><b>183 <small>ha</small></b><span>úřední mapa (DIBAVOD)</span></li>
-      <li><b>165 <small>ha</small></b><span>průnik, shoda 0,89</span></li>
-    </ul>
+<section class="slajd zaloha" id="s-rozliv" data-kroky="0" data-nazev="Z7 · Je rozliv hydraulický model?">
+  <h1>Je rozliv hydraulický model? Není.</h1>
+  <div class="radek rozliv-radek">
+    <div class="sloupec">
+      <p class="text">Výška terénu proti výšce hladiny, ověřená proti úřední mapě záplavových území.</p>
+      <ul class="trojcisli">
+        <li><b>167 <small>ha</small></b><span>náš rozliv při pětileté vodě</span></li>
+        <li><b>183 <small>ha</small></b><span>úřední mapa (DIBAVOD)</span></li>
+        <li><b>165 <small>ha</small></b><span>průnik, shoda 0,89</span></li>
+      </ul>
+    </div>
+    <figure class="foto">
+      <img src="grafy/mapbox3_decin.jpg" alt="Rozliv Labe v Děčíně na 3D mapě">
+      <figcaption>Děčín na 3D mapě</figcaption>
+    </figure>
   </div>
   <p class="pata">Záložní slajd · Mapa: Mapbox, OpenStreetMap, ČÚZK, DIBAVOD</p>
 </section>

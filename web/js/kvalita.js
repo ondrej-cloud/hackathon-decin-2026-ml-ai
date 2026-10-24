@@ -45,18 +45,13 @@ function souhrn(zdroj) {
 async function ukaz() {
   zapisStav({ povoden: S.povoden, cil: S.cil, h: S.h });
   const p = povoden(), h = S.h;
-  // Pro uživatele je model „ridge“, liší se jen rokem, do kterého se učil; klíč ridge_test zůstává v názvech souborů.
-  const rok = (p.ucen || "2006–2020").slice(-4);
-  const modelPopis = p.model && p.model !== "ridge" ? `ridge, do ${rok}` : "ridge";
-  tiraz({ okamzik: `${datum(p.od)} až ${datum(p.do)}`, model: modelPopis, zdroj: "archiv ČHMÚ 2006–2025" });
+  tiraz({ okamzik: `${datum(p.od)} až ${datum(p.do)}` });
   const m = ((MET[S.povoden] || {})[S.cil] || {})[h];
   const sou = souhrn(p.zdroj);
-  const kde = p.zdroj === "test" ? "povodeň z testu 2021–2025" : "povodeň z validace";
-  let html = `<h2 class="nadpis">${typo(`${p.nazev} · ${NAZVY[S.cil]}, předpověď vydaná ${h} h předem`)}</h2>`;
-  if (p.zdroj === "test") html += hlaska(`Povodeň Boris 9/2024 je z testovací části (2021–2025), kterou model nikdy neviděl a která se pustila jednou na konci na finální model. Předpovědi jsou z modelu ridge učeného na všem do roku ${rok}, stejného jako při testu a v prezentaci.`);
+  let html = `<h2 class="nadpis">${typo(`${p.nazev} · ${NAZVY[S.cil]} · ${h} h předem`)}</h2>`;
   if (m) {
     const mene = m.chyba_jako_ted ? (1 - m.chyba_model / m.chyba_jako_ted) * 100 : null;
-    html += `<section class="karta">${stitek(`${NAZVY[S.cil]}, ${p.klic}, ${h} h předem`, kde)}
+    html += `<section class="pas">
       <dl class="udaje">
         <div><dt>Chyba při povodni</dt><dd>${cislo(m.chyba_model, 1)}<small>cm</small></dd><dd class="vedle">${typo(`bude jako teď <b>${cm(m.chyba_jako_ted, 1)}</b>${mene != null ? `, o ${cislo(mene)} % méně` : ""}`)}</dd></div>
         <div><dt>${typo("Varování před 2. stupněm")}</dt><dd>${m.predstih_2_stupen_h != null ? `${cislo(m.predstih_2_stupen_h)}<small>h předem</small>` : `<small>${m.propasnute ? "propásnuto" : "2. stupeň nenastal"}</small>`}</dd><dd class="vedle">${typo(m.predstih_3_stupen_h != null ? `3. stupeň <b>${jedn(m.predstih_3_stupen_h, "h")} předem</b>` : "3. stupeň nenastal")}</dd></div>
@@ -69,14 +64,11 @@ async function ukaz() {
   }
   if (sou) {
     const mene = sou.chyba_jako_ted ? (1 - sou.chyba_model / sou.chyba_jako_ted) * 100 : null;
-    const kolik = sou.povodni ? `${sou.povodni} povodně` : "povodně";
-    const kdy = sou.roky && p.zdroj !== "test" ? ` (${sou.roky})` : "";
-    html += `<p class="pozn">${typo(`Průměr přes ${kolik} ${p.zdroj === "test" ? "z testu 2021–2025" : "z validace"}${kdy}${sou.presne ? ` pro ${NAZVY[S.cil]} a ${h} h` : ", Děčín a Ústí, 12, 24 a 36 h předem"}: chyba modelu <b>${cm(sou.chyba_model, 1)}</b>, bude jako teď <b>${cm(sou.chyba_jako_ted, 1)}</b>${mene != null ? `, o ${cislo(mene)} % méně` : ""}${sou.propasnute != null ? `; propásnuté <b>${cislo(sou.propasnute)}</b>, plané <b>${cislo(sou.plane)}</b>` : ""}.`)}</p>`;
+    const kolik = sou.povodni ? `${sou.povodni} povodně` : "všechny povodně";
+    html += `<p class="pozn">${typo(`Průměr přes ${kolik}: model <b>${cm(sou.chyba_model, 1)}</b>, bude jako teď <b>${cm(sou.chyba_jako_ted, 1)}</b>${mene != null ? `, o ${cislo(mene)} % méně` : ""}.`)}</p>`;
   }
-  html += `<section class="karta">${stitek(`Povodeň ${p.klic}: skutečnost, model a „bude jako teď“`, NAZVY[S.cil])}<div id="legenda"></div><div id="graf"></div></section>
-    <p class="pozn">${typo("Každý bod modré čáry je samostatná předpověď vydaná o zvolený počet hodin dřív. „Bude jako teď“ je stejná křivka posunutá o ten počet hodin, proto je vždycky pozadu.")}</p>
-    <section class="karta">${stitek("Po dnech", `${NAZVY[S.cil]}, ${h} h předem`)}<div class="tab-obal" id="tabulka"></div></section>
-    <p class="pozn">${typo("Nejvyšší hladina dne je skutečné maximum; u modelu a „bude jako teď“ je to nejvyšší předpověď vydaná o zvolený počet hodin dřív na tenhle den. Chyba je průměrná odchylka od skutečnosti v cm přes všechny hodiny dne.")}</p>`;
+  html += `<section class="karta">${stitek(`Celá povodeň ${p.klic}`, NAZVY[S.cil])}<div id="graf"></div></section>
+    <section class="karta">${stitek("Po dnech", `${NAZVY[S.cil]}, ${h} h předem`)}<div class="tab-obal" id="tabulka"></div></section>`;
   hlavni.innerHTML = html;
   oznam(m ? `${p.nazev} ${NAZVY[S.cil]}, ${h} h předem: chyba modelu ${cm(m.chyba_model, 1)}, bude jako teď ${cm(m.chyba_jako_ted, 1)}.`
     : `${p.nazev} ${NAZVY[S.cil]}, ${h} h předem: metriky chybí.`);
@@ -91,12 +83,12 @@ async function ukaz() {
   const jakoTed = sk.map((_, j) => (j >= h ? sk[j - h] : null));
   const casy = RADA.cas.map(parseIso);
   graf($("#graf"), {
-    vyska: 440, osaY: "hladina (cm)", spa: spa(), legenda: $("#legenda"),
+    vyska: 440, osaY: "hladina (cm)", spa: spa(),
     popis: `Povodeň ${p.klic} ${NAZVY[S.cil]}: skutečná hladina, předpověď modelu a bude jako teď, ${h} h předem.`,
     serie: [
-      { nazev: "skutečná hladina", x: casy, y: sk, barva: BARVY.text, sirka: 2.2 },
-      { nazev: "„bude jako teď“", x: casy, y: jakoTed, barva: BARVY.jakoTed, sirka: 1.8, car: "6 5" },
-      { nazev: typo(`model ridge, vydáno ${h} h předem`), x: casy, y: model, barva: BARVY.voda, sirka: 2.4 },
+      { nazev: "skutečnost", x: casy, y: sk, barva: BARVY.text, sirka: 2.6, stitek: true },
+      { nazev: "bude jako teď", x: casy, y: jakoTed, barva: BARVY.jakoTed, sirka: 2, car: "6 5", stitek: true },
+      { nazev: "model", x: casy, y: model, barva: BARVY.modra, sirka: 2.6, stitek: true },
     ],
   });
   const dny = new Map();

@@ -8,8 +8,9 @@ export const STUPNE_KRATCE = ["bez stupně", "1. stupeň", "2. stupeň", "3. stu
 export const BARVY_SPA = ["#f2c437", "#ef6c00", "#c62828"];
 export const KDE = { decin: "v Děčíně", usti: "v Ústí nad Labem" };
 export const NAZVY = { decin: "Děčín", usti: "Ústí nad Labem" };
-export const BARVY = { studna: "#0b1016", ovladac: "#1a232d", text: "#e6ebf0", text2: "#c8d1d9", tlumene: "#8b98a5",
-  jakoTed: "#666666", voda: "#3aa0c9", vodaSvetla: "#7cc6e4" };
+// Barvy jako v grafech z prezentace (změřené z docs/grafy/prezentace): modrá a světlá modrá sloupců, oranžová, šedá „bude jako teď“.
+export const BARVY = { karta: "#ffffff", pozadi: "#f5f5f7", text: "#1d1d1f", text2: "#6e6e73", text3: "#86868b",
+  jakoTed: "#666666", modra: "#167c9c", modraSvetla: "#9fcad8", oranzova: "#cb6c31", cara: "#e5e5ea", caraSilna: "#d2d2d7" };
 
 export const stupen = (spa, cm) => spa.reduce((n, p) => n + (cm >= p ? 1 : 0), 0);
 export function odznak(spa, cm, kratce = false) {

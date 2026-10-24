@@ -4,10 +4,9 @@ import { typo } from "./typo.js";
 export const $ = (s, el = document) => el.querySelector(s);
 export const $$ = (s, el = document) => [...el.querySelectorAll(s)];
 
-export function tiraz({ okamzik, model, zdroj, zive = false }) {
-  $("#t-okamzik").textContent = typo(okamzik);
-  $("#t-model").textContent = model;
-  $("#t-data").innerHTML = `<i class="tecka${zive ? " zive" : ""}"></i>${typo(zdroj)}`;
+export function tiraz({ okamzik }) {
+  const el = $("#t-okamzik");
+  if (el) el.textContent = typo(okamzik);
 }
 
 export const hlaska = (text, druh = "") => `<div class="hlaska${druh ? " " + druh : ""}" role="status">${typo(text)}</div>`;

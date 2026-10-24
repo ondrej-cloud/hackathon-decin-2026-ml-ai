@@ -251,7 +251,7 @@ with tab_ted:
     with st.container(key="karta_graf"):
         html(styl.stitek("Posledních 72 hodin a předpověď", f"{jmeno(cil)}, hodinová data"))
         st.plotly_chart(fig, width="stretch", theme=None, config=styl.GRAF)
-    st.caption("Bílá čára je, co se změřilo do zvoleného okamžiku (svislá čára). Modré body jsou předpověď vydaná "
+    st.caption("Černá čára je, co se změřilo do zvoleného okamžiku (svislá čára). Modré body jsou předpověď vydaná "
                "v tomhle okamžiku na 12, 24 a 36 hodin dopředu. Modrý pás je rozmezí, do kterého se vešlo 90 % chyb "
                "modelu na tréninku; na povodních, které model neviděl, to bylo asi 8 z 10 případů. Tečkované čáry "
                "jsou stupně povodňové aktivity."
@@ -372,11 +372,7 @@ with tab_mapa:
 
     if rezim == REZIMY[0] and token:
         iframe(mapbox_animace_html(povoden_m, cil_m, nazev), 720)
-        st.caption("Vlevo rozliv z hladiny, kterou model předpověděl 24 h předem, vpravo rozliv ze skutečně naměřené "
-                   "hladiny v tutéž hodinu; posuvník uprostřed obě strany porovná, tlačítko spustí čas. Rozliv je "
-                   "z výškového modelu terénu ČÚZK DMR 5G (2 m): zaplaví se vše, co je níž než hladina a spojené "
-                   "s řekou; proti úředním územím Q5/Q20/Q100 se shoduje z 82 až 90 %. Je to statický odhad bez "
-                   "proudění; zdi a hráze pod rozlišením terénu nevidí.")
+        st.caption("Rozliv z terénu ČÚZK DMR 5G proti hladině, shoda s úředními územími 82 až 90 %.")
     elif rezim == REZIMY[0]:
         st.warning("Celá povodeň s porovnáním potřebuje token Mapboxu v .env. Bez něj přepněte na Zvolený okamžik "
                    "a tlačítko Přehrát povodeň projde povodeň po 6 hodinách na jednodušší mapě.")
@@ -419,9 +415,6 @@ with tab_animace:
         html(styl.stitek("Povodeň v animaci", "kapky po skutečných řekách"))
         povoden_a = st.radio("Povodeň", list(POVODNE), index=3, horizontal=True, key="animace_povoden",
                              label_visibility="collapsed")
-        html("<p>Kapky tečou po řekách rychlostí podle změřené doby putování a nesou průtok ze stanice proti proudu: "
-             "víc vody, víc a jasnějších kapek. Tlačítko spustí čas, posuvník ho posune. V panelu vpravo je předpověď "
-             "modelu za 24 h a stupeň; skutečnou hladinu o 24 h později známe jen zpětně, v provozu by tam nebyla.</p>")
+        html("<p>Víc vody, víc a jasnějších kapek.</p>")
     iframe(animace_html(povoden_a, nazev), 720)
-    st.caption("Řeky © OpenStreetMap (ODbL), snímky a výšky © Mapbox, © Maxar, měření ČHMÚ. Doby putování mezi "
-               "stanicemi jsou odhad z našich dat (např. Praha → Vraňany 4,5 h, Mělník → Ústí 12 h, Ústí → Děčín 4 h).")
+    st.caption("Řeky © OpenStreetMap, snímky a výšky © Mapbox, © Maxar, měření ČHMÚ.")

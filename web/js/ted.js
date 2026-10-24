@@ -1,7 +1,7 @@
 // Stránka Teď: vodočet, odečty, věta pro laika a graf 72 h kolem zvoleného okamžiku; přepínač Dnešek.
 import { typo, cislo, cm, jedn, znamenko, NB, parseIso, posun, datumCas, hodina } from "./typo.js";
 import { DATA, H, KDE, NAZVY, STUPNE, BARVY, nacti, stav, zapisStav, stupen, odznak, trend, nejblizsi } from "./data.js";
-import { $, tiraz, hlaska, stitek, dlazdice, naZmenu, oznam, posuvnaTabulka } from "./spolecne.js";
+import { $, tiraz, hlaska, stitek, dlazdice, segmenty, naZmenu, oznam, posuvnaTabulka } from "./spolecne.js";
 import { vodocet } from "./vodocet.js";
 import { graf } from "./graf.js";
 
@@ -10,7 +10,18 @@ const S = { povoden: q.get("povoden") || "2011-01", cil: q.get("cil") || "decin"
 let POV, RADA, DNES, i = 0, prvni = true;
 const hlavni = $("#hlavni"), panel = $("#panel");
 const kompakt = () => matchMedia("(max-width: 640px)").matches;
-const K_PANELU = `<a class="k-panelu" href="#panel">${typo("Změnit stanici, povodeň, čas nebo zapnout Dnešek")}</a>`;
+const prepnout = $("#panel-prepnout");
+
+// Na telefonu je panel nahoře sbalený na jeden řádek se shrnutím; tlačítko ho rozbalí.
+function panelOtevrit(otevrit) {
+  panel.classList.toggle("otevreny", otevrit);
+  prepnout.setAttribute("aria-expanded", String(otevrit));
+  prepnout.textContent = otevrit ? "Hotovo" : "Změnit";
+}
+function shrnuti(okamzik) {
+  const casti = [NAZVY[S.cil], S.dnesek ? "Dnešek" : povoden().klic, okamzik].filter(Boolean);
+  $("#panel-shrnuti").textContent = typo(casti.join(" · "));
+}
 
 function povoden() {
   return POV.povodne.find((p) => p.slug === S.povoden) || POV.povodne[0];
@@ -32,15 +43,16 @@ async function start() {
   }
   if (!POV.stanice[S.cil]) S.cil = "decin";
   if (!POV.povodne.some((p) => p.slug === S.povoden)) S.povoden = POV.povodne[0].slug;
-  if (!$("#stanice input")) $("#stanice").innerHTML = dlazdice("cil", Object.entries(POV.stanice).map(([k, v]) =>
-    ({ hodnota: k, nazev: v.nazev, popis: `stupně ${v.spa.join(" / ")} cm` })), S.cil, "", "Stanice");
+  if (!$("#stanice input")) $("#stanice").innerHTML = segmenty("cil", Object.entries(POV.stanice).map(([k, v]) =>
+    ({ hodnota: k, nazev: v.nazev })), S.cil, "Stanice");
   if (!$("#povodne input")) $("#povodne").innerHTML = dlazdice("povoden", POV.povodne.map((p) =>
-    ({ hodnota: p.slug, nazev: p.klic, popis: p.nazev + (p.zdroj === "test" ? ", test" : "") })), S.povoden, "", "Povodeň");
+    ({ hodnota: p.slug, nazev: p.klic })), S.povoden, "", "Povodeň");
   for (const [jmeno, hodnota] of [["cil", S.cil], ["povoden", S.povoden]]) {
     const el = panel.querySelector(`input[name="${jmeno}"][value="${hodnota}"]`);
     if (el) el.checked = true;
   }
   $("#dnesek").checked = S.dnesek;
+  prepnout.addEventListener("click", () => panelOtevrit(!panel.classList.contains("otevreny")));
   // 6: vodočet má na telefonu kompaktní kresbu; při změně šířky se překreslí
   matchMedia("(max-width: 640px)").addEventListener("change", () => { if (RADA || DNES) ukaz(); });
   naZmenu(panel, "cil", (v) => { S.cil = v; prvni = true; nactiAUkaz(); });
@@ -92,7 +104,7 @@ async function nactiAUkaz() {
     hlavni.innerHTML = hlaska(S.dnesek
       ? "Dnešek teď není k dispozici: chybí data/dnesek.json. Vyrábí ho skript src/export_web.py z živých dat ČHMÚ."
       : `Chybí data pro tuhle povodeň (data/rada_${S.povoden}_${S.cil}.json).`, "varovani");
-    tiraz({ okamzik: "–", model: S.dnesek ? MODEL_DNES : "ridge", zdroj: S.dnesek ? "živě ČHMÚ" : "archiv ČHMÚ 2006–2025" });
+    tiraz({ okamzik: "–" });
     hlavni.removeAttribute("aria-busy");
     return;
   }
@@ -100,19 +112,7 @@ async function nactiAUkaz() {
   ukaz();
 }
 
-// Pro uživatele je model vždycky „ridge“ a liší se jen tím, do kterého roku se učil; klíče ridge_vse a ridge_test
-// zůstávají jen v názvech souborů s daty.
-const MODEL_DNES = "ridge, do 2025";
-const rokUceni = (p) => (p.ucen || "2006–2020").slice(-4);
-const popisModelu = (p) => (p.model && p.model !== "ridge" ? `ridge, do ${rokUceni(p)}` : "ridge");
-
 function ukaz() {
-  const pv = povoden();
-  $("#model-popis").innerHTML = `<b>ridge</b>` + typo(S.dnesek
-    ? "Lineární regrese (ridge), 98 vstupů, učená na všem do roku 2025. Hodí se na dnešek."
-    : pv.zdroj === "test"
-      ? `Lineární regrese (ridge), 98 vstupů, učená na všem do roku ${rokUceni(pv)}, stejná jako při finálním testu. Tuhle povodeň nikdy neviděla.`
-      : "Lineární regrese (ridge), 98 vstupů, učená na letech 2006–2018. Hodí se na přehrávání historie.");
   if (S.dnesek) ukazDnesek(); else ukazHistorii();
 }
 
@@ -123,7 +123,8 @@ function ukazHistorii() {
   const ted = RADA.skutecnost[i];
   const pred = Object.fromEntries(H.map((h) => [h, RADA.pred[h][i]]));
   const rozmezi = Object.fromEntries(H.map((h) => [h, RADA.dolni[h][i] != null ? [RADA.dolni[h][i], RADA.horni[h][i]] : null]));
-  tiraz({ okamzik: datumCas(S.cas), model: popisModelu(povoden()), zdroj: "archiv ČHMÚ 2006–2025" });
+  tiraz({ okamzik: datumCas(S.cas) });
+  shrnuti(datumCas(S.cas));
   if (ted == null || H.some((h) => pred[h] == null)) {
     hlavni.innerHTML = `<h2>${typo(`${NAZVY[S.cil]}, ${datumCas(S.cas)} českého času`)}</h2>` +
       hlaska("Pro zvolenou hodinu chybí měření nebo vstupy modelu. Posuňte čas o pár hodin.", "varovani");
@@ -139,30 +140,37 @@ function ukazHistorii() {
     `Tahle voda doteče do Ústí a Děčína zhruba za půl dne až den.`;
   hlavni.innerHTML = `
     <h2>${typo(`${NAZVY[S.cil]}, ${datumCas(S.cas)} českého času`)}</h2>
-    ${K_PANELU}
+    ${hero(ted, pred)}
     <div class="dvojice">
       <section class="karta" aria-label="Vodočet">${stitek(`Vodočet ${NAZVY[S.cil]}`, "hladina v cm")}${vodocet(spa(), ted, pred, rozmezi, {}, prvni, kompakt())}</section>
-      <section class="karta" aria-label="Odečet a předpověď">${stitek("Odečet a předpověď", "stupeň povodňové aktivity")}${cteni(ted, pred, rozmezi, {})}</section>
+      <section class="karta" aria-label="Předpověď na 12, 24 a 36 hodin">${stitek("Předpověď na 12, 24 a 36 h", "stupeň povodňové aktivity")}${cteni(ted, pred, rozmezi, {})}</section>
     </div>
-    <section class="karta">${stitek("Proč to tak vyšlo")}<p class="citat">${typo(veta)}</p></section>
-    <section class="karta">${stitek("Posledních 72 hodin a předpověď", `${NAZVY[S.cil]}, hodinová data`)}<div id="legenda"></div><div id="graf"></div></section>
-    <p class="pozn" id="graf-pozn"></p>`;
+    <section class="karta"><p class="citat">${typo(veta)}</p></section>
+    <section class="karta">${stitek("Posledních 72 hodin a předpověď", NAZVY[S.cil])}<div id="graf"></div></section>`;
   prvni = false;
   const od = Math.max(0, i - 72);
   const casy = RADA.cas.slice(od, i + 1).map(parseIso);
   const predX = [0, ...H].map((h) => parseIso(RADA.cas[i + h] || posun(S.cas, h)));
-  const ymax = Math.max(...RADA.skutecnost.slice(od, i + 1).filter((x) => x != null), ...H.map((h) => pred[h]), ...H.map((h) => (rozmezi[h] ? rozmezi[h][1] : 0)));
   graf($("#graf"), {
-    vyska: 400, osaY: "hladina (cm)", spa: spa(), svisla: parseIso(S.cas), legenda: $("#legenda"),
+    vyska: 400, osaY: "hladina (cm)", spa: spa(), svisla: parseIso(S.cas),
     popis: `Hladina ${NAZVY[S.cil]} za posledních 72 hodin a předpověď na 12, 24 a 36 hodin.`,
-    pas: H.every((h) => rozmezi[h]) ? { x: predX, lo: [ted, ...H.map((h) => rozmezi[h][0])], hi: [ted, ...H.map((h) => rozmezi[h][1])], nazev: `rozmezí (90${NB}% chyb)` } : null,
+    pas: H.every((h) => rozmezi[h]) ? { x: predX, lo: [ted, ...H.map((h) => rozmezi[h][0])], hi: [ted, ...H.map((h) => rozmezi[h][1])] } : null,
     serie: [
-      { nazev: "hladina změřená", x: casy, y: RADA.skutecnost.slice(od, i + 1), barva: BARVY.text, sirka: 2.2 },
-      { nazev: "předpověď", x: predX, y: [ted, ...H.map((h) => pred[h])], barva: BARVY.vodaSvetla, sirka: 2.2, car: "7 5", body: true, prvniMaly: true },
+      { nazev: "změřeno", x: casy, y: RADA.skutecnost.slice(od, i + 1), barva: BARVY.text, sirka: 2.4 },
+      { nazev: "předpověď", x: predX, y: [ted, ...H.map((h) => pred[h])], barva: BARVY.modra, sirka: 2.4, car: "7 5", body: true, prvniMaly: true, stitek: true },
     ],
   });
-  $("#graf-pozn").innerHTML = typo("Bílá čára je, co se změřilo do zvoleného okamžiku (svislá čára). Modré body jsou předpověď vydaná v tomhle okamžiku na 12, 24 a 36 hodin dopředu. Modrý pás je rozmezí, do kterého se vešlo 90 % chyb modelu na tréninku; na povodních, které model neviděl, to bylo asi 8 z 10 případů. Tečkované čáry jsou stupně povodňové aktivity."
-    + (ymax * 1.6 + 60 < spa()[0] ? ` Hladina je hluboko pod 1. stupněm (${spa()[0]} cm), čáry stupňů se do grafu nevešly.` : ""));
+}
+
+// Hlavní údaj nahoře: hladina teď a za 24 h, obojí se stupněm.
+function hero(ted, pred) {
+  const d = pred[24] - ted;
+  const smer = d >= 5 ? " roste" : d <= -5 ? " klesa" : "";
+  return `<section class="hero" aria-label="Hladina teď a za 24 hodin">
+    <div><span class="hero-popis">${typo(`Hladina teď, ${NAZVY[S.cil]}`)}</span><span class="hero-cislo">${cislo(ted)}<small>cm</small></span>${odznak(spa(), ted)}</div>
+    <div><span class="hero-popis">${typo("Za 24 h podle modelu")}</span><span class="hero-cislo">${cislo(pred[24])}<small>cm</small></span>` +
+    `<span class="hero-radek">${odznak(spa(), pred[24])}<span class="hero-delta${smer}">${typo(`${znamenko(d)} cm proti teď`)}</span></span></div>
+  </section>`;
 }
 
 function cteni(ted, pred, rozmezi, chmu) {
@@ -170,12 +178,11 @@ function cteni(ted, pred, rozmezi, chmu) {
     const pozn = [];
     if (rozmezi[h]) pozn.push(`nejspíš ${cislo(rozmezi[h][0])} až ${cm(rozmezi[h][1])}`);
     if (chmu[h] != null) pozn.push(`ČHMÚ ${cm(chmu[h])}`);
-    return `<div><span class="nazev">${typo(`Za ${h} h`)}</span><span class="hodnota">${cm(pred[h])}</span>` +
+    return `<div><span class="nazev">${typo(`Za ${h} h`)}</span><span class="hodnota">${cislo(pred[h])}<small>cm</small></span>` +
       `<span class="delta">${typo(`${znamenko(pred[h] - ted)} cm proti teď`)}</span>${odznak(spa(), pred[h])}` +
       `<span class="rozmezi">${typo(pozn.join(" · "))}</span></div>`;
   });
-  return `<div class="cteni"><div><span class="nazev">Hladina teď</span><span class="hodnota">${cm(ted)}</span>${odznak(spa(), ted)}` +
-    `<span class="rozmezi">${typo("změřeno na stanici ČHMÚ")}</span></div>${radky.join("")}</div>`;
+  return `<div class="cteni">${radky.join("")}</div>`;
 }
 
 // Co ČHMÚ nezveřejnil a není dopočtené: ["Mělník (Labe), průtok"] -> "průtok Mělník (Labe)".
@@ -199,7 +206,8 @@ function ukazDnesek() {
   const stari = Number.isFinite(t) ? (Date.now() - t) / 3600e3 : DNES.stari_h;
   const stare = stari > 6;
   const kdy = DNES.cas ? datumCas(DNES.cas) : DNES.cas_cesky;
-  tiraz({ okamzik: kdy, model: MODEL_DNES, zdroj: `živě ČHMÚ, stáří ${cislo(stari, 1)} h`, zive: !stare });
+  tiraz({ okamzik: kdy });
+  shrnuti(kdy);
   // Staré věty o dopočtených stanicích má web v poznámce pod tabulkou; chybějící hodiny se skládají z polí chybi a dopocteno.
   const chybi = chybejici();
   const upozorneni = (DNES.upozorneni || []).filter((u) => chybi == null || !/^(Dopočteno z bilance|ČHMÚ zatím nezveřejnil)/.test(u));
@@ -218,28 +226,25 @@ function ukazDnesek() {
   const hist = DNES.historie && DNES.historie.cas && DNES.historie[`${S.cil}_H`] ? DNES.historie : null;
   hlavni.innerHTML = `
     <h2>${typo(`${NAZVY[S.cil]} dnes, předpověď vydaná ${kdy} českého času`)}</h2>
-    ${K_PANELU}
+    ${hero(st.ted, pred)}
     ${stare ? hlaska(`Živá data jsou ${cislo(stari, 1)} h stará (hranice je 6 h). Soubor data/dnesek.json se obnovuje každou hodinu skriptem src/dnesek_export.py; do té doby berte předpověď s rezervou.`, "varovani") : ""}
     ${upozorneni.map((u) => hlaska(u)).join("")}
     <div class="dvojice">
       <section class="karta" aria-label="Vodočet">${stitek(`Vodočet ${NAZVY[S.cil]}`, "hladina v cm")}${vodocet(spa(), st.ted, pred, rozmezi, chmu, prvni, kompakt())}</section>
-      <section class="karta" aria-label="Odečet a předpověď">${stitek("Odečet a předpověď", "stupeň povodňové aktivity")}${cteni(st.ted, pred, rozmezi, chmu)}</section>
+      <section class="karta" aria-label="Předpověď na 12, 24 a 36 hodin">${stitek("Předpověď na 12, 24 a 36 h", "stupeň povodňové aktivity")}${cteni(st.ted, pred, rozmezi, chmu)}</section>
     </div>
-    <section class="karta">${stitek("Proč to tak vyšlo")}<p class="citat">${typo(veta)}</p></section>
+    <section class="karta"><p class="citat">${typo(veta)}</p></section>
     <div class="dvojice rovna">
-      <section class="karta">${stitek("Náš model vedle oficiální předpovědi ČHMÚ")}
-        <dl class="udaje tri">${H.map((h) => `<div><dt>${typo(`Za ${h} h`)}</dt><dd>${cislo(pred[h])}<small>cm</small></dd><dd class="vedle">ČHMÚ <b>${chmu[h] != null ? cm(chmu[h]) : "nezveřejnil"}</b></dd></div>`).join("")}</dl>
-        <p class="pozn">${typo("Náš model je jednodušší a nemá počasí, ČHMÚ má srážkovou předpověď.")}</p></section>
+      <section class="karta">${stitek("Náš model vedle předpovědi ČHMÚ")}
+        <dl class="udaje tri">${H.map((h) => `<div><dt>${typo(`Za ${h} h`)}</dt><dd>${cislo(pred[h])}<small>cm</small></dd><dd class="vedle">ČHMÚ <b>${chmu[h] != null ? cm(chmu[h]) : "nezveřejnil"}</b></dd></div>`).join("")}</dl></section>
       <section class="karta">${stitek("Srážky v povodí, příštích 48 h", "Open-Meteo")}
-        ${povodi.length ? `<dl class="udaje tri">${povodi.map((p) => `<div><dt>${typo(p.nazev)}</dt><dd>${cislo(p.mm_48)}<small>mm</small></dd><dd class="vedle">za 24${NB}h <b>${jedn(p.mm_24, "mm")}</b></dd></div>`).join("")}</dl>` : hlaska("Předpověď srážek teď není k dispozici.")}
-        <p class="pozn">${typo((srazky.veta ? srazky.veta + " " : "") + "Srážky do modelu nevstupují, na 12 až 36 h nepomohly (voda z deště je už v řekách). Zdroj Open-Meteo (CC BY 4.0).")}</p></section>
+        ${povodi.length ? `<dl class="udaje tri">${povodi.map((p) => `<div><dt>${typo(p.nazev)}</dt><dd>${cislo(p.mm_48)}<small>mm</small></dd><dd class="vedle">za 24${NB}h <b>${jedn(p.mm_24, "mm")}</b></dd></div>`).join("")}</dl>` : hlaska("Předpověď srážek teď není k dispozici.")}</section>
     </div>
     <section class="karta">${stitek("Stanice proti proudu", "průtok teď")}
       <div class="tab-obal"><table class="tab"><thead><tr><th style="text-align:left">Stanice</th><th>Průtok (m³/s)</th><th>Zdroj</th></tr></thead><tbody>
       ${(DNES.tabulka || []).map((r) => `<tr${r.dopocteno ? ' class="tlum"' : ""}><th>${typo(r.stanice)}</th><td>${cislo(r.Q)}</td><td class="tlum zal">${r.dopocteno ? "dopočteno" : "ČHMÚ"}</td></tr>`).join("")}
-      </tbody></table></div>
-      <p class="pozn">${typo(`Živá data ČHMÚ (opendata.chmi.cz), ${cislo(stari, 1)} h stará. Průtoky v Mělníku a Nymburce ČHMÚ operativně nezveřejňuje, jsou dopočtené z bilance vody.`)}</p></section>
-    <section class="karta">${stitek(hist ? "Posledních 72 hodin a předpověď" : "Předpověď na 36 hodin", `${NAZVY[S.cil]}, ${hist ? "hodinová data ČHMÚ" : "od " + kdy}`)}<div id="legenda"></div><div id="graf"></div></section>`;
+      </tbody></table></div></section>
+    <section class="karta">${stitek(hist ? "Posledních 72 hodin a předpověď" : "Předpověď na 36 hodin", NAZVY[S.cil])}<div id="graf"></div></section>`;
   prvni = false;
   posuvnaTabulka($(".tab-obal", hlavni));
   oznam(`${NAZVY[S.cil]} dnes, předpověď vydaná ${kdy}: teď ${cm(st.ted)}, za 24 h asi ${cm(pred[24])}.`);
@@ -249,13 +254,13 @@ function ukazDnesek() {
   const predX = [0, ...H].map((h) => parseIso(posun(iso, h)));
   const hc = H.filter((h) => chmu[h] != null);
   graf($("#graf"), {
-    vyska: hist ? 400 : 320, osaY: "hladina (cm)", spa: spa(), svisla: predX[0], legenda: $("#legenda"),
+    vyska: hist ? 400 : 320, osaY: "hladina (cm)", spa: spa(), svisla: predX[0],
     popis: `Předpověď hladiny ${NAZVY[S.cil]} na 12, 24 a 36 hodin.`,
-    pas: H.every((h) => rozmezi[h]) ? { x: predX, lo: [st.ted, ...H.map((h) => rozmezi[h][0])], hi: [st.ted, ...H.map((h) => rozmezi[h][1])], nazev: `rozmezí (90${NB}% chyb)` } : null,
+    pas: H.every((h) => rozmezi[h]) ? { x: predX, lo: [st.ted, ...H.map((h) => rozmezi[h][0])], hi: [st.ted, ...H.map((h) => rozmezi[h][1])] } : null,
     serie: [
-      ...(hist ? [{ nazev: "hladina změřená", x: hist.cas.map(parseIso), y: hist[`${S.cil}_H`], barva: BARVY.text, sirka: 2.2 }] : []),
-      { nazev: "předpověď", x: predX, y: [st.ted, ...H.map((h) => pred[h])], barva: BARVY.vodaSvetla, sirka: 2.2, car: "7 5", body: true, prvniMaly: true },
-      ...(hc.length ? [{ nazev: "ČHMÚ", x: hc.map((h) => parseIso(posun(iso, h))), y: hc.map((h) => chmu[h]), barva: BARVY.text, jenBody: true, trojuhelnik: true }] : []),
+      ...(hist ? [{ nazev: "změřeno", x: hist.cas.map(parseIso), y: hist[`${S.cil}_H`], barva: BARVY.text, sirka: 2.4 }] : []),
+      { nazev: "předpověď", x: predX, y: [st.ted, ...H.map((h) => pred[h])], barva: BARVY.modra, sirka: 2.4, car: "7 5", body: true, prvniMaly: true, stitek: true },
+      ...(hc.length ? [{ nazev: "ČHMÚ", x: hc.map((h) => parseIso(posun(iso, h))), y: hc.map((h) => chmu[h]), barva: BARVY.text, jenBody: true, trojuhelnik: true, stitek: true }] : []),
     ],
   });
 }
