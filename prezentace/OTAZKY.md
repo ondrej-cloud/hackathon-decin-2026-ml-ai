@@ -108,3 +108,26 @@ Lineární regrese má přesný vzorec, spočítá váhy jedním výpočtem a vy
 **32. Proč nepoužijete předpověď počasí, když na 3 dny pomůže?** (Dan, slajd 9 a Z3)
 Budoucí déšť nezná nikdo, existuje jen předpověď počasí, která se plete hlavně v tom, kde a kolik naprší. Číslo 16,1 cm je myšlenkový pokus se skutečně naměřeným budoucím deštěm, tedy horní mez, kterou žádná předpověď nedá. Na 12–36 h pomohl i dokonalý déšť jen o 1 cm, protože voda, která přijde do 36 h, už teče řekou. Velký přínos byl jen na 72 h a jen u jediné dešťové povodně ve validaci (9/2010: 79,7 → 48,0 cm, −40 %); 72 h je přitom úplně jiná úloha, chyba je tam kolem 78 cm proti 16 cm na 24 h. A hlavně: aby se model naučil s předpovědí pracovat, potřebuje archiv starých předpovědí, tedy co předpověď říkala v každé hodině 2006–2018. Ten volně není (Open-Meteo má historické předpovědi až od 2021–2022). Kdybychom model učili na skutečném dešti a pak mu dávali předpověď, věřil by jí jako dokonalé a ověřit by to nešlo. Proto je to v „co dál“.
 
+**33. Co přesně model potřebuje k učení a k předpovědi?** (Dan)
+Jen hodinová měření ČHMÚ: průtok na 12 stanicích (Vltava s Berounkou a Sázavou, horní Labe s Jizerou, Ohře, Mělník, Ústí, Děčín) teď a před 3 až 36 h a hladinu v Děčíně a Ústí teď a před 1 až 24 h. K učení navíc hladinu v Děčíně a Ústí o 12, 24 a 36 h později, tu se model učí předpovídat. Nic dalšího: žádné počasí, šířku koryta ani tvar povodí.
+
+**34. Předpovídáte jen povodně, které přitečou odjinud, a ne ty z deště přímo v kraji?** (Dan)
+Ano, to je hlavní limit. Model vidí vodu, až když teče některou z našich stanic. Velké povodně na Labi v Děčíně (2006, 2011, 2013, 2024) přitekly z celého povodí, tedy z Vltavy, horního Labe a Ohře, a ty vidí den předem. Když silně zaprší přímo v kraji, voda přiteče přítoky, které neměříme: Ploučnice ústí do Labe kousek nad vodočtem v Děčíně, Bílina v Ústí. Je to vidět na povodni 8/2010 z deště v Lužických horách: ve vícenásobné validaci měla druhou největší chybu (28,6 cm) a nejmenší zlepšení proti „jako teď“ (34 %). Přívalové povodně na malých potocích model nevidí vůbec, to je jiná úloha, potřebuje srážky a předpověď počasí.
+
+## Rozliv v mapě: jak počítáme, kam voda dojde
+
+**35. Jak přesně počítáte, kam voda při dané hladině dojde?** (Honza, slajd 8 a Z7)
+Porovnáním výšek, nic se tu neučí (`app/rozliv_dem.py`):
+1. Výška hladiny u vodočtu v metrech nad mořem = nula vodočtu + hladina. Nula je v Děčíně 120,07 m n. m., v Ústí 130,94 m n. m. Při 707 cm v Děčíně (pětiletá voda) je hladina 120,07 + 7,07 = 127,14 m n. m.
+2. Proti proudu hladina stoupá se sklonem 0,44 m/km: výška hladiny v místě = výška u vodočtu + 0,44 × vzdálenost od vodočtu proti proudu v km. 2 km nad vodočtem je to 127,14 + 0,88 = 128,02 m n. m. Sklon jsme změřili z našich dat: rozdíl hladin Ústí a Děčín (o 4 h později) na 25,4 km řeky, medián 0,438 m/km, skoro stejný při nízké i velké vodě.
+3. Terén: výškový model ČÚZK DMR 5G z leteckého laserového skenování, bod každé 2 m, čtverec 6 × 6 km kolem vodočtu.
+4. Zaplavený je bod, který je níž než hladina v tom místě **a zároveň je s korytem spojený** přes jiné zaplavené body (8 sousedů). Prohlubeň za kopcem, kam se voda nemá jak dostat, zaplavená není.
+5. V Ústí je 1,7 km nad vodočtem jez Střekov, nad ním držíme hladinu aspoň na úrovni zdrže 141,55 m n. m.
+6. Spočítáno předem pro hladiny po 10 cm (Děčín 300 až 1 250 cm), aplikace vezme nejbližší k předpovědi.
+
+**36. Jak víte, že to sedí?** (Honza, slajd 8)
+Porovnali jsme to s oficiálními záplavovými územími (DIBAVOD, VÚV TGM), která vznikla hydraulickým modelem, pro pětiletou, dvacetiletou a stoletou vodu. Shoda (průnik děleno sjednocením) je 0,82 až 0,90, například Děčín Q5: náš rozliv 167 ha, úřední 183 ha, společných 165 ha. Rozdíly: my navíc zatékáme do údolí přítoků (hlavně Bílina v Ústí), úřední mapa má navíc úzké pásy podél břehů a kus údolí Ploučnice.
+
+**37. Berete v úvahu proudění, zdi, mosty nebo kanalizaci?** (Honza)
+Ne, je to statický rozliv: zaplaví všechno pod hladinou, co je spojené s korytem, jako by voda měla dost času se rozlít. Nepočítá rychlost proudění ani objem vlny, takže krátká špička může ve skutečnosti zaplavit méně. Protipovodňové zdi, mobilní stěny a valy užší než 2 m v terénu nejsou, mosty a podjezdy DMR nemá. Kanalizace v modelu není vůbec: voda se ve skutečnosti může dostat za zeď zpětně kanály, nebo naopak odtéct, to statický model neukáže. Přítoky (Ploučnice, Bílina) mají vlastní průtok, model jim dává jen hladinu Labe. Na orientační mapu „kam až voda dojde“ to stačí, shoda s úřední mapou je 82 až 90 %; na stavbu hrází ne.
+
