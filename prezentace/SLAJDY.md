@@ -159,7 +159,7 @@ Zdroje: `docs/PREHLED.md` (test), `results/krizova_validace/` a `docs/POKUSY.md`
 
 99 slov (strop 108).
 
-„Skoro dvakrát“: na testu v Děčíně 17,5 cm na 24 h a 29,9 cm na 36 h, tedy 1,7krát. Počasí na 72 h: `docs/POKUSY.md` pá 22:46, dešťová povodeň 9/2010, 79,7 → 69,8 cm s dokonale známým deštěm (horní mez); archiv předpovědí má Open-Meteo až od 2021–2022.
+„Skoro dvakrát“: na testu v Děčíně 17,5 cm na 24 h a 29,9 cm na 36 h, tedy 1,7krát. Počasí na 72 h: `docs/POKUSY.md` pá 22:46, dešťová povodeň 9/2010, 79,7 → 48,0 cm s dokonale známým deštěm (horní mez, jediná dešťová povodeň ve validaci); archiv předpovědí má Open-Meteo až od 2021–2022.
 
 ## Záložní slajdy
 
