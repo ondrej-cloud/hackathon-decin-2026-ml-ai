@@ -467,3 +467,12 @@ Následující pokusy jsou doplněné zpětně (pá 19:55). Všechny byly před 
 
 ## so 1:15 · Ondra · oprava: vícenásobná validace 55 %, ne 56 %
 - Zlepšení lineární regrese proti „jako teď“ ve vícenásobné validaci (pá 23:27) je z nezaokrouhlených průměrů 55,5 % (20,12 proti 45,19 cm), správně tedy 55 %, ne 56 %. 56 vyšlo ze zaokrouhlených 20,1 a 45,2. U sítě 53 %, ne 54 %. Opraveno v `docs/PREHLED.md`, `docs/POROZUMENI.md`, `docs/CESTA_MODELU.md` a `docs/PREZENTACE_7MIN.md`. Vícenásobná validace tak dává stejné zlepšení jako test (55 %).
+
+## so 8:42 · Ondra · vlhkost, tlak a vítr
+- Otázka: pomůže modelu něco z meteorologie, kterou jsme ještě nezkoušeli: vlhkost vzduchu, tlak (i jeho změna za den, padající tlak hlásí frontu) a rychlost a směr větru? Srážky, sníh a teplotu jsme zkoušeli dřív (pá 20:44, so 23:14).
+- Data a rozdělení: denní data ČHMÚ ze stejných 29 meteostanic jako u srážek (`data/raw/chmu_meteo/`), denní průměr vlhkosti, tlaku a rychlosti větru, směr větru jako průměr tří pozorování přes vektory (sin a cos), vše zprůměrované po větvích Vltava, horní Labe, Ohře. Hodnota dne D je v tabulce až od D+1 07:00 UTC, kdy je známá (jako teplota v `src/meteo.py`). Navíc myšlenkový pokus „předem“, jako bychom hodnoty dne D znali už o půlnoci, tedy dokonalou předpověď na den. Validace, test ne, všechny varianty na stejných řádcích.
+- Model a nastavení: `ridge` beze změny, 98 vstupů a k nim 18 nových (6 na větev).
+- Kde a jak dlouho: MacBook M1, 50 s.
+- Výsledek (`prumer_povodne`, cm): bez 17,1; s vlhkostí 17,2; s tlakem 17,0; s větrem 17,0; se vším 17,1; se vším „předem“ 17,0 (−0,1). Největší rozdíl je na 36 h v Děčíně, 26,0 → 25,5 jen při dokonalé předpovědi.
+- Závěr: nepomáhá, rozdíly jsou pod 0,1 cm a daleko pod naším pravidlem 1 cm. Vlhkost, tlak ani vítr do řeky žádnou vodu nepřidají, jsou jen náznakem, že bude pršet, a i dokonale známý budoucí déšť pomohl na 12 až 36 h nejvýš o 1 cm (17,1 → 16,1). Vítr hladinu zvedá u moře nebo jezera, ne v řece, a odpar za den dva je proti povodňovému průtoku zanedbatelný. Ze všech meteo veličin v zadání (teplota, srážky, vlhkost, tlak, vítr) tak žádná model na 12 až 36 h nezlepší; model neměníme.
+- Soubory: `src/pokus_vlhkost_tlak_vitr.py`
