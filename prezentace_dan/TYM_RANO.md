@@ -5,20 +5,21 @@ Do main nešlo nic. Podklady pro prezentaci jsou v `prezentace_dan/` na větvi `
 
 ## Co se v noci zjistilo
 
-1. **Finální model zůstává lineární regrese.** Nic z noci ji ve vícenásobné validaci nepřekonalo aspoň o 1 cm: směs G3
+1. **Finální model zůstává lineární regrese.** Pro 24 h ji nic z noci ve vícenásobné validaci nepřekonalo aspoň o 1 cm
+   (na 36 h jen průzkumné H30, bod 2): směs G3
    (½ regrese + ½ LightGBM, 30 stanic) jen o 0,5 cm (19,6 proti 20,1, lepší 6 z 8). V přísném LOFO přes 22 povodní je G3
    lepší (Děčín +24 h: 13,94 proti 15,29 cm, 20 z 22), na validaci ale horší (D24 18,2 proti 15,5). Síť, srážky ani doba doběhu podle
    průtoku nepomohly.
 2. **36 h:** regrese s 30 stanicemi je v LOFO lepší o 2,43 cm (17 z 22), ve vícenásobné validaci jen o 0,71 (Děčín)
    a 1,00 cm (Ústí, na hraně). Průzkumné H30 (+ ukazatel útlumu v nivě) o 2,1 a 2,3 cm, ale nápad vznikl z povodně 2006.
-3. **18 nových stanic spolehlivě zlepšují začátek vzestupu** (Děčín +24 h na validaci o 5–8 cm u všech čtyř modelů, fyzika jen s 8 stanicemi), celková chyba je podle modelu smíšená.
+3. **18 nových stanic zlepšují začátek vzestupu** (Děčín +24 h na validaci o 5–8 cm u všech čtyř modelů, fyzika jen s 8 stanicemi), celková chyba je podle modelu smíšená.
 4. **Pásmo nejistoty v aplikaci je na povodních moc úzké:** aplikace ukazuje 90% pásmo z chyb na tréninku, ve vnořené
    kontrole na 22 povodních pokrylo jen 72–83 % hodin (80% stejnou metodou 58–72 %). Nové pásmo z chyb mimo trénink pokrývá
    78–80 % a 94–95 %, na rychlém vzestupu 59–72 %. Patch je hotový.
 5. **Revize aplikace:** 2 kritické nálezy (bez internetu je mapa a animace prázdná; Dnešek na špatné Wi-Fi na minuty
-   zamrzne) a 6 vysokých (texty u Borise a testu, DIBAVOD × výškový model, pásmo). 10 patchů, s nimi test 10 z 10.
-6. **Provoz (Dan, koncept):** data ČHMÚ chodí po 20 min, celá hodina je u všech stanic venku do HH:40, proto počítat
-   v HH:45 (při doplnění chybějící hodiny poslední hodnotou je chyba D24 o 1,8 cm horší). Za 29 dní nízké vody byla
+   zamrzne) a 6 vysokých (texty u Borise a testu, DIBAVOD × výškový model, pásmo). 10 patchů; se všemi prochází test 9 z 9, s 01–09 i Dneškem 10 z 10.
+6. **Provoz (Dan, koncept):** data ČHMÚ chodí po 20 min, hodnota z celé hodiny je u všech stanic venku do HH:40, proto
+   počítat v HH:45 (platí pro okamžité hodnoty v celou hodinu; aplikace ale počítá hodinový průměr t:00–t:50 jako archiv, ten je kompletní až později, sjednotit a ověřit) (při doplnění chybějící hodiny poslední hodnotou je chyba D24 o 1,8 cm horší). Za 29 dní nízké vody byla
    oficiální předpověď ČHMÚ přesnější než naše (D24 5,0 proti 7,5 cm), náš model při nízké vodě kmitá.
 7. **Reprodukovatelnost main:** hlavní čísla (17,1 / 20,1 / procenta / aplikace) z čistého klonu sedí
    (`REPRODUKOVATELNOST.md`). Otisk verze výsledků
@@ -34,7 +35,8 @@ Do main nešlo nic. Podklady pro prezentaci jsou v `prezentace_dan/` na větvi `
   model byl ale zafixovaný před testem a vícenásobná validace bez testových let dala stejných 55 % (N6).
 - **Demo Dneška při nízké vodě:** ČHMÚ je teď přesnější než my (5,0 proti 7,5 cm), říct to dřív, než si toho všimne porota;
   náš model je laděný na povodně.
-- **Video Borise z mapy je z modelu učeného do 2018,** čísla se mírně liší od slajdu (611 cm, 27 h jsou z modelu do 2020).
+- **Video Borise ukazuje naměřenou hladinu a z ní odvozený rozliv,** ne předpověď. Čísla 611 cm a 27 h na slajdu jsou
+  z předpovědi modelu učeného do 2020 (`docs/DENIK.md` so 2:40, `docs/WEB.md`).
 
 ## Co má kdo udělat
 
@@ -44,7 +46,7 @@ Do main nešlo nic. Podklady pro prezentaci jsou v `prezentace_dan/` na větvi `
 - **Honza:** záložní video a hotspot (mapa bez internetu je prázdná), před porotou projít všechny záložky. Patche
   z `nejistota_dan/patche/` podle Danovy ranní zprávy: bezpečné 02, 03, 04, 05, 07, 08 (hláška bez internetu, Dnešek
   kratší čekání a neuloží rozbitý soubor, texty Borise, testu a DIBAVOD…), pásmo 01 + 10, 06 a 09 až po vyzkoušení
-  v prohlížeči. Pro Dnešek předvolit `ridge_vse` a počítat v HH:45. V main je od 4:44 i Honzova webová verze
+  v prohlížeči. Pro Dnešek předvolit `ridge_vse`; čas výpočtu (HH:45) sladit s hodinovým průměrem. V main je od 4:44 i Honzova webová verze
   (Netlify) a HTML prezentace: domluvit s Tobiasem, která verze prezentace se pouští.
 - **Tobias:** Danovy tři slajdy (`DAN_VYSTUP.md`) místo slajdu 5, nebo jako zálohu. Grafy `prezentace_dan/grafy/`:
   G1 (doby doběhu) k slajdu 3 nebo do zálohy, G2 (chyba podle horizontu) do zálohy ke slajdu 10, G3 a G4 k Danovým

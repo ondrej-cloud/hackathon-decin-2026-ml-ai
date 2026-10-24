@@ -233,7 +233,8 @@ předběžné podle horní meze nejistoty, ostré podle předpovědi. *Zdroj: do
 Ano. Přepínač „Dnešek“ stáhne operativní data ČHMÚ (10–30 min stará, vydání je 1–2 h za skutečným časem) a vedle naší
 předpovědi ukáže oficiální předpověď ČHMÚ. Mělník a Nymburk operativně nejsou celé, dopočítáme je z bilance vody. Na
 validaci to D24 zhorší z 15,5 na 16,9 cm. Provozní test v noci: ČHMÚ zveřejňuje data po 20 min, hodnota z celé hodiny
-je u všech stanic venku nejpozději v HH:40, proto počítat v HH:45. Za posledních 29 dní nízké vody byla oficiální
+je u všech stanic venku nejpozději v HH:40, proto počítat v HH:45 (to platí pro okamžité hodnoty v celou hodinu;
+aplikace bere hodinový průměr t:00–t:50, ten je kompletní později, je potřeba to sladit). Za posledních 29 dní nízké vody byla oficiální
 předpověď ČHMÚ přesnější než naše (D24 5,0 proti 7,5 cm), náš model při nízké vodě kmitá; na povodních srovnání nemáme.
 *Zdroj: docs/DENIK.md (pá 21:30, Honza), ridge_dan/PROVOZ.md (koncept, větev dan-ridge).*
 
@@ -339,7 +340,7 @@ Archivní hodina t je průměr t:00 až t:50, takže v t:00 ještě celá znám�
 po měření a vydání předpovědi je 1–2 h za skutečným časem. Když data přijdou se zpožděním d hodin, zbývá předpovědi
 na 24 h jen 24 − d h. V noci jsme zpoždění změřili na provozních datech: poslední hodnota je při zveřejnění stará 10–20 min a celá
 hodina je venku do HH:40. Kdyby aplikace počítala v HH:00 a chybějící hodinu doplnila poslední hodnotou, zhorší se LOFO
-D24 o 1,8 cm (ztratí se trend), proto počítat v HH:45. Zpoždění během povodně jsme neměřili. *Zdroj: docs/DATA.md (Aktuální data),
+D24 o 1,8 cm (ztratí se trend), proto počítat v HH:45 z okamžitých hodnot; pro hodinový průměr t:00–t:50 až později. Zpoždění během povodně jsme neměřili. *Zdroj: docs/DATA.md (Aktuální data),
 docs/DENIK.md (pá 21:30).*
 
 **N13. „Učíte se na archivních průtocích, které ČHMÚ po povodni opravil. V provozu je nemáte.“**

@@ -1,0 +1,11 @@
+Jsi nezávislý kontrolor faktů. Pracuješ JEN PRO ČTENÍ. Odpovídej česky, stručně. Nic neměň ani nevytvářej (ani AGENTS.md),
+git jen číst, nečti .env ani %USERPROFILE%\.kaggle, nic nespouštěj kromě čtení.
+
+ČTVRTÉ KOLO, jen ranní doplňky. Zkontroluj čísla a tvrzení v:
+- prezentace_dan/PREHLED_POKUSU.md řádky 37, 38, 39,
+- prezentace_dan/OTAZKY_POROTY.md otázky 32, 37 a N12, N18, N19,
+- prezentace_dan/TYM_RANO.md (celý).
+Zdroje: git show origin/dan-ridge:ridge_dan/PROVOZ.md, origin/dan-ridge:ridge_dan/ROZHODNUTI_G3.md, origin/dan-ridge:ridge_dan/RANNI_ZPRAVA.md,
+origin/dan-nejistota:nejistota_dan/ZPRAVA_NEJISTOTA.md, origin/dan-nejistota:nejistota_dan/REVIZE_APLIKACE.md,
+origin/dan-nejistota:nejistota_dan/RANNI_ZPRAVA.md, git log origin/main (Honzovy commity 4:14 a 4:44), a docs/*.md v pracovní složce.
+Výstup: tabulka NESOULADŮ (soubor:řádek | tvrzení | co říká zdroj s citací | zdroj | oprava), neověřitelná tvrzení, počty.
