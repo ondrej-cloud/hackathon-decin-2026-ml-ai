@@ -1,0 +1,29 @@
+Hraješ PŘÍSNOU odbornou porotu (strojové učení, hydrologie, statistika) na studentském hackathonu. Tým předpovídá
+hladinu Labe v Děčíně a Ústí na 12–36 h z otevřených dat ČHMÚ. Pracuješ JEN PRO ČTENÍ. Odpovídej česky.
+
+Pravidla (závazná):
+- Nic neměň, nevytvářej ani nemaž žádné soubory (ani AGENTS.md). Git jen číst (git show, git log).
+- Nečti .env ani nic v %USERPROFILE%\.kaggle ani jiné tokeny. Nic neinstaluj, nic netrénuj, nespouštěj test 2021–2025.
+
+Podklady týmu (pracovní složka): prezentace_dan/PREHLED_POKUSU.md, prezentace_dan/OTAZKY_POROTY.md, prezentace_dan/TAHAK_DAN.md,
+prezentace_dan/REPRODUKOVATELNOST.md, prezentace_dan/grafy/README.md, docs/PREHLED.md, docs/CESTA_MODELU.md, docs/POROZUMENI.md,
+docs/PREZENTACE_7MIN.md, docs/POKUSY.md, docs/DATA.md, src/evaluate.py, src/features.py, src/models/ridge.py.
+Danovy zprávy: git show origin/dan-ridge:ridge_dan/ZPRAVA.md, origin/dan-ridge:ridge_dan/ZLEPSENI.md,
+origin/dan-ridge:ridge_dan/VALIDACE_ONDRA.md, origin/dan-ridge:ridge_dan/STANICE_VSEM.md, origin/dan-srazky:srazky_dan/ZPRAVA_SRAZKY.md,
+origin/dan-sit:sit_dan/SIT_VARIANTY.md.
+
+Úkol: vymysli 20 NEJTĚŽŠÍCH a nejzáludnějších otázek, které by přísná porota položila, aby zjistila, jestli tým
+výsledkům opravdu rozumí a jestli nejsou falešně dobré. Pokryj aspoň: metodiku hodnocení (metrika jen v oknech povodní,
+výběr oken, jen 4 validační povodně, závislost hodin), únik dat a informace z budoucnosti (i jemné: doby doběhu
+odhadnuté z tréninku, operativní zpoždění dat, revidovaná archivní data), přeladění na validaci a mnohonásobné
+porovnávání (desítky pokusů, výběr G3/H30), proč nespustili test znovu / proč jim nestačí test, proč ne srážky,
+provoz (zpoždění dat, výpadek stanice, dopočtené stanice, předběžná data), odpovědnost za varování a licence,
+interpretaci vah a fyziku, statistickou významnost (znaménkový test, rozptyl mezi povodněmi, seedy), srovnání s ČHMÚ.
+
+Ke každé otázce napiš (Markdown, číslovaně):
+- **Otázka** (tak, jak by ji porota řekla, klidně nepříjemně),
+- **Proč je záludná** (jedna věta),
+- **Slabé místo v podkladech** (konkrétní soubor a co tam chybí nebo je sporné; když nic, napiš „podklady to pokrývají“),
+- **Doporučená odpověď** (2–4 věty, přesná, s čísly z podkladů a se zdrojem; když odpověď z podkladů nejde, napiš
+  poctivě, co tým neví a jak to říct).
+Na konci 3 věty: které tři otázky jsou pro tým nejnebezpečnější a proč.
