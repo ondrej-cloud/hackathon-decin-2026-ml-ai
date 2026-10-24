@@ -1,0 +1,57 @@
+diff --git a/app/aktualni.py b/app/aktualni.py
+index 1e48607..ec4442b 100644
+--- a/app/aktualni.py
++++ b/app/aktualni.py
+@@ -35,14 +35,19 @@ def _soubor(cesta):
+     """JSON z opendata.chmi.cz, kopie jde do data/raw/chmu_aktualni. Celé dny z recent/ se stahují jen jednou."""
+     soubor = RAW / cesta.replace("/data/", "_")
+     if cesta.startswith("recent") and soubor.exists():
+-        return json.loads(soubor.read_text(encoding="utf-8"))
+-    r = requests.get(URL + cesta, timeout=30)
++        try:
++            return json.loads(soubor.read_text(encoding="utf-8"))
++        except ValueError:  # rozbitý soubor (např. přihlašovací stránka Wi-Fi místo dat): stáhnout znovu
++            soubor.unlink()
++    # spojení do 5 s, data do 15 s: na visící Wi-Fi radši rychlá chyba než minuty čekání
++    r = requests.get(URL + cesta, timeout=(5, 15))
+     if r.status_code == 404:
+         return None
+     r.raise_for_status()
++    data = r.json()  # na disk jen platný JSON
+     RAW.mkdir(parents=True, exist_ok=True)
+     soubor.write_bytes(r.content)
+-    return r.json()
++    return data
+ 
+ 
+ def stahni():
+diff --git a/app/app.py b/app/app.py
+index 0a44ea8..be73bd4 100644
+--- a/app/app.py
++++ b/app/app.py
+@@ -148,9 +148,11 @@ X = vstupy_c(cil)
+ H = hladiny(cil)
+ DNES = None
+ if dnes:
+-    DNES = dnes_c(nazev)
++    with st.spinner("Stahuji živá data ČHMÚ…"):
++        DNES = dnes_c(nazev)
+     if not DNES["ok"]:
+         st.sidebar.warning(DNES["chyba"])
++        dnes_c.clear()  # chybu si nepamatovat 10 minut, další pokus se má zkusit hned
+         DNES = None
+ if DNES:
+     cas, radek, ted, pred = DNES["cas_utc"], DNES[cil]["radek"], DNES[cil]["ted"], DNES[cil]["predpoved"]
+diff --git a/app/pocasi.py b/app/pocasi.py
+index abbffc2..5e1ea60 100644
+--- a/app/pocasi.py
++++ b/app/pocasi.py
+@@ -44,7 +44,7 @@ def _stahni():
+     body = [b for bs in BODY.values() for b in bs]
+     r = requests.get(URL, params=dict(latitude=",".join(str(b[0]) for b in body),
+                                       longitude=",".join(str(b[1]) for b in body),
+-                                      hourly="precipitation", forecast_days=3, timezone="UTC"), timeout=20)
++                                      hourly="precipitation", forecast_days=3, timezone="UTC"), timeout=(5, 10))
+     r.raise_for_status()
+     data = r.json()
+     if not isinstance(data, list) or len(data) != len(body):

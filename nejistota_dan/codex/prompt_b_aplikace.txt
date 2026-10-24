@@ -1,0 +1,15 @@
+Jsi nezávislý kontrolor (code review) studentské Streamlit aplikace: předpověď hladiny Labe v Děčíně a Ústí nad Labem na 12/24/36 h. Zítra (so 14:30) se předvádí porotě na projektoru, na cizím MacBooku, možná bez spolehlivého internetu.
+
+PRAVIDLA (závazná):
+- NIC neměň, nezapisuj, nemaž, žádné git příkazy, které něco mění. Jen čti. Aplikaci NESPOUŠTĚJ (ani streamlit, ani app/test_app.py). Python smíš spustit jen s -B, krátce, bez zápisu, s malou pamětí (počítač je vytížený).
+- NEČTI .env, .streamlit/secrets.toml, ~/.kaggle ani nic s tokeny a hesly. Jak se aplikace chová bez MAPBOX_TOKEN, zjisti jen z kódu.
+- Test 2021–2025 nespouštěj.
+- Každý nález: [závažnost: kritická/vysoká/střední/nízká] soubor:řádek – co – proč to vadí při demu – jak opravit (konkrétně). Když nic nenajdeš, napiš to. Česky, nejvýš ~80 řádků, seřazeno podle závažnosti.
+
+KÓD: složka app/ (app.py, predikce.py, aktualni.py, animace.py, mapa.py, mapbox_mapa.py, rozliv.py, rozliv_dem.py, pocasi.py, styl.py, test_app.py, README.md), konfigurace .streamlit/config.toml, requirements.txt, modely models/, data data/external/. Dokumenty k porovnání čísel: docs/PREHLED.md, CLAUDE.md (sekce Stav), results/.
+
+HLEDEJ:
+1. Chyby: výpočty, časová pásma (UTC vs. český čas, změna času), posun předpovědi o horizont, špatný model (přehrávání učený do 2018 vs. Dnešek učený do 2025), cache Streamlitu (co se kešuje, i chyby), výjimky, které shodí celou stránku.
+2. Rizika pro demo: výpadek internetu (které části potřebují síť a co se pak zobrazí), chybějící MAPBOX_TOKEN, pomalý start (co se počítá při načtení, trénink modelů, velké tabulky v cache_data), chybějící soubory, které nejsou v Gitu, Mac vs. Windows (cesty, kódování, fonty), verze knihoven.
+3. Čísla a texty, které aplikace ukazuje, proti docs/PREHLED.md (chyba na povodních, předstih, Boris 9/2024, intervaly nejistoty „90 %“, model učený do kterého roku).
+4. UX pro porotu: první obrazovka, srozumitelnost pro laika, jednotky, čitelnost na projektoru.

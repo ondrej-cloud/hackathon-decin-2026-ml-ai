@@ -1,0 +1,18 @@
+diff --git a/app/mapa.py b/app/mapa.py
+index abc25b9..cfdc8f5 100644
+--- a/app/mapa.py
++++ b/app/mapa.py
+@@ -34,9 +34,11 @@ def mapbox_token():
+     token = os.environ.get("MAPBOX_TOKEN")
+     env = ROOT / ".env"
+     if not token and env.exists():
+-        for radek in env.read_text(encoding="utf-8").splitlines():
++        # utf-8-sig a errors: .env z PowerShellu (UTF-16, BOM) nesmí shodit aplikaci
++        for radek in env.read_text(encoding="utf-8-sig", errors="replace").splitlines():
++            radek = radek.strip()
+             if radek.startswith("MAPBOX_TOKEN="):
+-                token = radek.split("=", 1)[1].strip().strip('"')
++                token = radek.split("=", 1)[1].strip().strip('"').strip("'")
+     return token or None
+ 
+ 

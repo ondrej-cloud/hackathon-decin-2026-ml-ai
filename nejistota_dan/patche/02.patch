@@ -1,0 +1,24 @@
+diff --git a/app/animace.py b/app/animace.py
+index 42cecd9..7ec9add 100644
+--- a/app/animace.py
++++ b/app/animace.py
+@@ -269,6 +269,7 @@ STRANKA = r"""<!doctype html>
+ <link rel="preconnect" href="https://fonts.googleapis.com">
+ <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+ <script src="__DECK__"></script>
++<script>if (!window.deck) addEventListener('DOMContentLoaded', () => { document.body.innerHTML = '<p style="padding:24px;font:18px sans-serif;color:#eef3f6">Animace potřebuje internet (knihovna deck.gl) a teď se nenačetla. Zkuste F5, nebo pusťte záložní video.</p>'; });</script>
+ <style>
+ :root {
+   --pozadi: #0c1720;
+diff --git a/app/mapbox_mapa.py b/app/mapbox_mapa.py
+index 7a77739..877578a 100644
+--- a/app/mapbox_mapa.py
++++ b/app/mapbox_mapa.py
+@@ -249,6 +249,7 @@ STRANKA = r"""<!doctype html>
+ <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+ <link href="__MAPBOX__/mapbox-gl.css" rel="stylesheet">
+ <script src="__MAPBOX__/mapbox-gl.js"></script>
++<script>if (!window.mapboxgl) addEventListener('DOMContentLoaded', () => { document.body.innerHTML = '<p style="padding:24px;font:18px sans-serif;color:#eef3f6">Mapa potřebuje internet (Mapbox) a teď se nenačetla. Zkuste F5, přepněte na záložku Teď, nebo pusťte záložní video.</p>'; });</script>
+ __POROVNANI__
+ <style>
+ :root {

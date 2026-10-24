@@ -1,0 +1,16 @@
+diff --git a/app/app.py b/app/app.py
+index 0a44ea8..b015e0a 100644
+--- a/app/app.py
++++ b/app/app.py
+@@ -217,6 +217,11 @@ with tab_ted:
+                     line=dict(color=MODRA, dash="dash", width=2.2),
+                     marker=dict(size=[7, 12, 12, 12], color=MODRA, line=dict(color="#0f1419", width=2)),
+                     text=["teď"] + [f"za {h} h" for h in HORIZONTY])
++    if not DNES:  # při přehrávání historie je vidět, co pak opravdu nastalo (v provozu to neznáme)
++        dal = H[cas: cas + pd.Timedelta(hours=max(HORIZONTY))]
++        fig.add_scatter(x=cesky(dal.index), y=dal.values, mode="lines", name="co pak opravdu nastalo", opacity=0.55,
++                        line=dict(color=styl.TEXT, width=1.6, dash="dot"))
++        okno = pd.concat([okno, dal])
+     ymax = max([float(okno.max())] + [pred[h] for h in HORIZONTY] + [r[1] for r in rozmezi.values() if r])
+     cary_spa(fig, cil, ymax)
+     if ymax * 1.6 + 60 < SPA[cil][0]:

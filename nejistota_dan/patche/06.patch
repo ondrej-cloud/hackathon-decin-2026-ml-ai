@@ -1,0 +1,49 @@
+diff --git a/app/animace.py b/app/animace.py
+index 42cecd9..c5183e3 100644
+--- a/app/animace.py
++++ b/app/animace.py
+@@ -593,11 +593,11 @@ document.getElementById('zdroj').textContent =
+ // přehrávání
+ const posuvnik = document.getElementById('cas'), tlacitko = document.getElementById('hraj');
+ posuvnik.max = K;
+-let cas = 0, hraje = true, rychlost = 4, minule = null, nakresleno = -1, tahne = false;
++let cas = 0, hraje = false, rychlost = 4, minule = null, nakresleno = -1, tahne = false;
+ const mapa = new deck.Deck({
+   parent: document.getElementById('mapa'),
+   initialViewState: {longitude: 14.78, latitude: 50.27, pitch: 50, bearing: 0, minZoom: 6, maxZoom: 14,
+-                     zoom: 8.15 + Math.max(-1.3, Math.log2(Math.min(1, innerWidth / 1270)))},
++                     zoom: 8.15 + Math.max(-1.3, Math.log2(Math.min(1, (innerWidth || 1270) / 1270)))},
+   controller: true,
+   getTooltip: tooltip,
+   layers: vrstvy(0)
+diff --git a/app/mapbox_mapa.py b/app/mapbox_mapa.py
+index 7a77739..fe82a9a 100644
+--- a/app/mapbox_mapa.py
++++ b/app/mapbox_mapa.py
+@@ -408,7 +408,7 @@ function nastavZdroj() {
+   A.urovne = A.rozlivy[A.zdroj];
+ }
+ nastavZdroj();
+-const SIROKO = innerWidth > 760;
++const SIROKO = (innerWidth || 1400) > 760;
+ 
+ const IKONY = {
+   'celé povodí': '<path d="M4 19c3-1 3-5 6-6s4-4 3-8"/><path d="M13 5c2 2 4 2 6 1"/><circle cx="6" cy="17" r="1.6"/><circle cx="12" cy="11" r="1.6"/><circle cx="14" cy="5" r="1.6"/>',
+@@ -425,7 +425,7 @@ const svg = (d, vb = 24) => `<svg viewBox="0 0 ${vb} ${vb}" aria-hidden="true">$
+ function kamera(pohled) {
+   // střed záběru mezi panely; celé povodí se musí vejít i do užšího okna
+   const k = {...D.kamery[pohled], padding: SIROKO ? {top: 0, bottom: 40, left: 250, right: 315} : {top: 60, bottom: 220, left: 0, right: 0}};
+-  if (pohled === 'celé povodí') k.zoom += Math.max(-1.3, Math.log2(Math.min(1, innerWidth / 1350)));
++  if (pohled === 'celé povodí') k.zoom += Math.max(-1.3, Math.log2(Math.min(1, (innerWidth || 1350) / 1350)));
+   return k;
+ }
+ function konfigurace(satelit) {
+@@ -833,7 +833,7 @@ if (A) {
+                  stuj: '<svg viewBox="0 0 24 24"><path d="M6 4h4.5v16H6zM13.5 4H18v16h-4.5z"/></svg>'};
+   const posuvnik = document.getElementById('cas'), tlacitko = document.getElementById('hraj');
+   const stitky = document.getElementById('stitky');
+-  let hraje = true, rychlost = 4, minule = null, nakresleno = -1, tahne = false;
++  let hraje = false, rychlost = 4, minule = null, nakresleno = -1, tahne = false;
+   const ikona = () => { tlacitko.innerHTML = hraje ? IKONA.stuj : IKONA.hraj; };
+   const prepni = () => { if (!hraje && cas >= K) cas = 0; hraje = !hraje; minule = null; ikona(); };
+   tlacitko.addEventListener('click', prepni);

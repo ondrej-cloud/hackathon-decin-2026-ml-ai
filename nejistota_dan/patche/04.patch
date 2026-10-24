@@ -1,0 +1,52 @@
+diff --git a/app/app.py b/app/app.py
+index 0a44ea8..77380e1 100644
+--- a/app/app.py
++++ b/app/app.py
+@@ -240,7 +240,8 @@ with tab_kvalita:
+     cast = "test" if "test" in povoden else "val"
+     if cast == "test":
+         st.info("Povodeň Boris 9/2024 je z testovací části (2021–2025), kterou model nikdy neviděl a která se pustila "
+-                "jednou na konci na finální model. Předpovědi jsou z modelu učeného do roku 2018.")
++                "jednou na konci na finální model. Předpovědi jsou z finálního modelu učeného na všech datech do konce roku "
++                "2020.")
+     try:
+         P = predpovedi_val(nazev, cast)
+     except FileNotFoundError:
+@@ -276,8 +277,10 @@ with tab_kvalita:
+             lambda r: [f"color: {styl.TLUMENE}" if r.name[1] == "bude jako teď" else "" for _ in r], axis=1),
+             width="stretch")
+         st.caption("Chyba při povodních je průměrná odchylka v cm v týdnu před vrcholem a 5 dní po něm, "
+-                   "průměr přes 4 povodně. Varování počítáme od chvíle, kdy model poprvé předpověděl překročení "
+-                   "2. stupně, do chvíle, kdy hladina práh opravdu překročila.")
++                   + ("průměr přes 4 validační povodně. " if cast == "val" else
++                      "za celou testovací část 2021–2025 (povodně 2/2021, 12/2023, 2/2024 a 9/2024), ne jen za Borise. ")
++                   + "Varování počítáme od chvíle, kdy model poprvé předpověděl překročení 2. stupně, do chvíle, kdy "
++                   "hladina práh opravdu překročila, nejvýš tolik hodin, na kolik předpovídáme; propásnutá povodeň = 0.")
+ 
+ def predpovedi_pro_mapu(t):
+     """Předpověď modelu za 24 h pro Děčín i Ústí v čase t (UTC), pro popisky na mapě."""
+@@ -292,8 +295,8 @@ def predpovedi_pro_mapu(t):
+ with tab_mapa:
+     st.markdown(f"**Co teče proti proudu, dorazí k nám.** Stanice {cesky(cas):%d. %m. %Y %H:%M}: velikost podle "
+                 "průtoku, barva podle stupně povodňové aktivity, u Děčína a Ústí předpověď modelu za 24 h. Pohled "
+-                "Děčín nebo Ústí přiblíží město s 3D budovami a oficiálním záplavovým územím, které předpovědi "
+-                "odpovídá. Okamžik se mění v levém menu.")
++                "Děčín nebo Ústí přiblíží město s 3D budovami a rozlivem vody podle předpovědi. Okamžik se mění "
++                "v levém menu.")
+     rezim = st.radio("Režim", ["Zvolený okamžik", "Celá povodeň: předpověď × skutečnost"], horizontal=True,
+                      key="mapa_rezim", help="Celá povodeň přehraje čas po hodinách a porovná rozliv z předpovědi "
+                                             "s rozlivem ze skutečné hladiny.")
+@@ -336,10 +339,9 @@ with tab_mapa:
+         with misto:
+             getattr(st, "iframe", components.html)(mapbox_html(cas, pred_mapy, pohled), height=700)
+         voda = n_leta_voda(cil, pred[24])
+-        st.markdown(f"**Co předpověď znamená pro {jmeno(cil)}:** {voda['popis']} "
+-                    + (f"Na mapě je vyplněné oficiální záplavové území pro {voda['N']}letou vodu (DIBAVOD), ostatní "
+-                       "jen obrysem." if voda["N"] >= 5 else
+-                       "Rozliv mimo koryto se čeká až od pětileté vody, záplavová území jsou na mapě jen obrysem."))
++        st.markdown(f"**Co předpověď znamená pro {jmeno(cil)}:** {voda['popis']} Modře je rozliv z výškového "
++                    "modelu terénu (ČÚZK DMR 5G) pro předpovězenou hladinu. Úřední záplavová území (DIBAVOD) zapne "
++                    "přepínač „Úřední území“ v mapě.")
+     else:
+         misto.pydeck_chart(mapa_deck(cas, pred_mapy, pohled, tabulka=tabulka_mapy), height=650)
+         voda = n_leta_voda(cil, pred[24])

@@ -1,0 +1,13 @@
+diff --git a/app/app.py b/app/app.py
+index 0a44ea8..271dce6 100644
+--- a/app/app.py
++++ b/app/app.py
+@@ -39,7 +39,7 @@ def hladiny(cil):
+     return nacti()[f"{cil}_H"]
+ 
+ 
+-@st.cache_data
++@st.cache_resource  # 133 MB tabulka: cache_data by ji při každém volání kopírovala; nikdo ji nemění
+ def vstupy_c(cil):
+     return vstupy(cil)
+ 

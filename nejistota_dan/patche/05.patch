@@ -1,0 +1,18 @@
+diff --git a/app/app.py b/app/app.py
+index 0a44ea8..8af3c3e 100644
+--- a/app/app.py
++++ b/app/app.py
+@@ -144,6 +144,13 @@ with st.sidebar:
+     den = st.date_input("Den", value=date(2011, 1, 15), min_value=date(2006, 1, 3), max_value=date(2025, 12, 30))
+     hodina = st.slider("Hodina (český čas)", 0, 23, 9)
+ 
++# Dnešek vždy z modelu učeného na všem do 2025 (ridge_vse), přehrávání historie z modelu do 2018 (ridge)
++if dnes and nazev == "ridge":
++    nazev = "ridge_vse"
++if nazev == "ridge_vse" and not dnes:
++    st.sidebar.warning("ridge_vse se učil i na povodních 2006–2025, při přehrávání historie proto vypadá lépe, než by "
++                       "byl doopravdy. Na historii a Borise použijte ridge.")
++
+ X = vstupy_c(cil)
+ H = hladiny(cil)
+ DNES = None
