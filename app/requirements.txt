@@ -6,3 +6,5 @@ numpy
 pyarrow
 scikit-learn>=1.6
 joblib
+requests
+pillow

@@ -1,0 +1,66 @@
+# Každou hodinu stáhne živá data ČHMÚ, přepočítá předpověď na dnešek, vygeneruje mapy a nasadí složku web/
+# na Netlify. Nic se necommituje. Návod a potřebné secrets jsou v docs/WEB.md.
+name: Dnešek na webu
+
+on:
+  schedule:
+    - cron: "5 * * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: dnesek
+  cancel-in-progress: false
+
+jobs:
+  nasazeni:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    env:
+      PYTHONUTF8: "1"
+      MAPBOX_TOKEN: ${{ secrets.MAPBOX_TOKEN }}
+      NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+      NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: app/requirements.txt
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Kontrola secrets
+        run: |
+          chyba=0
+          for n in NETLIFY_AUTH_TOKEN NETLIFY_SITE_ID; do
+            if [ -z "${!n}" ]; then echo "::error::Chybí secret $n (Settings > Secrets and variables > Actions)"; chyba=1; fi
+          done
+          if [ -z "$MAPBOX_TOKEN" ]; then echo "::warning::Chybí secret MAPBOX_TOKEN, mapy budou bez satelitu nebo se nevygenerují"; fi
+          exit $chyba
+
+      - name: Knihovny
+        run: python -m pip install -r app/requirements.txt
+
+      - name: Modely ridge (do 2018) a ridge_vse (do 2025)
+        run: |
+          python src/uloz_model.py
+          python src/uloz_model.py --vse
+
+      - name: Data, mapy a animace pro web
+        run: python src/export_web.py --vse
+
+      - name: Dnešek z živých dat ČHMÚ
+        run: python src/dnesek_export.py
+
+      - name: Nasazení na Netlify
+        run: >
+          npx --yes netlify-cli@latest deploy --prod --no-build --dir web
+          --site "$NETLIFY_SITE_ID"
+          --message "Dnešek $(date -u +'%d. %m. %Y %H:%M') UTC"

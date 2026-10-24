@@ -21,6 +21,13 @@ NAZEV = {k: v[1] for k, v in (CILE | PROTI_PROUDU).items()}
 KDE = {"decin": "v Děčíně", "usti": "v Ústí nad Labem"}
 STUPNE = ["pod 1. stupněm", "1. stupeň (bdělost)", "2. stupeň (pohotovost)", "3. stupeň (ohrožení)"]
 BARVY = ["#2e7d32", "#f2c437", "#ef6c00", "#c62828"]
+# jak se model jmenuje v textech map a animací; klíč souboru v models/ by laikovi nic neřekl
+NAZVY_MODELU = {"ridge": "lineární regrese, učená do roku 2018", "ridge_test": "lineární regrese, učená do roku 2020",
+                "ridge_vse": "lineární regrese, učená na všem do roku 2025"}
+
+
+def nazev_modelu(klic):
+    return NAZVY_MODELU.get(klic, klic)
 
 
 def modely():
