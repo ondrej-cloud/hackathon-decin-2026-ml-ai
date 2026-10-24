@@ -66,3 +66,5 @@
 - so 01:47 · noční úkol: bod 1 hotový (VALIDACE_ONDRA.md, c53a491). G3 v Ondrově validaci −0,5 cm proti Ridge (pod 1 cm) → G3 nevyhrává; dál ověřuji Ridge 30 na 36 h.
 - so 01:52 · Ridge 30 na 36 h v Ondrově validaci: Děčín −0,71, Ústí −1,00 (ze zaokrouhlených chyb), dohromady −0,86 cm, 5 z 8 povodní → hranice 1 cm nesplněná, (a)–(d) se nedělají; ROZHODNUTI_G3.md: doporučení nechat týmový Ridge.
 - so 01:53 · PŘEDEM ZAPSÁNO (bod 3, průzkumné): H30 = ridge30 + ukazatel útlumu v nivě přesně jako v ZLEPSENI.md (Kostelec − (Nymburk + Jizera), Mělník − (Vraňany + Kostelec), Ústí − (Mělník + Louny), zpoždění 0/6/12/24 h, m³/s, alpha 1), pro Děčín i Ústí stejně; vedle H12 = týmový Ridge + týž ukazatel (druhá předem zapsaná varianta z 23:37). Jen Ondrova validace, žádné ladění, výsledek průzkumný.
+- so 01:49 · Codex (j) na h12/h30: žádné nálezy, odpovídá předem zapsané definici; spouštím Ondrovu validaci h12 h30.
+- so 02:34 · běh h12/h30 se zasekl po 124 ze 144 řádků (proces bez CPU, nejspíš vlákna OpenBLAS při souběhu s dalšími session); zastaven a puštěn znovu s 1 vláknem (OPENBLAS/OMP_NUM_THREADS=1).
