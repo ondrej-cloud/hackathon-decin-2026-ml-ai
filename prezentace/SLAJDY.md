@@ -14,19 +14,26 @@ Devět slajdů na 6:45, rezerva 15 s do 7:00, pak deset záložních. Každý sl
 | 8 | 5:25–5:55 | Tobias | Co z toho má město? | Z předpovědi mapa: kam až voda dosáhne | 1 |
 | 9 | 5:55–6:45 | Tobias | Kde to selže? | Co neumíme a co dál | 7 |
 
-Celkem 714 slov, při 130 slovech za minutu 5:29 mluvení. Zbytek do 6:45 je video (20 s bez mluvení) a pauzy na kroky decku.
+Celkem 759 slov, při 130 slovech za minutu 5:50 mluvení. Zbytek do 6:45 je ticho nad videem (asi 12 s) a pauzy na kroky decku.
 
 ## 1 · Den předem víme, kam v Děčíně dosáhne voda (0:00–0:40, Honza)
 
 - Otázka: Co řešíte a pro koho?
 - Musí zaznít: hladina v Děčíně a Ústí za 12, 24 a 36 h; varování před 2. a 3. stupněm; komise, hasiči, lidi u řeky.
-- Na slajdu: video rozlivu Borise přes celou obrazovku, bez zvuku (`web/prezentace/video/boris_decin_720.mp4`, 24 s, náhled `grafy/video_decin_poster.jpg`). Po videu zůstane poslední snímek, nadpis a velké **27 h**.
+- Na slajdu: video rozlivu povodně 6/2013 přes celou obrazovku, bez zvuku (`web/prezentace/video/povoden_2013_decin_1080.mp4`, náhled `grafy/video_2013_poster.jpg`): vlevo rozliv z předpovědi vydané den předem, vpravo ze skutečné hladiny. Mezerník video spustí, po dohrání nebo dalším mezerníkem zůstane poslední snímek, nadpis a velké **18 h** („3. stupeň v Děčíně hlášen 18 hodin předem“).
+- Proč 2013: největší povodeň v našich datech (1 072 cm) a jediná, kdy voda v Děčíně došla mezi domy; při Borisovi (649 cm) zůstalo Labe skoro v korytě. Model ji nikdy neviděl: je učený na všem do 2020 bez této povodně a 20 dní kolem ní, nejvyšší hladina, kterou viděl, byla 875 cm. Číslo 27 h patří Borisovi a je na slajdu 7, pod videem 2013 by vypadalo jako číslo z roku 2013.
 
-Video běží 20 s bez mluvení, pak Honza přes konec videa:
+Honza při spuštění videa, než se rozjede voda:
 
-> Tohle je Děčín v září 2024. Náš model to hlásil 27 hodin předem. Předpovídáme hladinu v Děčíně a Ústí na 12, 24 a 36 hodin a varujeme před druhým a třetím stupněm. Pro komisi, hasiče a lidi u řeky je to den navíc.
+> Dobrý den. Červen 2013, největší povodeň za posledních dvacet let. Vlevo je, co náš model předpověděl den předem. Vpravo skutečnost.
 
-43 slov (strop 43, mluví se od 20. sekundy videa).
+Pak asi 12 s ticho, voda se rozlévá mezi domy. Po dohrání, s nadpisem a 18 h:
+
+> Model tuhle povodeň nikdy neviděl, a přesto ohlásil třetí stupeň 18 hodin předem. Předpovídáme hladinu v Děčíně a Ústí na 12, 24 a 36 hodin a varujeme před druhým a třetím stupněm. Pro komisi, hasiče a lidi u řeky.
+
+59 slov (20 při startu videa, 39 po něm), asi 27 s mluvení a 12 s ticha.
+
+Čísla: `docs/POKUSY.md` so 9:30. Předpověď na 24 h vydaná 1. 6. ve 22:00 už byla nad 560 cm, voda 3. stupeň překročila 2. 6. v 16:00. Vrchol 6. 6. ve 2:00, 1 072 cm, předpověď vydaná 24 h předem 952 cm. Na 2. stupeň model varoval jen 2 až 4 h předem, nástup byl rychlý; kdyby se porota zeptala, říct to rovnou.
 
 ## 2 · Jen z balíčku by to nešlo: bereme 20 let a 12 stanic proti proudu (0:40–1:20, Dan)
 
@@ -109,18 +116,22 @@ Zdroje: `docs/CESTA_MODELU.md` (sekce 1, 2 a 6). LightGBM a povodeň 2013: prvn�
 ## 7 · Na všech povodních o polovinu menší chyba, Boris 27 hodin předem (4:30–5:25, Honza)
 
 - Otázka: Funguje to doopravdy?
-- Musí zaznít: Boris je z testu, model ho neviděl, 3. stupeň hlášen 27 h předem; není to jedna šťastná povodeň: ve vícenásobné validaci menší chyba na všech 8 povodních, o 34 až 66 %; test 22,4 proti 50,2 cm, o 55 % menší.
-- Na slajdu: vlevo `grafy/07a_boris_2024.png`, po mezerníku vpravo `grafy/07b_vicenasobna_validace.png`. Velká čísla **27 h** („před 3. stupněm v Děčíně, Boris“) a **−55 %** („test 22,4 proti 50,2 cm · vícenásobná validace 20,1 proti 45,2 cm“).
+- Musí zaznít: Boris je z testu, model ho neviděl, 3. stupeň hlášen 27 h předem; není to jedna šťastná povodeň: ve vícenásobné validaci menší chyba na všech 8 povodních, o 34 až 66 %; test 22,4 proti 50,2 cm, o 55 % menší; povodeň 2013 z úvodu: 3. stupeň 18 h předem, vrchol 952 proti 1 072 cm.
+- Na slajdu: vlevo `grafy/07a_boris_2024.png`, po mezerníku vpravo `grafy/07b_vicenasobna_validace.png`. Velká čísla **27 h** („před 3. stupněm v Děčíně, Boris“) a **−55 %** („test 22,4 proti 50,2 cm · vícenásobná validace 20,1 proti 45,2 cm“). Po druhém mezerníku řádek „Povodeň 2013, největší v datech, model ji neviděl: 3. stupeň 18 h předem, vrchol 952 cm proti 1 072“.
 
 > Funguje to doopravdy? Tohle je Boris, září 2024, z testu, takže ho model nikdy neviděl. Černá je skutečnost, modrá naše předpověď vydaná den předem. Šedá je „bude jako teď“, ta je vždycky o den pozadu. Třetí stupeň model hlásil 27 hodin předem.
 >
 > [mezerník]
 >
 > A není to jedna šťastná povodeň. Ve vícenásobné validaci jsme každou z osmi povodní jednou vynechali a chyba byla menší na všech osmi, o 34 až 66 procent. Na testu 2021 až 2025 je 22,4 centimetru proti 50,2, o 55 procent menší.
+>
+> [mezerník]
+>
+> A povodeň 2013 z úvodu: model nikdy neviděl vodu nad 875 centimetrů, a přesto ohlásil třetí stupeň 18 hodin předem. Vrchol podhodnotil o 120 centimetrů, to je náš limit.
 
-84 slov (strop 119).
+113 slov (strop 119).
 
-Zdroje: `docs/PREHLED.md` (test), `results/krizova_validace/` a `docs/POKUSY.md` pá 23:27 (vícenásobná validace, opravené procento so 1:15).
+Zdroje: `docs/PREHLED.md` (test), `results/krizova_validace/` a `docs/POKUSY.md` pá 23:27 (vícenásobná validace, opravené procento so 1:15), so 9:30 (povodeň 2013 s modelem, který ji neviděl).
 
 ## 8 · Z předpovědi mapa: kam až voda dosáhne (5:25–5:55, Tobias)
 

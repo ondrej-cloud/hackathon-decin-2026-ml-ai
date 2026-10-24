@@ -379,3 +379,7 @@ Pořadatelům odevzdáváme kód, výsledky, CSV výstupy, prezentaci a dokument
 ## so 9:53 · Ondra · Řečníci slajdů 7 až 9
 
 Oprava proti 9:46: slajd 7 (Funguje to doopravdy?) říká Honza, slajdy 8 (mapa rozlivu) a 9 (limity a závěr) Tobias. Celkem Honza 1, 6, 7; Dan 2, 3; Ondra 4, 5; Tobias 8, 9.
+
+## so 10:58 · Honza
+- Co: slajd 1 ukazuje místo Borise povodeň 6/2013 (video rozlivu, vlevo předpověď den předem, vpravo skutečnost) a velké číslo 18 h místo 27 h. Texty ve `prezentace/SLAJDY.md` (slajd 1 a třetí krok slajdu 7) upravené.
+- Proč: v roce 2013 voda v Děčíně došla mezi domy, u Borise zůstalo Labe skoro v korytě. Číslo 27 h patří Borisovi, pod videem 2013 by vypadalo jako číslo z roku 2013; model, který rok 2013 neviděl, hlásil 3. stupeň 18 h předem. Boris a 27 h zůstávají na slajdu 7.
