@@ -56,7 +56,7 @@ if __name__ == "__main__":
     vysl = []
     for nazev, (h, nove) in MODELY.items():
         A0, y = L.matice(h, nove=nove)
-        assert np.allclose(matice_se_zpozdenim(A0, {}).to_numpy(), A0.to_numpy()), "bez zpoždění musí sedět s lofo.matice"
+        assert np.array_equal(matice_se_zpozdenim(A0, {}).to_numpy(), A0.to_numpy()), "bez zpoždění musí přesně sedět s lofo.matice"
         m = L.Motor(A0.to_numpy(), y, h)
         p0, _ = m.lofo()
         z0 = L.skore(p0, h)

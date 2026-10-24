@@ -86,3 +86,11 @@ v ROZHODNUTI_G3.md sedí. Závěr: věrohodné jako retrospektivní CV, převaha
 |---|---|---|
 | Znaménkový test předpokládá nezávislé povodně, okna 12/2012 a 1/2013 sdílejí 48 h | střední | Zapsáno jako výhrada (p-hodnoty přibližné) v kódu i v ROZHODNUTI; průměry tím nejsou dotčené. |
 | `znamenkovy_p: NaN` v JSON (nestandardní) | nízká | `lofo.skore` ukládá `null`, existující `vysledky_*.json` převedené NaN → null. |
+
+## (m) simulace zpoždění vstupů v provozu, so 04:04–04:08 (`codex/kontrola_m_zpozdeni.md`)
+Bez úniku z budoucnosti: posun je kladný a před reindexem, ffill bere jen starší hodnoty (jen únorová díra 2006
+u `model_vi`, mimo hodnocená okna), běžné scénáře trénují na čerstvých vstupech, zpožděná matice jen pro hodnocená
+okna, základ rozdílu je týž čerstvý model, rsplit, odmocnina i výběr stanic správně.
+| Nález | Závažnost | Co jsem udělal |
+|---|---|---|
+| `np.allclose` v kontrole d = 0 připouští malé rozdíly | nízká | Opraveno na `np.array_equal` (Codex ověřil, že shoda je přesná, výsledky se nemění). |
