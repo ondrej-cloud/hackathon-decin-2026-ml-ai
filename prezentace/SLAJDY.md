@@ -14,7 +14,7 @@ Devět slajdů na 6:45, rezerva 15 s do 7:00, pak dvanáct záložních. Každý
 | 8 | 5:25–5:55 | Tobias | Co z toho má město? | Z předpovědi mapa: kam až voda dosáhne | 1 |
 | 9 | 5:55–6:45 | Tobias | Kde to selže? | Co neumíme a co dál | 7 |
 
-Celkem 780 slov, při 130 slovech za minutu 6:00 mluvení. Zbytek do 6:45 je ticho nad videem (asi 12 s) a pauzy na kroky decku.
+Celkem 771 slov, při 130 slovech za minutu 5:55 mluvení. Zbytek do 6:45 je ticho nad videem (asi 12 s) a pauzy na kroky decku.
 
 ## 1 · Den předem víme, kam v Děčíně dosáhne voda (0:00–0:40, Honza)
 
@@ -143,9 +143,9 @@ Zdroje: `docs/PREHLED.md` (test), `results/krizova_validace/` a `docs/POKUSY.md`
 >
 > [mezerník]
 >
-> Počítá se to jednoduše: výšku hladiny porovnáme s výškou terénu z leteckého laserového skenování, bod každé dva metry. Zaplavené je všechno, co je níž než hladina a zároveň spojené s řekou, prohlubeň za valem zůstane suchá. Proti úřední mapě záplavových území to sedí z 82 až 90 procent.
+> Výšku hladiny porovnáme s výškou terénu z laserového skenování, bod každé dva metry. Zaplavené je, co je níž než hladina a spojené s řekou, prohlubeň za valem zůstane suchá. Proti úřední mapě to sedí z 82 až 90 procent.
 
-72 slov (strop 65).
+63 slov (strop 65).
 
 Čísla: `docs/DATA.md` (rozliv z ČÚZK DMR 5G, shoda s DIBAVOD IoU 0,82 až 0,90). Kdyby se porota zeptala, jestli je to hydraulický model: záložní Z7.
 
