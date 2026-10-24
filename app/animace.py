@@ -227,6 +227,10 @@ def okno(povoden):
     return vrchol - pd.Timedelta(days=14), vrchol + pd.Timedelta(days=5)
 
 
+# ikona záložky jako na webu (vodočet), vložená přímo, ať nic nehledá /favicon.ico ani v iframu
+IKONA = """<link rel="icon" href="data:image/svg+xml,%3Csvg%20viewBox='0%200%2044%2044'%20width='44'%20height='44'%20aria-hidden='true'%20xmlns='http://www.w3.org/2000/svg'%3E%3Crect%20width='44'%20height='44'%20rx='12'%20fill='%23167c9c'/%3E%3Crect%20x='15'%20y='4'%20width='14'%20height='36'%20rx='2'%20fill='%23ffffff'/%3E%3Cg%20stroke='%23167c9c'%20stroke-width='1.2'%20stroke-opacity='.8'%3E%3Cline%20x1='15'%20x2='29'%20y1='8'%20y2='8'/%3E%3Cline%20x1='15'%20x2='22'%20y1='11'%20y2='11'/%3E%3Cline%20x1='15'%20x2='22'%20y1='14'%20y2='14'/%3E%3Cline%20x1='15'%20x2='22'%20y1='17'%20y2='17'/%3E%3Cline%20x1='15'%20x2='29'%20y1='20'%20y2='20'/%3E%3Cline%20x1='15'%20x2='22'%20y1='23'%20y2='23'/%3E%3Cline%20x1='15'%20x2='22'%20y1='26'%20y2='26'/%3E%3Cline%20x1='15'%20x2='22'%20y1='29'%20y2='29'/%3E%3Cline%20x1='15'%20x2='29'%20y1='32'%20y2='32'/%3E%3Cline%20x1='15'%20x2='22'%20y1='35'%20y2='35'/%3E%3Cline%20x1='15'%20x2='22'%20y1='38'%20y2='38'/%3E%3C/g%3E%3Cpath%20d='M15%2027h14v11a2%202%200%200%201-2%202H17a2%202%200%200%201-2-2z'%20fill='%239fcad8'/%3E%3Cpath%20d='M8%2027h28'%20stroke='%23ffffff'%20stroke-width='2.2'%20stroke-linecap='round'/%3E%3C/svg%3E">"""
+
+
 def html(od, do, model="ridge", pisma=None) -> str:
     """Stránka s animací od `od` do `do` (pandas Timestamp v UTC) pro st.iframe(..., height=720).
 
@@ -258,38 +262,30 @@ def html(od, do, model="ridge", pisma=None) -> str:
         "barvy": BARVY_PULT, "seda": SEDA_PULT, "meritko": MERITKO_PRUTOKU,
     }
     data = json.dumps(data, ensure_ascii=False).replace("</", "<\\/")
-    return STRANKA.replace("__DECK__", DECK).replace("__PISMA__", _pisma(pisma)).replace("__DATA__", data)
+    return STRANKA.replace("__DECK__", DECK).replace("__PISMA__", _pisma(pisma)).replace("__IKONA__", IKONA).replace("__DATA__", data)
 
 
-# barvy povodňového pultu (app/styl.py, web/css/pult.css): bez stupně voda, stupně žlutá, oranžová, červená
-BARVY_PULT = ([58, 160, 201], [242, 196, 55], [239, 108, 0], [198, 40, 40])
-SEDA_PULT = [139, 152, 165]
+# barvy jako v grafech a na webu (web/css/pult.css): bez stupně modrá grafů, stupně žlutá, oranžová, červená
+BARVY_PULT = ([22, 124, 156], [242, 196, 55], [239, 108, 0], [198, 40, 40])
+SEDA_PULT = [142, 142, 147]
 
 
 def _pisma(pisma):
-    """Písma webu: ze složky `pisma` (na webu ../fonts/), bez ní z Google Fonts (aplikace, iframe bez souborů)."""
+    """Písmo jako v grafech: systémové (na Macu San Francisco), záloha Inter ze složky `pisma` (na webu ../fonts/).
+    Bez složky (iframe v aplikaci) jen systémové písmo, žádné stahování z Google Fonts."""
     if pisma:
         return PISMA_LOKALNE.replace("__PISMA__", pisma)
-    return PISMA_GOOGLE
+    return ""
 
 
 PISMA_LOKALNE = '''<style>
-@font-face { font-family: "Schibsted Grotesk"; font-style: normal; font-weight: 400 800; font-display: swap;
-  src: url("__PISMA__schibsted-grotesk-latin.woff2") format("woff2");
+@font-face { font-family: "Inter"; font-style: normal; font-weight: 100 900; font-display: swap;
+  src: url("__PISMA__inter-latin.woff2") format("woff2");
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
-@font-face { font-family: "Schibsted Grotesk"; font-style: normal; font-weight: 400 800; font-display: swap;
-  src: url("__PISMA__schibsted-grotesk-latin-ext.woff2") format("woff2");
-  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF; }
-@font-face { font-family: "Sofia Sans Extra Condensed"; font-style: normal; font-weight: 500 800; font-display: swap;
-  src: url("__PISMA__sofia-sans-extra-condensed-latin.woff2") format("woff2");
-  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
-@font-face { font-family: "Sofia Sans Extra Condensed"; font-style: normal; font-weight: 500 800; font-display: swap;
-  src: url("__PISMA__sofia-sans-extra-condensed-latin-ext.woff2") format("woff2");
+@font-face { font-family: "Inter"; font-style: normal; font-weight: 100 900; font-display: swap;
+  src: url("__PISMA__inter-latin-ext.woff2") format("woff2");
   unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF; }
 </style>'''
-PISMA_GOOGLE = '''<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400..800&family=Sofia+Sans+Extra+Condensed:wght@500..800&display=swap" rel="stylesheet">'''
 
 
 STRANKA = r"""<!doctype html>
@@ -298,83 +294,80 @@ STRANKA = r"""<!doctype html>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Labe · animace povodně</title>
+__IKONA__
 __PISMA__
 <script src="__DECK__"></script>
 <style>
 :root {
-  --pozadi: #111820;
-  --panel: rgba(11, 16, 22, 0.92);
-  --text: #e6ebf0;
-  --text2: #c8d1d9;
-  --tlumene: #8b98a5;
-  --cara: rgba(255, 255, 255, 0.08);
-  --voda: #7cc6e4;
-  --pismo: "Schibsted Grotesk", sans-serif;
-  --cisla: "Sofia Sans Extra Condensed", "Schibsted Grotesk", sans-serif;
+  --pozadi: #f5f5f7;
+  --sklo: rgba(255, 255, 255, 0.84);
+  --karta: #ffffff;
+  --okraj: #e5e5ea;
+  --okraj-silny: #d2d2d7;
+  --draha: #e9e9eb;
+  --text: #1d1d1f;
+  --tlumene: #6e6e73;
+  --modra: #167c9c;
+  --modra-tmava: #136b88;
+  --stin: 0 1px 2px rgba(0, 0, 0, 0.04), 0 10px 30px rgba(0, 0, 0, 0.06);
+  --pismo: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Helvetica Neue", "Inter", Helvetica, sans-serif;
+  color-scheme: light;
 }
 * { box-sizing: border-box; }
 html, body { margin: 0; height: 100%; background: var(--pozadi); color: var(--text); overflow: hidden;
-  font: 14px/1.4 var(--pismo); }
-.datum, .cm, .pred b, .cas-text { font-family: var(--cisla); font-variant-numeric: tabular-nums; }
+  font: 14px/1.45 var(--pismo); -webkit-font-smoothing: antialiased; }
+.datum, .cm, .pred b, .cas-text { font-variant-numeric: tabular-nums; }
 #mapa { position: absolute; inset: 0; }
-.box { position: absolute; background: var(--panel); border: 1px solid var(--cara); border-radius: 12px; }
-.veta { top: 12px; left: 12px; max-width: min(400px, calc(100% - 24px)); padding: 9px 14px; }
-.veta h1 { margin: 0 0 4px; font: 800 24px/1 var(--cisla); letter-spacing: 0; }
-.veta p { margin: 0; color: var(--tlumene); font-size: 13.5px; }
-.legenda { left: 12px; bottom: 70px; max-width: calc(100% - 24px); padding: 6px 10px; font-size: 12.5px;
-  color: var(--tlumene); }
-.legenda i { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin: 0 4px 0 6px; vertical-align: -1px; }
-.panel { top: 12px; right: 12px; width: 300px; padding: 12px 14px 10px; }
-.datum { font-size: 26px; font-weight: 800; letter-spacing: 0.01em; line-height: 1.1; }
-.mesto { margin-top: 10px; padding-top: 8px; border-top: 1px solid var(--cara); }
+.box { position: absolute; z-index: 2; background: var(--sklo); border: 1px solid var(--okraj); border-radius: 20px;
+  backdrop-filter: blur(20px) saturate(1.4); -webkit-backdrop-filter: blur(20px) saturate(1.4); box-shadow: var(--stin); }
+.panel { top: 12px; right: 12px; width: 324px; padding: 14px 16px 12px; max-height: calc(100% - 96px); overflow: auto; }
+.datum { font-size: 19px; font-weight: 700; letter-spacing: -0.02em; line-height: 1.15; }
+.mesto { margin-top: 10px; padding-top: 8px; border-top: 1px solid var(--okraj); }
 .radek { display: flex; align-items: baseline; gap: 8px; }
-.jmeno { font-weight: 600; flex: 1; color: var(--text2); }
-.cm { font-size: 24px; font-weight: 800; }
-.odznak { font-size: 11.5px; font-weight: 700; padding: 2px 7px; border-radius: 6px; white-space: nowrap; }
-.odznak.bez { background: none !important; color: var(--text2) !important; box-shadow: inset 0 0 0 1px rgba(230, 235, 240, 0.2); }
-.pred { margin-top: 3px; font-size: 13px; color: var(--tlumene); display: flex; align-items: baseline; gap: 6px; flex-wrap: wrap; }
-.pred b { color: var(--voda); font-size: 18px; font-weight: 800; }
-canvas#graf { display: block; width: 100%; height: 104px; margin-top: 10px; cursor: pointer; }
-.popis { font-size: 12px; color: var(--tlumene); margin-top: 4px; }
-.popis span { white-space: nowrap; }
-.ovladani { left: 12px; right: 12px; bottom: 12px; display: flex; align-items: center; gap: 12px; padding: 8px 12px; }
-button#hraj { flex: none; width: 44px; height: 44px; border-radius: 50%; border: 0; background: #3aa0c9;
-  color: #0b1016; cursor: pointer; display: grid; place-items: center; }
-button#hraj:hover { background: var(--voda); }
-button#hraj:active { transform: scale(0.96); }
+.jmeno { font-weight: 600; flex: 1; white-space: nowrap; }
+.cm { font-size: 24px; font-weight: 800; letter-spacing: -0.03em; line-height: 1.1; white-space: nowrap; }
+.odznak { font-size: 13px; font-weight: 700; padding: 3px 10px; border-radius: 999px; white-space: nowrap; line-height: 1.2; }
+.odznak.bez { background: var(--draha) !important; color: var(--tlumene) !important; }
+.pred { margin-top: 4px; font-size: 13px; color: var(--tlumene); display: flex; align-items: baseline; gap: 6px; flex-wrap: wrap; }
+.pred b { color: var(--modra); font-size: 18px; font-weight: 800; letter-spacing: -0.02em; }
+.ovladani { left: 12px; right: 12px; bottom: 12px; display: flex; align-items: center; gap: 14px; padding: 10px 14px; }
+button#hraj { flex: none; width: 48px; height: 48px; border-radius: 50%; border: 0; background: var(--modra); color: #fff;
+  font: inherit; cursor: pointer; display: grid; place-items: center; box-shadow: 0 4px 12px rgba(22, 124, 156, 0.3);
+  transition: background-color 0.15s ease-out, transform 0.12s ease-out; -webkit-tap-highlight-color: transparent; }
+button#hraj:hover { background: var(--modra-tmava); }
+button#hraj:active { transform: scale(0.95); }
 button#hraj svg { width: 18px; height: 18px; fill: currentColor; }
-input#cas { flex: 1; min-width: 80px; height: 28px; margin: 0; accent-color: #3aa0c9; }
-.cas-text { flex: none; min-width: 150px; font-size: 17px; font-weight: 700; }
-select { background: transparent; color: var(--text); border: 1px solid var(--cara); border-radius: 6px; padding: 4px 6px; font: inherit; }
-select option { color: #111; }
-.zdroj { position: absolute; right: 14px; bottom: 72px; max-width: 40%; text-align: right; font-size: 11px;
-  color: rgba(255, 255, 255, 0.75); text-shadow: 0 0 3px #000; text-wrap: balance; }
-.zdroj span { display: block; }
+input#cas { flex: 1; min-width: 80px; height: 28px; margin: 0; accent-color: var(--modra); }
+.cas-text { flex: none; min-width: 160px; font-size: 17px; font-weight: 700; letter-spacing: -0.02em; }
+select { background: var(--karta); color: var(--text); border: 1px solid var(--okraj-silny); border-radius: 999px; padding: 7px 12px;
+  min-height: 36px; font: inherit; font-size: 13px; font-weight: 600; }
+.zdroj { position: absolute; right: 14px; bottom: 84px; max-width: calc(100% - 28px); font-size: 11px; color: var(--tlumene);
+  padding: 5px 11px; border-radius: 14px; background: var(--sklo); border: 1px solid var(--okraj); white-space: nowrap; }
+/* nízký rám (tablet na výšku s rámem 722×406): panel užší a hustší, ať nezasáhne do ovládání */
+@media (min-width: 721px) and (max-height: 520px) {
+  .panel { width: 272px; padding: 8px 12px 6px; max-height: calc(100% - 92px); }
+  .datum { font-size: 15px; }
+  .mesto { margin-top: 5px; padding-top: 4px; }
+  .cm { font-size: 18px; }
+  .pred b { font-size: 15px; }
+  .zdroj { display: none; }
+}
+/* telefon na výšku: panel dole nad ovládáním */
 @media (max-width: 720px) {
-  .panel { top: auto; bottom: 76px; right: 12px; left: 12px; width: auto; padding: 8px 12px 6px; }
-  .veta { padding: 7px 12px; }
-  .veta h1 { font-size: 20px; }
-  .veta p, .legenda, .zdroj, canvas#graf, .popis, .pred, .cas-text { display: none; }
-  .datum { font-size: 20px; }
+  .panel { top: auto; bottom: 80px; right: 12px; left: 12px; width: auto; padding: 10px 14px 8px; border-radius: 16px; max-height: 44%; }
+  .zdroj, .cas-text { display: none; }
+  .datum { font-size: 17px; }
   .mesto { margin-top: 5px; padding-top: 4px; }
   .cm { font-size: 20px; }
-  .ovladani { padding: 8px 10px; gap: 8px; }
+  .ovladani { padding: 8px 10px; gap: 8px; border-radius: 16px; }
 }
 </style>
 </head>
 <body>
 <div id="mapa"></div>
-<div class="box veta">
-  <h1>Co teče proti proudu, dorazí k nám.</h1>
-  <p>Kapka nese průtok ze stanice proti proudu: víc vody, víc a jasnějších kapek.</p>
-</div>
-<div class="box legenda" id="legenda"></div>
 <div class="box panel">
   <div class="datum" id="datum"></div>
   <div class="mesto" id="mesta"></div>
-  <canvas id="graf" title="Kliknutím skočíte na ten čas"></canvas>
-  <div class="popis"><span>Děčín: <b style="color:#eef3f6">změřeno</b>,</span>
-    <span><b style="color:var(--voda)">předpověď na 24 h</b></span> <span>(čárkovaně stupně)</span></div>
 </div>
 <div class="zdroj" id="zdroj"></div>
 <div class="box ovladani">
@@ -395,6 +388,7 @@ const IKONA = {
   hraj: '<svg viewBox="0 0 24 24"><path d="M7 4.5v15l13-7.5z"/></svg>',
   stuj: '<svg viewBox="0 0 24 24"><path d="M6 4h4.5v16H6zM13.5 4H18v16h-4.5z"/></svg>'
 };
+const PISMO = getComputedStyle(document.documentElement).getPropertyValue('--pismo').trim();
 const HUSTOTA = 0.9;  // kapek na kilometr toku při velké vodě
 const OCAS = 0.6;     // délka stopy kapky v hodinách cesty
 
@@ -536,8 +530,8 @@ function vrstvy(t) {
       id: 'popisky', data: maly ? S_MALY : S,
       getPosition: s => [s.lon, s.lat, vrchol(s, t)],
       getText: s => popisek(s, t), getSize: UZKE ? 10 : 15, fontWeight: 600,
-      fontFamily: '"Schibsted Grotesk", sans-serif', characterSet: 'auto',
-      getColor: SAT ? [255, 255, 255] : [25, 35, 45],
+      fontFamily: PISMO, characterSet: 'auto',
+      getColor: SAT ? [255, 255, 255] : [29, 29, 31],
       getTextAnchor: s => ({end: 'end', start: 'start'})[kotva(s)] ?? 'middle',
       getPixelOffset: s => POSUN[kotva(s) ?? 'middle'],
       getAlignmentBaseline: s => ({end: 'center', start: 'center', pod: 'top'})[kotva(s)] ?? 'bottom',
@@ -558,7 +552,8 @@ function tooltip({object, layer}) {
   } else {
     text += `\n95. / 99. percentil: ${cislo(s.p95)} / ${cislo(s.p99)} m³/s\nBarva není oficiální povodňový stupeň.`;
   }
-  return {text, style: {backgroundColor: '#1a232d', color: '#e6ebf0', fontSize: '14px', fontFamily: 'var(--pismo)', borderRadius: '8px'}};
+  return {text, style: {backgroundColor: '#ffffff', color: '#1d1d1f', fontSize: '13.5px', fontFamily: PISMO, borderRadius: '14px',
+    border: '1px solid #e5e5ea', boxShadow: '0 1px 2px rgba(0,0,0,0.04), 0 10px 30px rgba(0,0,0,0.08)', padding: '8px 12px'}};
 }
 
 // panel s hladinami a předpovědí
@@ -566,85 +561,31 @@ const MESTA = [['decin', 'Děčín'], ['usti', 'Ústí nad Labem']];
 document.getElementById('mesta').outerHTML = MESTA.map(([k, j]) => `
   <div class="mesto">
     <div class="radek"><span class="jmeno">${j}</span><span class="cm" id="h-${k}"></span><span class="odznak" id="s-${k}"></span></div>
-    <div class="pred">model za 24 h <b id="p-${k}"></b><span class="odznak" id="ps-${k}"></span><span id="sk-${k}"></span></div>
+    <div class="pred">model za 24 h <b id="p-${k}"></b><span class="odznak" id="ps-${k}"></span></div>
   </div>`).join('');
 function odznak(el, st) {
   const c = barvaStupne(st);
   el.textContent = st == null ? 'chybí' : STUPNE[st];
   el.classList.toggle('bez', st === 0);
   el.style.background = css(c);
-  el.style.color = st === 3 ? '#e6ebf0' : '#0b1016';
+  el.style.color = st === 1 ? '#1d1d1f' : '#fff';
 }
 function panel(t) {
   const i = Math.floor(t) + N;
   document.getElementById('datum').textContent = D.popisky[i];
   document.getElementById('cas-text').textContent = D.popisky[i];
   for (const [k] of MESTA) {
-    const h = rada(D.H[k], t), p = D.P[k][i], sk = D.H[k][i + 24];
+    const h = rada(D.H[k], t), p = D.P[k][i];
     document.getElementById(`h-${k}`).textContent = `${cislo(h)} cm`;
     odznak(document.getElementById(`s-${k}`), stupenH(k, h));
     document.getElementById(`p-${k}`).textContent = p == null ? 'chybí vstupy' : `${cislo(p)} cm`;
     odznak(document.getElementById(`ps-${k}`), stupenH(k, p));
-    document.getElementById(`sk-${k}`).textContent = sk == null ? '' : `skutečnost ${cislo(sk)} cm (známe až zpětně)`;
   }
 }
 
-// graf hladiny v Děčíně: změřená do teď plně, potom slabě; předpověď vydaná do teď o 24 h dopředu
-const GRAF = document.getElementById('graf');
-const HD = D.H.decin, PD = D.P.decin, SPA_D = PODLE.decin.spa;
-const OD = N, DO = N + K + 24;
-const hodnoty = HD.slice(OD, DO + 1).concat(PD.slice(OD, DO + 1 - 24)).filter(v => v != null);
-const YMIN = Math.min(...hodnoty) - 20, YMAX = Math.max(...hodnoty, SPA_D[2]) + 20;
-function graf(t) {
-  const W = GRAF.clientWidth, V = GRAF.clientHeight, dpr = window.devicePixelRatio || 1;
-  if (!W) return;
-  if (GRAF.width !== Math.round(W * dpr)) { GRAF.width = Math.round(W * dpr); GRAF.height = Math.round(V * dpr); }
-  const g = GRAF.getContext('2d');
-  g.setTransform(dpr, 0, 0, dpr, 0, 0);
-  g.clearRect(0, 0, W, V);
-  const x = i => (i - OD) / (DO - OD) * W, y = v => V - 3 - (v - YMIN) / (YMAX - YMIN) * (V - 6);
-  const ted = OD + t;
-  g.lineWidth = 1;
-  g.setLineDash([3, 3]);
-  SPA_D.forEach((m, k) => { g.strokeStyle = css(D.barvy[k + 1], 0.8); g.beginPath(); g.moveTo(0, y(m)); g.lineTo(W, y(m)); g.stroke(); });
-  g.setLineDash([]);
-  const cara = (od, doo, hodnota, posun, barva, sirka) => {
-    g.strokeStyle = barva; g.lineWidth = sirka; g.beginPath();
-    let kresli = false;
-    for (let i = od; i <= doo; i++) {
-      const v = hodnota[i];
-      if (v == null) { kresli = false; continue; }
-      kresli ? g.lineTo(x(i + posun), y(v)) : g.moveTo(x(i + posun), y(v));
-      kresli = true;
-    }
-    g.stroke();
-  };
-  cara(OD, DO, HD, 0, 'rgba(230,235,240,0.25)', 1.5);
-  cara(OD, Math.floor(ted), HD, 0, '#e6ebf0', 2);
-  cara(OD, Math.floor(ted), PD, 24, '#7cc6e4', 2);
-  const p = PD[Math.floor(ted)];
-  g.strokeStyle = 'rgba(255,255,255,0.55)'; g.lineWidth = 1;
-  g.beginPath(); g.moveTo(x(ted), 0); g.lineTo(x(ted), V); g.stroke();
-  if (p != null) {
-    g.fillStyle = '#7cc6e4'; g.beginPath(); g.arc(x(Math.floor(ted) + 24), y(p), 4, 0, 2 * Math.PI); g.fill();
-  }
-}
-GRAF.addEventListener('click', e => {
-  const r = GRAF.getBoundingClientRect();
-  nastav(omez((e.clientX - r.left) / r.width * (K + 24), 0, K));
-});
-
-// legenda a zdroje
-const B = D.barvy;
-const ctverec = c => `<i style="background:${css(c)}"></i>`;
-document.getElementById('legenda').innerHTML =
-  `<div>Sloupec: výška je průtok, barva stupeň povodňové aktivity.</div>` +
-  `<div>Děčín, Ústí: ${ctverec(B[0])}bez stupně ${ctverec(B[1])}1. ${ctverec(B[2])}2. ${ctverec(B[3])}3. stupeň</div>` +
-  `<div>Ostatní: ${ctverec(B[0])}běžně ${ctverec(B[1])}nad 95. ${ctverec(B[3])}nad 99. percentilem průtoku</div>`;
-// dva řádky: zdroje dat a model; užší okno každý zalomí na vyrovnané půlky
-document.getElementById('zdroj').innerHTML =
-  `<span>${[D.teren.zdroj, 'Řeky © OpenStreetMap', 'Měření ČHMÚ'].map(t => t.replaceAll(' ', '\u00a0')).join('\u00a0· ')}</span>` +
-  `<span>Předpověď: ${D.nazev_modelu}</span>`;
+// zdroje: jedna řádka, povinná atribuce Mapboxu, OpenStreetMap a ČHMÚ
+document.getElementById('zdroj').textContent =
+  [D.teren.zdroj, 'Řeky © OpenStreetMap', 'Měření ČHMÚ'].map(t => t.replaceAll(' ', '\u00a0')).join('\u00a0· ');
 
 // přehrávání
 const posuvnik = document.getElementById('cas'), tlacitko = document.getElementById('hraj');
@@ -652,7 +593,8 @@ posuvnik.max = K;
 let cas = 0, hraje = true, rychlost = 4, minule = null, nakresleno = -1, tahne = false;
 const mapa = new deck.Deck({
   parent: document.getElementById('mapa'),
-  initialViewState: {longitude: 14.78, latitude: 50.27, pitch: 50, bearing: 0, minZoom: 6, maxZoom: 14, zoom: ZOOM0},
+  // na výšku (telefon) menší náklon, jinak by horní třetina obrazovky byla jen obzor
+  initialViewState: {longitude: 14.78, latitude: UZKE ? 50.32 : 50.27, pitch: UZKE ? 22 : 50, bearing: 0, minZoom: 6, maxZoom: 14, zoom: ZOOM0},
   controller: true,
   onViewStateChange: ({viewState}) => {
     if ((viewState.zoom < MALY_ZOOM) !== maly) { maly = !maly; nakresleno = -1; }
@@ -683,7 +625,6 @@ function snimek(ts) {
   if (cas !== nakresleno) {
     mapa.setProps({layers: vrstvy(cas)});
     if (Math.floor(cas) !== Math.floor(nakresleno) || nakresleno < 0) panel(cas);
-    graf(cas);
     if (!tahne) posuvnik.value = cas;
     nakresleno = cas;
   }
@@ -692,7 +633,7 @@ function snimek(ts) {
 ikona();
 panel(0);
 // popisky stanic kreslí deck.gl do atlasu jednou, proto se čeká, až se písmo načte (nejvýš 1,5 s)
-const pismo = document.fonts ? Promise.race([document.fonts.load('600 15px "Schibsted Grotesk"'), new Promise(r => setTimeout(r, 1500))])
+const pismo = document.fonts ? Promise.race([document.fonts.load('600 15px Inter'), new Promise(r => setTimeout(r, 1500))])
   : Promise.resolve();
 pismo.catch(() => {}).then(() => requestAnimationFrame(snimek));
 </script>

@@ -1,10 +1,10 @@
 // Čárový graf v SVG bez knihoven: hladina v čase, pás nejistoty, čáry stupňů povodňové aktivity, odečet pod kurzorem.
-// cfg: {serie: [{nazev, x: [Date], y: [cm|null], barva, sirka, car, body, trojuhelnik}], pas: {x, lo, hi}|null,
-//       spa: [prahy], svisla: Date|null, vyska, osaY, legenda: element|null}
+// cfg: {serie: [{nazev, x: [Date], y: [cm|null], barva, sirka, car, body, trojuhelnik, stitek}], pas: {x, lo, hi}|null,
+//       spa: [prahy], svisla: Date|null, vyska, osaY}; stitek = název řady na konci čáry
 import { BARVY, BARVY_SPA } from "./data.js";
 import { NB, cislo, denMesic, hodina, isoZ, datumCas, typo } from "./typo.js";
 
-const NA_SPA = [BARVY.studna, BARVY.studna, BARVY.text];
+const NA_SPA = [BARVY.text, "#ffffff", "#ffffff"];
 
 export function graf(el, cfg) {
   el.__cfg = cfg;
@@ -46,7 +46,9 @@ function vykresli(el) {
   const cfg = el.__cfg;
   const W = Math.max(280, el.clientWidth || 600), VY = cfg.vyska || 400;
   const uzke = W < 520;
-  const m = { l: uzke ? 40 : 52, r: 14, t: 12, b: 40 };
+  // štítky na konci čar: na šířku mají místo vpravo od čáry, na telefonu sedí nad jejím koncem
+  const stitkove = cfg.serie.filter((sr) => sr.stitek && sr.nazev);
+  const m = { l: uzke ? 40 : 52, r: stitkove.length && !uzke ? Math.min(150, Math.max(...stitkove.map((sr) => sr.nazev.length)) * 7.5 + 20) : 14, t: 12, b: 40 };
   const vx = (d) => d.getTime();
   const vsechnyX = [], vsechnyY = [];
   for (const s of cfg.serie) { for (const d of s.x) vsechnyX.push(vx(d)); for (const v of s.y) if (v != null) vsechnyY.push(v); }
@@ -74,24 +76,25 @@ function vykresli(el) {
     if (body.length > 1) {
       const horni = body.map(([x, , hi]) => `${x.toFixed(1)},${Y(hi).toFixed(1)}`);
       const dolni = body.map(([x, lo]) => `${x.toFixed(1)},${Y(lo).toFixed(1)}`).reverse();
-      s.push(`<path d="M${horni.join("L")}L${dolni.join("L")}Z" fill="${BARVY.vodaSvetla}" fill-opacity=".16"/>`);
+      s.push(`<path d="M${horni.join("L")}L${dolni.join("L")}Z" fill="${BARVY.modraSvetla}" fill-opacity=".35"/>`);
     }
   }
 
   (cfg.spa || []).forEach((prah, i) => {
     if (!spaVidet.includes(prah)) return;
     const yp = Y(prah).toFixed(1);
-    s.push(`<line x1="${m.l}" x2="${W - m.r}" y1="${yp}" y2="${yp}" stroke="${BARVY_SPA[i]}" stroke-width="1.2" stroke-dasharray="2 4"/>`);
-    const text = `${i + 1}. stupeň · ${prah} cm`, sir = uzke ? 86 : 104;
-    s.push(`<rect x="${m.l + 6}" y="${(+yp - 20).toFixed(1)}" width="${sir}" height="18" rx="3" fill="${BARVY_SPA[i]}"/>`);
-    s.push(`<text x="${m.l + 6 + sir / 2}" y="${(+yp - 7).toFixed(1)}" text-anchor="middle" class="spa-text" fill="${NA_SPA[i]}">${uzke ? `${i + 1}. st. · ${prah}` : text}</text>`);
+    s.push(`<line x1="${m.l}" x2="${W - m.r}" y1="${yp}" y2="${yp}" stroke="${BARVY_SPA[i]}" stroke-width="1.5" stroke-dasharray="3 4"/>`);
+    const text = `${i + 1}. stupeň · ${prah} cm`, sir = uzke ? 92 : 112;
+    s.push(`<rect x="${m.l + 8}" y="${(+yp - 22).toFixed(1)}" width="${sir}" height="20" rx="10" fill="${BARVY_SPA[i]}"/>`);
+    s.push(`<text x="${m.l + 8 + sir / 2}" y="${(+yp - 8).toFixed(1)}" text-anchor="middle" class="spa-text" fill="${NA_SPA[i]}">${uzke ? `${i + 1}. st. · ${prah}` : text}</text>`);
   });
 
   if (cfg.svisla) {
     const x = X(vx(cfg.svisla)).toFixed(1);
-    s.push(`<line x1="${x}" x2="${x}" y1="${m.t}" y2="${VY - m.b}" stroke="rgba(230,235,240,0.3)"/>`);
+    s.push(`<line x1="${x}" x2="${x}" y1="${m.t}" y2="${VY - m.b}" stroke="${BARVY.caraSilna}" stroke-width="1.5"/>`);
   }
 
+  const stitky = [];
   for (const sr of cfg.serie) {
     const cesty = []; let kus = [];
     sr.x.forEach((d, i) => {
@@ -110,9 +113,24 @@ function vykresli(el) {
         if (v == null) return;
         const x = X(vx(d)).toFixed(1), y = Y(v).toFixed(1);
         if (sr.trojuhelnik) s.push(`<path d="M${x} ${y}l9 -6v12z" fill="${sr.barva}"/>`);
-        else s.push(`<circle cx="${x}" cy="${y}" r="${i === 0 && sr.prvniMaly ? 4 : 6}" fill="${sr.barva}" stroke="${BARVY.studna}" stroke-width="2"/>`);
+        else s.push(`<circle cx="${x}" cy="${y}" r="${i === 0 && sr.prvniMaly ? 4 : 6}" fill="${sr.barva}" stroke="#ffffff" stroke-width="2"/>`);
       });
     }
+    // štítek přímo na konci čáry místo legendy
+    if (sr.stitek && sr.nazev) {
+      let k = sr.y.length - 1;
+      while (k >= 0 && sr.y[k] == null) k--;
+      if (k >= 0) stitky.push({ x: X(vx(sr.x[k])), y: Y(sr.y[k]) + (uzke ? -12 : 4), text: sr.nazev, barva: sr.barva });
+    }
+  }
+  stitky.sort((a, b) => a.y - b.y);
+  for (let k = 1; k < stitky.length; k++) stitky[k].y = Math.max(stitky[k].y, stitky[k - 1].y + 16);
+  const presah = stitky.length ? stitky[stitky.length - 1].y - (VY - m.b - 4) : 0;
+  for (const st of stitky) {
+    const y = Math.max(m.t + 10, st.y - Math.max(0, presah)).toFixed(1);
+    s.push(uzke
+      ? `<text x="${Math.min(st.x, W - m.r).toFixed(1)}" y="${y}" text-anchor="end" class="cara-stitek" fill="${st.barva}">${typo(st.text)}</text>`
+      : `<text x="${(st.x + 10).toFixed(1)}" y="${y}" class="cara-stitek" fill="${st.barva}">${typo(st.text)}</text>`);
   }
 
   s.push(`<g class="osa">`);
@@ -133,7 +151,7 @@ function vykresli(el) {
     s.push(`<line x1="${x.toFixed(1)}" x2="${x.toFixed(1)}" y1="${VY - m.b}" y2="${VY - m.b + 4}"/>`);
     if (!t.ukaz) continue;
     const kotva = x > W - 30 ? "end" : x < m.l + 10 ? "start" : "middle";
-    s.push(`<text x="${x.toFixed(1)}" y="${VY - m.b + 18}" text-anchor="${kotva}"${t.velky ? ' fill="#c8d1d9"' : ""}>${t.text}</text>`);
+    s.push(`<text x="${x.toFixed(1)}" y="${VY - m.b + 18}" text-anchor="${kotva}"${t.velky ? ' fill="#1d1d1f" font-weight="600"' : ""}>${t.text}</text>`);
   }
   if (cfg.osaY && !uzke) s.push(`<text class="osa-nazev" transform="translate(12 ${((VY - m.b + m.t) / 2).toFixed(1)}) rotate(-90)" text-anchor="middle">${cfg.osaY}</text>`);
   s.push(`</g>`);
@@ -141,10 +159,6 @@ function vykresli(el) {
   s.push(`<rect class="plocha" x="${m.l}" y="${m.t}" width="${W - m.l - m.r}" height="${VY - m.t - m.b}" fill="transparent"/>`);
 
   el.innerHTML = `<svg viewBox="0 0 ${W} ${VY}" width="${W}" height="${VY}" role="img" aria-label="${cfg.popis || "graf hladiny"}">${s.join("")}</svg><div class="graf-tip" hidden></div>`;
-  if (cfg.legenda) {
-    cfg.legenda.innerHTML = `<ul class="legenda">${cfg.serie.filter((sr) => sr.nazev).map((sr) =>
-      `<li><i class="${sr.trojuhelnik ? "troj" : ""}" style="color:${sr.barva}${sr.car ? ";border-top-style:dashed" : ""}"></i>${typo(sr.nazev)}</li>`).join("")}${cfg.pas && cfg.pas.nazev ? `<li><i class="pas"></i>${typo(cfg.pas.nazev)}</li>` : ""}</ul>`;
-  }
 
   // odečet pod kurzorem: nejbližší hodina, hodnoty všech řad v ní
   const svg = el.firstElementChild, tip = el.lastElementChild, kurzor = svg.querySelector(".kurzor");
