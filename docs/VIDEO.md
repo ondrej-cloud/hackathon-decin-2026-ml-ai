@@ -49,4 +49,4 @@ Když Playwright na Macu nemá GPU a snímek trvá přes 4 s, skript sám přejd
 
 ## Jiná povodeň nebo město
 
-`--povoden "9/2024 Boris (test)" --cil decin --model ridge_test --od 2024-09-13T00:00 --do 2024-09-18T12:00`; klíčové pozice `ZABERY` jsou dělané pro Děčín, pro Ústí je potřeba doladit středy přes `--diag`.
+`--povoden "9/2024 Boris (test)" --cil decin --model ridge_test --od 2024-09-13T00:00 --do 2024-09-18T12:00`; záběry `ZABERY` jsou dělané pro Děčín, pro Ústí je potřeba doladit středy přes `--diag`.
