@@ -10,7 +10,7 @@ Když si nic jiného nezapamatují, tohle stačí. Každý řečník ji má aspo
 
 ## Dramaturgie: proč je pořadí právě takhle
 
-1. **Úder** (video 2013): voda jde mezi domy. Nikdo nic nevysvětluje, 20 s ticha. Pak číslo: 18 hodin předem.
+1. **Úder** (video 2013): voda jde mezi domy. Nikdo nic nevysvětluje, asi 12 s ticha. Pak číslo: 18 hodin předem.
 2. **Problém a data** (2, 3): balíček nestačí, vzali jsme 20 let a 12 stanic. Počasí nepomohlo, protože voda už teče řekou. Tady porota slyší, že rozumíme hydrologii, ne jen statistice.
 3. **Cesta k modelu** (4, 5): čtyři modely, každý z nás jeden, stejná pravidla, vyhrál nejjednodušší, a umíme říct proč. Tady jsou body za odbornost.
 4. **Důkaz** (6, 7): dělení v čase, třikrát ověřeno, o polovinu menší chyba, Boris 27 h předem. Tady jsou body za postup.
@@ -39,7 +39,7 @@ Když si nic jiného nezapamatují, tohle stačí. Každý řečník ji má aspo
 
 ### 1 · Video (Honza, 0:00–0:40)
 
-- Mezerník, video. **Nic neříkat prvních 5 sekund.** Pak jedna věta: „Dobrý den. Červen 2013, největší povodeň za posledních dvacet let. Takhle stoupala voda v Děčíně hodinu po hodině.“ A zase ticho. Voda dojde mezi domy.
+- Mezerník, video. Hned na začátku jedna věta: „Dobrý den. Červen 2013, největší povodeň za posledních dvacet let. Takhle stoupala voda v Děčíně hodinu po hodině.“ A zase ticho. Voda dojde mezi domy.
 - Po dohrání (nadpis a 18 h): „Model tuhle povodeň nikdy neviděl, a přesto ohlásil třetí stupeň 18 hodin předem.“ Pauza. Pak pro koho to je.
 - Prodejní podtext: ukazujeme něco, co porota ještě nikdy od studentského týmu neviděla, a hned u toho máme číslo.
 - Předávka: „Jaká data na to stačí? Dan.“
@@ -105,9 +105,9 @@ Pravidla: odpovídá ten, kdo stojí nejblíž porotě, ne nutně autor; odpově
 | Proč lineární regrese a ne síť? | Voda v Děčíně je součet řek posunutý o dobu putování, to přímka umí přesně; síť byla na vynechaných povodních horší a nejde vysvětlit. | Dan, Z1 |
 | Nepřeučil se model? | Ověřujeme jen na povodních, které model neviděl, a výsledek na validaci, vícenásobné validaci i testu je stejný, kolem 55 % zlepšení. | Ondra, 7 |
 | Proč ne srážky? | Na 12 až 36 hodin voda už teče řekou. I s dokonalou předpovědí deště na tři dny klesla chyba jen o centimetr. | Dan, Z3 |
-| Nemáte jen šťastnou validaci? | Každou z osmi povodní 2006 až 2020 jsme vynechali a model naučili na zbytku; chyba je menší na všech osmi, o 34 až 66 %. | Ondra, Z9 |
+| Nemáte jen šťastnou validaci? | Každou z osmi povodní 2006 až 2020 jsme vynechali a model naučili na zbytku; chyba je menší na všech osmi, o 34 až 66 %. | Ondra, 7 a Z8 |
 | Proč jen 36 hodin? | Z nejvzdálenějších stanic doteče voda za 23 až 25 hodin; co přijde později, ještě neprotekla žádnou stanicí. | Dan, Z9 |
-| Jak moc se dá předpovědi věřit? | Dáváme rozmezí od–do z chyb na vynechaných povodních; skutečnost se do něj vejde v 8 až 9 případech z 10. | Honza, Z4 |
+| Jak moc se dá předpovědi věřit? | Dáváme rozmezí od–do z 90 % chyb na tréninku podle výšky vody, ověřené na vynechaných povodních; skutečnost se do něj vejde v 8 až 9 případech z 10. | Honza, Z4 |
 | Je rozliv hydraulický model? | Není. Výška terénu proti výšce hladiny, ověřená proti úřední mapě záplavových území: při pětileté vodě 167 ha u nás, 183 ha úředně, 165 ha se překrývá. | Honza, Z7 |
 | Proč je předpověď křivka, když je to přímka? | Přímka je vztah mezi vstupem a hladinou, ne tvar v čase; když do ní každou hodinu dosadíme nový průtok, vznikne křivka. | Ondra, Z11 |
 | Podle čeho model rozhoduje? | 98 vah pro předpověď hladiny v Děčíně za 24 hodin; nejvíc váží hladina v Děčíně teď a průtok v Praze teď, oranžová vedle modré znamená, že model počítá, jestli voda stoupá. | Honza, Z6 |
