@@ -12,12 +12,15 @@ Do main nešlo nic. Podklady pro prezentaci jsou v `prezentace_dan/` na větvi `
 2. **36 h:** regrese s 30 stanicemi je v LOFO lepší o 2,43 cm (17 z 22), ve vícenásobné validaci jen o 0,71 (Děčín)
    a 1,00 cm (Ústí, na hraně). Průzkumné H30 (+ ukazatel útlumu v nivě) o 2,1 a 2,3 cm, ale nápad vznikl z povodně 2006.
 3. **18 nových stanic spolehlivě zlepšují začátek vzestupu** (Děčín +24 h na validaci o 5–8 cm u všech čtyř modelů, fyzika jen s 8 stanicemi), celková chyba je podle modelu smíšená.
-4. **Pásmo nejistoty v aplikaci je na povodních moc úzké:** aplikace ukazuje 90% pásmo z chyb na tréninku; 80% pásmo
-   stejnou metodou pokrývá ve vnořené kontrole na 22 povodních jen 58–72 % hodin. Nové pásmo z chyb mimo trénink pokrývá
+4. **Pásmo nejistoty v aplikaci je na povodních moc úzké:** aplikace ukazuje 90% pásmo z chyb na tréninku, ve vnořené
+   kontrole na 22 povodních pokrylo jen 72–83 % hodin (80% stejnou metodou 58–72 %). Nové pásmo z chyb mimo trénink pokrývá
    78–80 % a 94–95 %, na rychlém vzestupu 59–72 %. Patch je hotový.
 5. **Revize aplikace:** 2 kritické nálezy (bez internetu je mapa a animace prázdná; Dnešek na špatné Wi-Fi na minuty
-   zamrzne) a 6 vysokých (texty u Borise a testu, DIBAVOD × výškový model, pásmo). 9 patchů, s nimi test 10 z 10.
-6. **Reprodukovatelnost main:** hlavní čísla (17,1 / 20,1 / procenta / aplikace) z čistého klonu sedí
+   zamrzne) a 6 vysokých (texty u Borise a testu, DIBAVOD × výškový model, pásmo). 10 patchů, s nimi test 10 z 10.
+6. **Provoz (Dan, koncept):** data ČHMÚ chodí po 20 min, celá hodina je u všech stanic venku do HH:40, proto počítat
+   v HH:45 (při doplnění chybějící hodiny poslední hodnotou je chyba D24 o 1,8 cm horší). Za 29 dní nízké vody byla
+   oficiální předpověď ČHMÚ přesnější než naše (D24 5,0 proti 7,5 cm), náš model při nízké vodě kmitá.
+7. **Reprodukovatelnost main:** hlavní čísla (17,1 / 20,1 / procenta / aplikace) z čistého klonu sedí
    (`REPRODUKOVATELNOST.md`). Otisk verze výsledků
    se liší mezi Windows a Macem kvůli koncům řádků.
 
@@ -29,6 +32,8 @@ Do main nešlo nic. Podklady pro prezentaci jsou v `prezentace_dan/` na větvi `
   i Labe). Říkat „každá skupina vstupů“ (N16).
 - **Test není dokonale čistý:** ranní průzkum (pá 17:46) zkoušel lineární model i na povodních 12/2023 a 9/2024. Konkrétní
   model byl ale zafixovaný před testem a vícenásobná validace bez testových let dala stejných 55 % (N6).
+- **Demo Dneška při nízké vodě:** ČHMÚ je teď přesnější než my (5,0 proti 7,5 cm), říct to dřív, než si toho všimne porota;
+  náš model je laděný na povodně.
 - **Video Borise z mapy je z modelu učeného do 2018,** čísla se mírně liší od slajdu (611 cm, 27 h jsou z modelu do 2020).
 
 ## Co má kdo udělat
@@ -37,8 +42,10 @@ Do main nešlo nic. Podklady pro prezentaci jsou v `prezentace_dan/` na větvi `
   regresi kvůli jednoduchosti a riziku výpadku 30 stanic živě). Jednořádková oprava `verze()` v `src/porovnej.py`
   (`REPRODUKOVATELNOST.md`). U mentora ověřit otázku 40 (kdo odpovídá za varování). Rozhodnout o patchích aplikace.
 - **Honza:** záložní video a hotspot (mapa bez internetu je prázdná), před porotou projít všechny záložky. Patche
-  z `nejistota_dan/patche/`: 03 (Dnešek kratší čekání a neuloží rozbitý soubor), 04 (texty Borise, testu, DIBAVOD), 02 (hláška bez internetu),
-  01 (nové pásmo 80 %), nebo aspoň opravit popisek pásma na pravdivý. Pro Dnešek předvolit `ridge_vse`.
+  z `nejistota_dan/patche/` podle Danovy ranní zprávy: bezpečné 02, 03, 04, 05, 07, 08 (hláška bez internetu, Dnešek
+  kratší čekání a neuloží rozbitý soubor, texty Borise, testu a DIBAVOD…), pásmo 01 + 10, 06 a 09 až po vyzkoušení
+  v prohlížeči. Pro Dnešek předvolit `ridge_vse` a počítat v HH:45. V main je od 4:44 i Honzova webová verze
+  (Netlify) a HTML prezentace: domluvit s Tobiasem, která verze prezentace se pouští.
 - **Tobias:** Danovy tři slajdy (`DAN_VYSTUP.md`) místo slajdu 5, nebo jako zálohu. Grafy `prezentace_dan/grafy/`:
   G1 (doby doběhu) k slajdu 3 nebo do zálohy, G2 (chyba podle horizontu) do zálohy ke slajdu 10, G3 a G4 k Danovým
   slajdům. Formulace slajdů 4 a 7 podle bodů výš.

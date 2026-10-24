@@ -201,8 +201,8 @@ Na bouřky je to málo bodů a déšť, který spadl dřív, už ukážou vodom�
 **32. Jak moc se předpovědi dá věřit?**
 Rozmezí „nejspíš od–do“ je z 5. a 95. percentilu chyb na tréninku podle výšky hladiny. Na validaci se do něj vejde
 89–92 % hodnot celkem, na povodních 76–88 %. Šířka na povodních: Děčín 33 / 53 / 72 cm (12 / 24 / 36 h). Na povodních je
-užší, než by mělo být, a přísnější kontrola na 22 povodních to potvrdila: 80% pásmo v tomto stylu pokrývá jen 58–72 %
-hodin. Dan v noci připravil pásmo z chyb mimo trénink, které pokrývá 78–80 % a 94–95 % (cíl 80 a 95 %), slabé zůstává
+užší, než by mělo být, a přísnější kontrola na 22 povodních to potvrdila: 90% pásmo aplikace pokrylo jen 72–83 % hodin
+(80% stejnou metodou 58–72 %). Dan v noci připravil pásmo z chyb mimo trénink, které pokrývá 78–80 % a 94–95 % (cíl 80 a 95 %), slabé zůstává
 na rychlém vzestupu (59–72 %). Jestli ho tým dá do aplikace, rozhodne ráno (viz N18).
 *Zdroj: docs/POKUSY.md (pá 20:40, Honza), nejistota_dan/ZPRAVA_NEJISTOTA.md (větev dan-nejistota).*
 
@@ -232,7 +232,10 @@ předběžné podle horní meze nejistoty, ostré podle předpovědi. *Zdroj: do
 **37. Funguje to i dnes na živých datech?**
 Ano. Přepínač „Dnešek“ stáhne operativní data ČHMÚ (10–30 min stará, vydání je 1–2 h za skutečným časem) a vedle naší
 předpovědi ukáže oficiální předpověď ČHMÚ. Mělník a Nymburk operativně nejsou celé, dopočítáme je z bilance vody. Na
-validaci to D24 zhorší z 15,5 na 16,9 cm. *Zdroj: docs/DENIK.md (pá 21:30, Honza).*
+validaci to D24 zhorší z 15,5 na 16,9 cm. Provozní test v noci: ČHMÚ zveřejňuje data po 20 min, hodnota z celé hodiny
+je u všech stanic venku nejpozději v HH:40, proto počítat v HH:45. Za posledních 29 dní nízké vody byla oficiální
+předpověď ČHMÚ přesnější než naše (D24 5,0 proti 7,5 cm), náš model při nízké vodě kmitá; na povodních srovnání nemáme.
+*Zdroj: docs/DENIK.md (pá 21:30, Honza), ridge_dan/PROVOZ.md (koncept, větev dan-ridge).*
 
 **38. Ta modrá plocha na mapě je váš hydraulický model?**
 Ne. Model předpoví hladinu, převedeme ji na průtok (naše měrná křivka, do 3 % od oficiální) a ukážeme oficiální záplavové
@@ -334,7 +337,9 @@ horizont, protože je to chyba načasování; na testu je předstih 3. stupně D
 **N12. „Hodnota v 10:00 je měření dostupné v 10:00, nebo průměr do 10:50? Kolik předstihu reálně zbude?“**
 Archivní hodina t je průměr t:00 až t:50, takže v t:00 ještě celá známá není. Operativní data ČHMÚ chodí 10–30 min
 po měření a vydání předpovědi je 1–2 h za skutečným časem. Když data přijdou se zpožděním d hodin, zbývá předpovědi
-na 24 h jen 24 − d h. Rozdělení zpoždění při povodni jsme neměřili. *Zdroj: docs/DATA.md (Aktuální data),
+na 24 h jen 24 − d h. V noci jsme zpoždění změřili na provozních datech: poslední hodnota je při zveřejnění stará 10–20 min a celá
+hodina je venku do HH:40. Kdyby aplikace počítala v HH:00 a chybějící hodinu doplnila poslední hodnotou, zhorší se LOFO
+D24 o 1,8 cm (ztratí se trend), proto počítat v HH:45. Zpoždění během povodně jsme neměřili. *Zdroj: docs/DATA.md (Aktuální data),
 docs/DENIK.md (pá 21:30).*
 
 **N13. „Učíte se na archivních průtocích, které ČHMÚ po povodni opravil. V provozu je nemáte.“**
@@ -369,8 +374,8 @@ ledu, změně koryta nebo rekordu je to extrapolace bez záruky. *Zdroj: prezent
 nejistota_dan/ZPRAVA_NEJISTOTA.md.*
 
 **N18. „Pásmo nejistoty slibuje 90 %, při povodni se do něj vejde míň. Proč ho ukazujete?“**
-Dnešní pásmo v aplikaci je z chyb na trénovacích datech. Ve vnořené kontrole na 22 povodních pokrývá 80% pásmo v tomto
-stylu jen 58–72 % hodin a na začátku vzestupu 15 %. Dan v noci připravil pásmo z chyb mimo trénink: pokrývá 78–80 %
+Dnešní pásmo v aplikaci je z chyb na trénovacích datech. Ve vnořené kontrole na 22 povodních pokrylo 90% pásmo, které
+aplikace ukazuje, jen 72–83 % hodin (80% stejnou metodou 58–72 %, na začátku vzestupu 15 %). Dan v noci připravil pásmo z chyb mimo trénink: pokrývá 78–80 %
 a 94–95 % (cíl 80 a 95 %), na rychlém vzestupu ale jen 59–72 % a u rekordní povodně 2013 42 %. Je to orientační
 rozmezí, pravděpodobnost překročení stupně z něj nepočítáme. *Zdroj: nejistota_dan/ZPRAVA_NEJISTOTA.md, docs/POKUSY.md
 (pá 20:40).*
@@ -378,7 +383,8 @@ rozmezí, pravděpodobnost překročení stupně z něj nepočítáme. *Zdroj: n
 **N19. „O 55 % lepší než ‚bude jako teď‘. Ale jste lepší než ČHMÚ?“**
 To nevíme, historické předpovědi ČHMÚ s časy vydání nemáme, a netvrdíme to. Laťka „jako teď“ je jednoduchá, proto
 jsme zkoušeli i pokračování trendu (39,4 cm a v Děčíně 2 / 5 / 16 planých poplachů) a fyzikální model (24,8 cm). V režimu
-Dnešek ukazujeme naši předpověď vedle oficiální ČHMÚ. Spravedlivé srovnání by chtělo stejné časy vydání a stejná data.
+Dnešek ukazujeme naši předpověď vedle oficiální ČHMÚ: za 29 dní nízké vody (podzim 2026) byla ČHMÚ přesnější
+(D24 5,0 proti 7,5 cm). Spravedlivé srovnání na povodních by chtělo stejné časy vydání a stejná data.
 *Zdroj: docs/POKUSY.md (pá 19:35), docs/POROZUMENI.md, docs/DENIK.md (pá 21:30).*
 
 **N20. „Kdo odpovídá, když na základě vaší aplikace někdo nevaruje? A máte vyřešené licence všech dat?“**
