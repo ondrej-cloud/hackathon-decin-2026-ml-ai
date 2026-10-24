@@ -1,8 +1,8 @@
 # Video povodně pro úvod prezentace
 
-Úvodní video decku (`web/prezentace/video/povoden_2013_decin_1080.mp4`, 24 s, 1920 × 1080, bez zvuku) je povodeň v Děčíně od 1. 6. do 6. 6. 2013 po hodinách z 3D mapy aplikace: vlevo rozliv z předpovědi vydané 24 h předem modelem `ridge_bez2013` (učený bez této povodně), vpravo rozliv ze skutečné hladiny, dole přehrávač s grafem. Kamera jde ve čtyřech záběrech od celého města k domům Starého Města, střihy sedí na růst hladiny. Nic není kreslené ručně, každý snímek je stránka mapy v dané hodině.
+Úvodní video decku (`web/prezentace/video/povoden_2013_decin_1080.mp4`, 24 s, 1920 × 1080, bez zvuku) je povodeň v Děčíně od 1. 6. do 6. 6. 2013 po hodinách z 3D mapy aplikace: rozliv ze změřené hladiny, dole přehrávač s grafem, boční boxy skryté (porovnání s předpovědí se v prezentaci nepoužívá; zapne ho volba `--porovnani`). Kamera jde ve čtyřech záběrech od celého města k domům Starého Města, střihy sedí na růst hladiny. Nic není kreslené ručně, každý snímek je stránka mapy v dané hodině.
 
-Natáčí ho `src/video_povoden.py`: vygeneruje stránku mapy, skryje úvod a boční boxy, zapne porovnání, vypne popisky podniků, nafotí 133 hodin Playwrightem a složí ffmpegem (mapa se prolíná na 30 fps, štítky nahoře a lišta dole zůstávají ostré). Master je `docs/grafy/video_povoden_2013_decin.mp4` (není v Gitu), webová verze do 22 MB a poster `web/prezentace/grafy/video_2013_poster.jpg`.
+Natáčí ho `src/video_povoden.py`: vygeneruje stránku mapy, skryje úvod a boční boxy, zapne porovnání, vypne popisky podniků, nafotí 133 hodin po čtyřech snímcích (kamera jede plynule, voda se mění po hodinách) Playwrightem a složí ffmpegem beze změny snímků, takže je obraz ostrý (22 fps, žádné prolínání). Natáčení trvá asi 12 minut. Master je `docs/grafy/video_povoden_2013_decin.mp4` (není v Gitu), webová verze do 22 MB a poster `web/prezentace/grafy/video_2013_poster.jpg`.
 
 ## Na Windows
 
@@ -33,14 +33,14 @@ Výstup se zapíše rovnou do `web/prezentace/video/` a `web/prezentace/grafy/`;
 
 ## Pro Tobiase: natočit video na Macu v písmu San Francisco a pushnout
 
-Tenhle postup je napsaný tak, aby ho šlo zadat Claudovi na Tobiasově Macu doslova (`/tobias`, pak: „natoč video podle docs/VIDEO.md a pushni ho do main“). Trvá asi 15 minut, z toho natáčení 5 minut.
+Tenhle postup je napsaný tak, aby ho šlo zadat Claudovi na Tobiasově Macu doslova (`/tobias`, pak: „natoč video podle docs/VIDEO.md a pushni ho do main“). Trvá asi 20 minut, z toho natáčení 12 minut. Tobiasův první render z 11:30 byl ještě starou verzí skriptu (porovnání a prolínání); tahle verze dělá ostré video bez porovnání, stačí pustit znovu.
 
 1. Repo a větev: `git switch tobias`, `git fetch origin`, `git merge origin/main` (video i skript jsou v `main`).
 2. Prostředí (jednou): `python3 -m venv .venv`, `.venv/bin/pip install -r app/requirements.txt playwright`, `.venv/bin/playwright install chromium` (když je v Macu Chrome, skript ho použije první), `brew install ffmpeg`.
 3. Token: do kořene repa soubor `.env` s řádkem `MAPBOX_TOKEN=pk.…` (veřejný token Mapboxu dá Honza; `.env` je v `.gitignore`, nikdy ho necommitovat ani nevypisovat).
 4. Modely: `.venv/bin/python src/uloz_model.py` (model `ridge_bez2013` si skript dotrénuje sám při prvním běhu, asi 10 s).
 5. Zkouška kamery: `.venv/bin/python -u src/video_povoden.py --diag` vypíše dočasnou složku se snímky `diag_0_zacatek.png` … `diag_4_vrchol_mezi_domy.png`; podívat se, že je v záběru celé město a potom voda mezi domy, štítky nahoře a lišta dole celé v obraze, žádné popisky podniků. Když něco nesedí, upravit `ZABERY` ve skriptu a zkoušku zopakovat.
-6. Natáčení: `.venv/bin/python -u src/video_povoden.py`. Výstup: `web/prezentace/video/povoden_2013_decin_1080.mp4` (do 22 MB, 1920 × 1080, 30 fps, asi 24 s) a `web/prezentace/grafy/video_2013_poster.jpg`; kontrolní snímky `kontrola_1..4.png` v dočasné složce. Skript na konci vypíše ffprobe obou videí a `HOTOVO`.
+6. Natáčení: `.venv/bin/python -u src/video_povoden.py` (asi 12 minut). Výstup: `web/prezentace/video/povoden_2013_decin_1080.mp4` (do 22 MB, 1920 × 1080, 30 fps, asi 24 s) a `web/prezentace/grafy/video_2013_poster.jpg`; kontrolní snímky `kontrola_1..4.png` v dočasné složce. Skript na konci vypíše ffprobe obou videí a `HOTOVO`.
 7. Kontrola v decku: `.venv/bin/python -m http.server 8000 -d web`, otevřít http://localhost:8000/prezentace/, mezerník spustí video; písmo ve videu má být San Francisco (stejné jako nadpisy decku).
 8. Commit a push jen těch dvou souborů: `git add web/prezentace/video/povoden_2013_decin_1080.mp4 web/prezentace/grafy/video_2013_poster.jpg`, `git commit -m "Tobias: úvodní video povodně 2013 natočené na Macu v písmu San Francisco"`, `git push origin tobias`, pak `/sync main` (nebo ručně `git merge origin/main` a `git push origin HEAD:main`). Nikdy `--force`.
 9. Nasazení webu udělá Honza z Windows (`npx netlify-cli@latest deploy --prod --no-build --dir web`, viz `docs/WEB.md`), nebo hodinová GitHub Action, pokud má secrets. Napsat Honzovi, že video je v `main`.

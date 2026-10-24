@@ -1,14 +1,15 @@
 """Video povodně z 3D mapy (app/mapbox_mapa.py) pro úvod prezentace: hodina po hodině, střihy a přibližování podle hladiny.
 
-Vlevo rozliv z předpovědi vydané 24 h předem, vpravo ze skutečné hladiny (režim porovnání), dole přehrávač s grafem.
-Playwright nafotí každou hodinu jako snímek, ffmpeg je složí (mapa se prolíná, štítky a lišta zůstávají ostré).
+Rozliv ze změřené hladiny, dole přehrávač s grafem; boční boxy skryté. Playwright nafotí KROKU snímků na každou hodinu
+(voda se mění po hodinách, kamera jede plynule) a ffmpeg je složí beze změny, takže je obraz ostrý (žádné prolínání).
+Volba --porovnani zapne režim vlevo předpověď 24 h předem, vpravo skutečnost (v prezentaci se nepoužívá).
 
 Spuštění z kořene repa (Windows: `$env:PYTHONUTF8=1; .venv\\Scripts\\python -u src\\video_povoden.py`, Mac: `.venv/bin/python -u src/video_povoden.py`):
     python -u src/video_povoden.py --diag          # jen snímky začátku a konců záběrů do dočasné složky, na doladění kamery
     python -u src/video_povoden.py                 # celé natáčení, asi 5 minut, pak ffmpeg
     python -u src/video_povoden.py --jen-video     # jen ffmpeg z už natočených snímků
 Volby: --povoden "6/2013" --cil decin --model ridge_bez2013 --od 2013-06-01T00:00 --do 2013-06-06T12:00 (český čas)
-       --rezim headless|chromium|okno (prohlížeč; výchozí zkouší v tomhle pořadí)
+       --rezim headless|chromium|okno (prohlížeč; výchozí zkouší v tomhle pořadí) --porovnani (vlevo předpověď, vpravo skutečnost)
 Potřebuje MAPBOX_TOKEN v .env, Playwright (`pip install playwright`, Chrome v počítači nebo `playwright install chromium`) a ffmpeg.
 Na Macu se stránka vykreslí v písmu San Francisco, na Windows v Interu. HTML s tokenem zůstává jen v dočasné složce.
 """
@@ -33,7 +34,9 @@ import mapbox_mapa  # noqa: E402
 
 TZ = "Europe/Prague"
 POMALU = 4.0  # s na snímek; pomalejší režim prohlížeče vyměníme za další
-LIMIT = 6000  # ms čekání na idle obou map u jednoho snímku
+LIMIT = 6000  # ms čekání na idle mapy u jednoho snímku
+KROKU = 4  # snímků na hodinu povodně; 133 hodin × 4 = 532 snímků, při 22 fps 24 s
+FPS = 22
 
 # Záběry pro Děčín 6/2013: k je číslo snímku (hodina od --od), kamera se uvnitř záběru plynule posouvá od "od" k "do".
 # Střih je mezi záběry. "stred": None = kamera města z mapy (D.kamery). Jiná povodeň nebo město: doladit přes --diag.
@@ -66,8 +69,8 @@ CEKEJ = """() => {
   return d ? gl.getParameter(d.UNMASKED_RENDERER_WEBGL) : 'WebGL (neznámý renderer)';
 }"""
 # bez úvodu a bočních boxů, bez podniků a dopravních popisků; porovnání zapnuté (vlevo předpověď, vpravo skutečnost)
-SKRYJ = """(mesto) => {
-  zavriUvod(); pauza(); porovnat(true);
+SKRYJ = """({mesto, porovnani}) => {
+  zavriUvod(); pauza(); porovnat(!!porovnani);
   document.querySelector('.uvod')?.remove();
   // boxy jen skrýt: panelAnimace() do nich zapisuje (#p-den), po remove() by každý snímek vyhodil chybu a smyčka by umřela
   for (const id of ['vlevo', 'vpravo']) { const e = document.getElementById(id); if (e) e.style.display = 'none'; }
@@ -110,7 +113,7 @@ def cisty(text):
 
 def zaber(k):
     for z in ZABERY:
-        if z["k_od"] <= k <= z["k_do"]:
+        if z["k_od"] <= k < z["k_do"] + 1:
             return z
     return ZABERY[-1]
 
@@ -178,7 +181,7 @@ class Natoceni:
             tisk(f"{rezim}: mapa se do 90 s nenačetla, chyby: {chyby[:5]}")
             b.close()
             return None, None, chyby, info
-        p = page.evaluate(SKRYJ, self.mesto)
+        p = page.evaluate(SKRYJ, {"mesto": self.mesto, "porovnani": self.a.porovnani})
         if p.get("lista_od"):
             self.lista_od = p["lista_od"]
         page.evaluate("() => cekej(30000)")
@@ -198,17 +201,22 @@ class Natoceni:
             page.evaluate(KROK, {"i": i0, "kamera": kamera(0), "limit": 20000})
             page.evaluate("() => cekej(10000)")
             casy, zaznamy = [], []
+            n = 0
             for k, i in enumerate(range(i0, i1 + 1)):
-                t = time.time()
-                kam = kamera(k)
-                vysl = page.evaluate(KROK, {"i": i, "kamera": kam, "limit": 20000 if k in strihy else LIMIT})
-                if k in strihy:
-                    page.evaluate("() => cekej(6000)")
-                page.screenshot(path=str(self.snimky / f"{k:04d}.png"))
-                casy.append(time.time() - t)
-                zaznamy.append({"k": k, "i": i, "zaber": kam["zaber"], **vysl, "s": round(casy[-1], 2)})
-                if k % 12 == 0 or k < 3 or k in strihy:
-                    tisk(f"  {k:3d} i={i} {vysl['datum']} {vysl['h']} cm / předpověď {vysl['p']} cm  {kam['zaber']}  {vysl['stav']}  {casy[-1]:.1f} s")
+                for sub in range(KROKU):
+                    t = time.time()
+                    kf = k + sub / KROKU  # kamera jede plynule i uvnitř hodiny, voda se mění po hodinách
+                    kam = kamera(kf)
+                    strih = sub == 0 and k in strihy
+                    vysl = page.evaluate(KROK, {"i": i, "kamera": kam, "limit": 20000 if strih else LIMIT})
+                    if strih:
+                        page.evaluate("() => cekej(6000)")
+                    page.screenshot(path=str(self.snimky / f"{n:04d}.png"))
+                    n += 1
+                    casy.append(time.time() - t)
+                    zaznamy.append({"n": n - 1, "k": k, "i": i, "zaber": kam["zaber"], **vysl, "s": round(casy[-1], 2)})
+                    if sub == 0 and (k % 12 == 0 or k < 3 or k in strihy):
+                        tisk(f"  {k:3d} i={i} {vysl['datum']} {vysl['h']} cm / předpověď {vysl['p']} cm  {kam['zaber']}  {vysl['stav']}  {casy[-1]:.1f} s")
                 if rezim != "okno" and k == 2 and sum(casy) / len(casy) > POMALU:
                     tisk(f"{rezim} je pomalý ({sum(casy) / 3:.1f} s na snímek), zkusím další režim")
                     b.close()
@@ -241,17 +249,12 @@ class Natoceni:
                 return
 
     def filtr(self):
-        """Tři pásy: štítky nahoře (0 až 72 px) a lišta dole ostré, mapa mezi nimi prolínaná na 30 fps."""
-        h = 1080
-        lista = self.lista_od if 400 < self.lista_od < 1000 else 852
-        lista -= lista % 2
-        return ("-filter_complex",
-                f"[0:v]split=3[a][b][c];[a]crop=1920:72:0:0,fps=30[t];[b]crop=1920:{lista - 72}:0:72,minterpolate=fps=30:mi_mode=blend[m];"
-                f"[c]crop=1920:{h - lista}:0:{lista},fps=30[l];[t][m][l]vstack=inputs=3,format=yuv420p")
+        """Snímky beze změny (ostré), jen formát pro H.264."""
+        return ("-vf", "format=yuv420p")
 
     def slozit(self, crf=19):
         self.video.parent.mkdir(parents=True, exist_ok=True)
-        prikaz = ["ffmpeg", "-y", "-loglevel", "error", "-framerate", "5.5", "-i", str(self.snimky / "%04d.png"), *self.filtr(),
+        prikaz = ["ffmpeg", "-y", "-loglevel", "error", "-framerate", str(FPS), "-i", str(self.snimky / "%04d.png"), *self.filtr(),
                   "-c:v", "libx264", "-crf", str(crf), "-preset", "slow", "-movflags", "+faststart", str(self.video)]
         tisk("ffmpeg: master, crf", crf)
         v = subprocess.run(prikaz, capture_output=True, text=True)
@@ -298,6 +301,7 @@ def main():
     ap.add_argument("--rezim", choices=["headless", "chromium", "okno"])
     ap.add_argument("--diag", action="store_true")
     ap.add_argument("--jen-video", action="store_true")
+    ap.add_argument("--porovnani", action="store_true", help="vlevo předpověď 24 h předem, vpravo skutečnost")
     a = ap.parse_args()
     n = Natoceni(a)
     i0, i1 = n.stranka()
