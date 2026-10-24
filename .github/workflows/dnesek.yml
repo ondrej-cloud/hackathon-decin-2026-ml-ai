@@ -1,10 +1,14 @@
-# Každou hodinu stáhne živá data ČHMÚ, přepočítá předpověď na dnešek, vygeneruje mapy a nasadí složku web/
-# na Netlify. Nic se necommituje. Návod a potřebné secrets jsou v docs/WEB.md.
+# Každou hodinu a po každém pushi do main, který mění web, aplikaci nebo skripty, stáhne živá data ČHMÚ, přepočítá
+# předpověď na dnešek, vygeneruje mapy a nasadí složku web/ na Netlify. Nic se necommituje. Návod a potřebné secrets
+# jsou v docs/WEB.md.
 name: Dnešek na webu
 
 on:
   schedule:
     - cron: "5 * * * *"
+  push:
+    branches: [main]
+    paths: ["web/**", "app/**", "src/**", "data/external/**", ".github/workflows/dnesek.yml"]
   workflow_dispatch:
 
 permissions:

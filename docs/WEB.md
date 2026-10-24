@@ -64,7 +64,7 @@ Pro zkoušení nové verze prezentace vedle stabilní: site `field-one` (ID `8fd
 
 ## Každou hodinu automaticky (GitHub Action)
 
-`.github/workflows/dnesek.yml` běží každou hodinu v :05 a ručně (Actions > Dnešek na webu > Run workflow). Kroky: Python 3.12 a `app/requirements.txt`, `uloz_model.py` a `--vse`, `export_web.py --vse`, `dnesek_export.py`, `netlify deploy --prod --no-build --dir web`. Nic se necommituje, repo zůstává beze změny.
+`.github/workflows/dnesek.yml` běží každou hodinu v :05, po každém pushi do `main`, který mění `web/`, `app/`, `src/` nebo `data/external/`, a ručně (Actions > Dnešek na webu > Run workflow). Kroky: Python 3.12 a `app/requirements.txt`, `uloz_model.py` a `--vse`, `export_web.py --vse`, `dnesek_export.py`, `netlify deploy --prod --no-build --dir web`. Nic se necommituje, repo zůstává beze změny.
 
 Secrets (GitHub: repo > Settings > Secrets and variables > Actions > New repository secret):
 
