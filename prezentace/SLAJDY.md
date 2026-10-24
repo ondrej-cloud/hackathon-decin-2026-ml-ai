@@ -14,7 +14,7 @@ Devět slajdů na 6:45, rezerva 15 s do 7:00, pak dvanáct záložních. Každý
 | 8 | 5:25–5:55 | Tobias | Co z toho má město? | Z předpovědi mapa: kam až voda dosáhne | 1 |
 | 9 | 5:55–6:45 | Tobias | Kde to selže? | Co neumíme a co dál | 7 |
 
-Celkem 759 slov, při 130 slovech za minutu 5:50 mluvení. Zbytek do 6:45 je ticho nad videem (asi 12 s) a pauzy na kroky decku.
+Celkem 799 slov, při 130 slovech za minutu 6:08 mluvení. Zbytek do 6:45 je ticho nad videem (asi 12 s) a pauzy na kroky decku.
 
 ## 1 · Den předem víme, kam v Děčíně dosáhne voda (0:00–0:40, Honza)
 
@@ -41,13 +41,13 @@ Pak asi 12 s ticho, voda se rozlévá mezi domy. Po dohrání, s nadpisem a 18 h
 - Musí zaznít: balíček má 2 roky a stanice jen v kraji, nejvýš proti proudu je Ústí 4 h před Děčínem; jen z něj chyba 44,6 cm, stejně jako „bude jako teď“, a polovina povodní propásnutá; proto hodinový archiv ČHMÚ, 20 let a 12 stanic na Vltavě, horním Labi a Ohři až 25 h proti proudu; stejný zdroj jako balíček; chyba 17,1 cm.
 - Na slajdu: vlevo mapa stanic (`grafy/02a_mapa_stanic.png`), vpravo `grafy/02b_proc_externi_data.png` (po mezerníku se odkryje třetí sloupec). Tři čísla **20 let · 12 stanic · 175 320 hodin**.
 
-> Balíček od pořadatelů má dva roky dat a stanice jen v kraji. Nejvýš proti proudu je Ústí, jen čtyři hodiny před Děčínem. Model jen z něj se plete o 44,6 centimetru, stejně jako „bude jako teď“, a polovinu povodní propásne.
+> Balíček od pořadatelů má dva roky dat a stanice jen v kraji. Nejvýš proti proudu je Ústí, jen čtyři hodiny před Děčínem. Model jen z něj se plete o 44,6 centimetru, tedy stejně, jako kdybychom řekli, že zítra bude hladina stejná jako dnes, a polovinu povodní propásne.
 >
 > [mezerník]
 >
 > Proto jsme vzali hodinový archiv ČHMÚ: dvacet let a dvanáct stanic na Vltavě, horním Labi a Ohři, až 25 hodin proti proudu. Je to stejný zdroj jako balíček, jen delší a s víc stanicemi. Chyba klesla na 17 centimetrů.
 
-79 slov (strop 86).
+86 slov (strop 86).
 
 ## 3 · Bereme jen řeku, počasí nepomohlo (1:20–2:10, Dan)
 
@@ -73,7 +73,7 @@ Pak asi 12 s ticho, voda se rozlévá mezi domy. Po dohrání, s nadpisem a 18 h
 - Musí zaznít: laťka „bude jako teď“ 44 cm; čtyři modely se stejnými pravidly a u každého jedna věta, proč prohrál; výběr před testem; úpravy přímky nic přes 1 cm.
 - Na slajdu: `grafy/04_cesta_k_modelu.png`, tři skupiny sloupců (začátek, čtyři modely, úpravy přímky), odkrývají se mezerníkem.
 
-> Začali jsme laťkou: předpovědí, že bude jako teď. Při povodních se plete o 44 centimetrů.
+> Začali jsme nejjednodušším odhadem: že hladina za den bude stejná jako dnes. Při povodních se plete o 44 centimetrů, model jen z balíčku stejně.
 >
 > [mezerník]
 >
@@ -81,9 +81,9 @@ Pak asi 12 s ticho, voda se rozlévá mezi domy. Po dohrání, s nadpisem a 18 h
 >
 > [mezerník]
 >
-> Pak jsme zkoušeli vylepšit i ji: polynom, větší váhu povodní, všechna malá zlepšení dohromady. Nic nebylo lepší o víc než centimetr.
+> Pak jsme zkoušeli vylepšit i ji: dobu putování podle průtoku, polynom, větší váhu povodní, všechna malá zlepšení dohromady. Nic nebylo lepší o víc než centimetr.
 
-126 slov (strop 140).
+139 slov (strop 140).
 
 Zdroje: `docs/CESTA_MODELU.md` (sekce 1, 2 a 6). LightGBM a povodeň 2013: první pokus pá 17:46, vrchol 823 místo 1 072 cm. Síť 128-64 má asi 21 tisíc vah, verze 64-32 měla na tréninku 5 cm a na validaci 22 cm.
 
@@ -93,13 +93,13 @@ Zdroje: `docs/CESTA_MODELU.md` (sekce 1, 2 a 6). LightGBM a povodeň 2013: prvn�
 - Musí zaznít: voda v Děčíně je součet Vltavy, horního Labe a Ohře, lineární regrese je vážený součet; příklad Borise den předem 198 → 577 cm, nad 3. stupněm; každé číslo umíme vysvětlit; citát ze zadání.
 - Na slajdu: `grafy/05_soucet_rek.png` (v HTML decku animovaný součet, šest kroků mezerníkem), vpravo číslo, které roste 198 → 577 cm, a štítek **3. stupeň · nad 560 cm**. Citát ze zadání na slajdu není, řečník ho jen řekne.
 
-> Proč vyhrála přímka? Voda v Děčíně je součet toho, co přiteče po Vltavě, horním Labi a Ohři, a lineární regrese je přesně vážený součet. Tady je předpověď z Borise, vydaná den předem. Průměr 198 centimetrů,
+> Proč vyhrála přímka? Voda v Děčíně je součet toho, co přiteče po Vltavě, horním Labi a Ohři, a lineární regrese je přesně takový vážený součet. Tady je skutečná předpověď z Borise, vydaná den předem. Začíná na průměru, 198 centimetrů.
 >
-> [mezerník] Děčín a Ústí plus 80, [mezerník] Vltava 89, [mezerník] horní Labe 116, [mezerník] Mělník 96, [mezerník] Ohře minus 2.
+> [mezerník] Děčín a Ústí přidají 80, [mezerník] Vltava 89, [mezerník] horní Labe 116, [mezerník] Mělník 96, [mezerník] Ohře ubere 2.
 >
-> [mezerník] Vyjde 577, nad třetím stupněm, a model varoval. Každé číslo umíme vysvětlit. A zadání samo říká: cílem není co nejsložitější model.
+> [mezerník] Vyjde 577, nad třetím stupněm, a model varoval. Každé z těch čísel umíme vysvětlit. A zadání samo říká: cílem není co nejsložitější model.
 
-71 slov (strop 86).
+77 slov (strop 86).
 
 ## 6 · Ověřeno třikrát na povodních, které model neviděl (3:55–4:30, Honza)
 
@@ -117,7 +117,7 @@ Zdroje: `docs/CESTA_MODELU.md` (sekce 1, 2 a 6). LightGBM a povodeň 2013: prvn�
 - Musí zaznít: Boris je z testu, model ho neviděl, 3. stupeň hlášen 27 h předem; není to jedna šťastná povodeň: ve vícenásobné validaci menší chyba na všech 8 povodních, o 34 až 66 %; test 22,4 proti 50,2 cm, o 55 % menší; povodeň 2013 z úvodu: 3. stupeň 18 h předem, vrchol 952 proti 1 072 cm.
 - Na slajdu: vlevo `grafy/07a_boris_2024.png`, po mezerníku vpravo `grafy/07b_vicenasobna_validace.png`. Velká čísla **27 h** („před 3. stupněm v Děčíně, Boris“) a **−55 %** („test 22,4 proti 50,2 cm · vícenásobná validace 20,1 proti 45,2 cm“). Po druhém mezerníku řádek „Povodeň 2013, největší v datech, model ji neviděl: 3. stupeň 18 h předem, vrchol 952 cm proti 1 072“.
 
-> Funguje to doopravdy? Tohle je Boris, září 2024, z testu, takže ho model nikdy neviděl. Černá je skutečnost, modrá naše předpověď vydaná den předem. Šedá je „bude jako teď“, ta je vždycky o den pozadu. Třetí stupeň model hlásil 27 hodin předem.
+> Funguje to doopravdy? Tohle je Boris, září 2024, z testu, takže ho model nikdy neviděl. Černá je skutečnost, modrá naše předpověď vydaná den předem. Šedá je odhad, že zítra bude stejně jako dnes, ten je vždycky o den pozadu. Třetí stupeň model hlásil 27 hodin předem.
 >
 > [mezerník]
 >
@@ -127,19 +127,23 @@ Zdroje: `docs/CESTA_MODELU.md` (sekce 1, 2 a 6). LightGBM a povodeň 2013: prvn�
 >
 > A povodeň 2013 z úvodu: model nikdy neviděl vodu nad 875 centimetrů, a přesto ohlásil třetí stupeň 18 hodin předem. Vrchol podhodnotil o 120 centimetrů, to je náš limit.
 
-113 slov (strop 119).
+117 slov (strop 119).
 
 Zdroje: `docs/PREHLED.md` (test), `results/krizova_validace/` a `docs/POKUSY.md` pá 23:27 (vícenásobná validace, opravené procento so 1:15), so 9:30 (povodeň 2013 s modelem, který ji neviděl).
 
 ## 8 · Z předpovědi mapa: kam až voda dosáhne (5:25–5:55, Tobias)
 
 - Otázka: Co z toho má město?
-- Musí zaznít: z předpovězené hladiny mapa rozlivu; výška terénu proti výšce hladiny; proti úřední mapě záplavových území shoda 82 až 90 %; vlevo předpověď den předem, vpravo skutečnost; běží živě na webu.
-- Na slajdu: `grafy/08_mapa_rozlivu.png` přes celý slajd (aplikace tak, jak vypadá: Děčín 6. 6. 2013 při 1 072 cm, rozliv z výšky terénu proti hladině, vlevo pohledy, vpravo přepínače zobrazení, dole přehrávač s grafem), dole adresa field-zero.netlify.app a QR kód; klepnutím na snímek se otevře živá mapa.
+- Musí zaznít: z předpovězené hladiny mapa rozlivu; jak se počítá: výška terénu (laserové skenování, bod po 2 m) proti výšce hladiny, zaplavené je jen to, co je níž a spojené s řekou; proti úřední mapě záplavových území shoda 82 až 90 %.
+- Na slajdu: `grafy/08_mapa_rozlivu.png` přes celý slajd (aplikace tak, jak vypadá: Děčín 6. 6. 2013 při 1 072 cm, rozliv z výšky terénu proti hladině, vlevo pohledy, vpravo přepínače zobrazení, dole přehrávač s grafem), dole adresa field-zero.netlify.app a QR kód; klepnutím na snímek se otevře živá mapa. Po mezerníku schéma `grafy/08b_jak_pocitame_rozliv.png` (příčný řez údolím: hladina 127,14 m n. m. = nula vodočtu 120,07 m + 7,07 m, zaplavené je jen to, co je pod hladinou a spojené s korytem, prohlubeň za valem zůstane suchá).
 
-> Co z toho má město? Z předpovězené hladiny aplikace nakreslí, kam až voda dosáhne: porovná výšku terénu s výškou hladiny. Proti úřední mapě záplavových území to sedí z 82 až 90 procent. Tady je Děčín na vrcholu povodně 2013, 1 072 centimetrů. Běží to živě na webu, každou hodinu nová předpověď.
+> Co z toho má město? Z předpovězené hladiny aplikace nakreslí, kam až voda dosáhne. Tady je Děčín na vrcholu povodně 2013, 1 072 centimetrů.
+>
+> [mezerník]
+>
+> Výšku hladiny porovnáme s výškou terénu z laserového skenování, bod každé dva metry. Zaplavené je, co je níž než hladina a spojené s řekou, prohlubeň za valem zůstane suchá. Proti úřední mapě to sedí z 82 až 90 procent.
 
-51 slov (strop 65).
+63 slov (strop 65).
 
 Čísla: `docs/DATA.md` (rozliv z ČÚZK DMR 5G, shoda s DIBAVOD IoU 0,82 až 0,90). Kdyby se porota zeptala, jestli je to hydraulický model: záložní Z7.
 

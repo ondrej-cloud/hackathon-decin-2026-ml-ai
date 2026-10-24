@@ -258,6 +258,48 @@ def s07_boris():
                    "2024-09-22 23:00", "07a_boris_2024.png", 9)
 
 
+def s08b_jak_pocitame_rozliv():
+    # schéma příčného řezu údolím; čísla hladiny jako Děčín při pětileté vodě (app/rozliv_dem.py, docs/DATA.md)
+    x = np.linspace(-400, 400, 801)
+    teren = 125 + 0.003 * np.abs(x) - 4.5 * np.exp(-(x / 45) ** 2)  # koryto a mírně stoupající niva
+    teren += 4.5 * np.exp(-((x - 120) / 14) ** 2)  # val
+    teren -= 2.2 * np.exp(-((x - 175) / 30) ** 2)  # prohlubeň za valem
+    teren += np.where(x > 260, 0.04 * (x - 260), 0) + np.where(x < -300, 0.03 * (-300 - x), 0)  # svahy údolí
+    hladina = 120.07 + 7.07
+    pod = teren < hladina
+    spojeno = np.zeros_like(pod)
+    stred = len(x) // 2
+    for krok in (1, -1):  # od koryta na obě strany, dokud je terén pod hladinou
+        i = stred
+        while 0 <= i < len(x) and pod[i]:
+            spojeno[i] = True
+            i += krok
+    fig, ax = graf("Jak se počítá rozliv: terén proti hladině", (0.09, 0.13, 0.86, 0.72))
+    ax.fill_between(x, 115, teren, color="#cfc6b8", zorder=1)
+    ax.fill_between(x, teren, hladina, where=spojeno, color=MODRA_SVETLA, zorder=2, interpolate=True)
+    ax.fill_between(x, teren, hladina, where=pod & ~spojeno, facecolor="none", edgecolor=SEDA, hatch="///", lw=0,
+                    zorder=2, interpolate=True)
+    ax.plot(x, teren, color=INK2, lw=1.5, zorder=3)
+    ax.plot(x[::10], teren[::10], "o", ms=2.5, color=INK2, zorder=3)
+    ax.axhline(hladina, color=MODRA, lw=2.2, zorder=4)
+    ax.text(-395, 132.4, "hladina 127,14 m n. m. = nula vodočtu 120,07 m + 7,07 m", fontsize=15, color=MODRA,
+            weight="semibold", va="top")
+    ax.text(0, 121.6, "koryto", ha="center", fontsize=15, color=INK)
+    sipka = dict(arrowstyle="-|>", color=INK, lw=1.2)
+    ax.annotate("zaplaveno: níž než hladina\na spojené s řekou", (-180, 126.4), xytext=(-180, 129.6), ha="center",
+                fontsize=15, color=INK, arrowprops=sipka)
+    ax.annotate("níž, ale za valem: suché", (190, 125.6), xytext=(230, 130.2), ha="center", fontsize=15, color=INK,
+                arrowprops=sipka)
+    ax.text(345, 124.6, "body terénu,\nve skutečnosti\nkaždé 2 m", ha="center", fontsize=14, color=INK2)
+    ax.set_xlim(-400, 400)
+    ax.set_ylim(118, 133)
+    ax.set_xlabel("vzdálenost od osy řeky (m)")
+    ax.set_ylabel("výška (m n. m.)")
+    ax.grid(False)
+    osa_cisla(ax)
+    uloz(fig, "08b_jak_pocitame_rozliv.png")
+
+
 def dvojice_sloupcu(ax, x, a, b, s=0.36):
     ax.bar(x - s / 2 - 0.01, a, s, color=SEDA, label=JAKO_TED)
     ax.bar(x + s / 2 + 0.01, b, s, color=MODRA, label=NASE)
@@ -460,6 +502,7 @@ if __name__ == "__main__":
     s06_jak_overujeme()
     print("  Boris předstih h:", s07_boris())
     s07b_vicenasobna()
+    s08b_jak_pocitame_rozliv()
     z1_srovnani_modelu()
     z2_jako_ted()
     z3_srazky()

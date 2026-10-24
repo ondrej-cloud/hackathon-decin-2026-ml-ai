@@ -13,6 +13,7 @@
 | 7 | `07a_boris_2024.png` | Boris 2024: varování 27 hodin předem |
 | 7 | `07b_vicenasobna_validace.png` | Vícenásobná validace: o 55 % menší chyba na 8 povodních |
 | 8 | `08_mapa_rozlivu.png` | (snímek mapy z webu: Děčín 6. 6. 2013 na vrcholu 1 072 cm, skleněné boxy a lišta jako v aplikaci, bez porovnání) |
+| 8 | `08b_jak_pocitame_rozliv.png` | Jak se počítá rozliv: terén proti hladině (schéma) |
 | záloha | `Z1_srovnani_ctyr_modelu.png` | Čtyři modely na validaci: vyhrál nejjednodušší |
 | záloha | `Z2_co_je_jako_ted.png` | „Bude jako teď“ je vždycky o den pozadu |
 | záloha | `Z3_proc_ne_srazky.png` | Když se blíží vrchol, už neprší |
