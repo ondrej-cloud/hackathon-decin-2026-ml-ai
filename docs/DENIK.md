@@ -367,3 +367,7 @@ Pořadatelům odevzdáváme kód, výsledky, CSV výstupy, prezentaci a dokument
 ## so 9:46 · Ondra · Kostra: řečníci, slajd 7 spojený, nový slajd s mapou rozlivu
 
 Řečníci podle domluvy: Honza 1, 6, 8; Dan 2, 3; Ondra 4, 5; Tobias 7, 9. Slajdy „Funguje to na skutečné povodni?“ a „Dá se to použít?“ říkaly totéž, proto jsou spojené do slajdu 7 „Funguje to doopravdy?“: Boris z testu (27 h předem) a hned vedle vícenásobná validace (menší chyba na všech 8 povodních, o 34 až 66 %), aby bylo vidět, že to není jedna šťastná povodeň. Nový slajd 8 „Co z toho má město?“ ukazuje mapu rozlivu z předpovědi vedle rozlivu ze skutečnosti (povodeň 4/2006: 869 proti 829 cm, 208 proti 194 ha) a shodu s úřední mapou 82 až 90 %. Slajd 9 o limitech přidává počasí na 2–3 dny: s přesnou předpovědí srážek by u dešťové povodně 2010 chyba na 72 h klesla o 40 %, archiv předpovědí na trénink ale není. Snímek aplikace je v záloze Z10. 714 slov, 5:29 mluvení, sloty do 6:45.
+
+## so 9:53 · Ondra · Řečníci slajdů 7 až 9
+
+Oprava proti 9:46: slajd 7 (Funguje to doopravdy?) říká Honza, slajdy 8 (mapa rozlivu) a 9 (limity a závěr) Tobias. Celkem Honza 1, 6, 7; Dan 2, 3; Ondra 4, 5; Tobias 8, 9.

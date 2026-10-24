@@ -24,8 +24,8 @@ Každý slajd odpovídá na jednu otázku poroty, nadpis je odpověď.
 | 4 | 2:10–3:15 | Ondra | Jak jste vybrali model? | Čtyři modely, vyhrál nejjednodušší |
 | 5 | 3:15–3:55 | Ondra | Proč zrovna přímka? | Voda v Děčíně je součet řek |
 | 6 | 3:55–4:30 | Honza | Jak ověřujete? | Ověřeno třikrát na povodních, které model neviděl |
-| 7 | 4:30–5:25 | Tobias | Funguje to doopravdy? | Na všech povodních o polovinu menší chyba, Boris 27 hodin předem |
-| 8 | 5:25–5:55 | Honza | Co z toho má město? | Z předpovědi mapa: kam až voda dosáhne |
+| 7 | 4:30–5:25 | Honza | Funguje to doopravdy? | Na všech povodních o polovinu menší chyba, Boris 27 hodin předem |
+| 8 | 5:25–5:55 | Tobias | Co z toho má město? | Z předpovědi mapa: kam až voda dosáhne |
 | 9 | 5:55–6:45 | Tobias | Kde to selže? | Co neumíme a co dál |
 | Z1–Z10 | na otázku | podle otázky | | Proč jen lineární regrese? · Co znamená „bude jako teď“? · Proč ne srážky? · Jak moc se pletete? · Funguje to i na jiné povodni? · Podle čeho model rozhoduje? · Je rozliv hydraulický model? · Jak dopadl test? · Proč jen 36 hodin dopředu? · Jak vypadá aplikace dnes? |
 

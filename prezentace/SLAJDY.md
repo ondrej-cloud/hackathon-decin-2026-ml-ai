@@ -10,8 +10,8 @@ Devět slajdů na 6:45, rezerva 15 s do 7:00, pak deset záložních. Každý sl
 | 4 | 2:10–3:15 | Ondra | Jak jste vybrali model? | Čtyři modely, vyhrál nejjednodušší | 5 |
 | 5 | 3:15–3:55 | Ondra | Proč zrovna přímka? | Voda v Děčíně je součet řek | 5 |
 | 6 | 3:55–4:30 | Honza | Jak ověřujete? | Ověřeno třikrát na povodních, které model neviděl | 3, 6 |
-| 7 | 4:30–5:25 | Tobias | Funguje to doopravdy? | Na všech povodních o polovinu menší chyba, Boris 27 hodin předem | 6 |
-| 8 | 5:25–5:55 | Honza | Co z toho má město? | Z předpovědi mapa: kam až voda dosáhne | 1 |
+| 7 | 4:30–5:25 | Honza | Funguje to doopravdy? | Na všech povodních o polovinu menší chyba, Boris 27 hodin předem | 6 |
+| 8 | 5:25–5:55 | Tobias | Co z toho má město? | Z předpovědi mapa: kam až voda dosáhne | 1 |
 | 9 | 5:55–6:45 | Tobias | Kde to selže? | Co neumíme a co dál | 7 |
 
 Celkem 714 slov, při 130 slovech za minutu 5:29 mluvení. Zbytek do 6:45 je video (20 s bez mluvení) a pauzy na kroky decku.
@@ -106,7 +106,7 @@ Zdroje: `docs/CESTA_MODELU.md` (sekce 1, 2 a 6). LightGBM a povodeň 2013: prvn�
 
 62 slov (strop 75).
 
-## 7 · Na všech povodních o polovinu menší chyba, Boris 27 hodin předem (4:30–5:25, Tobias)
+## 7 · Na všech povodních o polovinu menší chyba, Boris 27 hodin předem (4:30–5:25, Honza)
 
 - Otázka: Funguje to doopravdy?
 - Musí zaznít: Boris je z testu, model ho neviděl, 3. stupeň hlášen 27 h předem; není to jedna šťastná povodeň: ve vícenásobné validaci menší chyba na všech 8 povodních, o 34 až 66 %; test 22,4 proti 50,2 cm, o 55 % menší.
@@ -122,7 +122,7 @@ Zdroje: `docs/CESTA_MODELU.md` (sekce 1, 2 a 6). LightGBM a povodeň 2013: prvn�
 
 Zdroje: `docs/PREHLED.md` (test), `results/krizova_validace/` a `docs/POKUSY.md` pá 23:27 (vícenásobná validace, opravené procento so 1:15).
 
-## 8 · Z předpovědi mapa: kam až voda dosáhne (5:25–5:55, Honza)
+## 8 · Z předpovědi mapa: kam až voda dosáhne (5:25–5:55, Tobias)
 
 - Otázka: Co z toho má město?
 - Musí zaznít: z předpovězené hladiny mapa rozlivu; výška terénu proti výšce hladiny; proti úřední mapě záplavových území shoda 82 až 90 %; vlevo předpověď den předem, vpravo skutečnost; běží živě na webu.
