@@ -8,7 +8,7 @@ Zadání chce, aby v prezentaci zaznělo sedm věcí: 1 co řešíme, 2 data, 3 
 
 | # | Čas | Otázka poroty | Nadpis (odpověď) | Co musí zaznít | Graf | Kdo | Bod |
 |---|---|---|---|---|---|---|---|
-| 1 | 0:00–0:40 | Co řešíte a pro koho? | Den předem víme, kam v Děčíně dosáhne voda | video Borise; hladina Děčín a Ústí za 12/24/36 h a varování před 2. a 3. stupněm; komise, hasiči, lidi u řeky | video, velké 27 h | Honza | 1 |
+| 1 | 0:00–0:40 | Co řešíte a pro koho? | Den předem víme, kam v Děčíně dosáhne voda | video Borise; hladina Děčín a Ústí za 12/24/36 h a varování před 2. a 3. stupněm; komise, hasiči, lidi u řeky | video 2013, velké 18 h | Honza | 1 |
 | 2 | 0:40–1:20 | Jaká data jste použili? | Jen z balíčku by to nešlo: bereme 20 let a 12 stanic proti proudu | balíček 2 roky a stanice jen v kraji, Ústí 4 h před Děčínem; jen z něj 44,6 cm jako „jako teď“ a polovina povodní propásnutá; archiv ČHMÚ 20 let a 12 stanic až 25 h proti proudu, stejný zdroj; 17,1 cm | `02a_mapa_stanic.png`, `02b_proc_externi_data.png` | Dan | 2 |
 | 3 | 1:20–2:10 | Co model bere? | Bereme jen řeku, počasí nepomohlo | 98 čísel z 12 stanic; srážky, sníh, teplota, vlhkost, tlak, vítr ani o 1 cm, co přijde do 36 h, už teče řekou; dvě pasti z budoucnosti (doplňování děr, čas denních srážek) | `03_co_model_bere.png` | Dan | 3, 4 |
 | 4 | 2:10–3:15 | Jak jste vybrali model? | Čtyři modely, vyhrál nejjednodušší | laťka 44 cm; fyzikální 25 (pevná doba putování), LightGBM 23 (neumí výš, než viděl), síť 18 (přeučí se), regrese 17; vybráno před testem; úpravy nic přes 1 cm | `04_cesta_k_modelu.png` | Ondra | 5 |

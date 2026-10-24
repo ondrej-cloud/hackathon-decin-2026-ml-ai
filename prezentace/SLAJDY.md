@@ -20,12 +20,12 @@ Celkem 759 slov, při 130 slovech za minutu 5:50 mluvení. Zbytek do 6:45 je tic
 
 - Otázka: Co řešíte a pro koho?
 - Musí zaznít: hladina v Děčíně a Ústí za 12, 24 a 36 h; varování před 2. a 3. stupněm; komise, hasiči, lidi u řeky.
-- Na slajdu: video rozlivu povodně 6/2013 přes celou obrazovku, bez zvuku (`web/prezentace/video/povoden_2013_decin_1080.mp4`, náhled `grafy/video_2013_poster.jpg`): vlevo rozliv z předpovědi vydané den předem, vpravo ze skutečné hladiny. Mezerník video spustí, po dohrání nebo dalším mezerníkem zůstane poslední snímek, nadpis a velké **18 h** („3. stupeň v Děčíně hlášen 18 hodin předem“).
+- Na slajdu: video rozlivu povodně 6/2013 přes celou obrazovku, bez zvuku (`web/prezentace/video/povoden_2013_decin_1080.mp4`, náhled `grafy/video_2013_poster.jpg`): Děčín hodinu po hodině od 1. 6. do vrcholu 6. 6. 2013, rozliv ze změřené hladiny, kamera se přibližuje k domům. Mezerník video spustí, po dohrání nebo dalším mezerníkem zůstane poslední snímek, nadpis a velké **18 h** („3. stupeň v Děčíně hlášen 18 hodin předem“).
 - Proč 2013: největší povodeň v našich datech (1 072 cm) a jediná, kdy voda v Děčíně došla mezi domy; při Borisovi (649 cm) zůstalo Labe skoro v korytě. Model ji nikdy neviděl: je učený na všem do 2020 bez této povodně a 20 dní kolem ní, nejvyšší hladina, kterou viděl, byla 875 cm. Číslo 27 h patří Borisovi a je na slajdu 7, pod videem 2013 by vypadalo jako číslo z roku 2013.
 
 Honza při spuštění videa, než se rozjede voda:
 
-> Dobrý den. Červen 2013, největší povodeň za posledních dvacet let. Vlevo je, co náš model předpověděl den předem. Vpravo skutečnost.
+> Dobrý den. Červen 2013, největší povodeň za posledních dvacet let. Takhle stoupala voda v Děčíně hodinu po hodině.
 
 Pak asi 12 s ticho, voda se rozlévá mezi domy. Po dohrání, s nadpisem a 18 h:
 
@@ -137,9 +137,9 @@ Zdroje: `docs/PREHLED.md` (test), `results/krizova_validace/` a `docs/POKUSY.md`
 
 - Otázka: Co z toho má město?
 - Musí zaznít: z předpovězené hladiny mapa rozlivu; výška terénu proti výšce hladiny; proti úřední mapě záplavových území shoda 82 až 90 %; vlevo předpověď den předem, vpravo skutečnost; běží živě na webu.
-- Na slajdu: `grafy/08_mapa_rozlivu.png` přes celý slajd (povodeň 4/2006 v Děčíně, vlevo rozliv z předpovědi vydané 24 h předem, vpravo ze skutečné hladiny: 869 proti 829 cm, pod vodou 208 proti 194 ha), dole adresa field-zero.netlify.app a QR kód.
+- Na slajdu: `grafy/08_mapa_rozlivu.png` přes celý slajd (aplikace tak, jak vypadá: Děčín 6. 6. 2013 při 1 072 cm, rozliv z výšky terénu proti hladině, vlevo pohledy, vpravo přepínače zobrazení, dole přehrávač s grafem), dole adresa field-zero.netlify.app a QR kód; klepnutím na snímek se otevře živá mapa.
 
-> Co z toho má město? Z předpovězené hladiny aplikace nakreslí, kam až voda dosáhne: porovná výšku terénu s výškou hladiny. Proti úřední mapě záplavových území to sedí z 82 až 90 procent. Vlevo rozliv z předpovědi vydané den předem, vpravo ze skutečnosti. Běží to živě na webu, každou hodinu nová předpověď.
+> Co z toho má město? Z předpovězené hladiny aplikace nakreslí, kam až voda dosáhne: porovná výšku terénu s výškou hladiny. Proti úřední mapě záplavových území to sedí z 82 až 90 procent. Tady je Děčín na vrcholu povodně 2013, 1 072 centimetrů. Běží to živě na webu, každou hodinu nová předpověď.
 
 51 slov (strop 65).
 
@@ -151,7 +151,7 @@ Zdroje: `docs/PREHLED.md` (test), `results/krizova_validace/` a `docs/POKUSY.md`
 - Musí zaznít: na 36 h skoro dvakrát větší chyba; vyšší vrchol, než jaký model viděl, podhodnotí; přívalové povodně na malých přítocích nevidí; na 2 až 3 dny by pomohla předpověď počasí, ale archiv starých předpovědí na trénink není; závěrečná věta.
 - Na slajdu: tři karty (Neumíme, Počasí na 2–3 dny, Dál), po mezerníku závěrečná věta, Děkujeme a QR kód na repozitář.
 
-> Kde to selže? Na 36 hodin je chyba skoro dvakrát větší než na 24, voda, která přijde, ještě neteče žádnou stanicí. Vrchol vyšší, než jaký model kdy viděl, podhodnotí. A přívalové povodně na malých přítocích, jako je Ploučnice nebo Kamenice, nevidí vůbec. Na dva až tři dny dopředu by pomohla předpověď počasí: s přesnou předpovědí by u dešťové povodně 2010 chyba na 72 hodin klesla o 40 procent. Jenže archiv starých předpovědí, na kterém by se model učil, neexistuje.
+> Kde to selže? Na 36 hodin je chyba skoro dvakrát větší než na 24, voda, která přijde, ještě neteče žádnou stanicí. Vrchol vyšší, než jaký model kdy viděl, podhodnotí. A přívalové povodně na malých přítocích, jako je Ploučnice nebo Bílina, nevidí vůbec. Na dva až tři dny dopředu by pomohla předpověď počasí: s přesnou předpovědí by u dešťové povodně 2010 chyba na 72 hodin klesla o 40 procent. Jenže archiv starých předpovědí, na kterém by se model učil, neexistuje.
 >
 > [mezerník]
 >
