@@ -22,6 +22,8 @@
 | záloha | `Z8_test_2021_2025.png` | Test 2021–2025: o 55 % menší chyba |
 | záloha | `Z9_doba_dobehu.png` | Za kolik hodin doteče voda do Děčína |
 | záloha | `Z10_aplikace_dnes.png` | (snímek webu na Dnešku, bez nadpisu) |
+| záloha | `Z11_primka_a_krivka.png` | Přímka je mezi vstupem a výsledkem, ne v čase (kreslí `src/graf_primka.py`) |
+| záloha | `Z12_jeden_a_98_vstupu.png` | S 98 vstupy leží body těsně u přímky (kreslí `src/graf_primka.py`) |
 
 Záložní slajd Z7 (rozliv) je snímek mapy `mapbox3_decin.jpg` z HTML decku, ne graf.
 

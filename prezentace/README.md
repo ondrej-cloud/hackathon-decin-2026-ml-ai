@@ -4,7 +4,7 @@ Všechno k prezentaci na jednom místě. Prezentujeme od 14:30, odevzdání ve 1
 
 | Soubor | Co tam je |
 |---|---|
-| `SLAJDY.md` | každý slajd: čas, řečník, co je na slajdu, graf a text řečníka doslova; záložní slajdy Z1–Z10 s odpovědí |
+| `SLAJDY.md` | každý slajd: čas, řečník, co je na slajdu, graf a text řečníka doslova; záložní slajdy Z1–Z12 s odpovědí |
 | `OTAZKY.md` | 22 otázek poroty s odpovědí a kdo odpovídá |
 | `grafy/` | grafy a obrázky ze slajdů, pojmenované číslem slajdu (`07a_boris_2024.png` patří na slajd 7, `Z…` jsou záložní) |
 
@@ -27,7 +27,7 @@ Každý slajd odpovídá na jednu otázku poroty, nadpis je odpověď.
 | 7 | 4:30–5:25 | Honza | Funguje to doopravdy? | Na všech povodních o polovinu menší chyba, Boris 27 hodin předem |
 | 8 | 5:25–5:55 | Tobias | Co z toho má město? | Z předpovědi mapa: kam až voda dosáhne |
 | 9 | 5:55–6:45 | Tobias | Kde to selže? | Co neumíme a co dál |
-| Z1–Z10 | na otázku | podle otázky | | Proč jen lineární regrese? · Co znamená „bude jako teď“? · Proč ne srážky? · Jak moc se pletete? · Funguje to i na jiné povodni? · Podle čeho model rozhoduje? · Je rozliv hydraulický model? · Jak dopadl test? · Proč jen 36 hodin dopředu? · Jak vypadá aplikace dnes? |
+| Z1–Z12 | na otázku | podle otázky | | Proč jen lineární regrese? · Co znamená „bude jako teď“? · Proč ne srážky? · Jak moc se pletete? · Funguje to i na jiné povodni? · Podle čeho model rozhoduje? · Je rozliv hydraulický model? · Jak dopadl test? · Proč jen 36 hodin dopředu? · Jak vypadá aplikace dnes? · Proč je lineární regrese v grafu křivka? · Jak je to s přímkou, když je vstupů 98? |
 
 Rezerva je 15 s. Když se nestíhá, na slajdu 7 z druhého odstavce říct jen „na testu i ve vícenásobné validaci je chyba o 55 procent menší“.
 

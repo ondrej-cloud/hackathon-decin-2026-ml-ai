@@ -36,6 +36,8 @@ Za poděkováním, ukážou se jen na otázku poroty. Odpovědět rovnou grafem 
 | Z8 | Jak dopadl test? | `Z8_test_2021_2025.png` |
 | Z9 | Proč jen 36 hodin dopředu? | `Z9_doba_dobehu.png` |
 | Z10 | Jak vypadá aplikace dnes? | `Z10_aplikace_dnes.png` |
+| Z11 | Proč je předpověď křivka, když je to lineární regrese? | `Z11_primka_a_krivka.png` |
+| Z12 | Jak je to s přímkou, když je vstupů 98? | `Z12_jeden_a_98_vstupu.png` |
 
 ## Grafy
 

@@ -75,3 +75,13 @@ Zkusili jsme je: s vlhkostí 17,2 cm, s tlakem 17,0, s větrem 17,0 proti 17,1 b
 
 **22. Proč neukazujete živé demo?** (Honza)
 Sedm minut je málo a demo závisí na Wi-Fi a na tom, jestli ČHMÚ zrovna zveřejnil data, proto je na slajdu 8 mapa rozlivu a snímek aplikace z dnešního rána je v záloze Z10. Web field-zero.netlify.app je otevřený v druhé kartě, rádi ho teď ukážeme: dnešek, mapu rozlivu a přehrávání povodní.
+
+**23. Proč je ve vahách nejdůležitější hladina v Děčíně teď, když předpovídáte zítřek?** (Ondra, slajd Z6)
+Hladina zítra je hladina teď plus to, o kolik se za den změní, dnešní voda do zítřka neodteče celá. Změnu model čte z toho, co právě teče proti proudu: voda z Prahy doteče do Děčína za 17 h, proto váží Praha teď, ne Praha před 24 h, ta už je v dnešní hladině Děčína. Záporné políčko hned vedle kladného je výpočet trendu, jestli voda stoupá.
+
+**24. Když je to lineární regrese, proč je předpověď v grafu křivka?** (Ondra, slajd Z11)
+Přímka je vztah mezi vstupy a hladinou, naučí se jednou: zjednodušeně s jedním vstupem hladina za 24 h = 111 + 0,41 × průtok v Mělníku. Každou hodinu do ní dosadíme nová měření a vyjde jeden bod; body za sebou v čase dají křivku. Skutečný model dělá totéž s 98 vstupy najednou (vážený součet, slajd 5).
+
+**25. Jak vypadá ta přímka, když je vstupů 98?** (Ondra, slajd Z12)
+Proti jednomu vstupu ji nakreslit nejde, potřebovala by 98 os. Když na osu x dáme celý vážený součet (předpověď) a na osu y skutečnost, je to zase přímka a body leží těsně u úhlopříčky: na validaci průměrná chyba 7,5 cm proti 26,5 cm s jediným vstupem.
+
