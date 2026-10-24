@@ -129,3 +129,5 @@ v prohlížeči (AppTest JavaScript nespouští).
 - Které patche vzít do main (doporučuji 02, 03, 04, 05, 07, 08 jako bezpečné; 01 + 10 + `nejistota_dan/` když chce
   tým nové pásmo; 06 a 09 po ručním vyzkoušení v prohlížeči).
 - Odkud je video Borise (mapa = model do 2018) a co přesně říct ke „27 h předem“.
+- Patch `11.patch` (kmitání, `KMITANI.md`): v Dnešku při nízké vodě zobrazit průměr předpovědí za poslední 3 h
+  (hodinová změna předpovědi v provozu 6,2 → 3,1 cm, varování se nemění); s 01–11 prošel test aplikace 10 z 10.
