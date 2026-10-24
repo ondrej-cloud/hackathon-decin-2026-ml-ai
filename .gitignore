@@ -35,3 +35,6 @@ web/animace/*.html
 
 # Originaly videi (24 az 30 MB) nejsou v Gitu, na web jde verze 720p
 docs/grafy/video_povoden_*.mp4
+
+# Velké CSV výstupy vyrábí src/export_csv.py, do odevzdání je přidá odevzdani/vytvor.sh
+results/csv/predpovedi_*.csv

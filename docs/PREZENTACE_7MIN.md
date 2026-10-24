@@ -1,38 +1,54 @@
 # Prezentace na 7 minut: kostra
 
-Návrh Ondry (so 1:00, upraveno so 1:15). Vizuální jazyk, barvy, písma a stavba v Canvě zůstávají podle Honzova `docs/PREZENTACE.md`, ten plán je ale na 15 minut a 16 slajdů. Tady je zkrácený na 7 minut a 10 slajdů. Nezačínáme problémem, ale tím, co řešení umí: ukážeme rozliv a hned řekneme, komu pomáhá. Metody (dělení v čase, vícenásobná validace, test jednou, co všechno jsme zkoušeli) mají vlastní slajdy, protože za postup a odbornost je 30 bodů z 50.
+Hotová prezentace na jednom místě (texty řečníků doslova, otázky poroty a grafy) je ve složce `prezentace/`, tady zůstává kostra a proč je takhle postavená.
 
-Zadání chce, aby v prezentaci zaznělo sedm věcí. U každého slajdu je číslo bodu, který pokrývá: 1 co řešíme, 2 data, 3 příprava dat, 4 vstupy, 5 model, 6 ověření, 7 limity.
+Návrh Ondry (so 1:00, předěláno so 8:50 a 9:05). Vizuální jazyk, barvy, písma a stavba v Canvě zůstávají podle Honzova `docs/PREZENTACE.md`. Každý slajd odpovídá na jednu otázku, kterou by porota položila, nadpis je odpověď. Za postup a odbornost je 30 bodů z 50, proto nese prezentaci cesta vstupů (co model bere a co ne) a cesta modelů (čtyři modely a u každého, proč prohrál), hned za ní pointa, proč vyhrála přímka: voda v Děčíně je součet řek. Podrobnosti jsou v záložních slajdech na otázky. Živé demo neděláme: v 7 minutách by zabralo přes minutu a záviselo by na Wi-Fi a na tom, jestli ČHMÚ zrovna zveřejnil data. Aplikace je na slajdu 8 jako snímek z dnešního rána a web je otevřený v druhé kartě na otázky.
 
-| # | Čas | Nadpis (tvrzení) | Co se říká | Graf | Kdo | Bod |
-|---|---|---|---|---|---|---|
-| 1 | 0:00–0:25 | bez nadpisu | video: Děčín v září 2024, voda se rozlévá po hodinách. Bez mluvení, na konci jedna věta: „Tohle je Děčín v září 2024. Náš model to hlásil 27 hodin předem.“ | video z aplikace (návod níž) | Tobias | |
-| 2 | 0:25–0:55 | Den předem víte, kam až voda dosáhne | Hladina v Děčíně a Ústí za 12, 24 a 36 h, varování před 2. a 3. stupněm a rozliv v mapě. Pro povodňovou komisi, hasiče a lidi u řeky. Den navíc znamená odvézt auta, postavit pytle, vyklidit sklepy. | `prezentace/02_mapa_decin.png` přes celý slajd, velké číslo 27 h | Tobias | 1 |
-| 3 | 0:55–1:40 | Co teče Prahou teď, je zítra v Děčíně | Hodinový archiv ČHMÚ, 12 stanic na Vltavě, horním Labi a Ohři, 2006–2025. Stejný zdroj jako balíček, jen delší a s víc stanicemi. S daty jen z balíčku (2 roky, stanice v kraji) by model byl stejně špatný jako „bude jako teď“ a propásl by polovinu povodní. | `prezentace/03a_mapa_stanic.png`, `prezentace/03b_proc_externi_data.png` | Ondra | 2 |
-| 4 | 1:40–2:15 | Předpověď je součet: kolik centimetrů přidá každá řeka | 98 čísel, jen to, co je v tu chvíli změřené: hladina a průtok teď a za posledních 36 h. Lineární regrese je vážený součet. Na Borisovi: z průměrné hladiny 198 cm model přičetl Děčín a Ústí +80, Vltavu +89, horní Labe +116, Mělník +95, Ohři −2, vyšlo 577 cm, nad 3. stupněm, a varoval. | `prezentace/04_predpoved_je_soucet.png` | Honza | 4, 5 |
-| 5 | 2:15–2:55 | Žádná z 11 dalších cest nebyla lepší | Čtyři modely (lineární regrese, neuronová síť, LightGBM, fyzikální) a k tomu srážky, sníh, víc stanic, polynom, váhy na povodně, spojení všech malých zlepšení. Nic nebylo lepší. Proč přímka: voda v Děčíně je součet Vltavy, Labe a Ohře posunutých o dobu putování, a velké povodně jsou v datech jen dvě, na složitý model málo. | `prezentace/05_co_jsme_zkouseli.png` | Dan | 5 |
-| 6 | 2:55–3:30 | Ověřujeme třikrát, pokaždé na povodních, které model neviděl | Dělení v čase, nikdy náhodně. Model jsme vybrali na 4 vynechaných povodních, pak každou z 8 povodní 2006–2020 jednou vynechali (vícenásobná validace) a test 2021–2025 pustili jednou na konci. Data jsme zkontrolovali a našli dvě pasti, které braly informaci z budoucnosti (doplňování děr, denní srážky). | `prezentace/06_jak_overujeme.png` | Ondra | 3, 6 |
-| 7 | 3:30–4:10 | Boris: 3. stupeň hlášen 27 hodin předem | Předpověď vydaná den předem jde se skutečností, „bude jako teď“ je vždycky o den pozadu. Vrchol 649 cm předpověděl na 611 cm. Model tuhle povodeň nikdy neviděl. | `prezentace/07_boris_2024.png` | Ondra | 6 |
-| 8 | 4:10–4:40 | O 55 % menší chyba na testu i na všech 8 povodních | Test: 22,4 cm místo 50,2. Vícenásobná validace: 20,1 místo 45,2, na každé povodni o 34 až 66 % méně. Dvakrát stejné číslo, není to náhoda. | `prezentace/08a_test_2021_2025.png`, `prezentace/08b_vicenasobna_validace.png` | Ondra | 6 |
-| 9 | 4:40–5:50 | Živé demo | Dnešek: živá data ČHMÚ a naše předpověď vedle oficiální. Mapa Děčína: předpověď × skutečnost u Borise. Nacvičené kliknutí po kliknutí, nejvýš 70 s. Když se zasekne, pustit video a jet dál. | aplikace, záložní video | Honza | |
-| 10 | 5:50–7:00 | Co umíme, co ne a co dál | Na 36 h je chyba dvakrát větší, voda, která přijde, ještě neteče žádnou stanicí. Srážky na 12–36 h nepomáhají, voda už je v řekách. Vrcholy vyšší než kdy v tréninku podhodnotí, s oficiální předpovědí ČHMÚ se srovnat neumíme. Dál: předpověď srážek pro 2–3 dny, dvoustupňové varování. Závěr: „Z otevřených dat zdarma: o povodni v Děčíně den předem, s modelem, který se vejde na jeden obrázek.“ | linie řeky končí v Děčíně, QR na repozitář | Dan, závěr Tobias | 7 |
+Zadání chce, aby v prezentaci zaznělo sedm věcí: 1 co řešíme, 2 data, 3 příprava dat, 4 vstupy, 5 model, 6 ověření, 7 limity.
 
-Když se nestíhá: slajd 8 jen jednou větou na slajdu 7 a demo zkrátit na mapu.
+| # | Čas | Otázka poroty | Nadpis (odpověď) | Co musí zaznít | Graf | Kdo | Bod |
+|---|---|---|---|---|---|---|---|
+| 1 | 0:00–0:45 | Co řešíte a pro koho? | Den předem víme, kam v Děčíně dosáhne voda | video Borise; hladina Děčín a Ústí za 12/24/36 h a varování před 2. a 3. stupněm; komise, hasiči, lidi u řeky | video, `01_mapa_decin.png`, velké 27 h | Tobias | 1 |
+| 2 | 0:45–1:25 | Jaká data jste použili? | Jen z balíčku by to nešlo: bereme 20 let a 12 stanic proti proudu | balíček 2 roky a stanice jen v kraji, Ústí 4 h před Děčínem; jen z něj 44,6 cm jako „jako teď“ a polovina povodní propásnutá; archiv ČHMÚ 20 let a 12 stanic až 25 h proti proudu, stejný zdroj; 17,1 cm | `02a_mapa_stanic.png`, `02b_proc_externi_data.png` | Ondra | 2 |
+| 3 | 1:25–2:15 | Co model bere? | Bereme jen řeku, počasí nepomohlo | 98 čísel z 12 stanic; srážky, sníh, teplota, vlhkost, tlak, vítr ani o 1 cm, co přijde do 36 h, už teče řekou; dvě pasti z budoucnosti (doplňování děr, čas denních srážek) | `03_co_model_bere.png` | Dan | 3, 4 |
+| 4 | 2:15–3:25 | Jak jste vybrali model? | Čtyři modely, vyhrál nejjednodušší | laťka 44 cm; fyzikální 25 (pevná doba putování), LightGBM 23 (neumí výš, než viděl), síť 18 (přeučí se), regrese 17; vybráno před testem; úpravy nic přes 1 cm | `04_cesta_k_modelu.png` | Honza | 5 |
+| 5 | 3:25–4:05 | Proč zrovna přímka? | Voda v Děčíně je součet řek | součet Vltavy, horního Labe a Ohře = vážený součet; Boris 198 + 80 + 89 + 116 + 96 − 2 = 577 cm, varoval; citát ze zadání | `05_soucet_rek.png` | Honza | 5 |
+| 6 | 4:05–4:40 | Jak víte, že to funguje? | Ověřeno třikrát na povodních, které model neviděl | dělení v čase; výběr na 4 povodních; vícenásobná validace na 8; test jednou na konci | `06_jak_overujeme.png` | Ondra | 3, 6 |
+| 7 | 4:40–5:25 | Funguje to na skutečné povodni? | Boris: 3. stupeň 27 hodin předem, chyba o 55 % menší | Boris z testu; 27 h; test 22,4 proti 50,2, vícenásobná validace 20,1 proti 45,2 | `07_boris_2024.png`, velká čísla | Ondra | 6 |
+| 8 | 5:25–5:50 | Dá se to použít? | Každou hodinu nová předpověď z živých dat | Děčín dnes 84 cm, za 24 h 94, ČHMÚ 90 | `08_aplikace_dnes.png`, adresa a QR | Honza | 1 |
+| 9 | 5:50–6:45 | Kde to selže? | Co umíme, co ne a co dál | 36 h skoro 2× horší; vyšší vrchol podhodnotí; zpoždění živých dat; dál srážky na 2–3 dny, dvoustupňové varování; závěrečná věta | karty, QR na repozitář | Dan, závěr Tobias | 7 |
+
+Rezerva 15 s. Když se nestíhá: na slajdu 7 vynechat druhý odstavec a říct jen „na testu i ve vícenásobné validaci je chyba o 55 procent menší“.
+
+## Záložní slajdy
+
+Za poděkováním, ukážou se jen na otázku poroty. Odpovědět rovnou grafem působí odborně.
+
+| # | Otázka | Graf |
+|---|---|---|
+| Z1 | Proč jen lineární regrese? | `Z1_srovnani_ctyr_modelu.png` |
+| Z2 | Co znamená „bude jako teď“? | `Z2_co_je_jako_ted.png` |
+| Z3 | Proč ne srážky? | `Z3_proc_ne_srazky.png` |
+| Z4 | Jak moc se pletete? | `Z4_jak_moc_se_pleteme.png` |
+| Z5 | Funguje to i na jiné povodni? | `Z5_povoden_2011.png` |
+| Z6 | Podle čeho model rozhoduje? | `Z6_vahy_modelu.png` |
+| Z7 | Je rozliv hydraulický model? | `mapbox3_decin.jpg` |
+| Z8 | Jak dopadl test? | `Z8_test_2021_2025.png` |
+| Z9 | Není výsledek jen náhoda výběru validace? | `Z9_vicenasobna_validace.png` |
+| Z10 | Proč jen 36 hodin dopředu? | `Z10_doba_dobehu.png` |
 
 ## Grafy
 
-Všechny grafy pro prezentaci jsou ve složce `docs/grafy/prezentace/`, pojmenované číslem slajdu (`07_boris_2024.png` patří na slajd 7). Všechny mají stejný formát, krátký nadpis, popisky os s jednotkami a nic navíc, takže slajd v Canvě může být jen graf přes celou plochu. Přehled je v `docs/grafy/prezentace/README.md`, kreslí je `python src/grafy_prezentace.py`. Na Macu chybí písmo Segoe UI, které mají Honzovy grafy, takže jsou v Helvetice; na Windows je stačí pustit znovu.
-
-Záložní slajdy za poděkováním (soubory `Z…`) se ukážou, jen když se porota zeptá: srovnání čtyř modelů, co je „bude jako teď“, proč ne srážky, jak moc se pleteme, povodeň 2011, váhy modelu. Odpovědět rovnou grafem působí odborně.
+Všechny grafy pro prezentaci jsou ve složce `docs/grafy/prezentace/` (kopie v `prezentace/grafy/`), pojmenované číslem slajdu (`07_boris_2024.png` patří na slajd 7). Všechny mají stejný formát, krátký nadpis, popisky os s jednotkami a nic navíc, takže slajd v Canvě může být jen graf přes celou plochu. Přehled je v `docs/grafy/prezentace/README.md`, kreslí je `python src/grafy_prezentace.py`. Na Macu chybí písmo Segoe UI, které mají Honzovy grafy, takže jsou v Helvetice; na Windows je stačí pustit znovu.
 
 ## Video na začátek
 
-Nahrát z aplikace: `streamlit run app/app.py`, záložka s mapou, pohled Děčín, Animace povodně, Celá obrazovka, rychlost 4 h za s, povodeň Boris 9/2024 (13.–18. 9.). Na Macu Cmd+Shift+5, výřez mapy, 1920×1080, asi 25 s, bez zvuku. Stejné video poslouží jako záloha dema.
+Nahrát z aplikace: `streamlit run app/app.py`, záložka s mapou, pohled Děčín, Animace povodně, Celá obrazovka, rychlost 4 h za s, povodeň Boris 9/2024 (13.–18. 9.). Na Macu Cmd+Shift+5, výřez mapy, 1920×1080, asi 25 s, bez zvuku. Hotová videa jsou `web/prezentace/video/boris_decin_720.mp4` a u Honzy `docs/grafy/video_povoden_*.mp4`.
 
-## Co z Honzova plánu na 15 minut vypadlo
+## Co se změnilo proti první kostře
 
-Titulní slajd (místo něj video), mřížka 98 vstupů (jedna věta na slajdu 4), samostatné slajdy o nejistotě a o rozlivu (ukážou se v demu) a slajd o srovnání čtyř modelů (je v grafu všech 12 cest). Pozor na Honzův nadpis „Dnes vidí Děčín 4 hodiny dopředu“: ČHMÚ pro Děčín oficiální předpověď vydává a aplikace ji ukazuje. Platí jen, že z dat balíčku jde vidět 4 h dopředu.
+Slajd na vstupy a slajd na cestu k modelu jsou nové (Ondra so 8:50), místo grafu „všech 12 cest“ jsou dva grafy, které cestu rozdělují na vstupy a modely. V so 9:05 každý slajd dostal otázku poroty a nadpis jako odpověď, úvod a „pro koho“ jsou spojené do slajdu 1, pasti z budoucnosti jsou u vstupů (příprava dat), cesta modelů má u každého modelu větu, proč prohrál, a „předpověď je součet“ je hned za ní jako odpověď na „proč přímka“. Test a vícenásobná validace jsou spojené s Borisem do slajdu 7, jejich grafy a „proč data mimo balíček“ přešly do záložních Z8 až Z10. Živé demo je nahrazené snímkem. Oprava obsahu: neříkat „žádná cesta nebyla lepší“, některé byly lepší o desetiny (průměr regrese a sítě 16,9, tlak 17,0), správně je „nic nebylo lepší o víc než 1 cm“. Pozor i na starý nadpis „Dnes vidí Děčín 4 hodiny dopředu“: ČHMÚ pro Děčín oficiální předpověď vydává, 4 h platí jen pro data z balíčku.
 
 ## Otázky, které po 7 minutách přijdou
 
-Odpovědi jsou v `docs/POROZUMENI.md` (sekce Otázky, které čekáme od poroty) a celá cesta modelu v `docs/CESTA_MODELU.md`. Nejpravděpodobnější: proč jen lineární regrese, proč ne srážky, nepřeučil se model, není výsledek náhoda, co znamená „bude jako teď“, proč jste brali data mimo balíček.
+Odpovědi jsou v `prezentace/OTAZKY.md`, delší v `docs/POROZUMENI.md` a celá cesta modelu v `docs/CESTA_MODELU.md`. Nejpravděpodobnější: proč jen lineární regrese, proč ne srážky, nepřeučil se model, není výsledek náhoda, co znamená „bude jako teď“, proč jste brali data mimo balíček, proč neukazujete živé demo.

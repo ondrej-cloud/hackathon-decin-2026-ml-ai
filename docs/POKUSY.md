@@ -467,3 +467,22 @@ Následující pokusy jsou doplněné zpětně (pá 19:55). Všechny byly před 
 
 ## so 1:15 · Ondra · oprava: vícenásobná validace 55 %, ne 56 %
 - Zlepšení lineární regrese proti „jako teď“ ve vícenásobné validaci (pá 23:27) je z nezaokrouhlených průměrů 55,5 % (20,12 proti 45,19 cm), správně tedy 55 %, ne 56 %. 56 vyšlo ze zaokrouhlených 20,1 a 45,2. U sítě 53 %, ne 54 %. Opraveno v `docs/PREHLED.md`, `docs/POROZUMENI.md`, `docs/CESTA_MODELU.md` a `docs/PREZENTACE_7MIN.md`. Vícenásobná validace tak dává stejné zlepšení jako test (55 %).
+
+## so 8:42 · Ondra · vlhkost, tlak a vítr
+- Otázka: pomůže modelu něco z meteorologie, kterou jsme ještě nezkoušeli: vlhkost vzduchu, tlak (i jeho změna za den, padající tlak hlásí frontu) a rychlost a směr větru? Srážky, sníh a teplotu jsme zkoušeli dřív (pá 20:44, so 23:14).
+- Data a rozdělení: denní data ČHMÚ ze stejných 29 meteostanic jako u srážek (`data/raw/chmu_meteo/`), denní průměr vlhkosti, tlaku a rychlosti větru, směr větru jako průměr tří pozorování přes vektory (sin a cos), vše zprůměrované po větvích Vltava, horní Labe, Ohře. Hodnota dne D je v tabulce až od D+1 07:00 UTC, kdy je známá (jako teplota v `src/meteo.py`). Navíc myšlenkový pokus „předem“, jako bychom hodnoty dne D znali už o půlnoci, tedy dokonalou předpověď na den. Validace, test ne, všechny varianty na stejných řádcích.
+- Model a nastavení: `ridge` beze změny, 98 vstupů a k nim 18 nových (6 na větev).
+- Kde a jak dlouho: MacBook M1, 50 s.
+- Výsledek (`prumer_povodne`, cm): bez 17,1; s vlhkostí 17,2; s tlakem 17,0; s větrem 17,0; se vším 17,1; se vším „předem“ 17,0 (−0,1). Největší rozdíl je na 36 h v Děčíně, 26,0 → 25,5 jen při dokonalé předpovědi.
+- Závěr: nepomáhá, rozdíly jsou pod 0,1 cm a daleko pod naším pravidlem 1 cm. Vlhkost, tlak ani vítr do řeky žádnou vodu nepřidají, jsou jen náznakem, že bude pršet, a i dokonale známý budoucí déšť pomohl na 12 až 36 h nejvýš o 1 cm (17,1 → 16,1). Vítr hladinu zvedá u moře nebo jezera, ne v řece, a odpar za den dva je proti povodňovému průtoku zanedbatelný. Ze všech meteo veličin v zadání (teplota, srážky, vlhkost, tlak, vítr) tak žádná model na 12 až 36 h nezlepší; model neměníme.
+- Soubory: `src/pokus_vlhkost_tlak_vitr.py`
+
+## so 9:30 · Honza · povodeň 2013 s modelem, který ji neviděl (pro mapu rozlivu)
+- Otázka: dá se v mapě poctivě ukázat velká povodeň, kdy voda v Děčíně došla mezi domy? Validační povodně a Boris jsou v Děčíně jen dvou- až dvacetileté (514–875 cm) a Labe tu teče v hlubokém údolí, takže voda zůstává skoro v korytě. Povodeň 6/2013 (1 072 cm, mezi dvacetiletou a padesátiletou vodou) je ale v tréninku.
+- Data a rozdělení: trénink jako u finálního modelu (vše do 2020, `casti(finalni=True)`), navíc bez povodně 2013: 16 dní před vrcholem až 5 po a k tomu 20 dní ochranné pásmo, stejně jako u validačních povodní. Nejvyšší hladina v tréninku je pak 875 cm (2006). Vyhodnocení na okně 2013 přes `vyhodnot`, nic v něm neměníme.
+- Vstupy: 98 sloupců jako `ridge`.
+- Model a nastavení: `ridge` beze změn (odmocnina průtoků, StandardScaler, Ridge alpha 1), v aplikaci pod jménem `ridge_bez2013`.
+- Kde a jak dlouho: Honzův notebook, pod sekundu na model.
+- Výsledek (Děčín +12 / +24 / +36 h): chyba na povodni 26,3 / 47,7 / 59,2 cm, „jako teď“ 49,6 / 97,4 / 142,7 cm. Vrchol 1 072 cm podhodnotil o 51 / 120 / 112 cm (na 24 h předpověď 952 cm). 3. stupeň hlášen 10 / 18 / 20 h předem, nic propásnuto, žádný planý poplach. Kontrola s přísnějším tréninkem (jen trénovací část do 2018 bez 2013, nejvyšší hladina v tréninku 560 cm): 33,6 / 55,3 / 68,7 cm, vrchol o 73 / 148 / 154 cm níž, 3. stupeň 10 / 17 / 19 h předem.
+- Závěr: model, který nikdy neviděl víc než 875 cm, předpověděl povodeň nad 10 m a 3. stupeň zhruba den předem, s poloviční chybou proti „jako teď“. Vrchol tak daleko nad rámec tréninku podhodnocuje o metr. Do výsledků modelů se to nepočítá, rok 2013 jsme pro výběr modelu nepoužili. V mapě je při 1 072 cm pod vodou 268 ha proti 158 ha u Borise, voda je v Podmoklech, Rozbělesích a ve Starém Městě.
+- Soubory: `app/predikce.py` (`ridge_bez2013` se natrénuje sám), `app/app.py` a `app/animace.py` (volba 6/2013 v Mapě povodí), `docs/grafy/mapbox_povoden_2013_decin.jpg` (vrchol 6. 6. 2013 ve 2:00).

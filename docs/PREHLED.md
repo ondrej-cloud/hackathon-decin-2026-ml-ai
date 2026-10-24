@@ -141,4 +141,4 @@ Grafy validace: `docs/grafy/srovnani_procenta.png`, `srovnani_ctyr_modelu.png`, 
 - Srážky, sníh a teplota: vyzkoušeno, nepomohlo (pá 20:44). Honza: kolik let dat (hotovo, pá 20:44, `docs/grafy/kolik_dat.png`). Dan zkouší dobu putování podle průtoku (do 22:00).
 - Otázka pro mentory: s jakým zpožděním jsou hodinová data ČHMÚ v provozu dostupná? Zkrátil by se o něj předstih.
 - Limity do prezentace: bez srážek nejde dál než den a půl, povodně z dešťů v kraji (8/2010) model nevidí, archivní data jsou zpětně ověřená (v provozu předběžná), validace má jen 4 povodně.
-- Aplikace (Honza) a prezentace (Tobias) podle Stavu v `CLAUDE.md`.
+- Aplikace (Honza) a prezentace (Tobias) podle rozdělení práce v týmu.

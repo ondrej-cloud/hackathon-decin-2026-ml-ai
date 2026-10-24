@@ -125,7 +125,7 @@ with st.sidebar:
     cil = st.radio("Stanice", list(KDE), format_func=jmeno, label_visibility="collapsed",
                    captions=[f"stupně {' / '.join(map(str, SPA[c]))} cm" for c in KDE])
     styl.sekce("Zdroj dat")
-    dnes = st.toggle("Dnešek: živá data ČHMÚ", value=False)
+    dnes = st.toggle("Dnešek: živá data ČHMÚ", value=True)
     stav_dat = st.empty()
     styl.sekce("Okamžik předpovědi")
     st.caption("Přehrávání historie: den a hodina, kdy předpověď vydat. Aplikace ukáže, co by model řekl tehdy.")
@@ -140,9 +140,11 @@ with st.sidebar:
 
 X = vstupy_c(cil)
 H = hladiny(cil)
+# dnešek počítá ridge_vse (učený na všem do 2025), historie zůstává na ridge učeném do 2018
+nazev_dnes = "ridge_vse" if nazev == "ridge" else nazev
 DNES = None
 if dnes:
-    DNES = dnes_c(nazev)
+    DNES = dnes_c(nazev_dnes)
     if not DNES["ok"]:
         stav_dat.warning(DNES["chyba"])
         DNES = None
@@ -165,7 +167,7 @@ else:
 
 with hlavicka:
     zdroj = f"živě ČHMÚ, {cislo(DNES['stari_h'])} h" if DNES else "archiv ČHMÚ 2006–2025"
-    html(styl.hlavicka(okamzik(cas), nazev, zdroj, bool(DNES)))
+    html(styl.hlavicka(okamzik(cas), nazev_dnes if DNES else nazev, zdroj, bool(DNES)))
 
 tab_ted, tab_kvalita, tab_mapa, tab_animace = st.tabs(["Teď", "Jak dobře to funguje", "Mapa povodí",
                                                         "Animace povodně"])
@@ -363,7 +365,7 @@ with tab_mapa:
                          captions=["Čas po hodinách, rozliv z předpovědi 24 h předem vedle rozlivu ze skutečné hladiny.",
                                    f"Stanice a rozliv v okamžiku z levého panelu ({okamzik(cas)})."])
         a, b = st.columns([3, 1.25], gap="medium", vertical_alignment="bottom")
-        povoden_m = a.radio("Povodeň", list(POVODNE), index=3, horizontal=True, key="mapa_povoden")
+        povoden_m = a.radio("Povodeň", list(POVODNE) + ["6/2013"], index=3, horizontal=True, key="mapa_povoden")
         if rezim == REZIMY[0]:
             cil_m = b.radio("Město", list(KDE), format_func=jmeno, horizontal=True, key="mapa_cil")
             prehraj = False
@@ -371,8 +373,11 @@ with tab_mapa:
             prehraj = b.button("Přehrát povodeň", type="primary", width="stretch", on_click=prehrat if token else None)
 
     if rezim == REZIMY[0] and token:
-        iframe(mapbox_animace_html(povoden_m, cil_m, nazev), 720)
+        iframe(mapbox_animace_html(povoden_m, cil_m, "ridge_bez2013" if povoden_m == "6/2013" else nazev), 720)
         st.caption("Rozliv z terénu ČÚZK DMR 5G proti hladině, shoda s úředními územími 82 až 90 %.")
+        if povoden_m == "6/2013":
+            st.caption("Povodeň 6/2013 je v trénovacích datech, proto ji počítá lineární regrese učená do roku 2020 "
+                       "bez této povodně; nejvyšší hladina při učení 875 cm, vrchol 2013 měl 1 072 cm.")
     elif rezim == REZIMY[0]:
         st.warning("Celá povodeň s porovnáním potřebuje token Mapboxu v .env. Bez něj přepněte na Zvolený okamžik "
                    "a tlačítko Přehrát povodeň projde povodeň po 6 hodinách na jednodušší mapě.")
@@ -386,7 +391,7 @@ with tab_mapa:
         else:
             tabulka_mapy, pred_mapy = None, predpovedi_pro_mapu(cas)
         if prehraj and not token:
-            od_m, do_m = POVODNE[povoden_m]
+            od_m, do_m = animace.POVODNE[povoden_m]
             for t in pd.date_range(od_m, f"{do_m} 18:00", freq="6h", tz=TZ):
                 t = t.tz_convert("UTC")
                 misto.pydeck_chart(mapa_deck(t, predpovedi_pro_mapu(t), pohled), height=650)

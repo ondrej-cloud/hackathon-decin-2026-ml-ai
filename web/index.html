@@ -36,7 +36,8 @@
   var q = new URLSearchParams(location.search), p = q.get("povoden"), c = q.get("cil");
   var l = document.createElement("link");
   l.rel = "preload"; l.as = "fetch"; l.crossOrigin = "anonymous";
-  l.href = q.get("dnesek") === "1" ? "data/dnesek.json"
+  var dnes = q.get("dnesek") === "1" || (q.get("dnesek") !== "0" && !q.has("povoden") && !q.has("cas"));
+  l.href = dnes ? "data/dnesek.json"
     : "data/rada_" + (/^\d{4}-\d{2}$/.test(p) ? p : "2011-01") + "_" + (c === "usti" ? "usti" : "decin") + ".json";
   document.head.appendChild(l);
 })();
@@ -67,7 +68,7 @@
       <label><input type="radio" name="cil" value="usti">Ústí nad Labem</label>
     </div></div></div>
     <div class="skupina cely"><span class="sekce">Zdroj dat</span>
-    <label class="prepinac"><span>Dnešek, živá data ČHMÚ</span><input type="checkbox" id="dnesek"><i></i></label></div>
+    <label class="prepinac"><span>Dnešek, živá data ČHMÚ</span><input type="checkbox" id="dnesek" checked><i></i></label></div>
     <div class="skupina"><span class="sekce">Povodeň</span>
     <fieldset id="povodne-pole"><div id="povodne"><div class="dlazdice" role="radiogroup" aria-label="Povodeň">
       <label><input type="radio" name="povoden" value="2006-04"><b>4/2006</b></label>

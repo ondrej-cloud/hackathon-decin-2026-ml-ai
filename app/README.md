@@ -25,10 +25,10 @@ Modely v `models/` nejsou v Gitu. Když chybí, aplikace si ridge a ridge_vse na
 
 ## Co aplikace ukazuje
 
-Levý panel má sekce Stanice (Děčín, Ústí), Zdroj dat (přepínač Dnešek), Okamžik předpovědi (den a hodina pro přehrávání historie, výchozí 15. 1. 2011 9:00; v Dnešku zamčené) a Model.
+Levý panel má sekce Stanice (Děčín, Ústí), Zdroj dat (přepínač Dnešek, po startu zapnutý), Okamžik předpovědi (den a hodina pro přehrávání historie, výchozí 15. 1. 2011 9:00; v Dnešku zamčené) a Model.
 
 - Teď: vodočet (měrná lať se stupni povodňové aktivity, voda teď, značky předpovědi za 12, 24 a 36 h a pruhy rozmezí nejistoty), vedle něj odečty se stupněm, věta pro laika a graf 3 dnů.
-- Přepínač Dnešek: stáhne živá data ČHMÚ a vydá předpověď na teď, vedle ní oficiální předpověď ČHMÚ (i na vodočtu) a srážky v povodí z Open-Meteo.
+- Přepínač Dnešek: stáhne živá data ČHMÚ a vydá předpověď na teď, vedle ní oficiální předpověď ČHMÚ (i na vodočtu) a srážky v povodí z Open-Meteo. Je zapnutý hned po startu; když data nejdou stáhnout, aplikace ukáže varování v panelu a přehrává historii.
 - Jak dobře to funguje: povodeň (4 z validace a Boris 9/2024 z testu) a horizont, souhrn (chyba, předstih varování, propásnuté povodně, plané poplachy proti „bude jako teď“), graf a tabulka všech horizontů.
 - Mapa povodí: nahoře přehrávač. Režim „Celá povodeň: předpověď × skutečnost“ nebo „Zvolený okamžik“, výběr povodně a tlačítko Přehrát povodeň, které přepne do celé povodně. Ve zvoleném okamžiku je 3D mapa 12 stanic (výška sloupce je průtok, barva stupeň) a pohled Děčín nebo Ústí vyplní záplavové území podle předpovědi. Bez tokenu Mapboxu tlačítko projde vybranou povodeň po 6 hodinách na jednodušší mapě.
 - Animace povodně: výběr povodně, kapky tečou po řekách k Děčínu, tlačítko spustí čas, posuvník ho posune.
