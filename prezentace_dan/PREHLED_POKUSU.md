@@ -34,7 +34,7 @@ teď“: val 44,3, D24 44,4. Zlepšení platí až od 1 cm. Test 2021–2025 se 
 | 25 | další stanice (horní Ohře, Zbraslav) | delší náskok | s horní Ohří val 17,4, vícenásobná 19,7; i se Zbraslaví vícenásobná 19,9 | smíšené, pod 1 cm | CESTA §6 |
 | 26 | spojení všech malých zlepšení | sečtou se? | val 17,2, vícenásobná 19,3 | ne | CESTA §6 |
 | 27 | konvoluční síť po čase (TCN), Honza | ať si síť vybere hodiny sama | val 20,3, 3 propásnutá varování, trénink 16 min | ne; naučila se skoro stejné váhy jako regrese | POKUSY so 0:45 |
-| 28 | přeučuje se regrese?, Ondra | kontrola | D24 trénink 19,7 / val 15,5 (bez regularizace stejně) | nepřeučuje | POKUSY so 0:48 |
+| 28 | přeučuje se regrese?, Ondra | kontrola | D24 trénink 19,7 / val 15,5 (bez regularizace stejně) | obvyklý znak přeučení nemá | POKUSY so 0:48 |
 | 29 | **Danův Ridge, 30 stanic** (dan-ridge) | stanice, které vidí vlnu dřív | D24: CV 14,2 / 15,6; val 17,8 / 15,5 (povodeň 2006); test (jednou) 16,1 / 17,5, „jako teď“ 44,8; začátek vzestupu test 27,0 / 32,0 | nejslibnější směr, výsledek smíšený | ridge_dan/ZPRAVA |
 | 30 | 18 nových stanic u všech modelů (Dan; fyzika zapojí jen 8) | pomůžou každému? | CV D24: Ridge −1,5, LightGBM −2,0, fyzika −0,7, síť −0,5; začátek vzestupu na val o 5–8 cm lépe u všech | pomáhají hlavně začátku vzestupu | STANICE_VSEM, SIT_VARIANTY |
 | 31 | **LOFO-CV 22 povodní** (Dan) | přísnější hodnocení | D24: týmový Ridge 15,29; Ridge 30 14,79; **G3 = ½ Ridge 30 + ½ LightGBM 30: 13,94 (−1,35, lepší 20 z 22)**, ale val 18,2 / 15,5; D36: Ridge 30 23,96 / 26,39 (−2,43, 17 z 22) | finále týmový Ridge, G3 ukázat jako ověřené zlepšení | ridge_dan/ZLEPSENI |
@@ -43,7 +43,7 @@ teď“: val 44,3, D24 44,4. Zlepšení platí až od 1 cm. Test 2021–2025 se 
 | 34 | síť s 18 stanicemi / se srážkami na Kaggle (Dan) | platí to i pro síť? | CV −0,5 / +0,4; LOFO D24 +0,98 (stanice); začátek vzestupu −5,7 / −2,9 | beze změny | SIT_VARIANTY |
 | 35 | rozhodnutí o nových stanicích pro 24 h (Dan, so 3:30) | G3 vs týmová regrese ve třech hodnoceních | val D24: regrese 15,5, síť 18,4, G3 18,2, Ridge 30 17,8; vícenásobná: G3 19,6 (−0,5, 6 z 8); LOFO D24: G3 13,94 (−1,35, 20 z 22), síť 15,07 | 24 h zůstává týmová regrese | ridge_dan/ROZHODNUTI_G3 |
 | 36 | 36 h s 30 stanicemi a H30 (Dan) | delší náskok vzdálených stanic | Ridge 30: vícenásobná Děčín −0,71, Ústí −1,00 (na hraně, 5 z 8), LOFO D36 −2,43 (17 z 22); H30 (průzkumně, + útlum v nivě): vícenásobná −2,1 / −2,3 (6 z 8), LOFO D36 −3,44 (18 z 22), val D36 25,0 / 26,0; na 24 h nic | pro 36 h rozhodne tým (regrese, Ridge 30, nebo H30 s výhradou) | ridge_dan/ROZHODNUTI_G3, RANNI_ZPRAVA |
-| 37 | pásmo nejistoty z chyb mimo trénink (Dan) | dnešní pásmo je z tréninku, na povodních moc úzké | vnořeně na 22 povodních: týmové 80% pásmo 58–72 %, nové 79–80 % a 94–95 % (cíl 80 / 95 %); rychlý vzestup 59–72 %, rekord 6/2013 42 %; šířka 80 % D24: regrese 47, G3 43 cm | připravené jako patch, rozhodne tým | nejistota_dan/ZPRAVA_NEJISTOTA |
+| 37 | pásmo nejistoty z chyb mimo trénink (Dan) | dnešní pásmo je z tréninku, na povodních moc úzké | vnořeně na 22 povodních: týmové 80% pásmo 58–72 %, nové 78–80 % a 94–95 % (cíl 80 / 95 %); rychlý vzestup 59–72 %, rekord 6/2013 42 %; šířka 80 % D24: regrese 47, G3 43 cm | připravené jako patch, rozhodne tým | nejistota_dan/ZPRAVA_NEJISTOTA |
 | 38 | revize aplikace před demem (Dan) | co může shodit demo | 2 kritické (bez internetu prázdná mapa a animace; Dnešek na špatné Wi-Fi zamrzne), 6 vysokých (text u Borise „model do 2018“, popisek testu, DIBAVOD × DMR, pásmo…); 9 patchů, s nimi `test_app.py --dnesek` 10 z 10 | aplikace v main beze změny, patche k rozhodnutí | nejistota_dan/REVIZE_APLIKACE |
 
 Zdroje: `docs/PREHLED.md`, `docs/CESTA_MODELU.md`, `docs/POKUSY.md` (main); `ridge_dan/ZPRAVA.md`, `STANICE_VSEM.md`,
@@ -52,6 +52,6 @@ Zdroje: `docs/PREHLED.md`, `docs/CESTA_MODELU.md`, `docs/POKUSY.md` (main); `rid
 `nejistota_dan/ZPRAVA_NEJISTOTA.md`, `REVIZE_APLIKACE.md` (dan-nejistota, so 3:52).
 
 **Jedna věta pro porotu:** čtyři úplně různé modely skončily na validaci na 17–25 cm a žádný další proveditelný pokus
-nepřekonal finální regresi (17,1) aspoň o 1 cm (o 1,0 cm jen dokonalá předpověď deště na 3 dny, která v provozu neexistuje). Strop tedy dělá informace ve vstupech, ne model. Přísným LOFO prošla na D24 jen směs G3 (−1,35 cm) a na D36
+nepřekonal finální regresi (17,1) aspoň o 1 cm (o 1,0 cm jen dokonalá předpověď deště na 3 dny, která v provozu neexistuje). Výsledky tedy naznačují, že strop dělá informace ve vstupech, ne model. Přísným LOFO prošla na D24 jen směs G3 (−1,35 cm) a na D36
 Ridge s 30 stanicemi (−2,43 cm), na validaci jsou ale obě horší. Na začátku vzestupu pomáhají hlavně stanice dál proti
 proudu (o 5–8 cm), méně i srážky (o 1,9–4,6 cm podle modelu), na celkovou chybu to nestačí.

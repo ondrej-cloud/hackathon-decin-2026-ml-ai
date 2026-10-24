@@ -1,0 +1,19 @@
+Jsi nezávislý kontrolor faktů. Pracuješ JEN PRO ČTENÍ. Odpovídej česky, stručně.
+
+Pravidla (závazná):
+- Nic neměň, nevytvářej ani nemaž žádné soubory (ani AGENTS.md). Git smíš jen číst (git show, git log, git ls-tree).
+- Nečti .env ani nic v %USERPROFILE%\.kaggle ani jiné tokeny. Nic neinstaluj, nic netrénuj, nespouštěj test.
+
+TŘETÍ KOLO, jen nové texty. Zkontroluj každé číslo a faktické tvrzení v:
+- prezentace_dan/DAN_VYSTUP.md (celý),
+- prezentace_dan/TYM_RANO.md (celý),
+- prezentace_dan/OTAZKY_POROTY.md: sekce „Nejtěžší otázky“ (N1–N20) a otázky 17, 21, 23, 32,
+- prezentace_dan/PREHLED_POKUSU.md: řádky 35–38 a závěrečná „Jedna věta pro porotu“.
+Zdroje: docs/*.md, src/evaluate.py, docs/grafy/prezentace/README.md, prezentace_dan/grafy/README.md (v pracovní složce);
+git show origin/dan-ridge:ridge_dan/{ZPRAVA,ZLEPSENI,VALIDACE_ONDRA,ROZHODNUTI_G3,RANNI_ZPRAVA,STANICE_VSEM}.md;
+git show origin/dan-nejistota:nejistota_dan/{ZPRAVA_NEJISTOTA,REVIZE_APLIKACE}.md;
+git show origin/dan-srazky:srazky_dan/ZPRAVA_SRAZKY.md; git show origin/dan-sit:sit_dan/SIT_VARIANTY.md.
+Pozor na metriky: validace (průměr 6 kombinací) × D24 (Děčín +24 h) × vícenásobná validace (8 povodní) × LOFO (22 povodní) × test.
+
+Výstup (Markdown): 1. tabulka NESOULADŮ (soubor:řádek | tvrzení | co říká zdroj s citací čísla | zdroj | návrh opravy);
+2. neověřitelná tvrzení; 3. počty (zkontrolováno / sedí / nesedí / neověřitelné) a jedna věta.

@@ -135,7 +135,7 @@ V pátek ve 20:58, zapsané před testem: lineární regrese, protože je nejlep
 poplachů. Test 2021–2025 jednou ve 21:00: 22,4 cm proti 50,2 u „jako teď“, o 55 % méně. *Zdroj: docs/PREHLED.md.*
 
 **21. Síť byla na testu lepší (21,3). Proč jste ji nevzali?**
-Kdybychom vybírali podle testu, test by přestal být nezávislý. Rozdíl 1,1 cm je v rámci náhody: ve vícenásobné validaci
+Kdybychom vybírali podle testu, test by přestal být nezávislý. Rozdíl 1,1 cm je menší než kolísání sítě: ve vícenásobné validaci
 byla síť o 0,9 cm horší a mezi seedy kolísá na validaci až o 2,8 cm (seedy 42–44: 19,0 ± 1,2 cm, týmových 17,8 je seed 42). *Zdroj: docs/PREHLED.md, sit_dan/SIT_VARIANTY.md.*
 
 **22. Dan má směs G3, která je v LOFO lepší. Proč není finální?**
@@ -202,7 +202,7 @@ Na bouřky je to málo bodů a déšť, který spadl dřív, už ukážou vodom�
 Rozmezí „nejspíš od–do“ je z 5. a 95. percentilu chyb na tréninku podle výšky hladiny. Na validaci se do něj vejde
 89–92 % hodnot celkem, na povodních 76–88 %. Šířka na povodních: Děčín 33 / 53 / 72 cm (12 / 24 / 36 h). Na povodních je
 užší, než by mělo být, a přísnější kontrola na 22 povodních to potvrdila: 80% pásmo v tomto stylu pokrývá jen 58–72 %
-hodin. Dan v noci připravil pásmo z chyb mimo trénink, které pokrývá 79–80 % a 94–95 % (cíl 80 a 95 %), slabé zůstává
+hodin. Dan v noci připravil pásmo z chyb mimo trénink, které pokrývá 78–80 % a 94–95 % (cíl 80 a 95 %), slabé zůstává
 na rychlém vzestupu (59–72 %). Jestli ho tým dá do aplikace, rozhodne ráno (viz N18).
 *Zdroj: docs/POKUSY.md (pá 20:40, Honza), nejistota_dan/ZPRAVA_NEJISTOTA.md (větev dan-nejistota).*
 
@@ -270,7 +270,7 @@ jsme nezkoušeli. *Zdroj: src/evaluate.py (vyhodnot), docs/POKUSY.md (pá 20:15)
 
 **N2. „Proč zrovna tyhle 4 validační povodně? A proč jednou ukazujete 4, jindy 8 a jindy 22 povodní?“**
 Validaci jsme vybrali tak, aby v tréninku zůstala největší povodeň 2013 a ve validaci byly dvě velké a dvě menší
-(4/2006, 3/2009, 9/2010, 1/2011); po roce 2016 žádná povodeň nebyla. Čtyři je málo, proto vícenásobná validace (8 povodní
+(4/2006, 3/2009, 9/2010, 1/2011); v letech 2016–2020 žádná povodeň nebyla. Čtyři je málo, proto vícenásobná validace (8 povodní
 nad 2. stupněm, každá jednou vynechaná) a LOFO (22 povodní nad 400 cm). Jsou to různé sady povodní, čísla se nedají
 zaměňovat: týmová regrese D24 má 15,5 (validace), 18,5 (vícenásobná) a 15,29 cm (LOFO). Pořadí regrese, sítě, LightGBM
 a fyziky je ve validaci i ve vícenásobné validaci stejné, v LOFO D24 je síť o 0,2 cm lepší než regrese. *Zdroj: docs/DATA.md (Rozdělení), ridge_dan/VALIDACE_ONDRA.md, ridge_dan/ZLEPSENI.md.*
@@ -316,7 +316,7 @@ není statistická korekce na mnoho pokusů. *Zdroj: ridge_dan/ZLEPSENI.md, ridg
 Znaménkový test říká, jak nepravděpodobné by bylo vyhrát u 20 z 22 povodní, kdyby oba modely byly stejně dobré a
 povodně nezávislé. Velikost rozdílu neměří: nejhorší zhoršení G3 je 8,2 cm a v oknech povodní má 6 planých poplachů
 proti 4. Osm povodní vícenásobné validace je podmnožina těch 22, takže 6 z 8 (p ≈ 0,29) není nezávislé zopakování.
-± 7,7 cm je rozptyl mezi povodněmi, ne interval spolehlivosti průměru. *Zdroj: ridge_dan/ZLEPSENI.md,
+± 7,7 cm je směrodatná odchylka mezi povodněmi, ne interval spolehlivosti průměru. *Zdroj: ridge_dan/ZLEPSENI.md,
 ridge_dan/VALIDACE_ONDRA.md.*
 
 **N10. „Síť uvádíte 17,8 cm. Proč ne průměr přes seedy?“**
@@ -370,7 +370,7 @@ nejistota_dan/ZPRAVA_NEJISTOTA.md.*
 
 **N18. „Pásmo nejistoty slibuje 90 %, při povodni se do něj vejde míň. Proč ho ukazujete?“**
 Dnešní pásmo v aplikaci je z chyb na trénovacích datech. Ve vnořené kontrole na 22 povodních pokrývá 80% pásmo v tomto
-stylu jen 58–72 % hodin a na začátku vzestupu 15 %. Dan v noci připravil pásmo z chyb mimo trénink: pokrývá 79–80 %
+stylu jen 58–72 % hodin a na začátku vzestupu 15 %. Dan v noci připravil pásmo z chyb mimo trénink: pokrývá 78–80 %
 a 94–95 % (cíl 80 a 95 %), na rychlém vzestupu ale jen 59–72 % a u rekordní povodně 2013 42 %. Je to orientační
 rozmezí, pravděpodobnost překročení stupně z něj nepočítáme. *Zdroj: nejistota_dan/ZPRAVA_NEJISTOTA.md, docs/POKUSY.md
 (pá 20:40).*
