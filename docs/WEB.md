@@ -85,7 +85,7 @@ Plánované spuštění (cron) GitHub pouští jen z výchozí větve (`main`), 
 | `/fonts/*`, `/img/*` | 1 rok, immutable |
 | `/data/dnesek.json` | 5 minut |
 | `/data/*` ostatní | 1 hodina |
-| `/mapa/*`, `/animace/*` | 1 den |
+| `/mapa/*`, `/animace/*` | 5 minut, pak ověření (po nasazení se nová verze ukáže hned) |
 | HTML, CSS, JS | výchozí Netlify (vždy se ověří u serveru, přenese se jen změna) |
 
 `X-Frame-Options` se nenastavuje, iframy map a animací jsou na stejné doméně.

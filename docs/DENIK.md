@@ -417,3 +417,7 @@ Oprava proti 9:46: slajd 7 (Funguje to doopravdy?) říká Honza, slajdy 8 (mapa
 ## so 20:32 · Ondra
 - Co: web podruhé přeskládaný, místo čtyř záložek dvě stránky. Dnes (`index.html`): živá předpověď, graf a vodočet, podrobnosti sbalené, dole odkaz na povodeň 2013. Povodně (`povodne.html`): jeden výběr povodně a města řídí celou stránku, nahoře mapa (rozliv nebo voda v řekách), pod ní jak přesná byla předpověď a pak co model hlásil hodinu po hodině. `kvalita.html`, `mapa.html` a `animace.html` jen přesměrují na Povodně se stejnými parametry, takže odkaz z decku funguje.
 - Proč: dřív se stejná povodeň vybírala na třech záložkách a navigace výběr zahazovala; teď je všechno o jedné povodni na jednom místě.
+
+## so 21:12 · Ondra
+- Co: mapa povodně (`app/mapbox_mapa.py`, stránky `web/mapa/`) má pravý box s přepínači schovaný za tlačítkem, spodní lištu bez bílé karty (jen tmavý přechod, bílá křivka se kreslí do přehrávané hodiny, předpověď 24 h před ní, vrchol se ukáže až při dosažení) a tlačítko Celá obrazovka. Stránka nese data obou měst (druhé město rozliv po 20 cm), takže po přepnutí na Ústí je vidět voda i budovy; dřív tam nebylo nic, protože stránka měla data jen jednoho města. Mapy a animace mají na Netlify cache 5 minut místo dne, ať po nasazení nezůstane stará verze. Úvodní video 2013 přetočené: domy hnědé ve všech záběrech, kamera jedním plynulým průletem bez střihů (24,4 s, 60 fps, 1 463 snímků, 27 MB). Nové náhledy map na webu.
+- Proč: Ondra chtěl mapu přehlednou a hezčí a ve videu stejný vzhled domů zblízka i zdálky a plynulé přechody.

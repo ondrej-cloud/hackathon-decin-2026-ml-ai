@@ -73,7 +73,7 @@ SKRYJ = """({mesto, porovnani}) => {
   zavriUvod(); pauza(); porovnat(!!porovnani);
   document.querySelector('.uvod')?.remove();
   // boxy jen skrýt: panelAnimace() do nich zapisuje (#p-den), po remove() by každý snímek vyhodil chybu a smyčka by umřela
-  for (const id of ['vlevo', 'vpravo']) { const e = document.getElementById(id); if (e) e.style.display = 'none'; }
+  for (const id of ['vlevo', 'vpravo', 'okamzik', 'nastaveni-tlacitko', 'cela']) { const e = document.getElementById(id); if (e) e.style.display = 'none'; }
   document.querySelector('.napoveda')?.remove();
   const n = document.getElementById('najeti'); if (n) n.style.display = 'none';
   if (typeof N !== 'undefined') N.poi = false;

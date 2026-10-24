@@ -1,6 +1,7 @@
 # Web field-zero.netlify.app: složka web/ se publikuje tak, jak je, bez build kroku. Návod v docs/WEB.md.
 # Hlavičky: obecné pravidlo první, konkrétnější pod ním, aby u stejné hlavičky platilo to konkrétnější.
 # X-Frame-Options se nenastavuje, mapy a animace běží v iframu na stejné doméně.
+# Mapy a animace jen na 5 minut: po novém nasazení by jinak prohlížeč den ukazoval starou verzi (stejná adresa).
 
 [build]
   publish = "web"
@@ -34,9 +35,9 @@
 [[headers]]
   for = "/mapa/*"
   [headers.values]
-    Cache-Control = "public, max-age=86400"
+    Cache-Control = "public, max-age=300, must-revalidate"
 
 [[headers]]
   for = "/animace/*"
   [headers.values]
-    Cache-Control = "public, max-age=86400"
+    Cache-Control = "public, max-age=300, must-revalidate"
