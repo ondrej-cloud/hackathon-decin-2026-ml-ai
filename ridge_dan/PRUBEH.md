@@ -80,3 +80,4 @@
 - so 04:06 · chybějící provozní průtok: Mělník ≈ Vraňany + Kostelec před 3 h (chyba 2,3 %), Nymburk ≈ 1,1 × (Přelouč + Sány) před 6 h (6,6 %), koeficienty z 2006–2018; živá ukázka nanečisto funguje.
 - so 04:09 · Codex (m): simulace zpoždění bez úniku z budoucnosti, jen nízký nález opraven.
 - so 04:40 · živá ukázka (29 předpovědí z 11:00 UTC, 25. 9.–23. 10., nízký stav): Děčín 24 h ČHMÚ 5,0 / tým 7,5 / jako teď 5,0 cm; Děčín 36 h ČHMÚ 5,7 / tým 8,1 / Ridge 30 6,4; Ústí 24 h 6,0 / 8,5 / 9,0; Ústí 36 h 6,0 / 8,7 / 8,0. Naše předpověď při nízké vodě kmitá (hodinová změna 6,4 cm proti 2,3 u reality), přenáší výkyvy průtoků z vodních děl; graf grafy/provoz_ridge_chmu.png.
+- so 05:55 · zpoždění dat ČHMÚ změřeno (7 dávek 01:40–03:40 UTC): medián 10–20 min, max 21 min, Kostelec Q 30 min, zveřejnění po 20 min; PROVOZ.md a RANNI_ZPRAVA.md doplněné.

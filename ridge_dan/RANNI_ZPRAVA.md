@@ -7,3 +7,10 @@
 5. Codex v noci 4× (i, j, k, l): žádný únik z budoucnosti, opravené nálezy v `ridge_dan/NALEZY_CODEX.md`; průběh `ridge_dan/PRUBEH.md`. Test 2021–2025 se nepoužil, main nedotčen.
 6. **Rozhodnout ráno:** (a) potvrdit týmový Ridge pro 24 h; (b) pro 36 h týmový Ridge, Ridge 30, nebo H30 s výhradou; (c) zda nové stanice a rozliv do nivy dát do prezentace jako „co jsme zkoušeli“ (graf `ridge_dan/grafy/srovnani_g3_tym_povodne.png`).
 7. Pozn.: na notebooku spouštět dlouhé běhy s vyšší prioritou procesu, jinak je Windows při souběhu odsune (jeden běh se kvůli tomu v noci zasekl, opakovaný dal stejná čísla).
+
+## Doplněk: provozní test (so 03:50–06:00, `ridge_dan/PROVOZ.md`)
+
+8. **Zpoždění dat ČHMÚ je 10–20 min (max 30 min, průtok Kostelec), zveřejnění v dávkách po 20 min** → odpověď na otázku v `docs/PREHLED.md`: počítat předpověď v HH:45 z dat do HH:00, pak se předstih zkrátí jen o 45 min. Počítat v HH:00 s doplněnou poslední hodinou stojí +1,8 cm (týmový Ridge, LOFO), 3 h zpoždění +7 cm.
+9. **V provozních datech chybí průtok Mělníka (8 % hodin) a Nymburka (0 %)**, obě týmové stanice: aplikace je musí dopočítat bilancí (Mělník ≈ Vraňany + Kostelec před 3 h, chyba 2 %).
+10. Živá ukázka 25. 9.–23. 10. 2026 (nízký stav): předpověď ČHMÚ je přesnější (Děčín +24 h 5,0 cm proti našim 7,5, „jako teď“ 5,0); náš model při nízké vodě kmitá podle výkyvů z vodních děl. Graf `ridge_dan/grafy/provoz_ridge_chmu.png`. Ukázka není varování, varování vydává ČHMÚ.
+11. Rozhodnout ráno: zda do prezentace dát provozní zjištění (zpoždění, chybějící průtoky) jako „připraveno do provozu“ a zda aplikaci počítat v HH:45.

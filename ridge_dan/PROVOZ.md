@@ -35,7 +35,40 @@ v `docs/PREHLED.md`: s jakým zpožděním jsou data ČHMÚ v provozu. Test 2021
 
 ## Zpoždění po stanicích
 
-<!-- ZPOZDENI -->
+Měřeno 24. 10. 01:40–03:40 UTC (7 dávek zveřejnění), zpoždění = čas zveřejnění souboru (HTTP Last-Modified) − čas poslední hodnoty v něm; úplnost = podíl hodin 25. 9.–23. 10., kdy existuje hodnota v celou hodinu.
+
+| Stanice | vzorků | zpoždění H medián / max (min) | zpoždění Q medián / max (min) | úplnost H / Q 30 dní (%) |
+|---|---|---|---|---|
+| Děčín (Labe) | 7 | 10 / 21 | 10 / 21 | 100,0 / 100,0 |
+| Ústí nad Labem (Labe) | 7 | 10 / 21 | 10 / 21 | 100,0 / 100,0 |
+| Louny (Ohře) | 7 | 20 / 21 | 20 / 21 | 99,2 / 99,2 |
+| Mělník (Labe) | 7 | 10 / 21 | chybí | 100,0 / 8,1 |
+| Vraňany (Vltava) | 7 | 10 / 20 | 10 / 20 | 100,0 / 100,0 |
+| Kostelec nad Labem (Labe) | 7 | 10 / 21 | 25 / 30 | 100,0 / 99,7 |
+| Praha-Chuchle (Vltava) | 7 | 11 / 21 | 11 / 21 | 100,0 / 95,6 |
+| Nymburk (Labe) | 7 | 20 / 21 | chybí | 100,0 / 0,0 |
+| Tuřice-Předměřice (Jizera) | 7 | 20 / 21 | 20 / 21 | 100,0 / 100,0 |
+| Beroun (Berounka) | 7 | 10 / 20 | 10 / 20 | 99,9 / 99,9 |
+| Nespeky (Sázava) | 7 | 20 / 21 | 20 / 21 | 100,0 / 100,0 |
+| Přelouč (Labe) | 7 | 20 / 21 | 20 / 21 | 99,2 / 99,2 |
+| Benešov nad Ploučnicí (Ploučnice) | 7 | 10 / 21 | 10 / 21 | 99,2 / 99,2 |
+| Stružnice (Ploučnice) | 7 | 10 / 10 | 10 / 10 | 99,2 / 99,2 |
+| Česká Lípa (Ploučnice) | 7 | 20 / 20 | 20 / 20 | 99,2 / 99,2 |
+| Trmice (Bílina) | 7 | 10 / 10 | 10 / 10 | 99,2 / 99,2 |
+| Žatec (Ohře) | 7 | 10 / 21 | 10 / 21 | 99,2 / 99,2 |
+| Karlovy Vary (Ohře) | 7 | 10 / 21 | 10 / 21 | 99,2 / 99,2 |
+| Zbečno (Berounka) | 7 | 11 / 21 | 11 / 21 | 100,0 / 100,0 |
+| Liblín (Berounka) | 6 | 20 / 20 | 20 / 20 | 98,9 / 98,9 |
+| Plzeň-Bílá Hora (Berounka) | 7 | 10 / 20 | 10 / 20 | 99,2 / 99,2 |
+| Plasy (Střela) | 7 | 10 / 21 | 10 / 21 | 99,2 / 99,2 |
+| Beroun (Litavka) | 7 | 10 / 20 | 10 / 20 | 100,0 / 100,0 |
+| Praha-Zbraslav (Vltava) | 7 | 10 / 20 | 10 / 20 | 100,0 / 100,0 |
+| Kácov (Sázava) | 7 | 10 / 20 | 10 / 20 | 100,0 / 100,0 |
+| Zruč nad Sázavou (Sázava) | 7 | 10 / 20 | 10 / 20 | 100,0 / 100,0 |
+| Nemošice (Chrudimka) | 7 | 20 / 21 | 20 / 21 | 99,2 / 99,2 |
+| Týniště nad Orlicí (Orlice) | 6 | 10 / 21 | 10 / 21 | 93,8 / 93,8 |
+| Sány (Cidlina) | 7 | 10 / 21 | 10 / 21 | 99,2 / 99,2 |
+| Bakov nad Jizerou (Jizera) | 7 | 20 / 21 | 20 / 21 | 100,0 / 100,0 |
 
 ## Co v provozu chybí a jak to doplnit
 

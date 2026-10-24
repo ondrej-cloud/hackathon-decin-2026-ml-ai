@@ -26,7 +26,7 @@ if __name__ == "__main__":
     S = pd.DataFrame({
         "vzorku": g.size(),
         "H_median_min": g.zpozdeni_H_min.median().round(0), "H_p90_min": g.zpozdeni_H_min.quantile(0.9).round(0),
-        "H_max_min": g.zpozdeni_H_min.max().round(0),
+        "H_max_min": g.zpozdeni_H_min.max().round(0), "Q_max_min": g.zpozdeni_Q_min.max().round(0),
         "Q_median_min": g.zpozdeni_Q_min.median().round(0), "Q_p90_min": g.zpozdeni_Q_min.quantile(0.9).round(0),
         "Q_chybi_podil": g.posledni_Q.apply(lambda s: s.isna().mean()).round(2),
         "interval_median_min": g.interval_min.median().round(0),
