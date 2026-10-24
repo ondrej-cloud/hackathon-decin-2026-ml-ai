@@ -6,8 +6,10 @@ import { vodocet } from "./vodocet.js";
 import { graf } from "./graf.js";
 
 const q = stav();
-const S = { povoden: q.get("povoden") || "2011-01", cil: q.get("cil") || "decin", cas: q.get("cas"), dnesek: q.get("dnesek") === "1" };
-let POV, RADA, DNES, i = 0, prvni = true;
+// Bez povodně a času v adrese se otevře Dnešek; odkazy s ?povoden=… vedou do historie.
+const S = { povoden: q.get("povoden") || "2011-01", cil: q.get("cil") || "decin", cas: q.get("cas"),
+  dnesek: q.get("dnesek") === "1" || (q.get("dnesek") !== "0" && !q.has("povoden") && !q.has("cas")) };
+let POV, RADA, DNES, ZPRAVA = "", i = 0, prvni = true;
 const hlavni = $("#hlavni"), panel = $("#panel");
 const kompakt = () => matchMedia("(max-width: 640px)").matches;
 const K_PANELU = `<a class="k-panelu" href="#panel">${typo("Změnit stanici, povodeň, čas nebo zapnout Dnešek")}</a>`;
@@ -45,7 +47,7 @@ async function start() {
   matchMedia("(max-width: 640px)").addEventListener("change", () => { if (RADA || DNES) ukaz(); });
   naZmenu(panel, "cil", (v) => { S.cil = v; prvni = true; nactiAUkaz(); });
   naZmenu(panel, "povoden", (v) => { S.povoden = v; S.cas = null; prvni = true; nactiAUkaz(); });
-  $("#dnesek").addEventListener("change", (e) => { S.dnesek = e.target.checked; prvni = true; nactiAUkaz(); });
+  $("#dnesek").addEventListener("change", (e) => { S.dnesek = e.target.checked; ZPRAVA = ""; prvni = true; nactiAUkaz(); });
   $("#den").addEventListener("change", zCasu);
   $("#hodina").addEventListener("input", zCasu);
   nactiAUkaz();
@@ -67,6 +69,10 @@ async function nactiAUkaz() {
   try {
     if (S.dnesek) {
       DNES = await nacti(DATA + "dnesek.json");
+      if (!DNES.ok) {
+        if (!(DNES.posledni && DNES.posledni.ok)) throw new Error(DNES.chyba || "dnesek.json bez předpovědi");
+        DNES = { ...DNES.posledni, upozorneni: [DNES.chyba, ...(DNES.posledni.upozorneni || [])].filter(Boolean) };
+      }
       if (DNES.cas) {
         $("#den").removeAttribute("min"); $("#den").removeAttribute("max");
         $("#den").value = DNES.cas.slice(0, 10);
@@ -89,10 +95,14 @@ async function nactiAUkaz() {
       $("#hodina").style.setProperty("--p", `${(h / 23) * 100}%`);
     }
   } catch (e) {
-    hlavni.innerHTML = hlaska(S.dnesek
-      ? "Dnešek teď není k dispozici: chybí data/dnesek.json. Vyrábí ho skript src/export_web.py z živých dat ČHMÚ."
-      : `Chybí data pro tuhle povodeň (data/rada_${S.povoden}_${S.cil}.json).`, "varovani");
-    tiraz({ okamzik: "–", model: S.dnesek ? MODEL_DNES : "ridge", zdroj: S.dnesek ? "živě ČHMÚ" : "archiv ČHMÚ 2006–2025" });
+    if (S.dnesek) {
+      S.dnesek = false;
+      $("#dnesek").checked = false;
+      ZPRAVA = "Živá předpověď teď není k dispozici, ukazuje se přehrávání historie. Zkuste to za chvíli znovu přepínačem Dnešek.";
+      return nactiAUkaz();
+    }
+    hlavni.innerHTML = hlaska(`Chybí data pro tuhle povodeň (data/rada_${S.povoden}_${S.cil}.json).`, "varovani");
+    tiraz({ okamzik: "–", model: "ridge", zdroj: "archiv ČHMÚ 2006–2025" });
     hlavni.removeAttribute("aria-busy");
     return;
   }
@@ -140,6 +150,7 @@ function ukazHistorii() {
   hlavni.innerHTML = `
     <h2>${typo(`${NAZVY[S.cil]}, ${datumCas(S.cas)} českého času`)}</h2>
     ${K_PANELU}
+    ${ZPRAVA ? hlaska(ZPRAVA, "varovani") : ""}
     <div class="dvojice">
       <section class="karta" aria-label="Vodočet">${stitek(`Vodočet ${NAZVY[S.cil]}`, "hladina v cm")}${vodocet(spa(), ted, pred, rozmezi, {}, prvni, kompakt())}</section>
       <section class="karta" aria-label="Odečet a předpověď">${stitek("Odečet a předpověď", "stupeň povodňové aktivity")}${cteni(ted, pred, rozmezi, {})}</section>

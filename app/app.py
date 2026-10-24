@@ -125,7 +125,7 @@ with st.sidebar:
     cil = st.radio("Stanice", list(KDE), format_func=jmeno, label_visibility="collapsed",
                    captions=[f"stupně {' / '.join(map(str, SPA[c]))} cm" for c in KDE])
     styl.sekce("Zdroj dat")
-    dnes = st.toggle("Dnešek: živá data ČHMÚ", value=False)
+    dnes = st.toggle("Dnešek: živá data ČHMÚ", value=True)
     stav_dat = st.empty()
     styl.sekce("Okamžik předpovědi")
     st.caption("Přehrávání historie: den a hodina, kdy předpověď vydat. Aplikace ukáže, co by model řekl tehdy.")
@@ -140,9 +140,11 @@ with st.sidebar:
 
 X = vstupy_c(cil)
 H = hladiny(cil)
+# dnešek počítá ridge_vse (učený na všem do 2025), historie zůstává na ridge učeném do 2018
+nazev_dnes = "ridge_vse" if nazev == "ridge" else nazev
 DNES = None
 if dnes:
-    DNES = dnes_c(nazev)
+    DNES = dnes_c(nazev_dnes)
     if not DNES["ok"]:
         stav_dat.warning(DNES["chyba"])
         DNES = None
@@ -165,7 +167,7 @@ else:
 
 with hlavicka:
     zdroj = f"živě ČHMÚ, {cislo(DNES['stari_h'])} h" if DNES else "archiv ČHMÚ 2006–2025"
-    html(styl.hlavicka(okamzik(cas), nazev, zdroj, bool(DNES)))
+    html(styl.hlavicka(okamzik(cas), nazev_dnes if DNES else nazev, zdroj, bool(DNES)))
 
 tab_ted, tab_kvalita, tab_mapa, tab_animace = st.tabs(["Teď", "Jak dobře to funguje", "Mapa povodí",
                                                         "Animace povodně"])

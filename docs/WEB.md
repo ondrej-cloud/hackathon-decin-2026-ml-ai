@@ -6,7 +6,7 @@ Statický web ve složce `web/`. Na Netlify se publikuje celá složka tak, jak 
 
 | Cesta | Co to je | Odkud se bere |
 |---|---|---|
-| `web/index.html` | Teď: vodočet, odečty, stanice, povodně, přepínač Dnešek | ručně |
+| `web/index.html` | Teď: vodočet, odečty, stanice, povodně, přepínač Dnešek; bez `povoden` a `cas` v adrese se otevře Dnešek, `?povoden=…` nebo `?dnesek=0` historie | ručně |
 | `web/kvalita.html` | Jak dobře to funguje | ručně |
 | `web/mapa.html`, `web/animace.html` | karta s výběrem a iframe | ručně |
 | `web/prezentace/index.html` | HTML deck; otvírá se vždy jako `/prezentace/` (bez `index.html`, jinak server přesměruje a deck se nenačte); odkazy z decku do aplikace vedou na `../index.html?povoden=…` (na Netlify funguje bez přesměrování, ověřeno); lokální `npx serve` dotaz u `index.html` zahazuje, proto lokálně testovat přes `/?povoden=…` | ručně |
@@ -22,7 +22,7 @@ Statický web ve složce `web/`. Na Netlify se publikuje celá složka tak, jak 
 Stáhne operativní data ČHMÚ (`app/aktualni.py`), spočítá předpověď modelem `ridge_vse` (učený na všem do 2025) s rozmezím nejistoty (`app/predikce.py`) a přidá předpověď srážek z Open-Meteo (`app/pocasi.py`). Zapíše `web/data/dnesek.json`, běží asi 15 s, nepotřebuje `.env` ani token.
 
 - `ok=true`: `cas_cesky`, `stari_h`, `upozorneni` (věty, co chybí a co je dopočtené), `stanice.decin` a `stanice.usti` (`ted`, `stupen`, `pred`, `dolni`, `horni`, `chmu` po horizontech 12/24/36, `veta` pro laika), `tabulka` (průtoky 12 stanic, `dopocteno` u Mělníka a Nymburka), `historie` (posledních 72 h pro graf), `srazky`.
-- `ok=false`: `chyba` (věta), v `posledni` zůstane poslední úspěšný stav, aby web měl co ukázat a napsal k tomu, že je starý. Skript přitom neskončí chybou, aby nasazení proběhlo.
+- `ok=false`: `chyba` (věta), v `posledni` zůstane poslední úspěšný stav, aby web měl co ukázat a napsal k tomu, že je starý. Skript přitom neskončí chybou, aby nasazení proběhlo. Když `posledni` chybí nebo se `dnesek.json` nenačte, web přepne na přehrávání historie a napíše to nahoře.
 
 ## Lokálně
 

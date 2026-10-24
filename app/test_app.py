@@ -3,7 +3,7 @@ r"""Kontrola aplikace bez prohlížeče (Streamlit AppTest). Spouští se z koř
     Windows:  $env:PYTHONUTF8=1; .venv\Scripts\python app\test_app.py
     Mac:      .venv/bin/python app/test_app.py
 
-Přepínač --dnesek navíc zapne živá data ČHMÚ (potřebuje internet).
+Výchozí pohled aplikace je Dnešek, ostatní kroky ho vypnou. Přepínač --dnesek navíc ověří živá data ČHMÚ (potřebuje internet).
 Kód ukončení je 0, když všechno prošlo, jinak 1.
 """
 import logging
@@ -27,8 +27,12 @@ VALIDACNI = ["4/2006", "3/2009", "9/2010", "1/2011"]
 BORIS = "9/2024 Boris (test)"
 
 
-def nova():
-    return AppTest.from_file(str(APP / "app.py"), default_timeout=300).run()
+def nova(dnesek=False):
+    """Aplikace po startu; výchozí je Dnešek, pro přehrávání historie se vypne."""
+    at = AppTest.from_file(str(APP / "app.py"), default_timeout=300).run()
+    if not dnesek:
+        prvek(at.sidebar.toggle, "Dnešek: živá data ČHMÚ").set_value(False).run()
+    return at
 
 
 def bez_vyjimky(at):
@@ -48,7 +52,8 @@ def metriky(at):
 
 
 def krok_nabehne():
-    at = nova()
+    # výchozí Dnešek; bez internetu aplikace ukáže varování a přehrává historii
+    at = nova(dnesek=True)
     bez_vyjimky(at)
     assert not at.error, f"chybová hláška: {at.error[0].value}"
 
@@ -135,8 +140,7 @@ def krok_ridge_vse():
 
 
 def krok_dnesek():
-    at = nova()
-    prvek(at.sidebar.toggle, "Dnešek: živá data ČHMÚ").set_value(True).run()
+    at = nova(dnesek=True)
     bez_vyjimky(at)
     assert not at.sidebar.warning, f"živá data se nenačetla: {at.sidebar.warning[0].value}"
     podnadpis = at.main.subheader[0].value
