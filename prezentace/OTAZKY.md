@@ -78,3 +78,7 @@ Sedm minut je málo a demo závisí na Wi-Fi a na tom, jestli ČHMÚ zrovna zve�
 
 **23. Proč je ve vahách nejdůležitější hladina v Děčíně teď, když předpovídáte zítřek?** (Ondra, slajd Z6)
 Hladina zítra je hladina teď plus to, o kolik se za den změní, dnešní voda do zítřka neodteče celá. Změnu model čte z toho, co právě teče proti proudu: voda z Prahy doteče do Děčína za 17 h, proto váží Praha teď, ne Praha před 24 h, ta už je v dnešní hladině Děčína. Záporné políčko hned vedle kladného je výpočet trendu, jestli voda stoupá.
+
+**24. Když je to lineární regrese, proč je předpověď v grafu křivka?** (Ondra, slajd Z11)
+Přímka je vztah mezi vstupy a hladinou, naučí se jednou: zjednodušeně s jedním vstupem hladina za 24 h = 111 + 0,41 × průtok v Mělníku. Každou hodinu do ní dosadíme nová měření a vyjde jeden bod; body za sebou v čase dají křivku. Skutečný model dělá totéž s 98 vstupy najednou (vážený součet, slajd 5).
+

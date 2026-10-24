@@ -1,6 +1,6 @@
 # Slajdy a texty řečníků
 
-Devět slajdů na 6:45, rezerva 15 s do 7:00, pak deset záložních. Každý slajd odpovídá na jednu otázku, kterou by porota položila; nadpis slajdu je odpověď a pod ním jsou věci, které musí zaznít. Text řečníka je napsaný tak, jak se říká nahlas, na zhruba 130 slov za minutu. `[mezerník]` je další krok decku. Živé demo neděláme, web otevíráme až při otázkách. Body zadání: 1 co řešíme, 2 data, 3 příprava dat, 4 vstupy, 5 model, 6 ověření, 7 limity.
+Devět slajdů na 6:45, rezerva 15 s do 7:00, pak jedenáct záložních. Každý slajd odpovídá na jednu otázku, kterou by porota položila; nadpis slajdu je odpověď a pod ním jsou věci, které musí zaznít. Text řečníka je napsaný tak, jak se říká nahlas, na zhruba 130 slov za minutu. `[mezerník]` je další krok decku. Živé demo neděláme, web otevíráme až při otázkách. Body zadání: 1 co řešíme, 2 data, 3 příprava dat, 4 vstupy, 5 model, 6 ověření, 7 limity.
 
 | # | Čas | Řečník | Otázka poroty | Nadpis (odpověď) | Bod |
 |---|---|---|---|---|---|
@@ -224,3 +224,10 @@ Z nejvzdálenějších stanic, Berounu a Nespek na Sázavě, doteče voda do Dě
 Snímek `grafy/Z10_aplikace_dnes.png`. Odpovídá Honza.
 
 Web field-zero.netlify.app se otevře rovnou na Dnešku: hladina v Děčíně a Ústí teď, předpověď na 12, 24 a 36 h s rozmezím nejistoty a vedle oficiální předpověď ČHMÚ. Na snímku z 24. 10. v 6:00: Děčín 84 cm, za 24 h 94 cm, ČHMÚ 90 cm. Data se stahují živě z ČHMÚ, chodí se zpožděním 1 až 3 h. Pokud porota chce, otevřeme web živě.
+
+### Z11 · Proč je předpověď v grafu křivka, když je to lineární regrese?
+
+Graf `grafy/Z11_primka_a_krivka.png`. Odpovídá Ondra.
+
+Přímka je vztah mezi tím, co teče proti proudu, a hladinou v Děčíně, ne tvar v čase. Zjednodušeně s jedním vstupem: vlevo je každá hodina 2006–2018 jeden bod (průtok v Mělníku proti hladině v Děčíně o 24 h později) a přímka se jimi proloží jednou, hladina za 24 h = 111 + 0,41 × průtok v Mělníku. Vpravo se do té samé přímky každou hodinu dosadí nový průtok a body v čase dají křivku. Skutečný model má 98 vstupů, takže místo přímky v rovině je to vážený součet, který nejde nakreslit; pro jednu hodinu ho ukazuje slajd 5. Jedna stanice nestačí: po vrcholu jde jednovstupová přímka na 800 cm, protože nepozná, že voda už nepřibývá.
+
