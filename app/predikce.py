@@ -23,7 +23,10 @@ STUPNE = ["pod 1. stupněm", "1. stupeň (bdělost)", "2. stupeň (pohotovost)",
 BARVY = ["#2e7d32", "#f2c437", "#ef6c00", "#c62828"]
 # jak se model jmenuje v textech map a animací; klíč souboru v models/ by laikovi nic neřekl
 NAZVY_MODELU = {"ridge": "lineární regrese, učená do roku 2018", "ridge_test": "lineární regrese, učená do roku 2020",
-                "ridge_vse": "lineární regrese, učená na všem do roku 2025"}
+                "ridge_vse": "lineární regrese, učená na všem do roku 2025",
+                "ridge_bez2013": "lineární regrese, učená do roku 2020 bez povodně 2013"}
+# povodeň 6/2013 je v tréninku; přehrává se s modelem, který ji při učení neviděl (vrchol v Děčíně, UTC)
+VRCHOL_2013 = "2013-06-06 00:00"
 
 
 def nazev_modelu(klic):
@@ -33,19 +36,25 @@ def nazev_modelu(klic):
 def modely():
     """Modely, které mají v models/ aspoň jeden soubor; ridge vždy, ten se umí dotrénovat."""
     nazvy = {f.name.rsplit("_", 2)[0] for f in MODELS.glob("*_*_*.joblib")} if MODELS.exists() else set()
-    return sorted(nazvy | {"ridge", "ridge_vse"})
+    return sorted((nazvy | {"ridge", "ridge_vse"}) - {"ridge_bez2013"})
 
 
 def nacti_model(nazev, cil, h):
     soubor = MODELS / f"{nazev}_{cil}_{h}.joblib"
     if not soubor.exists():
-        if nazev not in ("ridge", "ridge_vse"):
+        if nazev not in ("ridge", "ridge_vse", "ridge_bez2013"):
             raise FileNotFoundError(f"chybí {soubor}, uloží ho autor modelu")
-        from evaluate import casti
+        import pandas as pd
+        from evaluate import OKNO_VAL, PO, VYNECHAT, casti
         from models import ridge
         X, y = tabulka(cil, h)
         # ridge se učí do 2018 (pro přehrávání historie), ridge_vse na všem do 2025 (pro dnešek)
         tr = (casti(cil, h).reindex(X.index) == "train") | (nazev == "ridge_vse")
+        if nazev == "ridge_bez2013":
+            # jako finální model (vše do 2020), jen bez povodně 2013 a 20 dní kolem ní, stejně jako u validace
+            v = pd.Timestamp(VRCHOL_2013, tz="UTC")
+            tr = casti(cil, h, finalni=True).reindex(X.index) == "train"
+            tr &= (X.index < v - OKNO_VAL - VYNECHAT) | (X.index > v + PO + VYNECHAT)
         MODELS.mkdir(exist_ok=True)
         joblib.dump(ridge.pipeline(ridge.PARAMETRY["alpha"]).fit(X[tr], y[tr]), soubor)
     return joblib.load(soubor)

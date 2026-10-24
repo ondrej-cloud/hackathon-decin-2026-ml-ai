@@ -365,7 +365,7 @@ with tab_mapa:
                          captions=["Čas po hodinách, rozliv z předpovědi 24 h předem vedle rozlivu ze skutečné hladiny.",
                                    f"Stanice a rozliv v okamžiku z levého panelu ({okamzik(cas)})."])
         a, b = st.columns([3, 1.25], gap="medium", vertical_alignment="bottom")
-        povoden_m = a.radio("Povodeň", list(POVODNE), index=3, horizontal=True, key="mapa_povoden")
+        povoden_m = a.radio("Povodeň", list(POVODNE) + ["6/2013"], index=3, horizontal=True, key="mapa_povoden")
         if rezim == REZIMY[0]:
             cil_m = b.radio("Město", list(KDE), format_func=jmeno, horizontal=True, key="mapa_cil")
             prehraj = False
@@ -373,12 +373,16 @@ with tab_mapa:
             prehraj = b.button("Přehrát povodeň", type="primary", width="stretch", on_click=prehrat if token else None)
 
     if rezim == REZIMY[0] and token:
-        iframe(mapbox_animace_html(povoden_m, cil_m, nazev), 720)
+        iframe(mapbox_animace_html(povoden_m, cil_m, "ridge_bez2013" if povoden_m == "6/2013" else nazev), 720)
         st.caption("Vlevo rozliv z hladiny, kterou model předpověděl 24 h předem, vpravo rozliv ze skutečně naměřené "
                    "hladiny v tutéž hodinu; posuvník uprostřed obě strany porovná, tlačítko spustí čas. Rozliv je "
                    "z výškového modelu terénu ČÚZK DMR 5G (2 m): zaplaví se vše, co je níž než hladina a spojené "
                    "s řekou; proti úředním územím Q5/Q20/Q100 se shoduje z 82 až 90 %. Je to statický odhad bez "
                    "proudění; zdi a hráze pod rozlišením terénu nevidí.")
+        if povoden_m == "6/2013":
+            st.caption("Povodeň 6/2013 je v trénovacích datech, proto předpověď počítá lineární regrese učená do roku "
+                       "2020 bez této povodně a 20 dní kolem ní. Nejvyšší hladina v Děčíně, kterou při učení viděla, "
+                       "byla 875 cm, vrchol 2013 měl 1 072 cm.")
     elif rezim == REZIMY[0]:
         st.warning("Celá povodeň s porovnáním potřebuje token Mapboxu v .env. Bez něj přepněte na Zvolený okamžik "
                    "a tlačítko Přehrát povodeň projde povodeň po 6 hodinách na jednodušší mapě.")
@@ -392,7 +396,7 @@ with tab_mapa:
         else:
             tabulka_mapy, pred_mapy = None, predpovedi_pro_mapu(cas)
         if prehraj and not token:
-            od_m, do_m = POVODNE[povoden_m]
+            od_m, do_m = animace.POVODNE[povoden_m]
             for t in pd.date_range(od_m, f"{do_m} 18:00", freq="6h", tz=TZ):
                 t = t.tz_convert("UTC")
                 misto.pydeck_chart(mapa_deck(t, predpovedi_pro_mapu(t), pohled), height=650)
