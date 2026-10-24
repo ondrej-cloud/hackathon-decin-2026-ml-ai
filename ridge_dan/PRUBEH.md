@@ -74,3 +74,7 @@
 - so 03:14 · Codex (k): G3 v LOFO překoná i síť (−1,13), Ridge 30 36 h pro Ústí formálně splní pravidlo (−1,00, 5 z 8), chybí uložená validace G3, drobnosti v zaokrouhlení → opravuji a dělám (a)–(d) pro Ridge 30 na 36 h.
 - so 03:30 · Codex (l) bez kritických/vysokých nálezů; (a)–(d) pro Ridge 30 na 36 h hotové (modely models/ridge30_*_36.joblib, ROZHODNUTI_G3.md); opraveny nálezy k a l.
 - so 03:35 · RANNI_ZPRAVA.md hotová; noční úkol uzavřen.
+- so 03:58 · nový úkol PROVOZ: ČHMÚ now/ = poslední ~1,5 h po 10 min, recent/ = denní soubory s H, Q a jednou denní předpovědí H_F/Q_F (od 11:00 UTC dne D na 67 h); spouštím měření zpoždění (výpis now/ každých 10 min do 05:50) a stahování recent/ pro 30 stanic 24. 9.–23. 10.
+- so 04:05 · PROVOZNÍ NÁLEZ: v provozních datech ČHMÚ chybí průtok Mělník (1–2 hodnoty denně) a Nymburk (vůbec), obě týmové stanice; Kostelec Q po 15 min, Praha Q s dírami. Pro živou ukázku doplním Q z vodního stavu přes měrnou křivku z historie 2023–2025 (ověřím na 2025).
+- so 04:06 · simulace zpoždění (LOFO, Děčín) hotová: když vstupy přijdou o 1 h později a doplní se poslední známou hodnotou, týmový Ridge 24 h +1,79 cm, Ridge 30 24 h +1,25, týmový 36 h +2,09, Ridge 30 36 h +1,75; model natrénovaný na stejně staré vstupy zhruba poloviční ztrátu; nejcitlivější stanice Děčín, Mělník, Zbraslav, Praha, Kostelec.
+- so 04:06 · chybějící provozní průtok: Mělník ≈ Vraňany + Kostelec před 3 h (chyba 2,3 %), Nymburk ≈ 1,1 × (Přelouč + Sány) před 6 h (6,6 %), koeficienty z 2006–2018; živá ukázka nanečisto funguje.

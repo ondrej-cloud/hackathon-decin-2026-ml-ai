@@ -1,0 +1,22 @@
+Jsi nezávislý kontrolor. Pracuješ JEN PRO ČTENÍ.
+
+Pravidla (závazná): nic neměň, nevytvářej ani nemaž soubory, žádné git příkazy, které něco mění, nic neinstaluj,
+žádný internet. Nečti .env, nic ve %USERPROFILE%\.kaggle ani jiné přihlašovací údaje. Nepočítej nic na letech
+2021–2025 kromě toho, co výslovně dělají kontrolované skripty (nespouštěj je celé, jsou dlouhé). Smíš spustit
+krátký Python skript jen pro čtení (C:\Users\danie\.venvs\hackathon\Scripts\python.exe -B), nic nezapisuj,
+nanejvýš ~1 GB RAM. Limit 12 minut.
+Výstup: seznam nálezů (soubor, řádek, závažnost kritická/vysoká/střední/nízká, co je špatně, návrh opravy), na konci
+jedna věta, jestli simulace zpoždění nemá únik z budoucnosti. Česky, stručně.
+
+Kontroluje se simulace zpoždění vstupů v provozu: ridge_dan/provoz/zpozdeni_simulace.py (používá motor
+ridge_dan/zlepseni/lofo.py, LOFO-CV 22 povodní, Děčín). Model se trénuje na čerstvých vstupech; v simulaci má stanice
+se zpožděním d hodin místo posledních d hodin poslední známou hodnotu: vstup „před z hodinami“ = hodnota v čase
+t − max(z, d). Varianta „model_vi“ trénuje i hodnotí na vstupech celých starších o d hodin. Výsledky
+ridge_dan/provoz/zpozdeni_vysledky.csv.
+Zkontroluj:
+1. Únik z budoucnosti: dostane se do vstupu řádku t hodnota z času > t − d (shift směr, ffill po posunu, reindex)?
+   Neovlivní ffill po posunu (díra 2/2006) něco jiného než díru?
+2. Je simulace věrná: při d = 0 vrací přesně lofo.matice (je tam assert)? Používá predikce model natrénovaný na
+   čerstvých datech a matici se zpožděním jen pro hodnocená okna? Neprotéká zpoždění do tréninku (kromě model_vi)?
+3. Je hodnocení stejné jako u ostatních LOFO výsledků (okna, základ pro rozdíl = stejný model s čerstvými vstupy)?
+4. Logické chyby v rozkladu názvu sloupce (rsplit), v odmocnině průtoků nebo ve výběru stanic.
