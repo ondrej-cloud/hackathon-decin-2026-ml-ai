@@ -58,6 +58,10 @@ Bez propojení složky jde totéž s `--site <ID sitů>` a tokenem v proměnné 
 
 Netlify nepropojuj s GitHubem přes „Import from Git“: build by vzal jen to, co je v Gitu, tedy bez map a animací. Nasazuje se z počítače nebo z GitHub Action.
 
+## Druhý web field-one.netlify.app
+
+Pro zkoušení nové verze prezentace vedle stabilní: site `field-one` (ID `8fd3da20-6ddb-49b6-a2e2-b59ab08602af`), stejná složka `web/`. Nasazení bez přepojení lokálního linku: `npx netlify-cli@latest deploy --prod --no-build --dir web --site 8fd3da20-6ddb-49b6-a2e2-b59ab08602af`. Hodinová Action nasazuje jen na field-zero.
+
 ## Každou hodinu automaticky (GitHub Action)
 
 `.github/workflows/dnesek.yml` běží každou hodinu v :05 a ručně (Actions > Dnešek na webu > Run workflow). Kroky: Python 3.12 a `app/requirements.txt`, `uloz_model.py` a `--vse`, `export_web.py --vse`, `dnesek_export.py`, `netlify deploy --prod --no-build --dir web`. Nic se necommituje, repo zůstává beze změny.

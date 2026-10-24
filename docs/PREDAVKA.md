@@ -6,7 +6,7 @@ Pro toho, kdo pokračuje v Honzově práci (Honza na jiném účtu nebo kdokoli 
 
 | Co | Kde | Stav |
 |---|---|---|
-| Web (Teď, Jak dobře to funguje, Mapa, Animace) | https://field-zero.netlify.app, zdroj `web/` | nasazeno 12:08 (verze 3), v `main` |
+| Web (Teď, Jak dobře to funguje, Mapa, Animace) | https://field-zero.netlify.app (stabilní) a https://field-one.netlify.app (zkušební, site ID 8fd3da20-6ddb-49b6-a2e2-b59ab08602af), zdroj `web/` | v `main` |
 | Hlavní prezentace (HTML deck, 9 slajdů + Z1–Z12) | https://field-zero.netlify.app/prezentace/, zdroj `web/prezentace/` | nasazena verze bez porovnání; poslední úpravy (slajd 1 bez mlhy, tlačítko na 8, slajd 2 ve dvou krocích, zalamování) jsou rozpracované, viz níž |
 | Varianta prezentace ve stylu Liquid Glass (námět) | `web/prezentace-sklo/` (po nasazení https://field-zero.netlify.app/prezentace-sklo/) | commit e2d4f2e, obsah = kopie hlavního decku z 12:20 |
 | Úvodní video (2013, 60 fps, ostré, bez porovnání, s datem) | `web/prezentace/video/povoden_2013_decin_1080.mp4` (36 MB), poster `web/prezentace/grafy/video_2013_poster.jpg` | commit 0ea3fb3 na větvi `honza`; natáčí `src/video_povoden.py`, návod `docs/VIDEO.md` (i pro Mac, písmo San Francisco) |
