@@ -28,7 +28,9 @@ Jedna věta, která drží celou prezentaci: **„Co teče Prahou teď, je zítr
 | 10 | 9 | Živé demo (Dnešek, mapa Borise, rozliv), 70 s | pozadí `mapbox2_animace.png` ztmavené |
 | 11 | 10 | Co umíme, co ne a co dál | čtyři karty, závěrečná věta, „Děkujeme. Otázky?“ |
 | 12 | záloha | Rozliv: výška terénu proti hladině, ověřená proti úřední mapě | `mapbox_decin.png`, 167 / 183 / 165 ha |
-| 13–17 | Z1–Z5 | Jak dopadly jednotlivé modely · „Bude jako teď“ je vždycky o den pozadu · Když se blíží vrchol, už neprší · Do rozmezí od–do se vejde 8 až 9 z 10 hodnot · Povodeň 2011: 3. stupeň hlášen 15 hodin předem | `Z1`–`Z5` |
+| 13–18 | Z1–Z6 | Jak dopadly jednotlivé modely · „Bude jako teď“ je vždycky o den pozadu · Když se blíží vrchol, už neprší · Do rozmezí od–do se vejde 8 až 9 z 10 hodnot · Povodeň 2011: 3. stupeň hlášen 15 hodin předem · Váhy modelu pro Děčín za 24 h | `Z1`–`Z6` |
+
+Grafy mají vlastní krátký nadpis vlevo nahoře; v Canvě je horních 12,5 % obrázku oříznuto, protože nadpis má slajd. Slajd 4 je „Předpověď je součet: kolik centimetrů přidá každá řeka“ (`04_predpoved_je_soucet.png`), váhy modelu jsou v záloze Z6.
 
 Časy, řečníci a co se říká jsou v `docs/PREZENTACE_7MIN.md` a v poznámkách řečníka v Canvě. Oprava proti dřívějšímu plánu: neříkat, že „Děčín dnes vidí jen 4 hodiny dopředu“; ČHMÚ pro Děčín oficiální předpověď vydává a aplikace ji ukazuje, 4 h platí jen pro data z balíčku.
 
