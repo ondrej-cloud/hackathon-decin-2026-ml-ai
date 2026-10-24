@@ -223,3 +223,7 @@ Návrh (ještě neschválený): trénink 1/2024–6/2025, validace 7–12/2025, 
 ## Úpravy dat
 
 Zatím žádné.
+
+## Budovy z OpenStreetMap
+
+Pro mapu Děčína a Ústí nad Labem jsme jednou stáhli obrysy budov z OpenStreetMap (Overpass, `python app/budovy.py --priprav`) a uložili je do `data/external/budovy_decin.json` (12 490 budov) a `budovy_usti.json` (23 577 budov); surová odpověď je v `data/raw/osm/`, která není v Gitu. Výška je z tagu `height`, jinak `building:levels` krát 3 m, jinak 9 m (garáže a kůlny 3 m). Mapbox Standard kreslí vlastní 3D budovy až od zoomu 15, naše vrstva je viditelná od zoomu 11 a mezi 15 a 15,3 se s nimi prolne. Výšky z OSM nejsou ověřené; pro rozliv nehrají roli, budovy jsou jen pro orientaci. Zdroj: © OpenStreetMap contributors (ODbL).

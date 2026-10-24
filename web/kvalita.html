@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="cs">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Jak dobře to funguje · Kolik vody přiteče do Děčína a Ústí</title>
+<meta name="description" content="Chyba modelu při povodních proti „bude jako teď“, předstih varování, propásnuté povodně a plané poplachy.">
+<meta name="theme-color" content="#111820">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Jak dobře to funguje · Kolik vody přiteče do Děčína a Ústí">
+<meta property="og:description" content="Chyba modelu při povodních proti „bude jako teď“, předstih varování, propásnuté povodně a plané poplachy.">
+<meta property="og:image" content="https://field-zero.netlify.app/img/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:url" content="https://field-zero.netlify.app/kvalita.html">
+<meta property="og:locale" content="cs_CZ">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="img/ikona-180.png">
+<meta name="apple-mobile-web-app-title" content="Povodňový pult">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="icon" href="data:image/svg+xml,%3Csvg viewBox='0 0 44 44' width='44' height='44' aria-hidden='true' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='44' height='44' rx='9' fill='%23111820'/%3E%3Crect x='12' y='3' width='20' height='38' rx='2' fill='%231a232d'/%3E%3Cg stroke='%23c8d1d9' stroke-width='1.2' stroke-opacity='.7'%3E%3Cline x1='14' x2='30' y1='6' y2='6'/%3E%3Cline x1='14' x2='22' y1='9' y2='9'/%3E%3Cline x1='14' x2='22' y1='12' y2='12'/%3E%3Cline x1='14' x2='22' y1='15' y2='15'/%3E%3Cline x1='14' x2='22' y1='18' y2='18'/%3E%3Cline x1='14' x2='30' y1='21' y2='21'/%3E%3Cline x1='14' x2='22' y1='24' y2='24'/%3E%3Cline x1='14' x2='22' y1='27' y2='27'/%3E%3Cline x1='14' x2='22' y1='30' y2='30'/%3E%3Cline x1='14' x2='22' y1='33' y2='33'/%3E%3Cline x1='14' x2='30' y1='36' y2='36'/%3E%3C/g%3E%3Crect x='12' y='25' width='20' height='16' fill='%233aa0c9' fill-opacity='.55'/%3E%3Cpath d='M4 25.5h36' stroke='%237cc6e4' stroke-width='2'/%3E%3C/svg%3E">
+<link rel="preload" href="fonts/sofia-sans-extra-condensed-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/schibsted-grotesk-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/sofia-sans-extra-condensed-latin-ext.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/schibsted-grotesk-latin-ext.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="css/pult.css">
+<link rel="modulepreload" href="js/kvalita.js">
+<link rel="modulepreload" href="js/typo.js">
+<link rel="modulepreload" href="js/data.js">
+<link rel="modulepreload" href="js/spolecne.js">
+<link rel="modulepreload" href="js/graf.js">
+<link rel="preload" href="data/povodne.json" as="fetch" crossorigin>
+<link rel="preload" href="data/metriky.json" as="fetch" crossorigin>
+<script>
+(function () {
+  var q = new URLSearchParams(location.search), p = q.get("povoden"), c = q.get("cil");
+  var l = document.createElement("link");
+  l.rel = "preload"; l.as = "fetch"; l.crossOrigin = "anonymous";
+  l.href = "data/rada_" + (/^\d{4}-\d{2}$/.test(p) ? p : "2011-01") + "_" + (c === "usti" ? "usti" : "decin") + ".json";
+  document.head.appendChild(l);
+})();
+</script>
+<script type="module" src="js/kvalita.js"></script>
+</head>
+<body>
+<div class="strana">
+<header class="tiraz">
+  <div class="tiraz-znak"><svg viewBox="0 0 44 44" width="44" height="44" aria-hidden="true"><rect x="12" y="3" width="20" height="38" rx="2" fill="#1a232d"/><g stroke="#c8d1d9" stroke-width="1.2" stroke-opacity=".7"><line x1="14" x2="30" y1="6" y2="6"/><line x1="14" x2="22" y1="9" y2="9"/><line x1="14" x2="22" y1="12" y2="12"/><line x1="14" x2="22" y1="15" y2="15"/><line x1="14" x2="22" y1="18" y2="18"/><line x1="14" x2="30" y1="21" y2="21"/><line x1="14" x2="22" y1="24" y2="24"/><line x1="14" x2="22" y1="27" y2="27"/><line x1="14" x2="22" y1="30" y2="30"/><line x1="14" x2="22" y1="33" y2="33"/><line x1="14" x2="30" y1="36" y2="36"/></g><rect x="12" y="25" width="20" height="16" fill="#3aa0c9" fill-opacity=".55"/><path d="M4 25.5h36" stroke="#7cc6e4" stroke-width="2"/></svg></div>
+  <div class="tiraz-nazev">
+    <h1><a href="index.html">Kolik vody přiteče do&nbsp;Děčína a&nbsp;Ústí</a></h1>
+    <p>Předpověď hladiny Labe na 12, 24 a&nbsp;36 hodin pro povodňovou komisi města a&nbsp;lidi u&nbsp;řeky.</p>
+  </div>
+  <dl class="tiraz-stav">
+    <div><dt>Okamžik</dt><dd id="t-okamzik">…</dd></div>
+    <div><dt>Model</dt><dd id="t-model">ridge</dd></div>
+    <div><dt>Data</dt><dd id="t-data"><i class="tecka"></i>archiv ČHMÚ 2006–2025</dd></div>
+  </dl>
+</header>
+<nav class="nav" aria-label="Části webu"><a href="index.html">Teď</a><a href="kvalita.html" aria-current="page">Jak dobře to funguje</a><a href="mapa.html">Mapa povodí</a><a href="animace.html">Animace povodně</a></nav>
+<p id="oznameni" class="sr" aria-live="polite"></p>
+<main class="hlavni">
+  <p class="uvod">Model jsme zkoušeli na čtyřech povodních, které při učení neviděl (učil se na letech 2006–2018 bez nich a&nbsp;bez 20 dní kolem nich). Srovnáváme ho s&nbsp;nejjednodušší předpovědí <strong>„bude jako teď“</strong>, tedy že za 24&nbsp;h bude stejná hladina jako teď.</p>
+  <section class="karta"><div class="volby" id="volby"><p class="nacitam">Načítám…</p></div></section>
+  <div class="hlavni" id="hlavni"></div>
+</main>
+<footer class="pata">
+  <p><b>Data ČHMÚ</b>, otevřená data 2006–2025 · model lineární regrese (ridge), 98 vstupů, učený 2006–2018</p>
+  <p>Mapy © Mapbox, © OpenStreetMap · záplavová území DIBAVOD (VÚV TGM) · terén ČÚZK DMR 5G</p>
+</footer>
+</div>
+<noscript><p class="hlaska varovani" style="margin:1rem">Stránka potřebuje JavaScript: kreslí vodočet a&nbsp;grafy z&nbsp;předpočítaných dat.</p></noscript>
+</body>
+</html>

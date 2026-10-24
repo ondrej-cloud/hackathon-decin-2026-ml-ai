@@ -25,3 +25,13 @@ Thumbs.db
 # Kaggle: složky k odeslání a stažené výstupy
 kaggle/.build/
 kaggle/.out/
+
+# Local Netlify folder
+.netlify
+
+# Web: mapy a animace s tokenem Mapboxu generuje src/export_web.py
+web/mapa/*.html
+web/animace/*.html
+
+# Originaly videi (24 az 30 MB) nejsou v Gitu, na web jde verze 720p
+docs/grafy/video_povoden_*.mp4

@@ -1,49 +1,47 @@
-# Prezentace: plán slajdů a vizuální jazyk
+# Prezentace: vizuální jazyk a stavba v Canvě
 
-15 minut, 4 lidi, porota z FJFI, DCÚK a firem. Staví se v Canvě (Honza), obsah z `docs/`, grafy z `docs/grafy/slajdy/`, snímky aplikace z `docs/grafy/`. Pořadí je pevné: ukázat, vysvětlit, dokázat, přiznat limity.
+Obsah a pořadí slajdů určuje Ondrova kostra na 7 minut v `docs/PREZENTACE_7MIN.md` (10 slajdů, 5 záložních). Tenhle soubor říká, jak deck vypadá a jak je postavený v Canvě. Deck: https://www.canva.com/d/xVAIR8am2CrRslj (1920 x 1080, 17 stránek, u každé poznámky řečníka s časem). Grafy jsou z `docs/grafy/prezentace/` (bez nadpisů, nadpis je na slajdu), snímky aplikace z `docs/grafy/`.
 
 ## Myšlenka a vizuální jazyk
 
-Jedna věta, která drží celou prezentaci: **„Co teče Prahou teď, je zítra v Děčíně.“** Vizuálně ji nese **linie řeky**: tenká modrá čára Vltavy a Labe od Prahy po Děčín (z `data/external/reky.geojson`), která se na každém slajdu posune a rozsvítí další stanici. Na titulním slajdu začíná v Praze, na posledním končí v Děčíně.
+Jedna věta, která drží celou prezentaci: **„Co teče Prahou teď, je zítra v Děčíně.“** Nese ji **linie řeky**: tenká modrá čára Vltavy a Labe od Prahy po Děčín (z `data/external/reky.geojson`), velká na titulu, malá vpravo dole na každém dalším slajdu; rozsvícená tečka ukazuje, o kterém úseku se mluví (Praha modrá, Mělník oranžová, Děčín červená).
 
-- Tmavý povodňový pult jako aplikace: pozadí #111820, panely rgba(15,20,25,0.92), voda #3aa0c9 (světlejší #7cc6e4), stupně žlutá #f2c437, oranžová #ef6c00, červená #c62828, šedá #666666 pro „bude jako teď“. Žádné jiné barvy.
-- Písmo: čísla a nadpisy Sofia Sans Extra Condensed (v Canvě ověřit; náhrada Barlow Condensed nebo Oswald), text Schibsted Grotesk (náhrada Archivo). Čísla velká, nejmíň 120 bodů, s desetinnou čárkou.
-- Každý slajd má jedno tvrzení jako nadpis, nejvýš 12 slov textu a jedno číslo nebo obrázek. Žádné odrážkové stěny, žádné ikony z knihovny, žádné stock fotky, žádné přechody (jen posun linie řeky).
-- Pozadí snímků z aplikace a mapy přes celý slajd se ztmavením dolů, text vlevo dole v panelu.
-- Patička: číslo slajdu a „Data ČHMÚ, otevřená data“. U grafů zdroj a podmínky pod grafem (už jsou v obrázcích).
+- Barvy jako v aplikaci: pozadí #111820, karty #1a232d, voda #3aa0c9 a #7cc6e4, stupně #f2c437 / #ef6c00 / #c62828, text #ffffff a #c8d1d9, tlumený #8b98a5, „bude jako teď“ #666666. Nic jiného.
+- Písmo: nadpisy a čísla Sofia Sans Extra Condensed (náhrada Barlow Condensed nebo Oswald), text Schibsted Grotesk (náhrada Archivo). Canva přes API rodinu písma nastavit neumí, viz „Co dodělat ručně“.
+- Každý slajd má jedno tvrzení jako nadpis, jedno velké číslo nebo jeden obrázek, nejvýš tři věty textu. Žádné odrážkové stěny, ikony z knihoven, stock fotky ani přechody.
+- Grafy jako bílé karty vlevo, čísla a text vpravo. Snímky mapy přes celý slajd se ztmavením.
+- Patička: zdroj dat a map. Štítek vlevo nahoře: číslo bloku a téma (01 · CO ŘEŠÍME …), u záložních slajdů otázka poroty, na kterou odpovídají.
 
-## Slajdy
+## Stránky v Canvě
 
-| # | Čas | Nadpis (tvrzení) | Obsah a podklad | Kdo |
-|---|---|---|---|---|
-| 1 | 0:00 | Kolik vody přiteče do Děčína | titul přes celý slajd: `docs/grafy/mapbox2_porovnani.png` ztmavený, linie řeky v Praze, jména týmu | Tobias |
-| 2 | 0:15 | (bez nadpisu) | video animace povodně Boris 2024 v mapě (30 s, nahrát z aplikace, bez komentáře čísel); pak jedna věta: „14. 9. 2024 v 11:00 model hlásí 3. stupeň. Voda přišla 15. 9. ve 14:00.“ | Tobias |
-| 3 | 1:00 | Dnes vidí Děčín 4 hodiny dopředu, my dáváme 24 | pro koho (povodňová komise, lidé u řeky), „bude jako teď“ propásne každou povodeň; číslo 4 h → 24 h | Tobias |
-| 4 | 2:30 | S daty z balíčku by model byl horší než nic | `slajdy/kolik_dat.png`; 2 roky a jen kraj = 45 cm, 20 let a 12 stanic = 17 cm | Ondra |
-| 5 | 3:30 | 20 let, 12 stanic, 175 320 hodin | mapa stanic `docs/grafy/mapbox_povodi.png`, tři velká čísla, zdroj ČHMÚ; kontrola dat (shoda s balíčkem na cm, bilance vody) jednou větou | Ondra |
-| 6 | 4:30 | Testujeme na povodních, které model neviděl | pruh času 2006–2025: trénink / 4 povodně a 2019–20 / test 2021–25; „20 dní kolem povodní vynecháno“; dvě pasti, které jsme našli (interpolace z budoucnosti, denní srážky za následující den) | Ondra |
-| 7 | 5:30 | Model vidí jen to, co je v tu chvíli změřené | 98 vstupů jako mřížka 14 řad × zpoždění 0–36 h (nakreslit v Canvě tečkami), odmocnina průtoků jednou větou | Honza |
-| 8 | 6:15 | Největší váhu má Praha teď: voda z Prahy je v Děčíně za den | `slajdy/vahy_decin_24h.png`; záporné váhy = trend; na 12 h rozhoduje Mělník | Honza |
-| 9 | 7:15 | Čtyři modely, vyhrál nejjednodušší | `slajdy/srovnani_modelu.png`: 44,3 → 24,8 → 23,1 → 17,8 → 17,1 cm | Ondra, Dan |
-| 10 | 8:00 | Na povodních, které neviděl, o 55 % menší chyba | `slajdy/test_2021_2025.png` a `slajdy/boris_2024.png`; Boris 27 h předem | Ondra |
-| 11 | 8:45 | Co jsme zkoušeli a nepomohlo | `slajdy/co_jsme_zkouseli.png` + řádek TCN 20,3; srážky nepomohly, protože voda z deště už teče v řekách | Dan |
-| 12 | 9:30 | Říkáme od–do, a víme, jak často se trefíme | `slajdy/nejistota.png`: 9 z 10 na klidné vodě, 8 z 10 při povodni | Honza |
-| 13 | 10:00 | Živé demo | aplikace: Teď 15. 1. 2011 → Dnešek (živá data, vedle ČHMÚ) → Mapa, Celá povodeň 4/2006, posuvník předpověď × skutečnost; 3 minuty, nacvičené kliknutí po kliknutí; záloha video | Honza |
-| 14 | 13:00 | Předpověď v centimetrech znamená ulice a domy | `docs/grafy/mapbox2_porovnani.png` přes celý slajd; rozliv z terénu ČÚZK, shoda s úřední mapou 165 ha ze 183 | Honza |
-| 15 | 13:40 | Limity | čtyři karty: 36 h dvakrát horší (voda ještě neteče), vrcholy nad trénink podhodnotí, rozliv je statický, v provozu data se zpožděním | Dan |
-| 16 | 14:20 | Co dál a díky | doba putování podle průtoku, nasazení na živá data ČHMÚ, hodinové srážky až bude historie; QR na repozitář; linie řeky končí v Děčíně | Tobias |
+| Stránka | Slajd kostry | Nadpis | Podklad |
+|---|---|---|---|
+| 1 | (titul, do času se nepočítá; kdo začíná videem, smaže ho) | Kolik vody přiteče do Děčína | `mapbox2_porovnani.png`, linie řeky Praha–Děčín |
+| 2 | 1 video | bez nadpisu, věta „Tohle je Děčín v září 2024. Náš model to hlásil 27 hodin předem.“ | zatím snímek `mapbox2_animace.png`, nahradit videem |
+| 3 | 2 | Den předem víte, kam až voda dosáhne | `prezentace/02_mapa_decin.png` přes celý slajd, velké 27 h |
+| 4 | 3 | Co teče Prahou teď, je zítra v Děčíně | `03a_mapa_stanic.png`, `03b_proc_externi_data.png`, 20 let · 12 stanic · 175 320 hodin |
+| 5 | 4 | Model vidí jen to, co je v tu chvíli změřené | `04_vahy_modelu.png` |
+| 6 | 5 | Zkusili jsme 12 cest, vyhrál nejjednodušší | `05_co_jsme_zkouseli.png`, velké „12 cest“ |
+| 7 | 6 | Ověřujeme třikrát, pokaždé na povodních, které model neviděl | `06_jak_overujeme.png` |
+| 8 | 7 | Boris: 3. stupeň hlášen 27 hodin předem | `07_boris_2024.png`, velké 27 h |
+| 9 | 8 | O 55 % menší chyba na testu i na všech 8 povodních | `08a_test_2021_2025.png`, `08b_vicenasobna_validace.png`, velké −55 % |
+| 10 | 9 | Živé demo (Dnešek, mapa Borise, rozliv), 70 s | pozadí `mapbox2_animace.png` ztmavené |
+| 11 | 10 | Co umíme, co ne a co dál | čtyři karty, závěrečná věta, „Děkujeme. Otázky?“ |
+| 12 | záloha | Rozliv: výška terénu proti hladině, ověřená proti úřední mapě | `mapbox_decin.png`, 167 / 183 / 165 ha |
+| 13–18 | Z1–Z6 | Jak dopadly jednotlivé modely · „Bude jako teď“ je vždycky o den pozadu · Když se blíží vrchol, už neprší · Do rozmezí od–do se vejde 8 až 9 z 10 hodnot · Povodeň 2011: 3. stupeň hlášen 15 hodin předem · Váhy modelu pro Děčín za 24 h | `Z1`–`Z6` |
 
-Čísla v tabulce jsou čas od začátku. Demo má pevné 3 minuty; když se zadrhne, pustí se video a jede se dál.
+Grafy mají vlastní krátký nadpis vlevo nahoře; v Canvě je horních 12,5 % obrázku oříznuto, protože nadpis má slajd. Slajd 4 je „Předpověď je součet: kolik centimetrů přidá každá řeka“ (`04_predpoved_je_soucet.png`), váhy modelu jsou v záloze Z6.
 
-## Poznámky pro řečníky (do Canvy jako poznámky)
+Časy, řečníci a co se říká jsou v `docs/PREZENTACE_7MIN.md` a v poznámkách řečníka v Canvě. Oprava proti dřívějšímu plánu: neříkat, že „Děčín dnes vidí jen 4 hodiny dopředu“; ČHMÚ pro Děčín oficiální předpověď vydává a aplikace ji ukazuje, 4 h platí jen pro data z balíčku.
 
-Odpovědi na 20 otázek poroty jsou v `docs/STRATEGIE.md` (větev `honza-vyzkum`) a rozbory v `docs/DENIK.md`. Ke každému slajdu patří jedna otázka, kterou si řečník nacvičí: slajd 4 „proč nestačil balíček“, 6 „proč nedělíte náhodně“, 8 „proč záporné váhy“, 9 „proč ne síť“, 11 „a co když zaprší“, 12 „jak moc se pletete“, 14 „to je váš hydraulický model?“ (ne, je to výška terénu proti výšce hladiny, ověřeno proti úřední mapě), 15 „co když přijde větší povodeň než 2013“.
+## Co dodělat ručně v Canvě
 
-## Stavba v Canvě
+1. Písma: na každé stránce vybrat vše (Ctrl+A), nadpisy a velká čísla přepnout na Sofia Sans Extra Condensed, text na Schibsted Grotesk. Po přechodu na kondenzované písmo zvětšit nadpisy a čísla o 10 až 20 %, místa je dost.
+2. Stránka 2: vyměnit obrázek na pozadí za video z aplikace (Děčín, Boris 9/2024, 4 h za s, celá obrazovka, 25 s, bez zvuku), ztmavení dole nechat kvůli větě.
+3. Přechody vypnout, animace prvků žádné.
+4. Export do PDF jako záloha bez videa; na flashku i s videem.
+5. Dva nácviky s časomírou: sobota 11:00 a 13:00; na druhém Ondra hraje porotu.
 
-1. Prezentace 16:9, barvy z tohoto souboru do sady značky, písma ověřit.
-2. Nahrát všech 8 grafů z `docs/grafy/slajdy/`, snímky `mapbox2_*.png`, `mapbox_povodi.png`, `app_mapbox_decin.png`, `animace_2.png` a video dema (nahrát z aplikace, Win+G, 1920×1080).
-3. Linii řeky vyexportovat jako PNG s průhledným pozadím (z `reky.geojson`, Honza) a dát na každý slajd ve stejné poloze; stanice jako tečky, aktivní rozsvícená.
-4. Přechody vypnout, animace prvků žádné, jen video na slajdu 2 a 13.
-5. Export do PDF jako záloha (bez videa) a na flashku i s videem.
-6. Dva nácviky s časomírou: sobota 11:00 a 13:00; na druhém Ondra hraje porotu.
+## Otázky poroty
+
+Odpovědi jsou v `docs/POROZUMENI.md` (sekce Otázky, které čekáme od poroty), v `docs/CESTA_MODELU.md` a v `docs/STRATEGIE.md` (větev `honza-vyzkum`). Záložní slajdy 12 až 17 odpovídají rovnou grafem: proč lineární regrese, co je „bude jako teď“, proč ne srážky, jak moc se pleteme, další povodeň mimo trénink, a jestli je rozliv hydraulický model (není, je to výška terénu proti hladině ověřená proti úřední mapě).

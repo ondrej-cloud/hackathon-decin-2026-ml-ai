@@ -96,21 +96,21 @@ def krok_mapa():
 def krok_kvalita():
     at = nova()
     for povoden in VALIDACNI:
-        prvek(at.selectbox, "Povodeň").set_value(povoden).run()
+        prvek(at.radio, "Povodeň").set_value(povoden).run()
         bez_vyjimky(at)
         assert not at.warning, f"{povoden}: {at.warning[0].value}"
-        assert len(at.dataframe) == 1, f"{povoden}: chybí tabulka metrik"
+        assert len(at.table) == 1, f"{povoden}: chybí tabulka metrik"
     return ", ".join(VALIDACNI)
 
 
 def krok_boris():
     at = nova()
     for h in ("12", "24", "36"):
-        prvek(at.selectbox, "Povodeň").set_value(BORIS).run()
+        prvek(at.radio, "Povodeň").set_value(BORIS).run()
         prvek(at.radio, "Předpověď vydaná ... hodin předem").set_value(h).run()
         bez_vyjimky(at)
         assert not at.warning, f"Boris, {h} h: {at.warning[0].value}"
-        assert len(at.dataframe) == 1, f"Boris, {h} h: chybí tabulka metrik"
+        assert len(at.table) == 1, f"Boris, {h} h: chybí tabulka metrik"
     assert any("Boris 9/2024" in i.value for i in at.info), "chybí poznámka, že jde o testovací část"
     return "záložka Jak dobře to funguje, horizonty 12, 24 a 36 h"
 
@@ -118,7 +118,7 @@ def krok_boris():
 def krok_animace():
     at = nova()
     for povoden in (BORIS, "1/2011"):
-        prvek(at.selectbox, "Povodeň", "animace_povoden").set_value(povoden).run()
+        prvek(at.radio, "Povodeň", "animace_povoden").set_value(povoden).run()
         bez_vyjimky(at)
         assert len(at.get("iframe")) >= 1, f"{povoden}: chybí animace"
     return f"{BORIS} a 1/2011"

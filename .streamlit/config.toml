@@ -1,23 +1,25 @@
+[client]
+toolbarMode = "minimal"
+
 [theme]
 base = "dark"
 primaryColor = "#3aa0c9"
 backgroundColor = "#111820"
 secondaryBackgroundColor = "#1a232d"
-textColor = "#e8edf1"
+textColor = "#e6ebf0"
 linkColor = "#7cc6e4"
-borderColor = "#25303b"
+borderColor = "#232e39"
 showWidgetBorder = true
 baseRadius = "10px"
-paddingTop = "0.75rem"
 font = "'Schibsted Grotesk':https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400..800&display=swap"
 headingFont = "'Sofia Sans Extra Condensed':https://fonts.googleapis.com/css2?family=Sofia+Sans+Extra+Condensed:wght@500..800&display=swap"
-headingFontWeights = [700, 700, 700, 700, 700, 700]
-metricValueFontWeight = 700
-dataframeHeaderBackgroundColor = "#161f28"
-dataframeBorderColor = "#25303b"
-blueBackgroundColor = "#14303d"
-blueTextColor = "#cfeaf5"
+headingFontWeights = [750, 750, 750, 750, 750, 750]
+metricValueFontWeight = 800
+dataframeHeaderBackgroundColor = "#0b1016"
+dataframeBorderColor = "#232e39"
+blueBackgroundColor = "#1a232d"
+blueTextColor = "#c8d1d9"
 
 [theme.sidebar]
-backgroundColor = "#0f1419"
-secondaryBackgroundColor = "#18212b"
+backgroundColor = "#0b1016"
+secondaryBackgroundColor = "#1a232d"
