@@ -12,6 +12,8 @@ Odborné výrazy ze zadání a z našeho řešení, vysvětlené jednoduše.
 
 - **„Bude jako teď“** (základ, baseline): každou hodinu se vydá předpověď, že za 24 h bude hladina stejná jako teď. V pondělí v 10:00 je 249 cm, tak na úterý 10:00 předpoví 249 cm. V 11:00 je hladina jiná, tak vydá jinou předpověď. Nakreslené v čase, pro který platí, dají skutečnou křivku posunutou o den doprava: vzestup „ohlásí“ až den poté, co se stal, a nikdy nevaruje předem. Na klidné řece je přesná, při povodni se plete o metr i víc. Každý model ji musí porazit, jinak nemá smysl. Graf `docs/grafy/jako_ted_vysvetleni.png` (Boris 9/2024: 13. 9. ve 12:00 bylo 249 cm, předpověď na další den 249, skutečně 406 cm).
 
+- **Lineární regrese a proč je předpověď v grafu křivka:** s jedním vstupem je to přímka bodům v grafu (vstup na ose x, výsledek na ose y). My máme 98 vstupů, takže je to vážený součet: předpověď = základ + váha₁ × vstup₁ + … + váha₉₈ × vstup₉₈, váhy se naučí jednou a pak jsou pořád stejné. „Přímka“ je vztah mezi vstupy a výsledkem (o 100 m³/s víc v Praze znamená vždycky o stejný kus výš v Děčíně), ne tvar v čase. V grafu povodně je na ose x čas a každou hodinu do stejného vzorce vstoupí jiná čísla z řek, proto výsledek jde nahoru a dolů jako řeka. Jako taxametr: cena = nástupní sazba + sazba × km + sazba × minuty je lineární vzorec, ale ceny jízd za celý den v grafu přímku netvoří.
+
 ## Proč tahle metoda
 
 Co jsme zvolili, s čím jsme to srovnávali a proč jsme jiné možnosti nevzali.
