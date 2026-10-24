@@ -39,3 +39,8 @@ Dan (spí, noční úkol), větev `dan-prezentace` z `origin/main` 59956c9, work
 - U otázky 26 (Danova odpověď) jsem upřesnil závorku: 98 hodnot = průtok 12 stanic 0–36 h a hladina Děčína a Ústí
   0–24 h, vždy 7 zpoždění. V main (`docs/POROZUMENI.md`) zůstává starší znění „z každé stanice 7 zpoždění 0–36 h“,
   main neměním, jen to hlásím.
+- 02:19 Kontrola reprodukovatelnosti Codexem doběhla (27 min, sandbox jen v klonu, internet blokovaný). Ridge, „jako teď“,
+  procenta, vícenásobná validace a test aplikace jdou z čistého klonu zopakovat a sedí s PREHLED na desetinu. Nové běhy
+  LightGBM a fyziky nedoběhly v jeho limitech (6 a 2 min), nejspíš kvůli RAM s dalšími session, uložené výsledky sedí.
+  Hlavní problém: otisk verze závisí na koncích řádků (Windows × Mac). Sepsáno do `REPRODUKOVATELNOST.md` s návrhy oprav,
+  v main nic neměním.
