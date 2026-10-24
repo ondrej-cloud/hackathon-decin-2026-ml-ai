@@ -75,3 +75,6 @@ Zkusili jsme je: s vlhkostí 17,2 cm, s tlakem 17,0, s větrem 17,0 proti 17,1 b
 
 **22. Proč neukazujete živé demo?** (Honza)
 Sedm minut je málo a demo závisí na Wi-Fi a na tom, jestli ČHMÚ zrovna zveřejnil data, proto je na slajdu 8 mapa rozlivu a snímek aplikace z dnešního rána je v záloze Z10. Web field-zero.netlify.app je otevřený v druhé kartě, rádi ho teď ukážeme: dnešek, mapu rozlivu a přehrávání povodní.
+
+**23. Proč je ve vahách nejdůležitější hladina v Děčíně teď, když předpovídáte zítřek?** (Ondra, slajd Z6)
+Hladina zítra je hladina teď plus to, o kolik se za den změní, dnešní voda do zítřka neodteče celá. Změnu model čte z toho, co právě teče proti proudu: voda z Prahy doteče do Děčína za 17 h, proto váží Praha teď, ne Praha před 24 h, ta už je v dnešní hladině Děčína. Záporné políčko hned vedle kladného je výpočet trendu, jestli voda stoupá.
