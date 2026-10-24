@@ -1,27 +1,36 @@
 # Grafy do prezentace na 7 minut
 
-Číslo na začátku názvu je číslo slajdu v `docs/PREZENTACE_7MIN.md`, `Z` jsou záložní slajdy po poděkování. Všechny grafy mají stejný formát (16:9), krátký nadpis vlevo nahoře, popisky os s jednotkami a nic navíc. Kreslí je `python src/grafy_prezentace.py`, mapy jsou snímky z aplikace.
+Číslo na začátku názvu je číslo slajdu v `docs/PREZENTACE_7MIN.md` (a v `prezentace/SLAJDY.md`), `Z` jsou záložní slajdy po poděkování. Všechny grafy mají stejný formát (16:9), krátký nadpis vlevo nahoře, popisky os s jednotkami a nic navíc. Kreslí je `python src/grafy_prezentace.py`, mapy a aplikace jsou snímky. Kopie všech grafů je v `prezentace/grafy/`.
 
 | Slajd | Soubor | Nadpis v grafu |
 |---|---|---|
 | 2 | `02_mapa_decin.png` | (snímek z aplikace) |
 | 3 | `03a_mapa_stanic.png` | (snímek z aplikace) |
-| 3 | `03b_proc_externi_data.png` | Jen s daty z balíčku by model nefungoval |
-| 4 | `04_predpoved_je_soucet.png` | Předpověď je součet: kolik centimetrů přidá každá řeka |
-| 5 | `05_co_jsme_zkouseli.png` | Žádná z 11 dalších cest nebyla lepší |
-| 6 | `06_jak_overujeme.png` | Tři ověření, pokaždé na povodních, které model neviděl |
-| 7 | `07_boris_2024.png` | Boris 2024: varování 27 hodin předem |
-| 8 | `08a_test_2021_2025.png` | Test 2021–2025: o 55 % menší chyba |
-| 8 | `08b_vicenasobna_validace.png` | Vícenásobná validace: o 55 % menší chyba na 8 povodních |
+| 3 | `03b_doba_dobehu.png` | Za kolik hodin doteče voda do Děčína |
+| 4 | `04_co_model_bere.png` | Co se stane s chybou, když přidáme další vstup |
+| 5 | `05_cesta_k_modelu.png` | Od 44 cm k 17 cm: cesta k finálnímu modelu |
+| 6 | `06_predpoved_je_soucet.png` | Předpověď je součet: kolik centimetrů přidá každá řeka |
+| 7 | `07_jak_overujeme.png` | Tři ověření, pokaždé na povodních, které model neviděl |
+| 8 | `08_boris_2024.png` | Boris 2024: varování 27 hodin předem |
+| 9 | `09_aplikace_dnes.png` | (snímek webu na Dnešku, bez nadpisu) |
 | záloha | `Z1_srovnani_ctyr_modelu.png` | Čtyři modely na validaci: vyhrál nejjednodušší |
 | záloha | `Z2_co_je_jako_ted.png` | „Bude jako teď“ je vždycky o den pozadu |
 | záloha | `Z3_proc_ne_srazky.png` | Když se blíží vrchol, už neprší |
 | záloha | `Z4_jak_moc_se_pleteme.png` | Jak často je skutečnost v rozmezí od–do |
 | záloha | `Z5_povoden_2011.png` | Povodeň 2011: varování 15 hodin předem |
 | záloha | `Z6_vahy_modelu.png` | Váhy modelu pro Děčín za 24 h |
+| záloha | `Z8_test_2021_2025.png` | Test 2021–2025: o 55 % menší chyba |
+| záloha | `Z9_vicenasobna_validace.png` | Vícenásobná validace: o 55 % menší chyba na 8 povodních |
+| záloha | `Z10_proc_externi_data.png` | Jen s daty z balíčku by model nefungoval |
 
-Jak číst graf 4: předpověď vydaná 14. 9. 2024 v 11:00 na 15. 9. v 11:00. Začíná průměrnou hladinou v Děčíně (198 cm), ke které model přičte, kolik centimetrů přidává voda, která právě teče v každé větvi povodí: Děčín a Ústí +80, Vltava (Praha, Vraňany, Beroun, Sázava) +89, horní Labe (Kostelec, Nymburk, Jizera, Přelouč) +116, Mělník +95, Ohře −2. Součet 577 cm je nad 3. stupněm (560 cm), proto model varoval. Skutečně bylo 551 cm a 3. stupeň voda překročila o 3 h později.
+Záložní slajd Z7 (rozliv) je snímek mapy `mapbox3_decin.jpg` z HTML decku, ne graf.
+
+Jak číst graf 3b: posun s největší korelací změn průtoku za 6 h mezi stanicí a Děčínem, na trénovací části (`src/doba_dobehu.py`, `docs/DATA.md`). Ústí 4 h, Praha-Chuchle 17 h, Beroun 23 h, Nespeky na Sázavě 25 h. Ze vzdálených stanic je korelace slabá, doba je tam přibližná.
+
+Jak číst graf 4: chyba na validaci, když k finálnímu modelu (17,1 cm) přidáme další vstup. Naměřené srážky 17,1, teplota vzduchu a sníh 17,3, voda ve sněhu 17,8, vlhkost 17,2, tlak 17,0, vítr 17,0, víc stanic proti proudu (horní Ohře) 17,4. Myšlenkový pokus „déšť na 3 dny dopředu přesně“ 16,1 se do modelu dát nesmí, je to horní mez. Naše pravidlo je zlepšení aspoň o 1 cm.
+
+Jak číst graf 6: předpověď vydaná 14. 9. 2024 v 11:00 na 15. 9. v 11:00. Začíná průměrnou hladinou v Děčíně (198 cm), ke které model přičte, kolik centimetrů přidává voda, která právě teče v každé větvi povodí: Děčín a Ústí +80, Vltava (Praha, Vraňany, Beroun, Sázava) +89, horní Labe (Kostelec, Nymburk, Jizera, Přelouč) +116, Mělník +96, Ohře −2. Součet 577 cm je nad 3. stupněm (560 cm), proto model varoval. Skutečně bylo 551 cm a 3. stupeň voda překročila o 3 h později.
 
 Jak číst graf Z6: každé políčko je váha jednoho vstupu, tedy o kolik centimetrů se změní předpověď, když je ta hodnota o obvyklý rozkmit (jednu směrodatnou odchylku) vyšší než průměr. Modrá předpověď zvedá, oranžová snižuje. Děčín teď +88 cm, Praha teď +49 cm. Oranžová políčka hned vedle modrých znamenají, že model odečítá starší hodnotu od nové, tedy počítá, jestli voda stoupá.
 
-Čísla v ostatních grafech: chyba = průměrná chyba hladiny během povodní v cm, průměr Děčína a Ústí na 12, 24 a 36 h. Grafy 3, 5 a Z1 jsou z validace (4 povodně 2006–2011), 7 a 8a z testu 2021–2025, 8b z vícenásobné validace (8 povodní 2006–2020).
+Čísla v ostatních grafech: chyba = průměrná chyba hladiny během povodní v cm, průměr Děčína a Ústí na 12, 24 a 36 h. Grafy 4, 5, Z1 a Z10 jsou z validace (4 povodně 2006–2011), 8 a Z8 z testu 2021–2025, Z9 z vícenásobné validace (8 povodní 2006–2020).

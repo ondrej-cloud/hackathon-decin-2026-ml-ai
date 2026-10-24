@@ -9,7 +9,7 @@ Kdo odpovídá: Ondra data, ověřování a výsledky, Honza model jako součet,
 **1. Proč lineární regrese a ne neuronová síť?** (Dan, slajd Z1)
 Na čtyřech povodních, které model neviděl, vyšla nejlíp: 17,1 cm, síť 17,8, LightGBM 23,1, fyzikální 24,8. Velkých povodní je v tréninku málo, síť s přes 20 tisíci vahami se z nich naučí i náhodu, regrese má 98 vah. A každou váhu umíme ukázat a vysvětlit.
 
-**2. Na testu vyšla síť lépe. Proč jste ji nevzali?** (Ondra)
+**2. Na testu vyšla síť lépe. Proč jste ji nevzali?** (Ondra, slajd Z8)
 Finální model jsme zapsali před testem a podle testu ho neměníme, jinak by test přestal být nezávislý. Síť byla na testu o 1,1 cm lepší, ve vícenásobné validaci o 0,9 cm horší, je to v rámci náhody. Regrese je jednodušší a ve vícenásobné validaci se ve varování pletla méně (1 propásnutá a 3 plané proti 4 a 5 u sítě).
 
 **3. Nepřeučil se váš model?** (Ondra)
@@ -26,16 +26,16 @@ Hladina v Děčíně je tatáž voda změřená podruhé o 4 h později, model s
 
 ## Data a ověření
 
-**7. Proč jste brali data mimo balíček?** (Ondra, slajd 3)
+**7. Proč jste brali data mimo balíček?** (Ondra, slajd Z10)
 Balíček má dva roky a stanice v kraji, nejvýš proti proudu je Ústí, 4 hodiny před Děčínem. S ním by model měl chybu 44,6 cm, stejně jako „bude jako teď“, a propásl by polovinu povodní. Archiv ČHMÚ je stejný zdroj, za 2024 a 2025 sedí s balíčkem na centimetr.
 
 **8. Jak jste data připravili?** (Ondra)
 Hodinové hladiny a průtoky ČHMÚ 2006–2025, každá hodnota je průměr za hodinu. Zkontrolovali jsme bilanci vody mezi stanicemi, měrné křivky a časy, vyřadili jsme jen 5. až 8. 2. 2006 v Děčíně (hladina 1 019 cm při průtoku 120 m³/s, nejspíš led). Díry nedoplňujeme a z průtoků bereme odmocninu, protože hladina roste s průtokem zhruba jako odmocnina.
 
-**9. Jak víte, že model nepoužívá informace z budoucnosti?** (Ondra, slajd 6)
+**9. Jak víte, že model nepoužívá informace z budoucnosti?** (Ondra, slajd 7)
 Dělíme v čase, nikdy náhodně, a kolem validačních povodní vynecháváme z učení 20 dní. Vstupy jsou jen hodnoty změřené do okamžiku předpovědi. Našli jsme dvě pasti, které budoucnost do vstupů pouštěly, doplňování děr a denní srážky, a obě jsme vyřadili.
 
-**10. Nemáte výsledek jen ze šťastně vybrané validace?** (Ondra, slajd 8)
+**10. Nemáte výsledek jen ze šťastně vybrané validace?** (Ondra, slajd Z9)
 Proto vícenásobná validace: každou z 8 povodní 2006–2020 jsme jednou vynechali a model naučili na ostatních. Chyba 20,1 ± 7,7 cm proti 45,2 u „bude jako teď“, o 55 % méně, stejně jako na testu. Chyba víc záleží na povodni (11 až 34 cm) než na modelu.
 
 **11. Co je „bude jako teď“ a proč se s tím srovnáváte?** (Ondra, slajd Z2)
@@ -49,23 +49,29 @@ Na testu 2021–2025 třetí stupeň zachytil pokaždé. U druhého stupně 17 z
 
 ## Limity a provoz
 
-**14. Proč ne srážky?** (Dan, slajd Z3)
+**14. Proč ne srážky?** (Dan, slajd 4 a Z3)
 Zkusili jsme horní mez: model dostal skutečný déšť na 3 dny dopředu, jako by předpověď byla dokonalá, a chyba klesla jen o 1 cm. Voda, která přijde za 12 až 36 h, už teče v řekách a vidíme ji v průtocích proti proudu. Srážky by pomohly na 2 až 3 dny u dešťových povodní, jenže archiv starých předpovědí na trénink nemáme.
 
-**15. Proč jen 36 hodin dopředu?** (Dan)
-Nejvzdálenější stanice, Beroun, je od Děčína asi 40 h. Voda, která do Děčína přijde později, ještě neprotekla žádnou naší stanicí, je v potocích nebo ještě nespadla. Proto je chyba na 36 h skoro dvakrát větší než na 24 h.
+**15. Proč jen 36 hodin dopředu?** (Dan, slajd 3)
+Z nejvzdálenějších stanic, Berounu a Nespek na Sázavě, doteče voda do Děčína za 23 až 25 h. Voda, která do Děčína přijde později, ještě neprotekla žádnou naší stanicí, je v potocích nebo ještě nespadla. Proto je chyba na 36 h skoro dvakrát větší než na 24 h.
 
 **16. Jak moc se dá předpovědi věřit?** (Honza, slajd Z4)
-K předpovědi ukazujeme rozmezí od–do, spočítané z 90 % chyb na tréninku podle výšky vody. Na povodních, které model neviděl, se do něj skutečnost vejde v 8 až 9 z 10 hodin.
+K předpovědi ukazujeme rozmezí od–do, spočítané z 90 % chyb na tréninku podle výšky vody a ověřené na validaci. Na klidné vodě se do něj skutečnost vejde v 9 z 10 hodin, na povodních, které model neviděl, asi v 8 z 10.
 
 **17. Jak jste na tom proti oficiální předpovědi ČHMÚ?** (Ondra)
 V Dnešku ji ukazujeme hned vedle naší. Na starých povodních se srovnat neumíme, historické předpovědi ČHMÚ nemáme. ČHMÚ má navíc předpověď srážek, kterou my nemáme.
 
 **18. Fungovalo by to v provozu?** (Honza)
-Aplikace v Dnešku stahuje živá data ČHMÚ a předpověď počítá sama. ČHMÚ zveřejňuje hodinu až po jejím konci, data jsou staré 1 až 2 h a o to se předstih zkrátí. Průtok v Mělníku a Nymburce operativně nezveřejňuje, dopočítáváme ho z bilance vody (v archivu odchylka 0,5 a 8 %).
+Aplikace v Dnešku stahuje živá data ČHMÚ a předpověď počítá sama. ČHMÚ zveřejňuje hodinu až po jejím konci, data jsou stará 1 až 3 h a o to se předstih zkrátí. Průtok v Mělníku a Nymburce operativně nezveřejňuje, dopočítáváme ho z bilance vody (v archivu odchylka 0,5 a 8 %).
 
 **19. Je rozliv v mapě hydraulický model?** (Honza, slajd Z7)
 Není. Výška terénu z ČÚZK proti výšce hladiny, ověřená proti úřední mapě záplavových území: při pětileté vodě shoda 0,89. Zdi a hráze pod rozlišením terénu nevidí.
 
 **20. Komu to pomůže a co byste dělali dál?** (Tobias, dál Dan)
 Povodňové komisi města, hasičům a lidem u řeky: den navíc znamená odvézt auta, postavit pytle a vyklidit sklepy. Dál předpověď srážek na 2 až 3 dny, víc stanic proti proudu a dvoustupňové varování, nejdřív předběžná výstraha podle horní meze rozmezí, pak ostrá podle předpovědi.
+
+**21. Proč nepoužíváte vlhkost, tlak a vítr?** (Dan, slajd 4)
+Zkusili jsme je: s vlhkostí 17,2 cm, s tlakem 17,0, s větrem 17,0 proti 17,1 bez nich, a i kdybychom je dokonale znali den předem, vyjde 17,0. Do řeky vodu nepřidají, jsou jen náznak, že bude pršet, a ani dokonale známý déšť nepomohl o víc než 1 cm. Vítr hladinu zvedá u moře nebo jezera, ne v řece.
+
+**22. Proč neukazujete živé demo?** (Honza)
+Sedm minut je málo a demo závisí na Wi-Fi a na tom, jestli ČHMÚ zrovna zveřejnil data, proto je aplikace na slajdu jako snímek z dnešního rána. Web field-zero.netlify.app je otevřený v druhé kartě, rádi ho teď ukážeme: dnešek, mapu rozlivu a přehrávání povodní.

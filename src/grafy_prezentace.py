@@ -68,23 +68,106 @@ def stupne(ax, cil="decin"):
 
 
 # hlavní slajdy ------------------------------------------------------------------------------------------------------
-def s03b_proc_externi_data():
+def s03b_doba_dobehu():
+    # src/doba_dobehu.py, posun s největší korelací změn průtoku, trénink; docs/DATA.md (Doba doběhu do Děčína)
+    stanice = [("Ústí nad Labem (Labe)", 4), ("Kostelec (Labe)", 10), ("Nymburk (Labe)", 10), ("Mělník (Labe)", 13),
+               ("Vraňany (Vltava)", 13), ("Louny (Ohře)", 16), ("Praha (Vltava)", 17), ("Předměřice (Jizera)", 18),
+               ("Přelouč (Labe)", 18), ("Beroun (Berounka)", 23), ("Nespeky (Sázava)", 25)]
+    fig, ax = graf("Za kolik hodin doteče voda do Děčína", (0.27, 0.13, 0.7, 0.74))
+    y = np.arange(len(stanice))[::-1]
+    ax.barh(y, [h for _, h in stanice], 0.62, color=MODRA)
+    for yi, (_, h) in zip(y, stanice):
+        ax.text(h + 0.4, yi, f"{h} h", va="center", fontsize=15, weight="semibold", color=INK, zorder=3,
+                bbox=dict(boxstyle="square,pad=0.1", facecolor="white", edgecolor="none"))
+    ax.axvline(24, color=INK, lw=1.4, ls=(0, (5, 3)))
+    ax.text(24.4, y[0] + 0.5, "předpověď\nna 24 h", va="center", fontsize=14, color=INK)
+    ax.set_yticks(y, [n for n, _ in stanice], color=INK)
+    ax.tick_params(axis="y", length=0)
+    ax.grid(axis="y", visible=False)
+    ax.spines["left"].set_visible(False)
+    ax.set_xlim(0, 30)
+    ax.set_ylim(-0.6, len(stanice) + 0.2)
+    ax.set_xlabel("doba doběhu (h)")
+    ax.xaxis.set_major_locator(MultipleLocator(6))
+    osa_cisla(ax, "x")
+    uloz(fig, "03b_doba_dobehu.png")
+
+
+def s04_co_model_bere():
+    # validace, prumer_povodne; docs/POKUSY.md pá 20:44, pá 22:32, so 23:14, so 0:19, so 8:42
+    finalni = prumer(posledni("ridge"))
+    polozky = [("srážky (naměřené)", 17.1, ORANZ), ("teplota vzduchu a sníh", 17.3, ORANZ),
+               ("voda ve sněhu", 17.8, ORANZ), ("vlhkost vzduchu", 17.2, ORANZ), ("tlak vzduchu", 17.0, ORANZ),
+               ("vítr (rychlost a směr)", 17.0, ORANZ), ("víc stanic proti proudu", 17.4, ORANZ),
+               ("déšť na 3 dny dopředu,\nkdyby ho někdo znal přesně", 16.1, MODRA_SVETLA)]
+    fig, ax = graf("Co se stane s chybou, když přidáme další vstup", (0.3, 0.13, 0.67, 0.72))
+    y = np.arange(len(polozky))[::-1]
+    ax.axvline(finalni, color=MODRA, lw=2.4, zorder=1)
+    ax.text(finalni, len(polozky) - 0.25, f"finální model {cislo(finalni)} cm", ha="center", va="bottom", fontsize=15,
+            weight="semibold", color=MODRA)
+    ax.axvline(finalni - 1, color=INK2, lw=1.4, ls=(0, (5, 3)), zorder=1)
+    ax.text(finalni - 1, len(polozky) - 0.25, "o 1 cm lépe (naše laťka)", ha="center", va="bottom", fontsize=15,
+            color=INK2)
+    for yi, (_, h, barva) in zip(y, polozky):
+        ax.plot([finalni, h], [yi, yi], color="#d0d0d0", lw=2, zorder=2)
+        ax.plot([h], [yi], "o", ms=13, color=barva, zorder=3)
+        ax.text(h + (0.12 if h >= finalni else -0.12), yi, cislo(h), ha="left" if h >= finalni else "right",
+                va="center", fontsize=15, weight="semibold", color=INK)
+    ax.set_yticks(y, [n for n, _, _ in polozky], color=INK)
+    ax.tick_params(axis="y", length=0)
+    ax.grid(axis="y", visible=False)
+    ax.spines["left"].set_visible(False)
+    ax.set_xlim(15.5, 18.5)
+    ax.set_ylim(-0.6, len(polozky) - 0.2)
+    ax.set_xlabel(CHYBA)
+    ax.xaxis.set_major_locator(MultipleLocator(1))
+    osa_cisla(ax, "x")
+    uloz(fig, "04_co_model_bere.png")
+
+
+def s05_cesta_k_modelu():
     z = json.loads(sorted((RESULTS / "kolik_dat").glob("*_kolik_dat.json"))[-1].read_text(encoding="utf-8"))
     balicek = next(r for r in z["souhrn"] if r["sada"] == "kraj" and r["let"] == 2)["prumer_povodne"]
-    h = [prumer(posledni("jako_ted")), balicek, prumer(posledni("ridge"))]
-    fig, ax = graf("Jen s daty z balíčku by model nefungoval")
-    x = np.arange(3)
-    ax.bar(x, h, 0.56, color=[SEDA, ORANZ, MODRA])
-    popis_sloupcu(ax, x, h)
-    osa_x_kategorie(ax, x, [JAKO_TED, "data z balíčku\n2 roky, 3 stanice", "naše data\n20 let, 12 stanic"])
-    ax.set_ylim(0, 50)
-    ax.set_ylabel(CHYBA)
-    ax.yaxis.set_major_locator(MultipleLocator(10))
-    osa_cisla(ax)
-    uloz(fig, "03b_proc_externi_data.png")
+    skupiny = [  # validace, prumer_povodne; bez results/ běhu čísla z docs/POKUSY.md
+        ("začátek", [(JAKO_TED, prumer(posledni("jako_ted")), SEDA), ("data jen z balíčku", balicek, ORANZ)]),
+        ("čtyři modely", [("fyzikální model", prumer(posledni("fyzika")), ORANZ),
+                          ("LightGBM (stromy)", prumer(posledni("lgbm")), ORANZ),
+                          ("neuronová síť", prumer(posledni("mlp")), ORANZ),
+                          ("lineární regrese", prumer(posledni("ridge")), MODRA)]),
+        ("úpravy přímky", [("doba putování podle průtoku", 21.8, ORANZ),  # pá 20:45
+                           ("polynom 2. stupně", prumer(posledni("ridge_polynom_soucin")), ORANZ),
+                           ("větší váha povodní", prumer(posledni("ridge_vahy")), ORANZ),
+                           ("malá zlepšení dohromady", 17.2, ORANZ)]),  # so 0:43
+    ]
+    fig, ax = graf("Od 44 cm k 17 cm: cesta k finálnímu modelu", (0.3, 0.12, 0.67, 0.74))
+    y, radky, nadpisy = 0, [], []
+    for nazev, polozky in skupiny:
+        nadpisy.append((nazev, y))
+        y -= 1
+        for n, h, barva in polozky:
+            radky.append((y, n, h, barva))
+            y -= 1
+        y -= 0.4
+    ax.barh([r[0] for r in radky], [r[2] for r in radky], 0.66, color=[r[3] for r in radky])
+    for yi, _, h, _ in radky:
+        ax.text(h + 0.4, yi, cislo(h), va="center", fontsize=15, weight="semibold", color=INK)
+    for nazev, yi in nadpisy:
+        ax.text(-0.01, yi, nazev, transform=ax.get_yaxis_transform(), ha="right", va="center", fontsize=15,
+                weight="semibold", color=INK2)
+    ax.set_yticks([r[0] for r in radky], [r[1] for r in radky], color=INK)
+    ax.get_yticklabels()[[r[1] for r in radky].index("lineární regrese")].set_weight("semibold")
+    ax.tick_params(axis="y", length=0)
+    ax.grid(axis="y", visible=False)
+    ax.spines["left"].set_visible(False)
+    ax.set_xlim(0, 50)
+    ax.set_ylim(y + 0.6, 0.6)
+    ax.set_xlabel(CHYBA)
+    ax.xaxis.set_major_locator(MultipleLocator(10))
+    osa_cisla(ax, "x")
+    uloz(fig, "05_cesta_k_modelu.png")
 
 
-def s04_predpoved_je_soucet():
+def s06_predpoved_je_soucet():
     # finální model (učený do 2020) a předpověď vydaná 14. 9. 2024 v 11:00 SELČ, se kterou varoval před 3. stupněm
     X, y = tabulka("decin", 24)
     tr = casti("decin", 24, finalni=True).reindex(X.index) == "train"
@@ -104,7 +187,9 @@ def s04_predpoved_je_soucet():
     dosud = zaklad
     for xi, (_, v) in zip(x[1:-1], kroky):
         ax.bar(xi, v, 0.6, bottom=dosud, color=MODRA_SVETLA if v >= 0 else ORANZ)
-        ax.text(xi, max(dosud, dosud + v) + 8, f"{'+' if v >= 0 else '−'}{cislo(abs(v), 0)}", ha="center",
+        # popisky z rozdílů zaokrouhlených mezisoučtů, aby celá čísla dala dohromady předpověď
+        krok = round(dosud + v) - round(dosud)
+        ax.text(xi, max(dosud, dosud + v) + 8, f"{'+' if krok >= 0 else '−'}{abs(krok)}", ha="center",
                 va="bottom", fontsize=16, weight="semibold")
         dosud += v
     ax.bar(x[-1], predpoved, 0.6, color=MODRA)
@@ -116,44 +201,11 @@ def s04_predpoved_je_soucet():
     ax.set_ylabel("hladina v Děčíně za 24 h (cm)")
     ax.yaxis.set_major_locator(MultipleLocator(100))
     osa_cisla(ax)
-    uloz(fig, "04_predpoved_je_soucet.png")
+    uloz(fig, "06_predpoved_je_soucet.png")
     return dict(zaklad=round(zaklad, 1), predpoved=round(predpoved, 1), kroky=[(k, round(v, 1)) for k, v in kroky])
 
 
-def s05_co_jsme_zkouseli():
-    polozky = [  # validace, prumer_povodne; bez results/ běhu čísla z docs/POKUSY.md
-        ("fyzikální model", prumer(posledni("fyzika"))),
-        ("LightGBM (stromy)", prumer(posledni("lgbm"))),
-        ("polynom", prumer(posledni("ridge_polynom"))),
-        ("doba putování podle průtoku", 21.8),  # pá 20:45
-        ("polynom se součiny", prumer(posledni("ridge_polynom_soucin"))),
-        ("větší váha povodní", prumer(posledni("ridge_vahy20"))),
-        ("neuronová síť", prumer(posledni("mlp"))),
-        ("+ voda ve sněhu", 17.8),  # pá 23:14
-        ("+ srážky, sníh, teplota", 17.4),  # pá 20:44
-        ("+ víc stanic (horní Ohře)", 17.4),  # so 0:19
-        ("všechna malá zlepšení", 17.2),  # so 0:43
-        ("lineární regrese", prumer(posledni("ridge"))),
-    ]
-    fig, ax = graf("Žádná z 11 dalších cest nebyla lepší", (0.31, 0.13, 0.66, 0.74))
-    y = np.arange(len(polozky))[::-1]
-    ax.barh(y, [h for _, h in polozky], 0.66, color=[ORANZ] * (len(polozky) - 1) + [MODRA])
-    for yi, (_, h) in zip(y, polozky):
-        ax.text(h + 0.3, yi, cislo(h), va="center", fontsize=15, weight="semibold")
-    ax.set_yticks(y, [n for n, _ in polozky], color=INK)
-    ax.get_yticklabels()[-1].set_weight("semibold")
-    ax.tick_params(axis="y", length=0)
-    ax.grid(axis="x")
-    ax.grid(axis="y", visible=False)
-    ax.spines["left"].set_visible(False)
-    ax.set_xlim(0, 27)
-    ax.set_xlabel(CHYBA)
-    ax.xaxis.set_major_locator(MultipleLocator(5))
-    osa_cisla(ax, "x")
-    uloz(fig, "05_co_jsme_zkouseli.png")
-
-
-def s06_jak_overujeme():
+def s07_jak_overujeme():
     t = lambda d: mdates.date2num(pd.Timestamp(d))
     fig, ax = graf("Tři ověření, pokaždé na povodních, které model neviděl", (0.26, 0.13, 0.71, 0.68))
     vys = 0.55
@@ -178,7 +230,7 @@ def s06_jak_overujeme():
     for barva, nazev in ((MODRA_SVETLA, "učení"), (ORANZ, "ověření"), (MODRA, "test")):
         ax.barh(np.nan, 0, color=barva, label=nazev)
     ax.legend(loc="lower left", bbox_to_anchor=(0, 1.0), ncol=3, handlelength=1.2, frameon=False)
-    uloz(fig, "06_jak_overujeme.png")
+    uloz(fig, "07_jak_overujeme.png")
 
 
 def povoden(titulek, ridge_soubor, jako_ted_soubor, od, do, nazev, mesic):
@@ -201,61 +253,14 @@ def povoden(titulek, ridge_soubor, jako_ted_soubor, od, do, nazev, mesic):
     return hodin
 
 
-def s07_boris():
+def s08_boris():
     return povoden("Boris 2024: varování {h} hodin předem", "ridge_test", "jako_ted_test", "2024-09-10",
-                   "2024-09-22 23:00", "07_boris_2024.png", 9)
+                   "2024-09-22 23:00", "08_boris_2024.png", 9)
 
 
 def dvojice_sloupcu(ax, x, a, b, s=0.36):
     ax.bar(x - s / 2 - 0.01, a, s, color=SEDA, label=JAKO_TED)
     ax.bar(x + s / 2 + 0.01, b, s, color=MODRA, label=NASE)
-
-
-def s08a_test():
-    R, J = posledni("ridge", "test"), posledni("jako_ted", "test")
-    po = lambda Z, hz: np.mean([v["mae_povodne"] for v in Z["vysledky"] if v["horizont"] == hz])
-    a = [po(J, hz) for hz in (12, 24, 36)] + [prumer(J)]
-    b = [po(R, hz) for hz in (12, 24, 36)] + [prumer(R)]
-    fig, ax = graf(f"Test 2021–2025: o {cislo(100 * (1 - b[-1] / a[-1]), 0)}{PROC} menší chyba")
-    x = np.array([0, 1, 2, 3.35])
-    dvojice_sloupcu(ax, x, a, b)
-    popis_sloupcu(ax, x - 0.19, a)
-    popis_sloupcu(ax, x + 0.19, b)
-    osa_x_kategorie(ax, x, ["za 12 h", "za 24 h", "za 36 h", "celkem"])
-    ax.get_xticklabels()[-1].set_weight("semibold")
-    ax.axvline(2.67, color="#d0d0d0", lw=1)
-    ax.set_xlim(-0.6, 3.95)
-    ax.set_ylim(0, 80)
-    ax.set_xlabel("předpověď dopředu")
-    ax.set_ylabel(CHYBA)
-    ax.yaxis.set_major_locator(MultipleLocator(20))
-    osa_cisla(ax)
-    ax.legend(loc="upper left", frameon=False)
-    uloz(fig, "08a_test_2021_2025.png")
-
-
-def s08b_vicenasobna():
-    R = pd.read_csv(sorted((RESULTS / "krizova_validace").glob("*.csv"))[-1])
-    P = R.groupby(["povoden", "model"]).chyba.mean().unstack()
-    P = P.loc[sorted(P.index)]
-    a, b = list(P.jako_ted) + [P.jako_ted.mean()], list(P.ridge) + [P.ridge.mean()]
-    fig, ax = graf(f"Vícenásobná validace: o {cislo(100 * (1 - b[-1] / a[-1]), 0)}{PROC} menší chyba na 8 povodních")
-    x = np.arange(len(a)) * 1.0
-    x[-1] += 0.5
-    dvojice_sloupcu(ax, x, a, b, 0.38)
-    popis_sloupcu(ax, [x[-1] - 0.2], [a[-1]])
-    popis_sloupcu(ax, [x[-1] + 0.2], [b[-1]])
-    osa_x_kategorie(ax, x, [f"{p[5:].lstrip('0')}/{p[:4]}" for p in P.index] + ["průměr"])
-    ax.get_xticklabels()[-1].set_weight("semibold")
-    ax.axvline(x[-2] + 0.75, color="#d0d0d0", lw=1)
-    ax.set_xlim(-0.6, x[-1] + 0.6)
-    ax.set_ylim(0, 80)
-    ax.set_xlabel("vynechaná povodeň")
-    ax.set_ylabel(CHYBA)
-    ax.yaxis.set_major_locator(MultipleLocator(20))
-    osa_cisla(ax)
-    ax.legend(loc="upper left", ncol=2, frameon=False)
-    uloz(fig, "08b_vicenasobna_validace.png")
 
 
 # záložní slajdy -----------------------------------------------------------------------------------------------------
@@ -381,20 +386,85 @@ def z6_vahy():
     uloz(fig, "Z6_vahy_modelu.png")
 
 
+def z8_test():
+    R, J = posledni("ridge", "test"), posledni("jako_ted", "test")
+    po = lambda Z, hz: np.mean([v["mae_povodne"] for v in Z["vysledky"] if v["horizont"] == hz])
+    a = [po(J, hz) for hz in (12, 24, 36)] + [prumer(J)]
+    b = [po(R, hz) for hz in (12, 24, 36)] + [prumer(R)]
+    fig, ax = graf(f"Test 2021–2025: o {cislo(100 * (1 - b[-1] / a[-1]), 0)}{PROC} menší chyba")
+    x = np.array([0, 1, 2, 3.35])
+    dvojice_sloupcu(ax, x, a, b)
+    popis_sloupcu(ax, x - 0.19, a)
+    popis_sloupcu(ax, x + 0.19, b)
+    osa_x_kategorie(ax, x, ["za 12 h", "za 24 h", "za 36 h", "celkem"])
+    ax.get_xticklabels()[-1].set_weight("semibold")
+    ax.axvline(2.67, color="#d0d0d0", lw=1)
+    ax.set_xlim(-0.6, 3.95)
+    ax.set_ylim(0, 80)
+    ax.set_xlabel("předpověď dopředu")
+    ax.set_ylabel(CHYBA)
+    ax.yaxis.set_major_locator(MultipleLocator(20))
+    osa_cisla(ax)
+    ax.legend(loc="upper left", frameon=False)
+    uloz(fig, "Z8_test_2021_2025.png")
+
+
+def z9_vicenasobna():
+    R = pd.read_csv(sorted((RESULTS / "krizova_validace").glob("*.csv"))[-1])
+    P = R.groupby(["povoden", "model"]).chyba.mean().unstack()
+    P = P.loc[sorted(P.index)]
+    a, b = list(P.jako_ted) + [P.jako_ted.mean()], list(P.ridge) + [P.ridge.mean()]
+    fig, ax = graf(f"Vícenásobná validace: o {cislo(100 * (1 - b[-1] / a[-1]), 0)}{PROC} menší chyba na 8 povodních")
+    x = np.arange(len(a)) * 1.0
+    x[-1] += 0.5
+    dvojice_sloupcu(ax, x, a, b, 0.38)
+    popis_sloupcu(ax, [x[-1] - 0.2], [a[-1]])
+    popis_sloupcu(ax, [x[-1] + 0.2], [b[-1]])
+    osa_x_kategorie(ax, x, [f"{p[5:].lstrip('0')}/{p[:4]}" for p in P.index] + ["průměr"])
+    ax.get_xticklabels()[-1].set_weight("semibold")
+    ax.axvline(x[-2] + 0.75, color="#d0d0d0", lw=1)
+    ax.set_xlim(-0.6, x[-1] + 0.6)
+    ax.set_ylim(0, 80)
+    ax.set_xlabel("vynechaná povodeň")
+    ax.set_ylabel(CHYBA)
+    ax.yaxis.set_major_locator(MultipleLocator(20))
+    osa_cisla(ax)
+    ax.legend(loc="upper left", ncol=2, frameon=False)
+    uloz(fig, "Z9_vicenasobna_validace.png")
+
+
+def z10_proc_externi_data():
+    z = json.loads(sorted((RESULTS / "kolik_dat").glob("*_kolik_dat.json"))[-1].read_text(encoding="utf-8"))
+    balicek = next(r for r in z["souhrn"] if r["sada"] == "kraj" and r["let"] == 2)["prumer_povodne"]
+    h = [prumer(posledni("jako_ted")), balicek, prumer(posledni("ridge"))]
+    fig, ax = graf("Jen s daty z balíčku by model nefungoval")
+    x = np.arange(3)
+    ax.bar(x, h, 0.56, color=[SEDA, ORANZ, MODRA])
+    popis_sloupcu(ax, x, h)
+    osa_x_kategorie(ax, x, [JAKO_TED, "data z balíčku\n2 roky, 3 stanice", "naše data\n20 let, 12 stanic"])
+    ax.set_ylim(0, 50)
+    ax.set_ylabel(CHYBA)
+    ax.yaxis.set_major_locator(MultipleLocator(10))
+    osa_cisla(ax)
+    uloz(fig, "Z10_proc_externi_data.png")
+
+
 if __name__ == "__main__":
     CIL.mkdir(exist_ok=True)
     shutil.copy(GRAFY / "mapbox2_porovnani.png", CIL / "02_mapa_decin.png")
     shutil.copy(GRAFY / "mapbox_povodi.png", CIL / "03a_mapa_stanic.png")
-    s03b_proc_externi_data()
-    print("  součet:", s04_predpoved_je_soucet())
-    s05_co_jsme_zkouseli()
-    s06_jak_overujeme()
-    print("  Boris předstih h:", s07_boris())
-    s08a_test()
-    s08b_vicenasobna()
+    s03b_doba_dobehu()
+    s04_co_model_bere()
+    s05_cesta_k_modelu()
+    print("  součet:", s06_predpoved_je_soucet())
+    s07_jak_overujeme()
+    print("  Boris předstih h:", s08_boris())
     z1_srovnani_modelu()
     z2_jako_ted()
     z3_srazky()
     z4_nejistota()
     print("  2011 předstih h:", z5_povoden_2011())
     z6_vahy()
+    z8_test()
+    z9_vicenasobna()
+    z10_proc_externi_data()
