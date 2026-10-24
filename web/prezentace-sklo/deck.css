@@ -393,3 +393,44 @@ body[data-krok-slajdu="2"] .video .reka-mini { opacity: 1; }
   .kryt { opacity: 0 !important; }
   *, *::before, *::after { transition: none !important; animation: none !important; }
 }
+
+/* --- prvky převzaté z hlavního decku (slajd 1 karta videa, slajd 2 doplněný nadpis, slajd 8 tlačítko) --- */
+/* 2 · nadpis ve dvou krocích: druhá část má místo rezervované (inline, bez posunu) a nastoupí prolnutím */
+.slajd h1 .dopln[data-krok] { transform: none; transition: opacity 600ms var(--ven); }
+.video-ram {
+  position: absolute; inset: 0; overflow: hidden; transform-origin: 0 0; border-radius: 0; background: var(--stranka); cursor: pointer; will-change: transform;
+  transition: transform 500ms var(--ven), border-radius 500ms var(--ven), box-shadow 500ms var(--ven);
+}
+.video-ram video { position: absolute; inset: 0; display: block; width: 100%; height: 100%; object-fit: cover; }
+.video.je-karta .video-ram { transform: translate(780px, 272px) scale(0.552); border-radius: 40px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04), 0 18px 54px rgba(0, 0, 0, 0.06); }
+.video.hned .video-ram { transition: none; }
+/* věta během přehrávání: skleněná pilulka dole uprostřed, nad lištou přehrávače ve videu (dolních 180 px); s kartou zmizí */
+.veta {
+  position: absolute; left: 50%; bottom: 200px; margin: 0; transform: translateX(-50%); pointer-events: none; white-space: nowrap;
+  padding: 18px 40px 20px; border-radius: var(--pilulka); background: rgba(255, 255, 255, 0.7);
+  -webkit-backdrop-filter: blur(22px) saturate(180%); backdrop-filter: blur(22px) saturate(180%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6), 0 1px 2px rgba(0, 0, 0, 0.06), 0 12px 36px rgba(0, 0, 0, 0.14);
+  font-weight: 600; font-size: 36px; line-height: 1.25; letter-spacing: -0.01em; color: var(--text2);
+  opacity: 0; transition: opacity 600ms var(--ven), transform 600ms var(--ven);
+}
+.video.je-karta .veta { opacity: 0; transform: translateX(-50%) translateY(12px); transition: opacity 250ms var(--ven), transform 250ms var(--ven); }
+/* nadpis v pruhu nadpisu jako na ostatních slajdech, 18 h vlevo od karty; nastupují 200 ms po startu zmenšení videa */
+.uvod { position: absolute; inset: 0; box-sizing: border-box; padding: 64px 80px 56px; pointer-events: none; }
+.uvod.je { transition-delay: 200ms; }
+/* horní hrana číslic 18 na rovině karet 272 px (Inter: verzálky 0,727 em, řádek 0,9 em, číslice začínají 23 px pod horní hranou řádku) */
+.obri-blok { position: absolute; left: 80px; top: 272px; width: 640px; }
+.video.je-karta .reka-mini { opacity: 1; }
+/* tlačítko uprostřed snímku: sklo, ikona mapy, odkazem je celý snímek; hover zvětší o 3 %, stisk lehce zmenší */
+.tlacitko-mapa {
+  position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); height: 64px; box-sizing: border-box; padding: 0 30px 0 24px;
+  display: inline-flex; align-items: center; gap: 14px; border-radius: var(--pilulka); white-space: nowrap;
+  background: rgba(255, 255, 255, 0.7); -webkit-backdrop-filter: blur(20px) saturate(180%); backdrop-filter: blur(20px) saturate(180%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6), 0 1px 2px rgba(0, 0, 0, 0.08), 0 12px 36px rgba(0, 0, 0, 0.2);
+  color: var(--text); font-weight: 600; font-size: 26px; line-height: 1; letter-spacing: -0.01em;
+  transition: transform 220ms var(--ven), background-color 160ms ease;
+}
+.tlacitko-mapa svg { width: 28px; height: 28px; display: block; flex: none; }
+@media (hover: hover) and (pointer: fine) {
+.snimek-mapy:hover .tlacitko-mapa { transform: translate(-50%, -50%) scale(1.03); background: rgba(255, 255, 255, 0.82); }
+}
+.snimek-mapy:active .tlacitko-mapa { transform: translate(-50%, -50%) scale(0.98); transition-duration: 100ms; }
