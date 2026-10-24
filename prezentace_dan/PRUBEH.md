@@ -66,3 +66,4 @@ Dan (spí, noční úkol), větev `dan-prezentace` z `origin/main` 59956c9, work
   (přeučení nejde úplně vyloučit), 21 (síť přes seedy 19,0 ± 1,2), 23 (definice 27 h) a 32 (nové pásmo nejistoty z větve
   dan-nejistota: týmové pásmo na povodních 58–72 %, nové 79–80 / 94–95 %). Moje chyba v N2 (pořadí modelů v LOFO) opravena
   před zápisem.
+- 04:07 `PREHLED_POKUSU.md`: řádky 35–38 z nočních zpráv (rozhodnutí o G3 pro 24 h, 36 h s Ridge 30 a H30, pásmo nejistoty z chyb mimo trénink, revize aplikace). V 05:45 ověřím nejnovější verze a doplním provozní test (`PROVOZ.md` zatím není).
