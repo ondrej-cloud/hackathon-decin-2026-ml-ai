@@ -1,7 +1,8 @@
 """Video povodně z 3D mapy (app/mapbox_mapa.py) pro úvod prezentace: hodina po hodině, střihy a přibližování podle hladiny.
 
 Rozliv ze změřené hladiny, dole přehrávač s grafem; boční boxy skryté. Playwright nafotí KROKU snímků na každou hodinu
-(voda se mění po hodinách, kamera jede plynule) a ffmpeg je složí beze změny, takže je obraz ostrý (žádné prolínání).
+(voda se mění po hodinách, kamera jede plynule se zpomalením na začátku a konci záběru) a ffmpeg je složí beze změny,
+takže je obraz ostrý (60 fps, žádné prolínání). Vlevo nahoře je skleněná pilulka s datem a hodinou, boční boxy jsou skryté.
 Volba --porovnani zapne režim vlevo předpověď 24 h předem, vpravo skutečnost (v prezentaci se nepoužívá).
 
 Spuštění z kořene repa (Windows: `$env:PYTHONUTF8=1; .venv\\Scripts\\python -u src\\video_povoden.py`, Mac: `.venv/bin/python -u src/video_povoden.py`):
@@ -35,8 +36,8 @@ import mapbox_mapa  # noqa: E402
 TZ = "Europe/Prague"
 POMALU = 4.0  # s na snímek; pomalejší režim prohlížeče vyměníme za další
 LIMIT = 6000  # ms čekání na idle mapy u jednoho snímku
-KROKU = 4  # snímků na hodinu povodně; 133 hodin × 4 = 532 snímků, při 22 fps 24 s
-FPS = 22
+KROKU = 11  # snímků na hodinu povodně; 133 hodin × 11 = 1 463 snímků, při 60 fps 24 s
+FPS = 60
 
 # Záběry pro Děčín 6/2013: k je číslo snímku (hodina od --od), kamera se uvnitř záběru plynule posouvá od "od" k "do".
 # Střih je mezi záběry. "stred": None = kamera města z mapy (D.kamery). Jiná povodeň nebo město: doladit přes --diag.
@@ -81,6 +82,10 @@ SKRYJ = """({mesto, porovnani}) => {
     try { m.setConfigProperty('basemap', 'showPointOfInterestLabels', false); m.setConfigProperty('basemap', 'showTransitLabels', false); }
     catch (e) { /* styl se teprve načítá, konfigurace() ho nastaví při načtení */ }
   }
+  const pil = document.createElement('div');
+  pil.id = 'video-datum'; pil.className = 'sklo';
+  pil.style.cssText = 'position:absolute;top:18px;left:18px;z-index:5;padding:14px 22px;border-radius:999px;font:700 30px/1 -apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text","Helvetica Neue",Inter,Helvetica,sans-serif;color:#1d1d1f;letter-spacing:-0.02em;white-space:nowrap;font-variant-numeric:tabular-nums';
+  document.body.append(pil);
   window.STRED = D.kamery[mesto].center;
   const lista = document.getElementById('lista') || document.querySelector('.lista, .prehravac');
   const vyska = lista ? Math.round(lista.getBoundingClientRect().height) + 20 : 190;
@@ -93,6 +98,12 @@ SKRYJ = """({mesto, porovnani}) => {
 }"""
 KROK = """({i, kamera, limit}) => {
   skoc(i);
+  const pil = document.getElementById('video-datum');
+  if (pil) {
+    const d = String(stavPrehravace().datum || '').replace(/ ?SEL?Č$/, '');
+    const m = d.match(/^(.*?) ([0-9]{1,2}:[0-9]{2})$/);
+    pil.innerHTML = m ? `${m[1]} <span style="color:#6e6e73;font-weight:500;margin-left:6px">${m[2]}</span>` : d;
+  }
   const k = {center: kamera.center || STRED, zoom: kamera.zoom, pitch: kamera.pitch, bearing: kamera.bearing, padding: PAD};
   mapaA.jumpTo(k);
   if (mapaB) mapaB.jumpTo(k);
@@ -122,6 +133,7 @@ def kamera(k):
     z = zaber(k)
     t = 0 if z["k_do"] == z["k_od"] else (k - z["k_od"]) / (z["k_do"] - z["k_od"])
     t = max(0.0, min(1.0, t))
+    t = t * t * (3 - 2 * t)  # zpomalení na začátku a konci záběru, působí filmově
     lin = lambda a: a[0] + (a[1] - a[0]) * t  # noqa: E731
     return {"center": z["stred"], "zoom": round(lin(z["zoom"]), 4), "bearing": round(lin(z["bearing"]), 3),
             "pitch": z["pitch"], "zaber": z["nazev"]}
@@ -265,10 +277,10 @@ class Natoceni:
     def web_verze(self):
         self.web_video.parent.mkdir(parents=True, exist_ok=True)
         crf = 23
-        for crf in (23, 25, 27):
+        for crf in (22, 24, 26, 28):
             subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-i", str(self.video), "-c:v", "libx264", "-crf", str(crf),
                             "-preset", "slow", "-pix_fmt", "yuv420p", "-movflags", "+faststart", str(self.web_video)], check=True)
-            if self.web_video.stat().st_size <= 22e6:
+            if self.web_video.stat().st_size <= 40e6:
                 break
         subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-ss", "22", "-i", str(self.web_video), "-frames:v", "1", "-q:v", "3",
                         str(self.poster)], check=True)

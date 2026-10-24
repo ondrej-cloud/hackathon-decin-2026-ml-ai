@@ -59,3 +59,19 @@ export function naZmenu(kontejner, jmeno, fn) {
 export function chyba(el, text) {
   el.innerHTML = hlaska(text, "varovani");
 }
+
+// Panel Nastavení: na telefonu je sbalený na jeden řádek se shrnutím, tlačítko Změnit ho rozbalí.
+export function panelSbaleni(panel) {
+  const prepnout = $(".panel-prepnout", panel);
+  if (!prepnout) return;
+  prepnout.addEventListener("click", () => {
+    const otevrit = !panel.classList.contains("otevreny");
+    panel.classList.toggle("otevreny", otevrit);
+    prepnout.setAttribute("aria-expanded", String(otevrit));
+    prepnout.textContent = otevrit ? "Hotovo" : "Změnit";
+  });
+}
+export function shrnutiPanelu(casti) {
+  const el = $("#panel-shrnuti");
+  if (el) el.textContent = typo(casti.filter(Boolean).join(" · "));
+}
