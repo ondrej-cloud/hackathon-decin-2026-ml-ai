@@ -134,3 +134,19 @@ Ne, je to statický rozliv: zaplaví všechno pod hladinou, co je spojené s kor
 **38. Učili jste i na povodních z deště v kraji? Nekazí to model?** (Ondra)
 Učili jsme na všech hodinách 2006–2018, tedy na klidu, na povodních, které přitekly z povodí, i na povodni 8/2010 z deště v kraji. Vybírat jen „hezké“ povodně by bylo podvádění: v provozu předem nevíte, jaká povodeň přijde, a model by pak vypadal lepší, než je. Na povodni z deště v kraji se model nic špatného nenaučí, jen tam nemá z čeho předpovídat, protože ta voda neteče žádnou naší stanicí; těch hodin je málo, takže váhy skoro nezmění. Ověřovali jsme taky na všech povodních, i na 8/2010, takže −55 % už v sobě má i ty, kde je model slabší. Model na ni reaguje přes hladinu v Děčíně a Ústí teď, tedy později, ale i tak o 34 % lépe než „jako teď“. Zlepšit by to šlo stanicí na Ploučnici jako dalším vstupem, nebo srážkami v reálném čase.
 
+## K čemu to je
+
+**39. Den předem je přece každému jasné, že přijde povodeň. K čemu je model, který chybu sníží jen ze 44 na 17 cm?** (Ondra, slajd 7)
+Těch 44 a 17 cm je průměr přes celé povodňové okno (7 dní před vrcholem a 5 po), kde se hladina většinu času mění pomalu. Rozdíl je vidět ve chvíli, kdy se rozhoduje. Boris, předpověď vydaná 14. 9. 2024 v 11:00 na 15. 9. v 11:00:
+
+| | předpověď | co by to znamenalo |
+|---|---|---|
+| zítra jako dnes | 389 cm | pod 1. stupněm, žádné varování |
+| náš model | 577 cm | 3. stupeň, varovat |
+| skutečnost | 551 cm, 3. stupeň o 3 h později | |
+
+Proto je hlavní výsledek varování, ne centimetry: na validaci model zachytil předem všech 24 překročení 2. a 3. stupně a neudělal žádný planý poplach, „zítra jako dnes“ nezachytil ani jedno. Že hodně prší, ví každý, ale ne jestli Děčín dosáhne 450, nebo 650 cm a kdy; mezi 2. a 3. stupněm je jen 70 cm a podle toho se staví mobilní stěny a evakuuje. Spousta silných dešťů povodeň neudělá a povodně v Děčíně často přitečou odjinud nebo z tání sněhu (2006). Pravidlo „voda stoupla o 40 cm za 6 h“ se v našich datech pletlo pětkrát z šesti.
+
+**40. Proč nepředpovídáte na týden dopředu?** (Dan, slajd 9 a Z9)
+Z řek to fyzikálně nejde: z nejvzdálenější stanice doteče voda do Děčína za 25 h, voda na týden dopředu je ještě v mracích. Na delší předpověď je potřeba předpověď počasí a ta je na 5 až 7 dní u srážek hodně nejistá; i ČHMÚ, které ji má, vydává předpověď hladiny pro Děčín jen na pár dní dopředu a evropské systémy na týden dávají jen pravděpodobnostní upozornění pro velké oblasti, ne centimetry pro Děčín. Nepřevrátili jsme předpověď povodní, ČHMÚ pro Děčín předpovídá už dnes a 24. 10. ráno vyšlo skoro stejně jako my (94 a 90 cm). Naše hodnota je, že je to z otevřených dat, poctivě ověřené třikrát, vysvětlitelné do posledního čísla, s mapou rozlivu a s otevřeně řečenými limity.
+
