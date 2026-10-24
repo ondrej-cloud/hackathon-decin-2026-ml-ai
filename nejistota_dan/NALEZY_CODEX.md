@@ -25,3 +25,22 @@ Bez nálezu: režimy používají jen předpověď, stav teď a stav před 6 h; 
 | nízká | `nejistota_dan.py:59` prázdný vzorek → IndexError | **Opraveno**: `kvantil()` odmítne prázdné nebo neplatné chyby výjimkou |
 | střední | `nejistota_dan.py:44` NaN není ošetřené | **Opraveno**: `pasmo()` vrátí NaN, když chybí předpověď nebo stav, žádné zdánlivě platné pásmo |
 | nízká | `nejistota_dan.py:93` smíšené tvary se tiše zkrátí | **Opraveno**: vstupy se rozšíří na společný tvar (`np.broadcast_arrays`), číslo vrací jen když jsou všechny vstupy čísla |
+
+## (c) Kontrola oprav (so 03:53–04:07)
+
+Potvrdil: `bloky()` dává pro všechny horizonty 14 bloků včetně řetězových překryvů, `vnorene()` vyřazuje celý blok,
+ošetření NaN, prázdných chyb a čísel s poli funguje; všech 228 buněk hlavních tabulek zprávy souhlasí s CSV; patch 01
+bere stav před 6 h správně z řádku vstupů.
+
+| Závažnost | Nález | Reakce |
+|---|---|---|
+| vysoká | `overeni.py:120` kontrola modelu aplikace není nezávislá: kalibrační LOFO modely viděly validaci (i 2019–2020) | **Opraveno**: `prisne.py` `kontrola_aplikace_prisne()`: kalibrace jen z 18 tréninkových povodní z modelů učených na trénovací části bez té povodně; 80% pásmo 85–90 % (povodně), 87–94 % (klid), původní verze označená jako méně přísná |
+| střední | `prisne.py:37` hodnocená předpověď je z modelu bez vlastní mezery, ne celého bloku; tvrzení o přenosu na LightGBM | **Opraveno**: hodnocená předpověď přepočítaná bez celého bloku (výsledek 79,4 / 94,2 %); věta o LightGBM změněná na „naznačuje, G3 přísně ověřený není“ |
+| střední | `patche/01.patch:45` záloha jen na ImportError, chybějící `kvantily.json` shodí aplikaci | **Opraveno**: `_nejistota()` použije modul jen s funkcí `pasmo` a existujícím `kvantily.json`; ověřeno, že bez modulu aplikace vrátí staré pásmo |
+| střední | `patche/01.patch:31` při záloze popisek dál tvrdí „8 z 10“ | **Opraveno**: `popis_pasma()` vrací legendu a větu podle toho, které pásmo se opravdu použilo |
+| střední | `patche/01.patch:64` `ridge_vse` dostane tvrzení o ověření, které nemá | **Opraveno**: u `ridge_vse` věta „model pro dnešek se na neviděných datech ověřit nedá, rozmezí je u něj odhad“ |
+| střední | `ZPRAVA_NEJISTOTA.md:137` grafy nejsou to, co by aplikace tehdy ukázala | **Opraveno ve formulaci**: „zpětné ověření metody“, s vysvětlením proč |
+| střední | `ZPRAVA_NEJISTOTA.md:18, 150` „nedá se poznat“, „nezávislá“, „rekordní“ | **Opraveno**: „zkoušené signály nepomohly“, „14 oddělených časových bloků“, „největší povodeň v hodnoceném souboru“ |
+| nízká | `ZPRAVA_NEJISTOTA.md:122` Ústí +12 h 95 % v klidu 97, ne 98; rozsah 78–80, ne 79–80 | **Opraveno** (tabulka modelu aplikace je teď z přísné kontroly, rozsah 78–80 %) |
+| nízká | `nejistota_dan.py:98` vícerozměrná pole | **Opraveno**: `pasmo()` bere jen čísla a jednorozměrná pole, jinak výjimka |
+| nízká | `nejistota_dan.py:59` docstring slibuje pokrytí, ořez pořadí u malých vzorků | **Opraveno**: docstring bez záruky, na malý vzorek výjimka místo ořezu (skupiny pod 200 hodin stejně dostanou kvantily ze všech chyb) |

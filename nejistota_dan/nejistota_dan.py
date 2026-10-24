@@ -56,13 +56,17 @@ def skupina(varianta, cil, horizont, pred, h0, h6):
 
 
 def kvantil(e, q):
-    """Konformní kvantil chyb e: pořadí ⌈(n + 1) q⌉ (horní), ⌊(n + 1) q⌋ (dolní), aby pokrytí nebylo pod nominálem."""
+    """Kvantil chyb e s pořadím jako u konformní předpovědi: ⌈(n + 1) q⌉ (horní), ⌊(n + 1) q⌋ (dolní). Záruku pokrytí to
+    tady nedává (hodiny povodně nejsou nezávislé), jen o chlup rozšíří pásmo; na malý vzorek, kde krajní pořadí
+    neexistuje, výjimka (skupiny pod 200 hodin dostanou kvantily ze všech chyb, viz kvantily_skupin)."""
     e = np.sort(np.asarray(e, dtype=float))
     n = len(e)
     if n == 0 or not np.isfinite(e).all():
         raise ValueError("kvantil z prázdných nebo neplatných chyb")
     k = int(np.ceil((n + 1) * q)) if q > 0.5 else int(np.floor((n + 1) * q))
-    return float(e[min(max(k, 1), n) - 1])
+    if not 1 <= k <= n:
+        raise ValueError(f"na kvantil {q} je málo chyb ({n})")
+    return float(e[k - 1])
 
 
 def kvantily_skupin(e, skupiny, uroven, min_n=200):
@@ -95,6 +99,8 @@ def pasmo(model, cil, horizont, pred, hladina_ted, hladina_pred_6h, uroven=0.8):
     klic = f"{MODELY_APLIKACE.get(model, model)}_{cil}_{horizont}"
     kv = {s: tuple(m) for s, m in z["kvantily"][klic][str(uroven)].items()}
     vstupy = (pred, hladina_ted, hladina_pred_6h)
+    if any(np.ndim(x) > 1 for x in vstupy):
+        raise ValueError("pasmo() bere čísla nebo jednorozměrná pole")
     p, h0, h6 = np.broadcast_arrays(*(np.atleast_1d(np.asarray(x, dtype=float)) for x in vstupy))
     d, h = meze(p, skupina(z["varianta"], cil, horizont, p, h0, h6), kv)
     spatne = ~(np.isfinite(p) & np.isfinite(h0) & np.isfinite(h6))  # bez vstupů žádné zdánlivě platné pásmo

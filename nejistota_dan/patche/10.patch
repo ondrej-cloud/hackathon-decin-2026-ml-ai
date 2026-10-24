@@ -1,0 +1,21 @@
+diff --git a/app/app.py b/app/app.py
+index a842f95..9b1be73 100644
+--- a/app/app.py
++++ b/app/app.py
+@@ -256,6 +256,16 @@ with tab_kvalita:
+                     line=dict(color=styl.SEDA, dash="dash", width=1.6))
+     if P is not None:
+         P = P[(P.cil == cil) & (P.horizont == h)][od:do]
++        if predikce.NEJISTOTA and nazev in predikce.MODELY_PASMA:
++            # pásmo 80 % ke každé předpovědi; stav teď a před 6 h z archivu (ne z Dneška)
++            Hh = hladiny(cil)
++            dolni, horni = predikce.NEJISTOTA.pasmo(nazev, cil, h, P.predpoved.to_numpy(),
++                                                    Hh.reindex(P.index).to_numpy(),
++                                                    Hh.reindex(P.index - pd.Timedelta(hours=6)).to_numpy())
++            x = cesky(P.index + pd.Timedelta(hours=h))
++            fig.add_scatter(x=x, y=horni, mode="lines", line=dict(width=0), showlegend=False, hoverinfo="skip")
++            fig.add_scatter(x=x, y=dolni, mode="lines", fill="tonexty", fillcolor="rgba(58,160,201,0.38)",
++                            line=dict(width=0), name=predikce.popis_pasma(nazev)[0], hoverinfo="skip")
+         fig.add_scatter(x=cesky(P.index + pd.Timedelta(hours=h)), y=P.predpoved,
+                         name=f"model {nazev}, vydáno {h} h předem", line=dict(color=MODRA, width=2.4))
+     cary_spa(fig, cil)

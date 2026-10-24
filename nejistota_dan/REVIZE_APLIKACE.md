@@ -1,8 +1,9 @@
 # Revize aplikace (app/, Honza) před demem
 
 Dan, so 24. 10. 2026 02:00–04:00, stav `origin/main` 59956c9. Aplikaci v main jsem neměnil. Opravy jsou jako návrhy
-v `patche/01.patch` … `09.patch`: každý jde aplikovat samostatně i všechny po sobě (`git apply nejistota_dan/patche/NN.patch`
-z kořene repa) a se všemi prošel `python app/test_app.py --dnesek` (10 z 10). Zdroje nálezů: nezávislá statická revize
+v `patche/01.patch` … `10.patch`: 01–09 jdou aplikovat samostatně, 10 jen po 01, a všechny po sobě
+(`git apply nejistota_dan/patche/NN.patch` z kořene repa). Se všemi prošel `python app/test_app.py` 9 z 9 (jednou pod
+velkou zátěží počítače 8 z 9, ze zkráceného výpisu není vidět který krok; napodruhé 9 z 9), s 01–09 i `--dnesek` 10 z 10. Zdroje nálezů: nezávislá statická revize
 kódu, nezávislá revize Codexem (`codex/kontrola_b_aplikace.md`) a vlastní spuštění. Každý nález níž jsem ověřil v kódu.
 
 ## Co jsem spustil
@@ -57,9 +58,14 @@ a test a řekne, že předstih je nejvýš horizont a propásnutá povodeň = 0.
 **V4. Pásmo „nejspíš“ slibuje víc, než platí, a na výchozí obrazovce ho skutečnost mine.** Popisek (`app.py:228`)
 „90 % chyb na tréninku; na povodních… asi 8 z 10“: vnořená kontrola na 22 povodních (`ZPRAVA_NEJISTOTA.md`) dává
 dnešnímu pásmu na povodních 59–72 % a na začátku vzestupu 15 %.
-- Patch `01.patch` napojí nové pásmo (`nejistota_dan.pasmo`, 80 %, ověřené 79–80 % na povodních, při rychlém vzestupu
-  ~2 ze 3) a opraví popisky. Potřebuje sloučit `nejistota_dan/` z větve `dan-nejistota` (modul + `kvantily.json`);
-  bez něj aplikace zůstane u starého pásma, nic nespadne.
+- Patch `01.patch` napojí nové pásmo (`nejistota_dan.pasmo`, 80 %, ověřené 78–80 % na 22 povodních, na modelu aplikace
+  a neviděné validaci 85–90 %, při rychlém vzestupu ~2 ze 3). Legenda a popisky se berou z `popis_pasma()`, takže se
+  řídí tím, které pásmo se opravdu použilo; u `ridge_vse` je věta, že jde o neověřený odhad. Potřebuje sloučit
+  `nejistota_dan/` z větve `dan-nejistota` (modul + `kvantily.json`); bez nich zůstane staré pásmo i se starým
+  popiskem (ověřeno), nic nespadne.
+- Patch `10.patch` (jen po 01): pásmo i v grafu povodně na záložce Jak dobře to funguje. Snímky aplikace s 01 a 10
+  z dočasné kopie mimo repo: `grafy/aplikace_ted.png`, `grafy/aplikace_povoden_2011.png`. Text pro prezentaci:
+  `PREZENTACE_PASMO.md`.
 - Patch `09.patch` (volitelný): při přehrávání historie tečkovaně dokreslí, co pak opravdu nastalo, takže porota vidí,
   jak předpověď dopadla. Na výchozí obrazovce bude vidět, že model o 20–35 cm přestřelil, to je poctivé a dá se na
   tom vysvětlit pásmo.
@@ -120,6 +126,6 @@ v prohlížeči (AppTest JavaScript nespouští).
 
 ## Co má tým ráno rozhodnout
 
-- Které patche vzít do main (doporučuji 02, 03, 04, 05, 07, 08 jako bezpečné; 01 + `nejistota_dan/` jen když chce
+- Které patche vzít do main (doporučuji 02, 03, 04, 05, 07, 08 jako bezpečné; 01 + 10 + `nejistota_dan/` když chce
   tým nové pásmo; 06 a 09 po ručním vyzkoušení v prohlížeči).
 - Odkud je video Borise (mapa = model do 2018) a co přesně říct ke „27 h předem“.

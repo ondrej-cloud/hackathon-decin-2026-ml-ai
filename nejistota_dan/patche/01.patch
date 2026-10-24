@@ -1,8 +1,16 @@
 diff --git a/app/app.py b/app/app.py
-index 0a44ea8..36be2c6 100644
+index 0a44ea8..a842f95 100644
 --- a/app/app.py
 +++ b/app/app.py
-@@ -185,7 +185,8 @@ with tab_ted:
+@@ -17,6 +17,7 @@ import aktualni
+ import animace
+ import mapbox_mapa
+ import pocasi
++import predikce
+ import styl
+ from mapa import POHLEDY, deck as mapa_deck, mapbox_token
+ from rozliv import n_leta_voda
+@@ -185,7 +186,8 @@ with tab_ted:
      sloupce[0].metric("Hladina teď", f"{ted:.0f} cm")
      sloupce[0].markdown(odznak(cil, ted), unsafe_allow_html=True)
      sloupce[0].caption("změřeno na stanici ČHMÚ")
@@ -12,57 +20,85 @@ index 0a44ea8..36be2c6 100644
      for c, h in zip(sloupce[1:], HORIZONTY):
          c.metric(f"Za {h} h", f"{pred[h]:.0f} cm", delta=f"{pred[h] - ted:+.0f} cm", delta_color="inverse")
          c.markdown(odznak(cil, pred[h]), unsafe_allow_html=True)
-@@ -210,7 +211,7 @@ with tab_ted:
+@@ -210,7 +212,7 @@ with tab_ted:
          fig.add_scatter(x=casy, y=[ted] + [rozmezi[h][1] for h in HORIZONTY], mode="lines", line=dict(width=0),
                          showlegend=False, hoverinfo="skip")
          fig.add_scatter(x=casy, y=[ted] + [rozmezi[h][0] for h in HORIZONTY], mode="lines", fill="tonexty",
 -                        fillcolor="rgba(58,160,201,0.2)", line=dict(width=0), name="rozmezí (90 % chyb)",
-+                        fillcolor="rgba(58,160,201,0.2)", line=dict(width=0), name="rozmezí (8 z 10 případů)",
++                        fillcolor="rgba(58,160,201,0.2)", line=dict(width=0), name=predikce.popis_pasma(nazev)[0],
                          hoverinfo="skip")
      fig.add_scatter(x=casy,
                      y=[ted] + [pred[h] for h in HORIZONTY], mode="markers+lines", name="předpověď",
-@@ -226,9 +227,9 @@ with tab_ted:
+@@ -226,9 +228,8 @@ with tab_ted:
      vzhled_grafu(fig, 420)
      st.plotly_chart(fig, width="stretch")
      st.caption("Bílá čára je, co se změřilo do zvoleného okamžiku (svislá čára). Modré body jsou předpověď vydaná v tomhle "
 -               "okamžiku na 12, 24 a 36 hodin dopředu. Modrý pás je rozmezí, do kterého se vešlo 90 % chyb modelu "
 -               "na tréninku; na povodních, které model neviděl, to bylo asi 8 z 10 případů. Tečkované čáry jsou "
 -               "stupně povodňové aktivity.")
-+               "okamžiku na 12, 24 a 36 hodin dopředu. Modrý pás je rozmezí, do kterého skutečnost padla v 8 z 10 "
-+               "případů na 22 povodních 2006–2020, které model při učení neviděl; při rychlém vzestupu jen asi ve 2 ze "
-+               "3 případů. Tečkované čáry jsou stupně povodňové aktivity.")
++               "okamžiku na 12, 24 a 36 hodin dopředu. " + predikce.popis_pasma(nazev)[1]
++               + " Tečkované čáry jsou stupně povodňové aktivity.")
  
  with tab_kvalita:
      st.markdown("Model jsme zkoušeli na čtyřech povodních, které při učení neviděl (učil se na letech 2006–2018 "
 diff --git a/app/predikce.py b/app/predikce.py
-index 5e28bb3..0dd92ae 100644
+index 5e28bb3..f9712ec 100644
 --- a/app/predikce.py
 +++ b/app/predikce.py
-@@ -15,6 +15,12 @@ sys.path.insert(0, str(ROOT / "src"))
+@@ -15,6 +15,21 @@ sys.path.insert(0, str(ROOT / "src"))
  from data import CILE, PROTI_PROUDU, SPA, nacti  # noqa: E402
  from features import tabulka  # noqa: E402
  
-+try:  # pásmo nejistoty z chyb mimo trénink (nejistota_dan/, větev dan-nejistota)
++
++def _nejistota():
++    """Modul pásma nejistoty z chyb mimo trénink (nejistota_dan/, větev dan-nejistota), jen když má i kvantily."""
 +    sys.path.insert(0, str(ROOT / "nejistota_dan"))
-+    import nejistota_dan  # noqa: E402
-+except ImportError:
-+    nejistota_dan = None
++    try:
++        import nejistota_dan
++    except ImportError:
++        return None
++    ok = hasattr(nejistota_dan, "pasmo") and Path(getattr(nejistota_dan, "KVANTILY", "")).is_file()
++    return nejistota_dan if ok else None
++
++
++NEJISTOTA = _nejistota()
++MODELY_PASMA = ("ridge", "ridge_vse", "ridge30", "g3")
 +
  MODELS = ROOT / "models"
  HORIZONTY = (12, 24, 36)
  NAZEV = {k: v[1] for k, v in (CILE | PROTI_PROUDU).items()}
-@@ -65,8 +71,12 @@ def _intervaly():
+@@ -65,8 +80,12 @@ def _intervaly():
      return json.loads(soubor.read_text(encoding="utf-8")) if soubor.exists() else None
  
  
 -def interval(nazev, cil, h, hladina_ted, pred):
 -    """Rozmezí (dolní, horní) v cm, do kterého se vešlo 90 % chyb na tréninku v pásmu hladiny teď; jen pro ridge."""
 +def interval(nazev, cil, h, hladina_ted, pred, hladina_pred_6h=None, uroven=0.8):
-+    """Rozmezí (dolní, horní) v cm. Nové: na 22 povodních 2006–2020 v něm skutečnost byla v 80 % hodin (chyby předpovědí
-+    mimo trénink podle toho, jakou změnu model čeká, nejistota_dan.pasmo). Bez stavu před 6 h nebo bez modulu staré:
-+    90 % chyb na tréninku v pásmu hladiny teď (models/ridge_intervaly.json), jen pro ridge."""
-+    if nejistota_dan and hladina_pred_6h is not None and nazev in ("ridge", "ridge_vse", "ridge30", "g3"):
-+        return nejistota_dan.pasmo(nazev, cil, h, pred, hladina_ted, hladina_pred_6h, uroven)
++    """Rozmezí (dolní, horní) v cm. Nové (NEJISTOTA): kam skutečnost padla v 80 % hodin na 22 povodních 2006–2020,
++    z chyb předpovědí mimo trénink podle toho, jakou změnu model čeká. Jinak staré: 90 % chyb na tréninku v pásmu
++    hladiny teď (models/ridge_intervaly.json), jen pro ridge. Co se použilo, říká popis_pasma()."""
++    if NEJISTOTA and hladina_pred_6h is not None and nazev in MODELY_PASMA:
++        return NEJISTOTA.pasmo(nazev, cil, h, pred, hladina_ted, hladina_pred_6h, uroven)
      z = _intervaly()
      if nazev not in ("ridge", "ridge_vse") or not z:
          return None
+@@ -75,6 +94,19 @@ def interval(nazev, cil, h, hladina_ted, pred):
+     return pred + z["dolni"][i], pred + z["horni"][i]
+ 
+ 
++def popis_pasma(nazev):
++    """(legenda, věta) k rozmezí podle toho, které pásmo interval() použije."""
++    if NEJISTOTA and nazev in MODELY_PASMA:
++        return ("rozmezí (8 z 10 případů)",
++                "Modrý pás je rozmezí, do kterého skutečnost padla v 8 z 10 případů na 22 povodních 2006–2020, které "
++                "model při učení neviděl; při rychlém vzestupu jen asi ve 2 ze 3 případů."
++                + (" Model pro dnešek (ridge_vse) se na neviděných datech ověřit nedá, rozmezí je u něj odhad."
++                   if nazev == "ridge_vse" else ""))
++    return ("rozmezí (90 % chyb na tréninku)",
++            "Modrý pás je rozmezí, do kterého se vešlo 90 % chyb modelu na tréninku; na povodních, které model neviděl, "
++            "jich bylo méně (asi 6 až 8 z 10).")
++
++
+ def trend(ted, drive):
+     return "stoupá" if ted > drive * 1.05 else "klesá" if ted < drive * 0.95 else "drží se"
+ 
