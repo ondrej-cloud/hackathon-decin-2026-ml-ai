@@ -50,7 +50,7 @@ async function ukaz() {
   shrnutiPanelu([p.klic, NAZVY[S.cil], `${h} h předem`]);
   const m = ((MET[S.povoden] || {})[S.cil] || {})[h];
   const sou = souhrn(p.zdroj);
-  let html = `<h2 class="nadpis">${typo(`${p.nazev} · ${NAZVY[S.cil]} · ${h} h předem`)}</h2>`;
+  let html = `<h2 class="nadpis">${typo(`${p.nazev}${NB}· ${NAZVY[S.cil]}${NB}· ${h} h předem`)}</h2>`;
   if (m) {
     const mene = m.chyba_jako_ted ? (1 - m.chyba_model / m.chyba_jako_ted) * 100 : null;
     html += `<section class="pas">
@@ -106,7 +106,7 @@ async function ukaz() {
     return `<tr><th>${denMesic(d + "T00:00")}</th><td>${ms != null ? cislo(ms) : "–"}</td><td>${ms != null ? odznak(spa(), ms, true) : ""}</td><td>${cislo(max(model))}</td><td class="tlum jt">${cislo(max(jakoTed))}</td><td>${cislo(chyba(model), 1)}</td><td class="tlum jt">${cislo(chyba(jakoTed), 1)}</td></tr>`;
   });
   // Sloupce „bude jako teď“ (třída jt) se na úzké obrazovce skrývají, srovnání zůstává v souhrnu nahoře.
-  $("#tabulka").innerHTML = `<table class="tab"><thead><tr><th style="text-align:left">Den</th><th>Hladina nejvýš (cm)</th><th>Stupeň</th><th>Model nejvýš (cm)</th><th class="jt">${typo("Bude jako teď nejvýš (cm)")}</th><th>Chyba modelu (cm)</th><th class="jt">${typo("Chyba bude jako teď (cm)")}</th></tr></thead><tbody>${radky.join("")}</tbody></table>`;
+  $("#tabulka").innerHTML = `<table class="tab"><thead><tr><th style="text-align:left">Den</th><th>Hladina nejvýš (cm)</th><th>Stupeň</th><th>Model nejvýš (cm)</th><th class="jt">${typo("Bude jako teď nejvýš (cm)")}</th><th>Chyba (cm)</th><th class="jt">${typo("Chyba jako teď (cm)")}</th></tr></thead><tbody>${radky.join("")}</tbody></table>`;
   posuvnaTabulka($("#tabulka"));
 }
 

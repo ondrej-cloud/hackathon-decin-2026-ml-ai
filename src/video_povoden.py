@@ -267,7 +267,7 @@ class Natoceni:
     def slozit(self, crf=19):
         self.video.parent.mkdir(parents=True, exist_ok=True)
         prikaz = ["ffmpeg", "-y", "-loglevel", "error", "-framerate", str(FPS), "-i", str(self.snimky / "%04d.png"), *self.filtr(),
-                  "-c:v", "libx264", "-crf", str(crf), "-preset", "slow", "-movflags", "+faststart", str(self.video)]
+                  "-c:v", "libx264", "-crf", str(crf), "-preset", "slow", "-tune", "animation", "-movflags", "+faststart", str(self.video)]
         tisk("ffmpeg: master, crf", crf)
         v = subprocess.run(prikaz, capture_output=True, text=True)
         if v.returncode:
@@ -277,9 +277,10 @@ class Natoceni:
     def web_verze(self):
         self.web_video.parent.mkdir(parents=True, exist_ok=True)
         crf = 23
-        for crf in (22, 24, 26, 28):
+        for crf in (20, 22, 24, 26):
             subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-i", str(self.video), "-c:v", "libx264", "-crf", str(crf),
-                            "-preset", "slow", "-pix_fmt", "yuv420p", "-movflags", "+faststart", str(self.web_video)], check=True)
+                            "-preset", "slow", "-tune", "animation", "-profile:v", "high", "-level", "4.2", "-g", "60",
+                            "-pix_fmt", "yuv420p", "-movflags", "+faststart", str(self.web_video)], check=True)
             if self.web_video.stat().st_size <= 40e6:
                 break
         subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-ss", "22", "-i", str(self.web_video), "-frames:v", "1", "-q:v", "3",

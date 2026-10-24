@@ -9,6 +9,7 @@
   const N = slajdy.length;
   const HLAVNICH = 9;
   const video = document.getElementById('video');
+  const videoRam = document.querySelector('.video-ram');
   const hudCas = document.getElementById('hud-cas');
   const poznamky = document.getElementById('poznamky');
   const cerna = document.getElementById('cerna');
@@ -16,14 +17,14 @@
 
   /* poznámky řečníka: čas, kdo, co říká (prezentace/SLAJDY.md doslova); [mezerník] označuje krok decku; „Zdroje:“ byly dřív v patičce slajdu */
   const POZNAMKY = [
-    ['0:00–0:40 · Honza', '[mezerník] (nebo klepnutí) spustí video, 24 s bez zvuku: povodeň červen 2013 v Děčíně hodinu po hodině od 1. 6. do vrcholu 6. 6. 2013, rozliv ze změřené hladiny, kamera se přibližuje k domům.', 'Honza při spuštění videa, než se rozjede voda:', 'Dobrý den. Červen 2013, největší povodeň za posledních dvacet let. Takhle stoupala voda v Děčíně hodinu po hodině.', 'Pak asi 12 s ticho, voda se rozlévá mezi domy. [mezerník] nebo konec videa: nadpis a 18 h.', 'Model tuhle povodeň nikdy neviděl, a přesto ohlásil třetí stupeň 18 hodin předem. Předpovídáme hladinu v Děčíně a Ústí na 12, 24 a 36 hodin a varujeme před druhým a třetím stupněm. Pro komisi, hasiče a lidi u řeky.', '59 slov (20 při startu videa, 39 po něm), asi 27 s mluvení a 12 s ticha. Čísla: předpověď na 24 h vydaná 1. 6. ve 22:00 už byla nad 560 cm, 3. stupeň voda překročila 2. 6. v 16:00; vrchol 6. 6. ve 2:00 1 072 cm, předpověď 952 cm; na 2. stupeň model varoval jen 2 až 4 h předem (nástup byl rychlý), kdyby se porota zeptala, říct to rovnou. Číslo 27 h patří Borisovi a je na slajdu 7.', 'Zdroje: video z aplikace, mapa Mapbox a OpenStreetMap, terén ČÚZK, záplavová území DIBAVOD, data ČHMÚ.'],
-    ['0:40–1:20 · Dan', 'Balíček od pořadatelů má dva roky dat a stanice jen v kraji. Nejvýš proti proudu je Ústí, jen čtyři hodiny před Děčínem. Model jen z něj se plete o 44,6 centimetru, stejně jako „bude jako teď“, a polovinu povodní propásne.', '[mezerník] Odkryje třetí sloupec grafu.', 'Proto jsme vzali hodinový archiv ČHMÚ: dvacet let a dvanáct stanic na Vltavě, horním Labi a Ohři, až 25 hodin proti proudu. Je to stejný zdroj jako balíček, jen delší a s víc stanicemi. Chyba klesla na 17 centimetrů.', '79 slov (strop 86).', 'Na mapě je 7 hlavních stanic z 12 s dobou doběhu vody do Děčína (Ústí 4 h, Nymburk 10 h, Mělník 13 h, Louny 16 h, Praha 17 h, Beroun 23 h); zbylých pět: Vraňany, Kostelec nad Labem, Předměřice, Nespeky, Přelouč.', 'Zdroje: hodinový archiv ČHMÚ 2006–2025, řeky OpenStreetMap, doby doběhu z korelace změn průtoku (docs/DATA.md).'],
+    ['0:00–0:40 · Honza', '[mezerník] (nebo klepnutí) spustí video, 24 s bez zvuku: povodeň červen 2013 v Děčíně hodinu po hodině od 1. 6. do vrcholu 6. 6. 2013, rozliv ze změřené hladiny, kamera se přibližuje k domům.', 'Honza při spuštění videa, než se rozjede voda:', 'Dobrý den. Červen 2013, největší povodeň za posledních dvacet let. Takhle stoupala voda v Děčíně hodinu po hodině.', 'Pak asi 12 s ticho, voda se rozlévá mezi domy. [mezerník] nebo konec videa: nadpis a 18 h.', 'Model tuhle povodeň nikdy neviděl, a přesto ohlásil třetí stupeň 18 hodin předem. Předpovídáme hladinu v Děčíně a Ústí na 12, 24 a 36 hodin a varujeme před druhým a třetím stupněm. Pro komisi, hasiče a lidi u řeky.', '59 slov (20 při startu videa, 39 po něm), asi 27 s mluvení a 12 s ticha. Čísla: předpověď na 24 h vydaná 1. 6. ve 22:00 už byla nad 560 cm, 3. stupeň voda překročila 2. 6. v 16:00; vrchol 6. 6. ve 2:00 (UTC, místního času 4:00) 1 072 cm, předpověď 952 cm; na 2. stupeň model varoval jen 2 až 4 h předem (nástup byl rychlý), kdyby se porota zeptala, říct to rovnou. Číslo 27 h patří Borisovi a je na slajdu 7.', 'Zdroje: video z aplikace, mapa Mapbox a OpenStreetMap, terén ČÚZK, záplavová území DIBAVOD, data ČHMÚ.'],
+    ['0:40–1:20 · Dan', 'Balíček od pořadatelů má dva roky dat a stanice jen v kraji. Nejvýš proti proudu je Ústí, jen čtyři hodiny před Děčínem. Model jen z něj se plete o 44,6 centimetru, tedy stejně, jako kdybychom řekli, že zítra bude hladina stejná jako dnes, a polovinu povodní propásne.', '[mezerník] Doplní nadpis, odkryje třetí sloupec grafu a trojčíslí.', 'Proto jsme vzali hodinový archiv ČHMÚ: dvacet let a dvanáct stanic na Vltavě, horním Labi a Ohři, až 25 hodin proti proudu. Je to stejný zdroj jako balíček, jen delší a s víc stanicemi. Chyba klesla na 17 centimetrů.', '79 slov (strop 86).', 'Pozor na dotaz: 44,6 cm je z napodobeniny balíčku (stejné stanice z kraje: Děčín, Ústí, Louny, 2 roky 2017–2018), skutečný balíček 2024–2026 jsme netrénovali; odpověď je v OTAZKY.md ot. 7.', 'Na mapě je 7 hlavních stanic z 12 s dobou doběhu vody do Děčína (Ústí 4 h, Nymburk 10 h, Mělník 13 h, Louny 16 h, Praha 17 h, Beroun 23 h); zbylých pět: Vraňany, Kostelec nad Labem, Předměřice, Nespeky, Přelouč.', 'Zdroje: hodinový archiv ČHMÚ 2006–2025, řeky OpenStreetMap, doby doběhu z korelace změn průtoku (docs/DATA.md).'],
     ['1:20–2:10 · Dan', 'Model bere jen to, co je v tu chvíli změřené na řece: hladinu v Děčíně a v Ústí a průtok na dvanácti stanicích, teď a až 36 hodin zpátky. Dohromady 98 čísel.', '[mezerník] Graf: co se stane s chybou, když přidáme další vstup.', 'Srážky, sníh, teplotu, vlhkost, tlak i vítr jsme zkusili. Nic nepomohlo ani o centimetr. Co do Děčína přiteče do 36 hodin, už teče řekou a vidíme to v průtoku. I kdybychom déšť na tři dny dopředu znali přesně, chyba klesne jen o centimetr.', 'A při přípravě dat jsme našli dvě pasti, které braly informaci z budoucnosti: doplňování děr v datech a čas denních srážek. Obě jsme opravili.', '99 slov (strop 108).', 'Mřížka: hladina v Děčíně a Ústí teď a před 1, 2, 3, 6, 12 a 24 h (2 × 7), průtok 12 stanic teď a před 3, 6, 12, 18, 24 a 36 h (12 × 7), dohromady 98 (src/features.py).', 'Zdroje: validace na 4 povodních 2006–2011, pravidlo: zlepšení aspoň o 1 cm.'],
-    ['2:10–3:15 · Ondra', 'Začali jsme laťkou: předpovědí, že bude jako teď. Při povodních se plete o 44 centimetrů.', '[mezerník] Odkryje čtyři modely.', 'Pak čtyři modely, každý dělal jeden z nás, se stejnými pravidly: stejná data, stejné ověření a změna musí zlepšit aspoň o centimetr. Fyzikální model, 25 centimetrů: počítá s pevnou dobou putování vody, jenže ta se mezi povodněmi mění. LightGBM, rozhodovací stromy, 23: neumí předpovědět víc, než kdy viděly, u povodně 2013 daly vrchol o dva a půl metru níž. Neuronová síť, 18: skoro stejně dobrá, ale má přes dvacet tisíc vah na dvě velké povodně a snadno se přeučí. Lineární regrese, 17: nejlepší a nejjednodušší. Vybrali jsme ji před testem.', '[mezerník] Odkryje úpravy přímky.', 'Pak jsme zkoušeli vylepšit i ji: polynom, větší váhu povodní, všechna malá zlepšení dohromady. Nic nebylo lepší o víc než centimetr.', '126 slov (strop 140).', 'Zdroje: validace na 4 povodních 2006–2011, průměrná chyba během povodní, vybráno před testem.'],
-    ['3:15–3:55 · Ondra', 'Proč vyhrála přímka? Voda v Děčíně je součet toho, co přiteče po Vltavě, horním Labi a Ohři, a lineární regrese je přesně vážený součet. Tady je předpověď z Borise, vydaná den předem. Průměr 198 centimetrů,', '[mezerník] Děčín a Ústí plus 80, [mezerník] Vltava 89, [mezerník] horní Labe 116, [mezerník] Mělník 96, [mezerník] Ohře minus 2.', '[mezerník] Vyjde 577, nad třetím stupněm, a model varoval. Každé číslo umíme vysvětlit. A zadání samo říká: cílem není co nejsložitější model.', '71 slov (strop 86).', 'Zdroje: Boris 9/2024 z testu, model učený do 2020.'],
+    ['2:10–3:15 · Ondra', 'Začali jsme nejjednodušším odhadem: že hladina za den bude stejná jako dnes. Při povodních se plete o 44 centimetrů, model jen z balíčku stejně.', '[mezerník] Odkryje čtyři modely.', 'Pak čtyři modely, každý dělal jeden z nás, se stejnými pravidly: stejná data, stejné ověření a změna musí zlepšit aspoň o centimetr. Fyzikální model, 25 centimetrů: počítá s pevnou dobou putování vody, jenže ta se mezi povodněmi mění. LightGBM, rozhodovací stromy, 23: neumí předpovědět víc, než kdy viděly, u povodně 2013 daly vrchol o dva a půl metru níž. Neuronová síť, 18: skoro stejně dobrá, ale má přes dvacet tisíc vah na dvě velké povodně a snadno se přeučí. Lineární regrese, 17: nejlepší a nejjednodušší. Vybrali jsme ji před testem.', '[mezerník] Odkryje úpravy přímky.', 'Pak jsme zkoušeli vylepšit i ji: dobu putování podle průtoku, polynom, větší váhu povodní, všechna malá zlepšení dohromady. Nic nebylo lepší o víc než centimetr.', '126 slov (strop 140).', 'Zdroje: validace na 4 povodních 2006–2011, průměrná chyba během povodní, vybráno před testem.'],
+    ['3:15–3:55 · Ondra', 'Proč vyhrála přímka? Voda v Děčíně je součet toho, co přiteče po Vltavě, horním Labi a Ohři, a lineární regrese je přesně takový vážený součet. Tady je skutečná předpověď z Borise, vydaná den předem. Začíná na průměru, 198 centimetrů.', '[mezerník] Děčín a Ústí přidají 80, [mezerník] Vltava 89, [mezerník] horní Labe 116, [mezerník] Mělník 96, [mezerník] Ohře ubere 2.', '[mezerník] Vyjde 577, nad třetím stupněm, a model varoval. Každé z těch čísel umíme vysvětlit. A zadání samo říká: cílem není co nejsložitější model.', '71 slov (strop 86).', 'Zdroje: Boris 9/2024 z testu, model učený do 2020.'],
     ['3:55–4:30 · Honza', 'Jak víme, že to funguje? Data dělíme v čase, nikdy náhodně, a ověřujeme vždycky na povodních, které model při učení neviděl. Model jsme vybrali na čtyřech vynechaných povodních. Pak jsme každou z osmi povodní 2006 až 2020 jednou vynechali a model naučili na zbytku, to je vícenásobná validace. A test na letech 2021 až 2025 jsme pustili jen jednou, úplně na konci.', '62 slov (strop 75).', 'Zdroje: data ČHMÚ 2006–2025.'],
-    ['4:30–5:25 · Honza', 'Graf se kreslí 3 s, pak samo naskočí 27 h (nebo mezerník).', 'Funguje to doopravdy? Tohle je Boris, září 2024, z testu, takže ho model nikdy neviděl. Černá je skutečnost, modrá naše předpověď vydaná den předem. Šedá je „bude jako teď“, ta je vždycky o den pozadu. Třetí stupeň model hlásil 27 hodin předem.', '[mezerník] −55 % a graf vícenásobné validace.', 'A není to jedna šťastná povodeň. Ve vícenásobné validaci jsme každou z osmi povodní jednou vynechali a chyba byla menší na všech osmi, o 34 až 66 procent. Na testu 2021 až 2025 je 22,4 centimetru proti 50,2, o 55 procent menší.', '[mezerník] Řádek o povodni 2013.', 'A povodeň 2013 z úvodu: model nikdy neviděl vodu nad 875 centimetrů, a přesto ohlásil třetí stupeň 18 hodin předem. Vrchol podhodnotil o 120 centimetrů, to je náš limit.', '113 slov (strop 119). Když se nestíhá: z druhého odstavce říct jen „na testu i ve vícenásobné validaci je chyba o 55 procent menší“.', 'Čísla k 2013: vrchol 952 cm proti 1 072, chyba 47,7 cm proti 97,4 u „bude jako teď“ (o 51 % méně); povodeň je v tréninku, proto ji přehráváme modelem učeným bez ní.', 'Zdroje: test 2021–2025, model učený do 2020, průměrná chyba během povodní, Děčín a Ústí.'],
-    ['5:25–5:55 · Tobias', 'Co z toho má město? Z předpovězené hladiny aplikace nakreslí, kam až voda dosáhne: porovná výšku terénu s výškou hladiny. Proti úřední mapě záplavových území to sedí z 82 až 90 procent. Tady je Děčín na vrcholu povodně 2013, 1 072 centimetrů. Běží to živě na webu, každou hodinu nová předpověď.', '51 slov (strop 65).', 'Snímek: aplikace při povodni červen 2013 v Děčíně, vrchol 6. 6. 2013 2:00, 1 072 cm, rozliv z výšky terénu proti hladině. Klepnutím na snímek se v nové kartě otevře živá mapa. Kdyby se porota zeptala, jestli je to hydraulický model: záložní Z7.', 'Zdroje: mapa Mapbox a OpenStreetMap, terén ČÚZK DMR 5G, záplavová území DIBAVOD, data ČHMÚ.'],
+    ['4:30–5:25 · Honza', 'Graf se kreslí 3 s, pak samo naskočí 27 h (nebo mezerník).', 'Funguje to doopravdy? Tohle je Boris, září 2024, z testu, takže ho model nikdy neviděl. Černá je skutečnost, modrá naše předpověď vydaná den předem. Šedá je odhad, že zítra bude stejně jako dnes, ten je vždycky o den pozadu. Třetí stupeň model hlásil 27 hodin předem.', '[mezerník] −55 % a graf vícenásobné validace.', 'A není to jedna šťastná povodeň. Ve vícenásobné validaci jsme každou z osmi povodní jednou vynechali a chyba byla menší na všech osmi, o 34 až 66 procent. Na testu 2021 až 2025 je 22,4 centimetru proti 50,2, o 55 procent menší.', '[mezerník] Řádek o povodni 2013.', 'A povodeň 2013 z úvodu: model nikdy neviděl vodu nad 875 centimetrů, a přesto ohlásil třetí stupeň 18 hodin předem. Vrchol podhodnotil o 120 centimetrů, to je náš limit.', '113 slov (strop 119). Když se nestíhá: z druhého odstavce říct jen „na testu i ve vícenásobné validaci je chyba o 55 procent menší“.', 'Čísla k 2013: vrchol 952 cm proti 1 072, chyba 47,7 cm proti 97,4 u „bude jako teď“ (o 51 % méně); povodeň je v tréninku, proto ji přehráváme modelem učeným bez ní.', 'Zdroje: test 2021–2025, model učený do 2020, průměrná chyba během povodní, Děčín a Ústí.'],
+    ['5:25–5:55 · Tobias', 'Co z toho má město? Z předpovězené hladiny aplikace nakreslí, kam až voda dosáhne. Tady je Děčín na vrcholu povodně 2013, 1 072 centimetrů.', '[mezerník] Schéma: jak se rozliv počítá.', 'Výšku hladiny porovnáme s výškou terénu z laserového skenování, bod každé dva metry. Zaplavené je, co je níž než hladina a spojené s řekou, prohlubeň za valem zůstane suchá. Proti úřední mapě to sedí z 82 až 90 procent.', '51 slov (strop 65).', 'Snímek: aplikace při povodni červen 2013 v Děčíně, vrchol 6. 6. 2013 2:00 (UTC, místního času 4:00), 1 072 cm, rozliv z výšky terénu proti hladině. Klepnutím na snímek se v nové kartě otevře živá mapa. Kdyby se porota zeptala, jestli je to hydraulický model: záložní Z7.', 'Zdroje: mapa Mapbox a OpenStreetMap, terén ČÚZK DMR 5G, záplavová území DIBAVOD, data ČHMÚ.'],
     ['5:55–6:45 · Tobias', 'Kde to selže? Na 36 hodin je chyba skoro dvakrát větší než na 24, voda, která přijde, ještě neteče žádnou stanicí. Vrchol vyšší, než jaký model kdy viděl, podhodnotí. A přívalové povodně na malých přítocích, jako je Ploučnice nebo Bílina, nevidí vůbec. Na dva až tři dny dopředu by pomohla předpověď počasí: s přesnou předpovědí by u dešťové povodně 2010 chyba na 72 hodin klesla o 40 procent. Jenže archiv starých předpovědí, na kterém by se model učil, neexistuje.', '[mezerník] Závěrečná věta, Děkujeme a QR na repozitář.', 'Z otevřených dat zdarma: o povodni v Děčíně víte den předem, s modelem, který se vejde na jeden obrázek. Děkujeme.', '99 slov (strop 108).', 'Na slajdu je jediná řádka se zdroji v celém decku (licence map).'],
     ['Záloha Z1 · Dan nebo Ondra', 'Proč jen lineární regrese? Na čtyřech povodních, které model neviděl, vyšla nejlíp: 17,1 cm, síť 17,8, LightGBM 23,1, fyzikální 24,8; velkých povodní je v tréninku málo, síť s přes 20 tisíci vahami se z nich naučí i náhodu, regrese má 98 vah a každou umíme vysvětlit.', 'Zdroje: validace, 4 povodně 2006–2011.'],
     ['Záloha Z2 · Ondra', 'Co znamená „bude jako teď“? Předpověď, že za 24 h bude stejně jako teď: na klidné řece přesná, při povodni vždycky o den pozadu, proto 44 až 50 cm chyby, a každý model ji musí porazit.'],
@@ -165,14 +166,79 @@
     kategorie(6, ['předpověď', 'na 15. 9.'], true);
   }
 
-  /* mapa na slajdu 2: jen 7 hlavních stanic s dobou doběhu do Děčína (docs/DATA.md, korelace změn průtoku);
-     popisek: posun od stanice, zarovnání, název, hodiny */
-  const POPISKY = {
-    decin: [26, 2, 'start', 'Děčín', ''], usti: [28, 42, 'start', 'Ústí nad Labem', '4 h'], louny: [-20, 62, 'start', 'Louny', '16 h'],
-    melnik: [28, 8, 'start', 'Mělník', '13 h'], praha: [30, 16, 'start', 'Praha-Chuchle', '17 h'], nymburk: [26, -16, 'start', 'Nymburk', '10 h'],
-    beroun: [-26, 6, 'end', 'Beroun', '23 h'],
-  };
-  const NAZVY_REK = [['Vltava', 215, 700], ['Labe', 455, 330], ['Ohře', 90, 330], ['Berounka', 290, 975], ['Sázava', 495, 962], ['horní Labe', 1040, 870]];
+  /* mapa na slajdu 2: jen 7 hlavních stanic s dobou doběhu do Děčína (docs/DATA.md, korelace změn průtoku).
+     Popisek stanice má dva řádky (název, pod ním „· 17 h“ menším tlumeným písmem), název se nikdy nedělí; místo se hledá
+     postupně vpravo, vlevo, pod, nad a šikmo od tečky tak, aby popisek neležel přes řeku, přes jinou stanici ani jiný popisek
+     a zůstal celý v mapě (viewBox). Názvy řek leží podél toků mimo stanice. */
+  const CASY = { decin: '', usti: '4 h', louny: '16 h', melnik: '13 h', praha: '17 h', nymburk: '10 h', beroun: '23 h' };
+  const NAZVY_REK = [['Vltava', 215, 700], ['Labe', 455, 330], ['Ohře', 90, 330], ['Berounka', 290, 975], ['Sázava', 495, 962], ['Jizera', 730, 620], ['horní Labe', 1040, 870]];
+  const MAPA_HRANICE = [-30, 20, 1230, 1030];
+  const RADEK2 = 40, VYSKA1 = 32, VYSKA2 = 26, OKRAJ = 10;
+  /* kandidáti: [kde, vodorovné posuny]; svislá poloha se počítá z výšky bloku (jeden nebo dva řádky) */
+  const KANDIDATI = [['vpravo', [28, 44, 60]], ['vlevo', [28, 44, 60]], ['pod', [0]], ['nad', [0]], ['vpravo-nad', [28, 44]], ['vpravo-pod', [28, 44]], ['vlevo-nad', [28, 44]], ['vlevo-pod', [28, 44]]];
+  const mapaBody = d => { const c = d.match(/-?\d+(?:\.\d+)?/g).map(Number), b = []; for (let k = 0; k + 1 < c.length; k += 2) b.push([c[k], c[k + 1]]); return b; };
+  function usekVObdelniku(ax, ay, bx, by, r) {
+    let t0 = 0, t1 = 1;
+    const dx = bx - ax, dy = by - ay, p = [-dx, dx, -dy, dy], q = [ax - r[0], r[2] - ax, ay - r[1], r[3] - ay];
+    for (let k = 0; k < 4; k++) {
+      if (p[k] === 0) { if (q[k] < 0) return false; continue; }
+      const t = q[k] / p[k];
+      if (p[k] < 0) { if (t > t1) return false; if (t > t0) t0 = t; } else { if (t < t0) return false; if (t < t1) t1 = t; }
+    }
+    return true;
+  }
+  const prekryv = (a, b) => a[0] < b[2] && b[0] < a[2] && a[1] < b[3] && b[1] < a[3];
+  const bbox = t => { const b = t.getBBox(); return [b.x, b.y, b.x + b.width, b.y + b.height]; };
+  let mapaPopisky = [];
+  function rozmistiPopisky() {
+    const svg = document.getElementById('mapa'), R = window.REKA;
+    if (!svg || !R || !mapaPopisky.length) return;
+    const reky = [R.hlavni, ...Object.values(R.pritoky)].map(mapaBody);
+    const kruhy = mapaPopisky.map(p => [p.s.x - p.r, p.s.y - p.r, p.s.x + p.r, p.s.y + p.r]);
+    const obsazeno = Array.from(svg.querySelectorAll('.reka-nazev')).map(bbox);
+    const koliduje = o => {
+      if (o[0] < MAPA_HRANICE[0] || o[1] < MAPA_HRANICE[1] || o[2] > MAPA_HRANICE[2] || o[3] > MAPA_HRANICE[3]) return true;
+      const r = [o[0] - OKRAJ, o[1] - OKRAJ, o[2] + OKRAJ, o[3] + OKRAJ];
+      for (const k of kruhy) if (prekryv(r, k)) return true;
+      for (const z of obsazeno) if (prekryv(r, z)) return true;
+      for (const b of reky) for (let k = 0; k + 1 < b.length; k++) if (usekVObdelniku(b[k][0], b[k][1], b[k + 1][0], b[k + 1][1], r)) return true;
+      return false;
+    };
+    mapaPopisky.forEach(p => {
+      const { s, t, tspan, r } = p, dva = !!tspan, vyska = dva ? VYSKA1 + RADEK2 + VYSKA2 : VYSKA1;
+      const poloz = (x, y, kotva) => {
+        t.setAttribute('x', x); t.setAttribute('y', y); t.setAttribute('text-anchor', kotva);
+        if (tspan) { tspan.setAttribute('x', x); tspan.setAttribute('dy', RADEK2); }
+      };
+      let hotovo = false;
+      for (const [kde, posuny] of KANDIDATI) {
+        for (const d of posuny) {
+          const vpravo = kde.startsWith('vpravo'), vlevo = kde.startsWith('vlevo');
+          const kotva = vlevo ? 'end' : 'start';
+          const x = vpravo ? s.x + d : vlevo ? s.x - d : s.x - 16;
+          let y;                                                     /* účaří prvního řádku */
+          if (kde === 'vpravo' || kde === 'vlevo') y = s.y + VYSKA1 - vyska / 2;
+          else if (kde === 'pod' || kde.endsWith('-pod')) y = s.y + (kde === 'pod' ? r + 16 : 4) + VYSKA1;
+          else y = s.y - (kde === 'nad' ? r + 16 : 4) - vyska + VYSKA1;
+          poloz(x, y, kotva);
+          if (!koliduje(bbox(t))) { hotovo = true; break; }
+        }
+        if (hotovo) break;
+      }
+      if (!hotovo) poloz(s.x + 28, s.y + VYSKA1 - vyska / 2, 'start');
+      obsazeno.push(bbox(t));
+    });
+  }
+  /* kontrola po rozmístění: dvojice textů mapy, které se překrývají, a texty mimo viewBox (pro ověření, prázdné pole = v pořádku) */
+  function mapaKolize() {
+    const texty = Array.from(document.querySelectorAll('#mapa text')), chyby = [];
+    const b = texty.map(bbox);
+    texty.forEach((t, a) => {
+      if (b[a][0] < MAPA_HRANICE[0] || b[a][1] < MAPA_HRANICE[1] || b[a][2] > MAPA_HRANICE[2] || b[a][3] > MAPA_HRANICE[3]) chyby.push([t.textContent, 'mimo mapu']);
+      for (let c = a + 1; c < texty.length; c++) if (prekryv(b[a], b[c])) chyby.push([t.textContent, texty[c].textContent]);
+    });
+    return chyby;
+  }
   function postavMapu() {
     const svg = document.getElementById('mapa'), R = window.REKA;
     if (!R) return;
@@ -181,15 +247,22 @@
     NAZVY_REK.forEach(([t, x, y]) => svg.appendChild(el('text', { x, y, class: 'reka-nazev', 'text-anchor': 'middle' }, t)));
     const poradi = ['praha', 'beroun', 'melnik', 'nymburk', 'louny', 'usti', 'decin'];
     poradi.forEach((k, n) => {
-      const s = R.stanice[k], p = POPISKY[k], cil = k === 'decin' || k === 'usti';
+      const s = R.stanice[k], cil = k === 'decin' || k === 'usti', r = cil ? 16 : 12;
       const g = el('g', { class: 'stanice' + (cil ? ' cil' : '') });
       g.style.transitionDelay = (380 + n * 45) + 'ms';
-      g.appendChild(el('circle', { cx: s.x, cy: s.y, r: cil ? 16 : 12 }));
-      const t = el('text', { x: s.x + p[0], y: s.y + p[1] + 12, 'text-anchor': p[2] }, p[3]);
-      if (p[4]) t.appendChild(el('tspan', { class: 'cas' }, ' · ' + p[4]));
+      g.appendChild(el('circle', { cx: s.x, cy: s.y, r }));
+      const t = el('text', { x: s.x, y: s.y }, s.nazev);
+      let tspan = null;
+      if (CASY[k]) { tspan = el('tspan', { class: 'cas', x: s.x, dy: RADEK2 }, '· ' + CASY[k]); t.appendChild(tspan); }
       g.appendChild(t);
       svg.appendChild(g);
+      mapaPopisky.push({ s, t, tspan, r });
     });
+    /* nejdřív stanice s nejmenším výběrem místa (u soutoků), pak ostatní */
+    const prednost = ['usti', 'louny', 'nymburk', 'melnik', 'beroun', 'praha', 'decin'];
+    mapaPopisky.sort((a, b) => prednost.indexOf(Object.keys(R.stanice).find(k => R.stanice[k] === a.s)) - prednost.indexOf(Object.keys(R.stanice).find(k => R.stanice[k] === b.s)));
+    rozmistiPopisky();
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(rozmistiPopisky);
     svg.querySelectorAll('.reka-nazev').forEach(t => { t.style.transitionDelay = '700ms'; });
     svg.querySelectorAll('.tok').forEach(p => {
       const L = p.getTotalLength();
@@ -217,14 +290,18 @@
   function postavMini() {
     const R = window.REKA;
     if (!R) return;
+    /* viewBox: vpravo končí na konci popisku „Praha“ (x 500), nahoře na horní hraně verzálek „Děčín“ (účaří 22 − 0,727 × 150),
+       dole na spodní hraně řádku „Praha“ (účaří 985 + 34 dotahů; verzálky začínají na 876, pod tečkou v Praze, která končí na 869);
+       zarovnání xMaxYMin: pravý a horní okraj SVG jsou přesně pravý okraj obsahu a horní hrana nadpisu, výška boxu (168 px) určuje měřítko 0,152 */
     slajdy.forEach(s => {
-      const svg = el('svg', { viewBox: '150 -30 370 950', class: 'reka-mini', 'aria-hidden': 'true' });
+      const svg = el('svg', { viewBox: '150 -87 350 1106', preserveAspectRatio: 'xMaxYMin meet', class: 'reka-mini', 'aria-hidden': 'true' });
       const p = el('path', { d: R.hlavni });
       svg.appendChild(p);
       svg.appendChild(el('text', { x: 300, y: 22, 'text-anchor': 'middle' }, 'Děčín'));
-      svg.appendChild(el('text', { x: 500, y: 905, 'text-anchor': 'end' }, 'Praha'));
+      svg.appendChild(el('text', { x: 500, y: 985, 'text-anchor': 'end' }, 'Praha'));
       const g = el('g', { class: 'tecka' });
-      g.appendChild(el('circle', { cx: 0, cy: 0, r: 30 }));
+      g.appendChild(el('circle', { cx: 0, cy: 0, r: 60, class: 'halo' }));   /* měkké halo, pulz v CSS */
+      g.appendChild(el('circle', { cx: 0, cy: 0, r: 38 }));
       svg.appendChild(g);
       s.appendChild(svg);
       const L = p.getTotalLength();
@@ -302,25 +379,94 @@
     soucetAnim = requestAnimationFrame(tik);
   }
 
-  /* video na slajdu 1: krok 0 poster, krok 1 přehrávání (mezerník nebo klepnutí), krok 2 nadpis a 27 h (po dohrání nebo mezerníkem) */
+  /* video na slajdu 1: krok 0 poster, krok 1 přehrávání (mezerník nebo klepnutí), krok 2 nadpis a 18 h (po dohrání nebo mezerníkem) */
+  /* skok na poslední snímek jen tam, kam prohlížeč umí přetočit (seekable): server bez podpory Range (python http.server) by jinak
+     video vrátil na začátek; jinak video stojí na aktuálním snímku a skočí, až to půjde (progress), pokud jsme pořád na úvodu v kroku 2 */
+  const konecVidea = () => Math.max(0, video.duration - 0.05);
+  const konecDostupny = () => { const t = konecVidea(); for (let j = 0; j < video.seekable.length; j++) if (video.seekable.start(j) <= t && video.seekable.end(j) >= t) return true; return false; };
   function videoNaKonec() {
-    const f = () => { try { video.currentTime = Math.max(0, video.duration - 0.05); } catch (e) { /* bez metadat */ } };
-    if (video.readyState >= 1) f(); else video.addEventListener('loadedmetadata', f, { once: true });
+    const f = () => {
+      if (i !== 0 || krok !== 2) return;
+      if (video.readyState < 1) { video.addEventListener('loadedmetadata', f, { once: true }); return; }
+      if (konecDostupny()) { try { video.currentTime = konecVidea(); } catch (e) { /* bez videa */ } return; }
+      video.addEventListener('progress', f, { once: true });
+    };
+    f();
+  }
+  /* video se stáhne celé dopředu (fetch → blob), aby se při přehrávání nezadrhávalo o síť; než je hotové, slajd 1 ukazuje
+     v rohu tlumený ukazatel s procenty a krok 1 (mezerník) počká a spustí se sám, jakmile je blob hotový.
+     Když stažení selže (offline, file://), hraje se rovnou z adresy. Video má vlastní vrstvu (translateZ) kvůli plynulosti. */
+  let videoHotove = false, videoCeka = false;
+  function videoNacti() {
+    if (!video) return;
+    video.style.transform = 'translateZ(0)';
+    const src = video.dataset.src;
+    if (!src) { videoHotove = true; return; }
+    const ukazatel = h('p', 'video-nacita', 'Video se načítá…');
+    slajdy[0].appendChild(ukazatel);
+    let posledni = -1;
+    const procenta = p => { const c = Math.floor(p * 100); if (c !== posledni) { posledni = c; ukazatel.textContent = `Video se načítá… ${c} %`; } };
+    const hotovo = url => {
+      if (videoHotove) return;
+      videoHotove = true;
+      video.src = url;
+      ukazatel.classList.add('hotovo');
+      setTimeout(() => ukazatel.remove(), 400);
+      if (i === 0 && krok === 1 && videoCeka) { videoCeka = false; videoKrok(1); }
+      else if (i === 0 && krok === 2) { video.pause(); videoNaKonec(); }
+      videoCeka = false;
+    };
+    if (!window.fetch || !window.ReadableStream || location.protocol === 'file:') { hotovo(src); return; }
+    fetch(src).then(async r => {
+      if (!r.ok || !r.body) throw new Error(String(r.status));
+      const celkem = +r.headers.get('Content-Length') || 0;
+      const ctecka = r.body.getReader(), kusy = [];
+      let nacteno = 0;
+      for (;;) {
+        const { done, value } = await ctecka.read();
+        if (done) break;
+        kusy.push(value);
+        nacteno += value.length;
+        if (celkem) procenta(nacteno / celkem);
+      }
+      hotovo(URL.createObjectURL(new Blob(kusy, { type: r.headers.get('Content-Type') || 'video/mp4' })));
+    }).catch(() => hotovo(src));
+  }
+  /* GPU vrstva rámu jen po dobu přechodu do karty; po něm will-change: auto, ať se obraz vykreslí ostře v konečném měřítku */
+  let videoRamCasovac = 0;
+  function videoRamPrechod(hned) {
+    if (!videoRam) return;
+    clearTimeout(videoRamCasovac);
+    if (hned || REDUKCE) { videoRam.style.willChange = 'auto'; return; }
+    videoRam.style.willChange = 'transform';
+    videoRamCasovac = setTimeout(() => { videoRam.style.willChange = 'auto'; }, 700);
+  }
+  if (videoRam) {
+    videoRam.style.willChange = 'auto';
+    videoRam.addEventListener('transitionend', e => { if (e.target === videoRam && e.propertyName === 'transform') { clearTimeout(videoRamCasovac); videoRam.style.willChange = 'auto'; } });
   }
   function videoKrok(k, hned) {
+    const bylaKarta = slajdy[0].classList.contains('je-karta');
+    slajdy[0].classList.toggle('je-karta', k === 2);
+    if (bylaKarta !== (k === 2)) videoRamPrechod(hned);
     if (k === 2) miniKresli(0, hned); else miniSchovej(0);
     if (!video) return;
+    if (k !== 1) videoCeka = false;
     if (k === 0) {
       video.pause();
       try { video.currentTime = 0; } catch (e) { /* bez videa */ }
     } else if (k === 1) {
       if (hned) return;
+      if (!videoHotove) { videoCeka = true; return; }
       if (video.ended || (video.duration && video.currentTime >= video.duration - 0.1)) { try { video.currentTime = 0; } catch (e) { /* bez videa */ } }
       const p = video.play();
       if (p && p.catch) p.catch(() => {});
-    } else if (k === 2 && hned) {
-      video.pause();
-      videoNaKonec();
+    } else if (k === 2) {
+      /* video stojí na posledním snímku: po dohrání samo; při mezerníku v průběhu skok na konec, když jde přetočit,
+         jinak (server bez Range) dohraje v kartě do konce a zastaví se na posledním snímku (poster se nevrací) */
+      if (video.ended || hned || konecDostupny()) { video.pause(); if (!video.ended) videoNaKonec(); return; }
+      const p = video.play();
+      if (p && p.catch) p.catch(() => {});
     }
   }
 
@@ -351,7 +497,7 @@
   function jednotky(s) {
     const ven = [];
     const pridej = e => {
-      if (e.matches('.reka-mini, .pata, .stin-video, .stin-veta, .veta, video, .jen-tisk, [data-krok], script')) return;
+      if (e.matches('.reka-mini, .pata, .video-ram, .veta, .jen-tisk, [data-krok], script')) return;
       if (e.matches('.radek, .sloupec, .ctyri, .trojcisli, .web-radek')) { Array.from(e.children).forEach(pridej); return; }
       ven.push(e);
     };
@@ -489,8 +635,9 @@
   postavSoucet();
   postavMapu();
   postavMini();
+  videoNacti();
   const zHashe = parseInt(location.hash.slice(1), 10);
   prejdi(zHashe >= 1 && zHashe <= N ? zHashe - 1 : 0);
 
-  window.deck = { prejdi, dalsi, predchozi, nastavKrok, tisk, get slajd() { return i; }, get krok() { return krok; } };
+  window.deck = { prejdi, dalsi, predchozi, nastavKrok, tisk, mapaKolize, get slajd() { return i; }, get krok() { return krok; }, get videoHotove() { return videoHotove; } };
 })();

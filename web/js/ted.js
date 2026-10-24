@@ -181,7 +181,7 @@ function cteni(ted, pred, rozmezi, chmu) {
     if (chmu[h] != null) pozn.push(`ČHMÚ ${cm(chmu[h])}`);
     return `<div><span class="nazev">${typo(`Za ${h} h`)}</span><span class="hodnota">${cislo(pred[h])}<small>cm</small></span>` +
       `<span class="delta">${typo(`${znamenko(pred[h] - ted)} cm proti teď`)}</span>${odznak(spa(), pred[h])}` +
-      `<span class="rozmezi">${typo(pozn.join(" · "))}</span></div>`;
+      `<span class="rozmezi">${typo(pozn.join(`${NB}· `))}</span></div>`;
   });
   return `<div class="cteni">${radky.join("")}</div>`;
 }

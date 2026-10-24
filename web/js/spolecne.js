@@ -73,5 +73,5 @@ export function panelSbaleni(panel) {
 }
 export function shrnutiPanelu(casti) {
   const el = $("#panel-shrnuti");
-  if (el) el.textContent = typo(casti.filter(Boolean).join(" · "));
+  if (el) el.textContent = typo(casti.filter(Boolean).join("\u00A0· "));
 }

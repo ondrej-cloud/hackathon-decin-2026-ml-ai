@@ -12,15 +12,13 @@
 <div class="jeviste">
 <div class="plocha">
 
-<!-- 1 · video: krok 1 spustí video (mezerník nebo klepnutí), krok 2 (po dohrání nebo mezerníkem) nadpis a 18 h -->
+<!-- 1 · video: krok 1 spustí video (mezerník nebo klepnutí), krok 2 (po dohrání nebo mezerníkem) se video zmenší do karty vpravo, vlevo nadpis a 18 h -->
 <section class="slajd video" id="s-video" data-kroky="2" data-nazev="Den předem víme, kam v Děčíně dosáhne voda">
-  <video id="video" muted playsinline preload="auto" poster="grafy/video_2013_poster.jpg">
-    <source src="video/povoden_2013_decin_1080.mp4" type="video/mp4">
-  </video>
-  <img class="jen-tisk" src="grafy/video_2013_poster.jpg" alt="Rozliv Labe v Děčíně v červnu 2013, snímek z videa">
-  <div class="stin-video"></div>
+  <div class="video-ram">
+    <video id="video" muted playsinline preload="auto" poster="grafy/video_2013_poster.jpg" data-src="video/povoden_2013_decin_1080.mp4"></video>
+    <img class="jen-tisk" src="grafy/video_2013_poster.jpg" alt="Rozliv Labe v Děčíně v červnu 2013, snímek z videa">
+  </div>
   <p class="veta">Tohle je Děčín v&nbsp;červnu 2013. <b>Voda stoupá hodinu po hodině, až k&nbsp;domům.</b></p>
-  <div class="stin-veta" data-krok="2"></div>
   <div class="uvod" data-krok="2">
     <h1>Den předem víme, kam v&nbsp;Děčíně dosáhne voda</h1>
     <div class="obri-blok">
@@ -28,12 +26,13 @@
       <p class="pod-obri">3.&nbsp;stupeň v&nbsp;Děčíně hlášen 18&nbsp;hodin předem</p>
       <p class="pod-obri tisk-popis">Snímek: Děčín v&nbsp;červnu 2013, rozliv ze změřené hladiny hodinu po hodině.</p>
     </div>
+    <p class="video-popis">Děčín, 6.&nbsp;6.&nbsp;2013, 1&nbsp;072&nbsp;cm · video z&nbsp;aplikace</p>
   </div>
 </section>
 
 <!-- 2 · data -->
 <section class="slajd" id="s-reka" data-kroky="1" data-nazev="Jen z balíčku by to nešlo: bereme 20 let a 12 stanic proti proudu">
-  <h1>Jen z&nbsp;balíčku by to nešlo: bereme 20&nbsp;let a&nbsp;12&nbsp;stanic proti proudu</h1>
+  <h1>Jen z&nbsp;balíčku by to nešlo: <span class="dopln" data-krok="1">bereme 20&nbsp;let a&nbsp;12&nbsp;stanic proti proudu</span></h1>
   <div class="radek mapa-radek">
     <figure class="mapa-reky">
       <div class="karta">
@@ -46,7 +45,7 @@
         <p class="stitek">Jen s&nbsp;daty z&nbsp;balíčku by model nefungoval</p>
         <div class="orez"><img src="grafy/02b_proc_externi_data.png" alt="Průměrná chyba během povodní: bude jako teď 44,3 cm, data z balíčku 44,6 cm, naše data 17,1 cm"></div>
       </div>
-      <ul class="trojcisli">
+      <ul class="trojcisli" data-krok="1">
         <li><b><span data-pocitej="20" data-od="0">20</span></b><span>let, 2006–2025</span></li>
         <li><b><span data-pocitej="12" data-od="0">12</span></b><span>stanic</span></li>
         <li><b><span data-pocitej="175320" data-od="0" data-tisice="1">175&nbsp;320</span></b><span>hodin měření</span></li>
@@ -105,7 +104,6 @@
         <span class="odznak spa3">3.&nbsp;stupeň · nad 560&nbsp;cm</span>
         <p>Model varoval. Skutečnost 551&nbsp;cm, 3.&nbsp;stupeň přišel o&nbsp;3&nbsp;h později.</p>
       </div>
-      <p class="citat">„Cílem není vytvořit co nejsložitější model.“ <span>zadání</span></p>
     </div>
   </div>
 </section>
@@ -117,8 +115,8 @@
     <div class="graf"><div class="orez"><img src="grafy/06_jak_overujeme.png" alt="Časová osa 2006 až 2025: výběr modelu na 4 povodních, vícenásobná validace na 8 povodních, test 2021 až 2025"></div></div>
     <div class="sloupec">
       <ol class="overeni">
-        <li><b>Výběr modelu</b><span>4 vynechané povodně</span></li>
-        <li><b>Vícenásobná validace</b><span>8 povodní, každá jednou</span></li>
+        <li><b>Výběr modelu</b><span>4&nbsp;vynechané povodně</span></li>
+        <li><b>Vícenásobná validace</b><span>8&nbsp;povodní, každá jednou</span></li>
         <li><b>Test 2021–2025</b><span>jednou, na konci</span></li>
       </ol>
       <p class="text silny">Dělení v&nbsp;čase, nikdy náhodně.</p>
@@ -151,11 +149,12 @@
 </section>
 
 <!-- 8 · mapa rozlivu -->
-<section class="slajd" id="s-mapa" data-kroky="0" data-nazev="Z předpovědi mapa: kam až voda dosáhne">
+<section class="slajd" id="s-mapa" data-kroky="1" data-nazev="Z předpovědi mapa: kam až voda dosáhne">
   <h1>Z&nbsp;předpovědi mapa: kam až voda dosáhne</h1>
   <a class="snimek-mapy" href="https://field-zero.netlify.app/mapa.html?povoden=2013-06&amp;cil=decin" target="_blank" rel="noopener">
     <img src="grafy/08_mapa_rozlivu.png" alt="Rozliv Labe v Děčíně 6. 6. 2013 při 1 072 cm na mapě aplikace: výška terénu proti výšce hladiny">
-    <span class="pilulka">Otevřít živou mapu</span>
+    <img class="schema" data-krok="1" src="grafy/08b_jak_pocitame_rozliv.png" alt="Jak se počítá rozliv: příčný řez údolím, hladina 127,14 m n. m. proti bodům terénu po 2 m; zaplaveno je, co je níž a spojené s řekou, prohlubeň za valem zůstává suchá">
+    <span class="tlacitko-mapa"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6l6-3 6 3 6-3v15l-6 3-6-3-6 3z"/><path d="M9 3v15M15 6v15"/></svg>Otevřít živou mapu</span>
   </a>
   <div class="web-radek">
     <p class="text">Výška terénu proti výšce hladiny, shoda s&nbsp;úřední mapou 82 až 90&nbsp;%. Děčín 6.&nbsp;6.&nbsp;2013, 1&nbsp;072&nbsp;cm.</p>
@@ -199,12 +198,12 @@
 <section class="slajd zaloha" data-kroky="0" data-nazev="Z3 · Proč ne srážky?">
   <h1>Proč ne srážky?</h1>
   <div class="graf siroky"><div class="orez"><img src="grafy/Z3_proc_ne_srazky.png" alt="Když se blíží vrchol, už neprší: srážky a hladina v čase"></div></div>
-  <p class="odpoved">I&nbsp;s&nbsp;dokonalou předpovědí deště na 3 dny klesla chyba jen o&nbsp;1&nbsp;cm.</p>
+  <p class="odpoved">I&nbsp;s&nbsp;dokonalou předpovědí deště na 3&nbsp;dny klesla chyba jen o&nbsp;1&nbsp;cm.</p>
 </section>
 <section class="slajd zaloha" data-kroky="0" data-nazev="Z4 · Jak moc se pletete?">
   <h1>Jak moc se pletete?</h1>
   <div class="graf siroky"><div class="orez"><img src="grafy/Z4_jak_moc_se_pleteme.png" alt="Jak často je skutečnost v rozmezí od do: 8 až 9 z 10 hodnot"></div></div>
-  <p class="odpoved">Do rozmezí od–do se vejde 8 až 9 z&nbsp;10 hodnot.</p>
+  <p class="odpoved">Do rozmezí od–do se vejde 8 až 9 z&nbsp;10&nbsp;hodnot.</p>
 </section>
 <section class="slajd zaloha" data-kroky="0" data-nazev="Z5 · Funguje to i na jiné povodni?">
   <h1>Funguje to i&nbsp;na jiné povodni?</h1>
@@ -214,7 +213,7 @@
 <section class="slajd zaloha" data-kroky="0" data-nazev="Z6 · Podle čeho model rozhoduje?">
   <h1>Podle čeho model rozhoduje?</h1>
   <div class="graf siroky"><div class="orez"><img src="grafy/Z6_vahy_modelu.png" alt="Váhy lineární regrese pro předpověď hladiny v Děčíně za 24 h: 98 políček, modrá předpověď zvedá, oranžová snižuje, Děčín teď +88 cm, Praha teď +49 cm"></div></div>
-  <p class="odpoved">Váhy lineární regrese pro předpověď hladiny v&nbsp;Děčíně za 24&nbsp;hodin: každé políčko je váha jednoho vstupu, modrá předpověď zvedá, oranžová snižuje (Děčín teď +88&nbsp;cm, Praha teď +49&nbsp;cm).</p>
+  <p class="odpoved">Váhy lineární regrese pro předpověď hladiny v&nbsp;Děčíně za 24&nbsp;hodin: každé políčko je váha jednoho vstupu, modrá předpověď zvedá, oranžová snižuje (Děčín teď +88&nbsp;cm, Praha teď +49&nbsp;cm). Prázdná políčka jsou vstupy, které model nemá.</p>
 </section>
 <section class="slajd zaloha" id="s-rozliv" data-kroky="0" data-nazev="Z7 · Je rozliv hydraulický model?">
   <h1>Je rozliv hydraulický model? Není.</h1>
@@ -222,9 +221,9 @@
     <div class="sloupec">
       <p class="text">Výška terénu proti výšce hladiny, ověřená proti úřední mapě záplavových území.</p>
       <ul class="trojcisli">
-        <li><b>167 <small>ha</small></b><span>náš rozliv při pětileté vodě</span></li>
-        <li><b>183 <small>ha</small></b><span>úřední mapa (DIBAVOD)</span></li>
-        <li><b>165 <small>ha</small></b><span>průnik, shoda 0,89</span></li>
+        <li><b>167&nbsp;<small>ha</small></b><span>náš rozliv při pětileté vodě</span></li>
+        <li><b>183&nbsp;<small>ha</small></b><span>úřední mapa (DIBAVOD)</span></li>
+        <li><b>165&nbsp;<small>ha</small></b><span>průnik, shoda 0,89</span></li>
       </ul>
     </div>
     <figure class="foto">
@@ -249,7 +248,7 @@
     <img src="grafy/Z10_aplikace_dnes.png" alt="Web field-zero.netlify.app na Dnešku: hladina v Děčíně teď, předpověď na 12, 24 a 36 h s rozmezím a vedle oficiální předpověď ČHMÚ">
     <span class="pilulka">Otevřít aplikaci</span>
   </a>
-  <p class="odpoved">field-zero.netlify.app: živá data ČHMÚ, předpověď na 12, 24 a 36&nbsp;h s&nbsp;rozmezím a&nbsp;vedle oficiální předpověď ČHMÚ.</p>
+  <p class="odpoved">field-zero.netlify.app: živá data ČHMÚ, předpověď na 12, 24 a&nbsp;36&nbsp;h s&nbsp;rozmezím a&nbsp;vedle oficiální předpověď ČHMÚ.</p>
 </section>
 <section class="slajd zaloha" data-kroky="0" data-nazev="Z11 · Proč je předpověď křivka, když je to lineární regrese?">
   <h1>Proč je předpověď křivka, když je to lineární regrese?</h1>
