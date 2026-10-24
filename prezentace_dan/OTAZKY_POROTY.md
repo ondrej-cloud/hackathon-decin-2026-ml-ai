@@ -6,6 +6,24 @@ a Ústí × 12 / 24 / 36 h, pokud není napsáno jinak. „D24“ = jen Děčín
 
 Nejpravděpodobnější podle `docs/PREZENTACE_7MIN.md`: 15, 29, 17, 12, 13, 1.
 
+**Kterým grafem odpovědět** (ukázat graf místo slov působí nejlíp). Danovy grafy jsou v `prezentace_dan/grafy/`,
+Ondrovy slajdy a záložní slajdy v `docs/grafy/prezentace/`:
+
+| Otázka | Graf |
+|---|---|
+| 1 data mimo balíček | `03b_proc_externi_data.png` |
+| 12 šťastná validace? | `08b_vicenasobna_validace.png` |
+| 13 co je „jako teď“ | `Z2_co_je_jako_ted.png` |
+| 15 proč lineární regrese | `Z1_srovnani_ctyr_modelu.png`, `04_predpoved_je_soucet.png` |
+| 18 záporné váhy | `Z6_vahy_modelu.png` |
+| 22 směs G3 | `G4_cerven_2013_g3_vs_tym.png` |
+| 23 test, Boris | `08a_test_2021_2025.png`, `07_boris_2024.png` |
+| 24 doba doběhu | `G1_stanice_doby_dobehu.png` |
+| 25 proč nejvýš 36 h | `G2_chyba_podle_horizontu.png` |
+| 29, 30 srážky | `Z3_proc_ne_srazky.png` |
+| 32 nejistota | `Z4_jak_moc_se_pleteme.png` |
+| 36 co dál, víc stanic | `G3_zacatek_vzestupu_stanice.png` |
+
 ## Data a jejich kvalita
 
 **1. Odkud máte data a proč ne jen z balíčku?**
