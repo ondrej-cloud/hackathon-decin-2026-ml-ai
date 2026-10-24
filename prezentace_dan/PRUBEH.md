@@ -51,9 +51,18 @@ Dan (spí, noční úkol), větev `dan-prezentace` z `origin/main` 59956c9, work
   okna, hlavní D24 je 15,5), přínos srážek na začátku vzestupu podle modelu 1,9–4,6 cm, v REPRODUKOVATELNOST závažnost
   podle kontroly „vysoká“ a příčina „domněnka“, TCN kontrolou neověřená. Legenda G1 „doba neměřena“ → „bez doby
   doběhu“, protože experimentální odhady pro nové stanice existují (u malých toků nespolehlivé).
-- 03:12 Nové úkoly od Dana (do 06:30): Danova část prezentace, simulace poroty Codexem, zapracování ranních výsledků
+- 03:53 Nové úkoly od Dana (do 06:30): Danova část prezentace, simulace poroty Codexem, zapracování ranních výsledků
   ridge a nejistoty (v 05:45), brief pro tým, ranní zpráva. Čekání do 04:30 zrušeno.
-- 03:13 Codex hraje přísnou porotu (`codex/prompt_porota.txt`, jen čtení): 20 nejtěžších otázek se slabými místy
+- 03:54 Codex hraje přísnou porotu (`codex/prompt_porota.txt`, jen čtení): 20 nejtěžších otázek se slabými místy
   v podkladech a doporučenou odpovědí.
-- 03:20 `DAN_VYSTUP.md`: mluvený text na asi 80 s a tři slajdy, každý s jedním existujícím grafem (LightGBM 2011,
+- 03:55 `DAN_VYSTUP.md`: mluvený text na asi 80 s a tři slajdy, každý s jedním existujícím grafem (LightGBM 2011,
   G3 začátek vzestupu, G4 červen 2013), Z3 jako záloha ke srážkám. Do 7 minut se vejde jen místo slajdu 5, jinak záloha.
+- 03:59 Simulace poroty doběhla (Codex, 223 s, `codex/porota_codex.md`): 20 tvrdých otázek. Ověřil jsem tři nejcitlivější:
+  (1) Boris 27 h × strop předstihu 24 h: obě čísla platí, 27 h je od vydání varování (14. 9. 11:00, předpověď 577 cm) do
+  skutečného překročení, model ho čekal o 3 h dřív (`docs/grafy/prezentace/README.md`, graf 4); (2) test 2021–2025 není
+  dokonale čistý: ranní průzkum 17:46 (data 2004–2025) zkoušel lineární model i na povodních 12/2023 a 9/2024
+  (`docs/NAPAD_LABE.md`), konkrétní model byl ale zafixovaný před testem; (3) archivní hodina je průměr t:00–t:50.
+- 04:05 Do `OTAZKY_POROTY.md` přidaná sekce „Nejtěžší otázky“ (N1–N20) se zpřesněnými odpověďmi. Upraveny i otázky 17
+  (přeučení nejde úplně vyloučit), 21 (síť přes seedy 19,0 ± 1,2), 23 (definice 27 h) a 32 (nové pásmo nejistoty z větve
+  dan-nejistota: týmové pásmo na povodních 58–72 %, nové 79–80 / 94–95 %). Moje chyba v N2 (pořadí modelů v LOFO) opravena
+  před zápisem.

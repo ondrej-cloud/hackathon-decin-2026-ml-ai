@@ -115,8 +115,9 @@ horší než regrese. A když opravoval zbytek po regresi, ještě ji zhoršil (
 *Zdroj: docs/POKUSY.md (pá 19:45–20:15, so 0:48), docs/CESTA_MODELU.md §1.*
 
 **17. Nepřeučil se váš model?**
-Ne. Na trénovacích povodních má chybu 19,7 cm, na validačních 15,5 cm (D24), bez regularizace vyjde totéž. 98 vah se
-odhaduje ze 108 tisíc hodin. Přeučení jsme viděli u sítě 64-32 (starší rozbor D24 při velké vodě: trénink 5, validace 22 cm) a u polynomu (19,9 a 22,8).
+Obvyklý znak přeučení nemá: na trénovacích povodních má chybu 19,7 cm, na validačních 15,5 cm (D24), bez regularizace
+vyjde totéž, 98 vah se odhaduje ze 108 tisíc hodin. Úplně vyloučit to ale nejde, sousední hodiny nejsou nezávislé, proto
+hodnotíme na celých vynechaných povodních (viz N3). Přeučení jsme viděli u sítě 64-32 (starší rozbor D24 při velké vodě: trénink 5, validace 22 cm) a u polynomu (19,9 a 22,8).
 *Zdroj: docs/POKUSY.md (so 0:48), docs/CESTA_MODELU.md §2.*
 
 **18. Proč jsou některé váhy záporné?**
@@ -135,7 +136,7 @@ poplachů. Test 2021–2025 jednou ve 21:00: 22,4 cm proti 50,2 u „jako teď�
 
 **21. Síť byla na testu lepší (21,3). Proč jste ji nevzali?**
 Kdybychom vybírali podle testu, test by přestal být nezávislý. Rozdíl 1,1 cm je v rámci náhody: ve vícenásobné validaci
-byla síť o 0,9 cm horší a mezi seedy kolísá na validaci až o 2,8 cm. *Zdroj: docs/PREHLED.md, sit_dan/SIT_VARIANTY.md.*
+byla síť o 0,9 cm horší a mezi seedy kolísá na validaci až o 2,8 cm (seedy 42–44: 19,0 ± 1,2 cm, týmových 17,8 je seed 42). *Zdroj: docs/PREHLED.md, sit_dan/SIT_VARIANTY.md.*
 
 **22. Dan má směs G3, která je v LOFO lepší. Proč není finální?**
 G3 (½ regrese s 30 stanicemi + ½ LightGBM s 30 stanicemi) má v LOFO 13,94 proti 15,29 cm, lepší u 20 z 22 povodní. Na
@@ -145,7 +146,8 @@ ne jako finále. *Zdroj: ridge_dan/ZLEPSENI.md, ridge_dan/VALIDACE_ONDRA.md.*
 
 **23. Jak model dopadl na testu podrobně?**
 Děčín +12 / +24 / +36 h: 10,2 / 17,5 / 29,9 cm („jako teď“ 23,3 / 44,8 / 65,5). Před 3. stupněm varoval pokaždé (3 z 3),
-v průměru 11 / 21 / 27 h předem. Boris 9/2024: 3. stupeň 27 h předem, vrchol 649 cm předpověděl na 611 cm.
+v průměru 11 / 21 / 27 h předem. Boris 9/2024: od vydání prvního varování před 3. stupněm do skutečného překročení uběhlo 27 h (model překročení čekal
+o 3 h dřív, viz N11), vrchol 649 cm předpověděl na 611 cm.
 *Zdroj: docs/PREHLED.md (Finální model na testu podrobně).*
 
 ## Fyzika a doba doběhu
@@ -199,8 +201,10 @@ Na bouřky je to málo bodů a déšť, který spadl dřív, už ukážou vodom�
 **32. Jak moc se předpovědi dá věřit?**
 Rozmezí „nejspíš od–do“ je z 5. a 95. percentilu chyb na tréninku podle výšky hladiny. Na validaci se do něj vejde
 89–92 % hodnot celkem, na povodních 76–88 %. Šířka na povodních: Děčín 33 / 53 / 72 cm (12 / 24 / 36 h). Na povodních je
-užší, než by mělo být (8 z 10 místo 9 z 10), protože validační povodně jsou vyšší než trénovací. Tak to i říkáme.
-*Zdroj: docs/POKUSY.md (pá 20:40, Honza).*
+užší, než by mělo být, a přísnější kontrola na 22 povodních to potvrdila: 80% pásmo v tomto stylu pokrývá jen 58–72 %
+hodin. Dan v noci připravil pásmo z chyb mimo trénink, které pokrývá 79–80 % a 94–95 % (cíl 80 a 95 %), slabé zůstává
+na rychlém vzestupu (59–72 %). Jestli ho tým dá do aplikace, rozhodne ráno (viz N18).
+*Zdroj: docs/POKUSY.md (pá 20:40, Honza), nejistota_dan/ZPRAVA_NEJISTOTA.md (větev dan-nejistota).*
 
 **33. Je chyba 16 cm hodně?**
 Za 24 h se voda při povodni změní v průměru o 35 cm a nejvíc o 1,7 m. Stupně v Děčíně jsou od sebe 90 a 70 cm
@@ -252,3 +256,134 @@ DMR 5G jsou otevřená data ČÚZK, srážky NOAA ISD jsou dílo vlády USA bez 
 jen data výměny WMO jsou podle Resolution 40 pro nekomerční použití s uvedením zdroje.
 *Zdroj: docs/DENIK.md (pá 21:30), ridge_dan/ZPRAVA.md (Data), app/mapbox_mapa.py (atribuce), docs/DATA.md,
 srazky_dan/ZPRAVA_SRAZKY.md.*
+
+## Nejtěžší otázky (simulace přísné poroty)
+
+Otázky vymyslel Codex jako přísná porota z těchto podkladů (`codex/porota_codex.md`), odpovědi jsou zpřesněné
+a ověřené ve zdrojích. Pravidlo pro všechny: říct poctivě, co nevíme, a neprodávat víc, než čísla unesou.
+
+**N1. „17,1 cm počítáte jen v oknech kolem povodní, jejichž vrchol znáte až zpětně. Co tím měříte?“**
+Měříme přesnost během povodní, protože tam na předpovědi záleží: okno 7 dní před vrcholem až 5 dní po něm u povodní
+nad 2. stupněm, průměr přes Děčín a Ústí a 12 / 24 / 36 h. Okna slouží jen k hodnocení, do vstupů nic z budoucnosti
+nevstupuje. Přes všechny validační hodiny je to 8,2 proti 12,8 cm u „jako teď“. Jak moc výsledek závisí na délce oken,
+jsme nezkoušeli. *Zdroj: src/evaluate.py (vyhodnot), docs/POKUSY.md (pá 20:15).*
+
+**N2. „Proč zrovna tyhle 4 validační povodně? A proč jednou ukazujete 4, jindy 8 a jindy 22 povodní?“**
+Validaci jsme vybrali tak, aby v tréninku zůstala největší povodeň 2013 a ve validaci byly dvě velké a dvě menší
+(4/2006, 3/2009, 9/2010, 1/2011); po roce 2016 žádná povodeň nebyla. Čtyři je málo, proto vícenásobná validace (8 povodní
+nad 2. stupněm, každá jednou vynechaná) a LOFO (22 povodní nad 400 cm). Jsou to různé sady povodní, čísla se nedají
+zaměňovat: týmová regrese D24 má 15,5 (validace), 18,5 (vícenásobná) a 15,29 cm (LOFO). Pořadí regrese, sítě, LightGBM
+a fyziky je ve validaci i ve vícenásobné validaci stejné, v LOFO D24 je síť o 0,2 cm lepší než regrese. *Zdroj: docs/DATA.md (Rozdělení), ridge_dan/VALIDACE_ONDRA.md, ridge_dan/ZLEPSENI.md.*
+
+**N3. „108 tisíc hodin není 108 tisíc nezávislých příkladů. Jak víte, že se lineární model nepřeučil?“**
+Máte pravdu, sousední hodiny jsou skoro stejné (průtok v Praze teď a před 3 h má korelaci 0,998). Na tréninku nemá
+regrese menší chybu než na validaci (D24 19,7 proti 15,5 cm), takže obvyklý znak přeučení chybí, ale vyloučené tím
+přeučení není. Proto hodnotíme na celých vynechaných povodních (vícenásobná validace, LOFO), ne na hodinách. Kolik je
+nezávislých situací, jsme neodhadovali. *Zdroj: docs/POKUSY.md (so 0:48).*
+
+**N4. „Povodeň 2006 předpovídáte modelem, který se učil i na roce 2013. To jste v roce 2006 neměli.“**
+Ano, validace a LOFO jsou zpětné: měří, jestli se model přenese na povodeň, kterou neviděl, ne jak by fungoval tehdy.
+Chronologicky poctivý je test 2021–2025 s tréninkem jen do konce 2020: 22,4 proti 50,2 cm. Postupné posouvání tréninku
+v čase jsme nedělali. *Zdroj: docs/PREHLED.md (Finální test), docs/POKUSY.md (pá 23:27).*
+
+**N5. „Doby doběhu odhadujete z dat. Z jakých? A jsou po opravách přepočítaná všechna čísla?“**
+U nových stanic v LightGBM se doba původně odhadla i z drženého bloku CV, po opravě jen z trénovací části foldu (CV
+16,20 → 16,01 cm). Týmové doby LightGBM jsou pevné z celého tréninku 2006–2018, to zůstává výhradou. Přepočet tří
+vnořených variant (B, D, G2) po nálezu kontroly nedoběhl, jejich čísla jsou před opravou a za výsledek je nevydáváme.
+Finální lineární regrese doby doběhu vůbec nepoužívá, váhy zpoždění si najde sama. *Zdroj: ridge_dan/STANICE_VSEM.md,
+ridge_dan/ZLEPSENI.md.*
+
+**N6. „Jak může být test 2021–2025 nedotčený, když jste lineární model ráno zkoušeli i na povodních 2023 a 2024?“**
+Poctivě: v průzkumu před stanovením rozdělení (pá 17:46–18:44, data 2004–2025) jsme lineární model zkoušeli i na
+povodních 12/2023 a 9/2024. To ovlivnilo volbu úlohy a typu modelu. Konkrétní model (vstupy, rozdělení, odmocnina,
+alpha) jsme ale zafixovali a zapsali před spuštěním testu (20:58) a test pustili jednou (21:00). Proto se opíráme
+i o vícenásobnou validaci bez testových let, která dala stejné zlepšení, o 55 %. *Zdroj: docs/POKUSY.md (pá 17:46),
+docs/NAPAD_LABE.md, docs/PREHLED.md.*
+
+**N7. „Proč test nepustíte znovu? A když mu věříte, proč nevezmete síť, která na něm byla lepší?“**
+Znovu pustit stejný zmrazený model nic nového neřekne. Problém by byl vybírat podle známého testu, proto síť
+(21,3 proti 22,4 cm) nebereme, i když na testu vyšla lépe. Danův model s 30 stanicemi měl jeden vlastní test D24
+(16,1 proti 17,5), ale G3 a H30 vznikly až potom, test nemají a známý test jim nové potvrzení dát nemůže. Na to by bylo
+potřeba nové období, třeba sledovat předpovědi v příštích povodních. *Zdroj: docs/PREHLED.md, ridge_dan/ZPRAVA.md.*
+
+**N8. „Po desítkách pokusů jste našli G3 a H30. Není to jen šťastný výběr?“**
+To riziko je skutečné, na 24 h bylo asi 15 variant. Proto G3 neprohlašujeme za lepší model: v LOFO je lepší (13,94
+proti 15,29 cm, 20 z 22 povodní), na validaci D24 horší (18,2 proti 15,5) a ve vícenásobné validaci jen o 0,5 cm
+lepší. H30 je výslovně průzkumný, nápad vznikl z povodně 2006, která je mezi hodnocenými. Naše pravidlo „aspoň 1 cm“
+není statistická korekce na mnoho pokusů. *Zdroj: ridge_dan/ZLEPSENI.md, ridge_dan/ROZHODNUTI_G3.md.*
+
+**N9. „Co znamená vaše p = 0,0001? A ± 7,7 cm?“**
+Znaménkový test říká, jak nepravděpodobné by bylo vyhrát u 20 z 22 povodní, kdyby oba modely byly stejně dobré a
+povodně nezávislé. Velikost rozdílu neměří: nejhorší zhoršení G3 je 8,2 cm a v oknech povodní má 6 planých poplachů
+proti 4. Osm povodní vícenásobné validace je podmnožina těch 22, takže 6 z 8 (p ≈ 0,29) není nezávislé zopakování.
+± 7,7 cm je rozptyl mezi povodněmi, ne interval spolehlivosti průměru. *Zdroj: ridge_dan/ZLEPSENI.md,
+ridge_dan/VALIDACE_ONDRA.md.*
+
+**N10. „Síť uvádíte 17,8 cm. Proč ne průměr přes seedy?“**
+17,8 je týmový běh se seedem 42. Přes seedy 42–44 má síť 19,0 ± 1,2 cm (17,8–20,6), proto rozdíl 0,7 cm proti
+regresi není pevné pořadí, a i proto jsme vybrali jednodušší regresi. Regrese a LightGBM náhodu nemají, nulový rozptyl
+mezi seedy u nich ale neříká nic o nejistotě na nové povodni. *Zdroj: sit_dan/SIT_VARIANTY.md.*
+
+**N11. „Předpověď na 24 h hlásila Borise 27 h předem? Vaše metrika přece předstih omezuje na 24 h.“**
+Obojí platí, jsou to dvě různá čísla. Předpověď vydaná 14. 9. 2024 v 11:00 na 15. 9. 11:00 dala 577 cm, nad
+3. stupněm (560); skutečně bylo 551 cm a práh voda překročila o 3 h později. Od vydání varování do skutečného překročení
+tedy uběhlo 27 h, model ale překročení čekal o 3 h dřív. Metrika v tabulkách dřívější hlášení počítá nejvýš jako
+horizont, protože je to chyba načasování; na testu je předstih 3. stupně D24 v průměru 21 h.
+*Zdroj: docs/grafy/prezentace/README.md (graf 4), src/evaluate.py (varovani), docs/PREHLED.md.*
+
+**N12. „Hodnota v 10:00 je měření dostupné v 10:00, nebo průměr do 10:50? Kolik předstihu reálně zbude?“**
+Archivní hodina t je průměr t:00 až t:50, takže v t:00 ještě celá známá není. Operativní data ČHMÚ chodí 10–30 min
+po měření a vydání předpovědi je 1–2 h za skutečným časem. Když data přijdou se zpožděním d hodin, zbývá předpovědi
+na 24 h jen 24 − d h. Rozdělení zpoždění při povodni jsme neměřili. *Zdroj: docs/DATA.md (Aktuální data),
+docs/DENIK.md (pá 21:30).*
+
+**N13. „Učíte se na archivních průtocích, které ČHMÚ po povodni opravil. V provozu je nemáte.“**
+Ano, archiv je zpětně ověřený a průtok je dopočtený z hladiny měrnou křivkou, která se mezi roky posouvá (při
+1 000 m³/s je Děčín 453–478 cm). Předběžné hodnoty z doby povodní nemáme, takže rozdíl jsme nezměřili. Naše čísla jsou
+proti provozu spíš optimistická a nemůžeme vyloučit, že by se pořadí modelů změnilo. *Zdroj: docs/DATA.md (Hladina je
+měřená, průtok dopočtený), docs/POROZUMENI.md (Co model umí a co ne).*
+
+**N14. „V provozu vypadne stanice. Co uděláte?“**
+Dvě stanice dopočítáváme už teď (Mělník a Nymburk operativně nejsou celé), na validaci to zhorší D24 z 15,5 na 16,9 cm
+a +12 h z 9,0 na 10,8 cm. Jiné výpadky ani jejich souběh jsme nezkoušeli. Pro model s 30 stanicemi je navržené pravidlo:
+při výpadku kterékoli nové stanice spadnout zpět na týmový model. V provozu by aplikace musela jasně odlišit platnou,
+náhradní a nevydanou předpověď. *Zdroj: docs/DATA.md (Aktuální data), ridge_dan/ROZHODNUTI_G3.md (bod d).*
+
+**N15. „Z pár hrubých srážkových vstupů usuzujete, že déšť nepomáhá. Není to moc silné tvrzení?“**
+Je, proto ho říkáme úzce: vyzkoušené reprezentace srážek nepomohly. Denní srážky 17,1 → 17,4, dokonale známé srážky na
+3 dny 16,1, šestihodinové ze 9 stanic v LOFO pod 0,1 cm u regrese a asi −0,5 cm u LightGBM. Neznamená to, že nepomůže
+radar nebo jiný model: u dešťové povodně 9/2010 by dokonalá předpověď na 36 h pomohla o 23 %. *Zdroj: docs/POKUSY.md
+(pá 20:44, 22:32, 22:46), srazky_dan/ZPRAVA_SRAZKY.md.*
+
+**N16. „Na slajdu přičítáte centimetry od Vltavy, horního Labe a Mělníka. Mělníkem ale voda z Vltavy a Labe už protekla,
+není to dvojí počítání?“**
+Je to rozklad lineární předpovědi na příspěvky skupin vstupů proti průměrnému stavu, ne bilance vody. Mělník,
+Vltava a horní Labe nesou zčásti stejnou vodu, takže příspěvky jsou statistické a korelované, ne nezávislé příčiny.
+Model zachování vody nevynucuje, sčítá škálované odmocniny průtoků a hladiny. Správně je říkat „kolik centimetrů
+přidá každá skupina vstupů“. *Zdroj: docs/PREZENTACE_7MIN.md (slajd 4), src/models/ridge.py.*
+
+**N17. „Proč věřit předpovědi příští rekordní povodně, když 2002 nemáte a v tréninku jsou velké povodně dvě?“**
+Neumíme to zaručit. Když jsme povodeň 2013 vynechali, předpověděla týmová regrese na vrcholu 1 072 cm jen 952 cm
+(G3 965) a 80% pásmo nejistoty tam pokrylo jen 42 % hodin. Lineární model aspoň pokračuje v trendu, stromy ne, ale při
+ledu, změně koryta nebo rekordu je to extrapolace bez záruky. *Zdroj: prezentace_dan/grafy/README.md (G4),
+nejistota_dan/ZPRAVA_NEJISTOTA.md.*
+
+**N18. „Pásmo nejistoty slibuje 90 %, při povodni se do něj vejde míň. Proč ho ukazujete?“**
+Dnešní pásmo v aplikaci je z chyb na trénovacích datech. Ve vnořené kontrole na 22 povodních pokrývá 80% pásmo v tomto
+stylu jen 58–72 % hodin a na začátku vzestupu 15 %. Dan v noci připravil pásmo z chyb mimo trénink: pokrývá 79–80 %
+a 94–95 % (cíl 80 a 95 %), na rychlém vzestupu ale jen 59–72 % a u rekordní povodně 2013 42 %. Je to orientační
+rozmezí, pravděpodobnost překročení stupně z něj nepočítáme. *Zdroj: nejistota_dan/ZPRAVA_NEJISTOTA.md, docs/POKUSY.md
+(pá 20:40).*
+
+**N19. „O 55 % lepší než ‚bude jako teď‘. Ale jste lepší než ČHMÚ?“**
+To nevíme, historické předpovědi ČHMÚ s časy vydání nemáme, a netvrdíme to. Laťka „jako teď“ je jednoduchá, proto
+jsme zkoušeli i pokračování trendu (39,4 cm a v Děčíně 2 / 5 / 16 planých poplachů) a fyzikální model (24,8 cm). V režimu
+Dnešek ukazujeme naši předpověď vedle oficiální ČHMÚ. Spravedlivé srovnání by chtělo stejné časy vydání a stejná data.
+*Zdroj: docs/POKUSY.md (pá 19:35), docs/POROZUMENI.md, docs/DENIK.md (pá 21:30).*
+
+**N20. „Kdo odpovídá, když na základě vaší aplikace někdo nevaruje? A máte vyřešené licence všech dat?“**
+Je to studentský doplňkový nástroj, ne systém pro rozhodování o varování, a tak ho i prezentujeme. Provozní odpovědnost
+ani postup jsme neřešili, oficiální předpověď dává ČHMÚ (právní výklad je potřeba ověřit u mentora). Rozliv má proti
+DIBAVOD shodu IoU 0,82–0,90, proti skutečnému rozlivu ověřený není. Licenci CC BY 4.0 máme doloženou u ČHMÚ a
+Open-Meteo; úplné právní posouzení všech zdrojů a nasazení nemáme. *Zdroj: otázka 40, docs/DATA.md,
+ridge_dan/ZPRAVA.md (Data).*
