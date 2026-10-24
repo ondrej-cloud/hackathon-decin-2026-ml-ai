@@ -1,0 +1,49 @@
+diff --git a/app/aktualni.py b/app/aktualni.py
+index 1e48607..1483467 100644
+--- a/app/aktualni.py
++++ b/app/aktualni.py
+@@ -143,6 +143,9 @@ def predpoved_dnes(nazev="ridge"):
+             X = radek(D2, cil)
+             ted = float(X[f"{cil}_H_0"].iloc[0])
+             pred = predikce.predpoved(nazev, cil, X)
++            # předpovědi vydané o 1 a 2 h dřív ze stejných dat (jen minulé hodiny), pro vyhlazení při nízké vodě
++            drive = [predikce.predpoved(nazev, cil, radek(D2.loc[:cas - pd.Timedelta(hours=k)], cil)) for k in (2, 1)]
++            pred = predikce.vyhlad_nizkou_vodu(cil, ted, pred, {h: [d[h] for d in drive] + [p] for h, p in pred.items()})
+             chmu = D.attrs["chmu"][cil]
+             out[cil] = dict(ted=ted, stupen_ted=predikce.stupen(cil, ted), predpoved=pred,
+                             stupen={h: predikce.stupen(cil, p) for h, p in pred.items()},
+diff --git a/app/app.py b/app/app.py
+index 0a44ea8..20200ef 100644
+--- a/app/app.py
++++ b/app/app.py
+@@ -177,7 +177,9 @@ with tab_ted:
+         st.subheader(f"{jmeno(cil)} dnes, předpověď vydaná {cesky(cas):%d. %m. %Y %H:%M} českého času")
+         st.caption(f"Živá data ČHMÚ (opendata.chmi.cz), {DNES['stari_h']} h stará. "
+                    + (f"Dopočteno z bilance vody: {', '.join(DNES['dopocteno'])}. " if DNES["dopocteno"] else "")
+-                   + (DNES["upozorneni"] or ""))
++                   + (DNES["upozorneni"] or "")
++                   + " Pod 1. stupněm povodňové aktivity je předpověď průměrem předpovědí z posledních 3 hodin, jinak "
++                   "by kmitala podle odtoku z vodních děl.")
+     else:
+         st.subheader(f"{jmeno(cil)}, {cesky(cas):%d. %m. %Y %H:%M} českého času")
+     with st.container(key="pult"):
+diff --git a/app/predikce.py b/app/predikce.py
+index 5e28bb3..c6ef4df 100644
+--- a/app/predikce.py
++++ b/app/predikce.py
+@@ -59,6 +59,15 @@ def predpoved(nazev, cil, radek):
+     return {h: float(nacti_model(nazev, cil, h).predict(radek)[0]) for h in HORIZONTY}
+ 
+ 
++def vyhlad_nizkou_vodu(cil, ted, pred, posledni):
++    """Předpověď k zobrazení při nízké vodě: když je hladina teď i předpověď pod 1. stupněm, průměr předpovědí vydaných
++    v t − 2 h, t − 1 h a t, jinak předpověď z t beze změny. Při nízké vodě předpověď kmitá podle odtoku z vodních děl
++    (provozní data 25. 9.–23. 10. 2026: hodinová změna 6,2 cm, realita 2,2); varování od 2. stupně se tím nemění
++    (nejistota_dan/KMITANI.md). posledni = {h: [předpovědi vydané v t − 2 h, t − 1 h, t]}."""
++    prah = SPA[cil][0]
++    return {h: sum(posledni[h]) / len(posledni[h]) if ted < prah and p < prah else p for h, p in pred.items()}
++
++
+ @cache
+ def _intervaly():
+     soubor = MODELS / "ridge_intervaly.json"

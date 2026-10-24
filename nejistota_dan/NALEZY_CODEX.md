@@ -60,3 +60,15 @@ archiv a posun o horizont správně; šířky −9 až +24 a −30 až +56 cm se
 | střední | `ZPRAVA_NEJISTOTA.md` šířka 32 cm je průměr, ne Děčín +24 h | **Opraveno**: 29 cm |
 | střední | `PREZENTACE_PASMO.md` „ani v Praze“ není v definici začátku vzestupu | **Opraveno** |
 | nízká | „trefíme se skoro na centimetry“ | **Opraveno**: „bývají chyby malé“ |
+
+## (e) Kmitání: únik z budoucnosti ve vyhlazení (so 05:30–05:42)
+
+Bez nálezu úniku: `rolling("3h")` po `sort_index` bere t, t − 1 h, t − 2 h; `rolling(6)` a nezáporné `shift(z)` jen
+minulost; index 2006–2020 hodinový bez děr; LOFO bere předpovědi o 2 h dřív stejným modelem foldu; provozní vyhlazení
+kauzální; varianty se liší od týmového Ridge jen vyhlazením; zpoždění vrcholu a směrodatná odchylka změn správně.
+
+| Závažnost | Nález | Reakce |
+|---|---|---|
+| vysoká | `kmitani.py:70` varování v LOFO na oknech bez 96 h kontextu, některé začátky vypadnou | **Zdůvodněno**: týká se všech variant stejně; varování se hodnotí hlavně Ondrovou validací (okno 16 dní před vrcholem), kde (a) propásne o jednu povodeň víc; pravidlo (d) varování z konstrukce nemění; ve slabinách `KMITANI.md` |
+| střední | `kmitani.py:123` v provozu různé řádky (583 / 618) | **Opraveno** před koncem: všechny varianty na stejných 583 řádcích (Codex viděl první běh) |
+| střední | `ridge_kmit_vystup.py:16` vyhlazení jen uvnitř jednoho volání `predict` | **Zdůvodněno a ošetřeno v aplikaci**: Ondrova validace předává celé okno; patch 11 předává předpovědi z t − 1 h a t − 2 h výslovně |
