@@ -315,3 +315,12 @@ Aplikace vypadala jako tmavý Streamlit ze šablony a prvky na sebe nenavazovaly
 - Výsledek a co znamená: Na jednom záběru je vidět město, řeka, rozliv i domy, které stojí ve vodě. Povodeň 1/2011 se přehraje zhruba za minutu. `python app/test_app.py` 9 z 9.
 - Slabiny a co může být špatně: Výška budov bez údaje v OSM je odhad (9 m, garáže 3 m). Budovy jsou jen ve čtverci asi 8 × 8 km kolem každého vodočtu, jinde od zoomu 15 ze Standardu. Výkon na slabším notebooku jsme neměřili; nejtěžší je porovnání dvou map v Ústí.
 - Otázka poroty a odpověď: Odkud máte budovy a jak víte, jak jsou vysoké? Z OpenStreetMap, výška je z tagu výšky nebo z počtu pater krát 3 m, jinak odhad 9 m. Pro rozliv výška domů nehraje roli, budovy jsou jen pro orientaci.
+
+## so 2:40 · Honza · Rozbor: video rozlivu Borise pro prezentaci
+
+- Co jsme udělali: Dvě videa `docs/grafy/video_povoden_decin.mp4` a `video_povoden_usti.mp4` (1920 x 1080, 30 fps, 24 s, bez zvuku): povodeň Boris od 13. 9. 2024 0:00 do 18. 9. 12:00, mapa Celá povodeň se skutečnou hladinou, boční panely skryté, dole lišta s datem, hodinou a hladinou. Snímek na každou hodinu z přehrávače v mapě (`skoc(i)` v `app/mapbox_mapa.py`), kamera se pomalu otáčí a přibližuje, ffmpeg složí 30 fps; u Děčína jsou plynulé přechody mapy a ostrá lišta zvlášť.
+- Jak to funguje, jednoduše: Mapa už umí skočit na libovolnou hodinu povodně, takže video je jen 133 snímků mapy za sebou. Nic není kreslené ručně, všechno je z dat ČHMÚ a z rozlivu z výškového modelu terénu.
+- Proč tak a ne jinak: Nahrávání obrazovky v reálném čase trhá a závisí na výkonu notebooku; snímek po hodině je deterministický a dá se znovu vyrobit stejným skriptem. Rozsah končí na vrcholu v Děčíně (646 cm), pokles by se do 25 s nevešel.
+- Výsledek a co znamená: Nezávislá kontrola potvrdila rozlišení, délku, nárůst vody (190 → 646 cm, stupně bez → 3.) a čitelnou lištu. Video je úvod prezentace a záloha dema. Pro web je verze 1280 x 720 (8 MB), originály (24 až 30 MB) nejsou v Gitu.
+- Slabiny a co může být špatně: Otáčení kamery je krokované po hodinách (5,5 kroků za sekundu), na plátně to působí jako jemné tikání. V liště zůstal přepínač rychlosti a ikona přehrát v klidovém stavu. V Ústí končí klip hodinu před vrcholem.
+- Otázka poroty a odpověď: Je to simulace, nebo měření? Hladina je změřená (ČHMÚ), plocha vody je výška terénu ČÚZK proti výšce hladiny se sklonem, ověřená proti úředním záplavovým územím; není to hydraulický model.
