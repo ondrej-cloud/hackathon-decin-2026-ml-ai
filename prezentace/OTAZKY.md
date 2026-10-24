@@ -85,3 +85,26 @@ Přímka je vztah mezi vstupy a hladinou, naučí se jednou: zjednodušeně s je
 **25. Jak vypadá ta přímka, když je vstupů 98?** (Ondra, slajd Z12)
 Proti jednomu vstupu ji nakreslit nejde, potřebovala by 98 os. Když na osu x dáme celý vážený součet (předpověď) a na osu y skutečnost, je to zase přímka a body leží těsně u úhlopříčky: na validaci průměrná chyba 7,5 cm proti 26,5 cm s jediným vstupem.
 
+## Jak model počítá a jak se učí
+
+**26. Jak přesně vypadá vzorec modelu?** (Ondra)
+Hladina za h hodin = bias + váha₁ × vstup₁ + … + váha₉₈ × vstup₉₈. Vstupy: průtok na 12 stanicích (Děčín, Ústí a 10 proti proudu) teď a před 3, 6, 12, 18, 24 a 36 h (84 čísel) a hladina v Děčíně a Ústí teď a před 1, 2, 3, 6, 12 a 24 h (14 čísel). Každý zvlášť pro Děčín a Ústí a 12, 24 a 36 h, tedy 6 sad vah. Ne každou hodinu, protože sousední hodnoty jsou skoro stejná čísla (průtok v Praze teď a před 3 h má korelaci 0,998).
+
+**27. Jak se model učí?** (Ondra)
+Tři kroky v `src/models/ridge.py`: 1) z průtoků se vezme odmocnina, protože hladina roste s průtokem čím dál pomaleji (koryto se rozšiřuje); 2) každý vstup se převede na „o kolik obvyklých výkyvů je nad průměrem“ (StandardScaler), aby šly váhy srovnat; 3) metoda nejmenších čtverců s malou pokutou za velké váhy (Ridge, alpha = 1) najde bias a 98 vah. Krok 3 je jedna soustava 99 rovnic o 99 neznámých, počítač ji vyřeší přesně za 0,4 s ze 108 tisíc hodin let 2006–2018. Nic se nezkouší ani neladí po krůčcích, trénink je právě ten výpočet.
+
+**28. Proč čtverce chyb?** (Ondra)
+Obyčejné rozdíly by se odečetly (+50 a −50 dá 0). Čtverec trestá velkou chybu víc (jedna chyba 100 cm je 10 000, dvě po 50 cm jen 5 000), a při povodni nám jde hlavně o to, aby model neudělal obří chybu. A pro čtverce existuje přesný vzorec. Jestli se čtverce sčítají, nebo průměrují, je jedno, nejlepší přímka vyjde stejná. Výsledky hlásíme jako průměrnou chybu v cm bez čtverců, protože ta se dá říct člověku.
+
+**29. Jak se spočítá sklon a bias?** (Ondra, slajd Z11)
+S jedním vstupem: sklon = Σ (x − x̄)(y − ȳ) / Σ (x − x̄)², bias = ȳ − sklon × x̄, kde x je průtok v Mělníku v nějakou hodinu, y hladina v Děčíně o 24 h později a pruh nahoře znamená průměr. Sklon říká, o kolik je v průměru zítra v Děčíně víc než obvykle, když je dnes v Mělníku víc než obvykle; bias posune přímku středem mraku bodů. Ze 20 let vyjde hladina za 24 h = 111 + 0,41 × průtok v Mělníku. Vzorce plynou z toho, že součet čtverců chyb tvoří „mísu“ a její dno je tam, kde je derivace nulová. S 98 vstupy je to stejný postup, jen místo dvou rovnic 99.
+
+**30. Co je Ridge a proč pokuta za velké váhy?** (Ondra)
+Ridge je lineární regrese, která k součtu čtverců chyb přičte alpha × součet čtverců vah. Sousední vstupy jsou skoro stejná čísla a bez pokuty by si mezi ně model mohl rozdělit obří váhy, které se navzájem odečtou (+500 a −490). S alpha 1 klesne největší váha ze 104 na 88 a přesnost se nezmění (bez pokuty i s ní 15,5 cm u Děčína na 24 h); alpha 100 už přesnost zhorší (16,1 cm).
+
+**31. Čím se učení liší od neuronové sítě?** (Ondra)
+Lineární regrese má přesný vzorec, spočítá váhy jedním výpočtem a vyjdou vždycky stejně. Síť vzorec nemá, protože mezi vrstvami jsou ohyby: začne s náhodnými vahami, spočítá, kterým směrem chyba klesá, posune všechny váhy o malý krok a opakuje to tisíckrát (gradientní sestup). Proto trvá minuty, výsledek trochu záleží na náhodném začátku (seed) a s 20 tisíci vahami na dvě velké povodně se snadno přeučí. Pokutu za velké váhy můžou mít obě, naše síť ji měla taky.
+
+**32. Proč nepoužijete předpověď počasí, když na 3 dny pomůže?** (Dan, slajd 9 a Z3)
+Budoucí déšť nezná nikdo, existuje jen předpověď počasí, která se plete hlavně v tom, kde a kolik naprší. Číslo 16,1 cm je myšlenkový pokus se skutečně naměřeným budoucím deštěm, tedy horní mez, kterou žádná předpověď nedá. Na 12–36 h pomohl i dokonalý déšť jen o 1 cm, protože voda, která přijde do 36 h, už teče řekou. Velký přínos byl jen na 72 h a jen u jediné dešťové povodně ve validaci (9/2010: 79,7 → 48,0 cm, −40 %); 72 h je přitom úplně jiná úloha, chyba je tam kolem 78 cm proti 16 cm na 24 h. A hlavně: aby se model naučil s předpovědí pracovat, potřebuje archiv starých předpovědí, tedy co předpověď říkala v každé hodině 2006–2018. Ten volně není (Open-Meteo má historické předpovědi až od 2021–2022). Kdybychom model učili na skutečném dešti a pak mu dávali předpověď, věřil by jí jako dokonalé a ověřit by to nešlo. Proto je to v „co dál“.
+
