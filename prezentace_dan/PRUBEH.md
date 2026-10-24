@@ -24,3 +24,18 @@ Dan (spí, noční úkol), větev `dan-prezentace` z `origin/main` 59956c9, work
   povodňové aktivity, vodní zákon) výslovně psáno, že to v repu podložené není a je to k ověření u mentora.
 - Session nejistoty (`hackathon-2026-nejistota`) začala 01:43 a výsledky ještě nemá. Otázka 32 o nejistotě je zatím jen
   z Honzova `src/nejistota.py`, před ranní zprávou se podívám znovu.
+- 02:02 Grafy G1–G4 hotové (subagent, `grafy_dan.py`, popis `grafy/README.md`). Zkontroloval jsem každý PNG a opravil tři
+  věci: v G1 a G4 žargon v legendě („z G3“, „G3 (30 stanic)“ → „G3 = ½ regrese + ½ LightGBM“), v G4 legendu, která
+  překrývala křivku, a v G1 legendu, která po prodloužení zakryla „Děčín · cíl“. Skript při každém běhu ověřuje čísla
+  proti kontrolním hodnotám, nesedí nic.
+- 02:08 Fact-check Codexem (`codex/prompt_fact_check.txt`, jen čtení, 351 s, výstup `codex/fact_check_codex.md`):
+  704 čísel, 669 sedí, 31 nesedí, 4 tvrzení neověřitelná. Většina nesouladů je špatně označená metrika (D12/D24 proti
+  průměru 6 kombinací, starší běhy) a příliš obecné věty. Všech 31 opraveno jedním skriptem (každá náhrada ověřená, že
+  sedí právě jednou). Důležité: „12 z 24“ jsou varování, ne povodně; 44,6 cm je balíček napodobený na 2017–2018;
+  fyzika zapojí jen 8 z 18 stanic; přísným LOFO prošla na D36 i regrese s 30 stanicemi; Boris (649 cm) není vrchol
+  nad rámec tréninku (2013: 1 072 cm); rozliv bere nejvyšší dosaženou N-letou vodu, ne nejbližší.
+- Nález pro tým (Codex): v aplikaci je výchozí model `ridge` učený do 2018 i v režimu Dnešek; model učený do 2025
+  (`ridge_vse`) se musí zvolit v menu. Zapsáno do otázky 39 a do ranní zprávy.
+- U otázky 26 (Danova odpověď) jsem upřesnil závorku: 98 hodnot = průtok 12 stanic 0–36 h a hladina Děčína a Ústí
+  0–24 h, vždy 7 zpoždění. V main (`docs/POROZUMENI.md`) zůstává starší znění „z každé stanice 7 zpoždění 0–36 h“,
+  main neměním, jen to hlásím.
