@@ -14,7 +14,7 @@ Devět slajdů na 6:45, rezerva 15 s do 7:00, pak dvanáct záložních. Každý
 | 8 | 5:25–5:55 | Tobias | Co z toho má město? | Z předpovědi mapa: kam až voda dosáhne | 1 |
 | 9 | 5:55–6:45 | Tobias | Kde to selže? | Co neumíme a co dál | 7 |
 
-Celkem 759 slov, při 130 slovech za minutu 5:50 mluvení. Zbytek do 6:45 je ticho nad videem (asi 12 s) a pauzy na kroky decku.
+Celkem 780 slov, při 130 slovech za minutu 6:00 mluvení. Zbytek do 6:45 je ticho nad videem (asi 12 s) a pauzy na kroky decku.
 
 ## 1 · Den předem víme, kam v Děčíně dosáhne voda (0:00–0:40, Honza)
 
@@ -136,12 +136,16 @@ Zdroje: `docs/PREHLED.md` (test), `results/krizova_validace/` a `docs/POKUSY.md`
 ## 8 · Z předpovědi mapa: kam až voda dosáhne (5:25–5:55, Tobias)
 
 - Otázka: Co z toho má město?
-- Musí zaznít: z předpovězené hladiny mapa rozlivu; výška terénu proti výšce hladiny; proti úřední mapě záplavových území shoda 82 až 90 %; vlevo předpověď den předem, vpravo skutečnost; běží živě na webu.
-- Na slajdu: `grafy/08_mapa_rozlivu.png` přes celý slajd (aplikace tak, jak vypadá: Děčín 6. 6. 2013 při 1 072 cm, rozliv z výšky terénu proti hladině, vlevo pohledy, vpravo přepínače zobrazení, dole přehrávač s grafem), dole adresa field-zero.netlify.app a QR kód; klepnutím na snímek se otevře živá mapa.
+- Musí zaznít: z předpovězené hladiny mapa rozlivu; jak se počítá: výška terénu (laserové skenování, bod po 2 m) proti výšce hladiny, zaplavené je jen to, co je níž a spojené s řekou; proti úřední mapě záplavových území shoda 82 až 90 %.
+- Na slajdu: `grafy/08_mapa_rozlivu.png` přes celý slajd (aplikace tak, jak vypadá: Děčín 6. 6. 2013 při 1 072 cm, rozliv z výšky terénu proti hladině, vlevo pohledy, vpravo přepínače zobrazení, dole přehrávač s grafem), dole adresa field-zero.netlify.app a QR kód; klepnutím na snímek se otevře živá mapa. Po mezerníku schéma `grafy/08b_jak_pocitame_rozliv.png` (příčný řez údolím: hladina 127,14 m n. m. = nula vodočtu 120,07 m + 7,07 m, zaplavené je jen to, co je pod hladinou a spojené s korytem, prohlubeň za valem zůstane suchá).
 
-> Co z toho má město? Z předpovězené hladiny aplikace nakreslí, kam až voda dosáhne: porovná výšku terénu s výškou hladiny. Proti úřední mapě záplavových území to sedí z 82 až 90 procent. Tady je Děčín na vrcholu povodně 2013, 1 072 centimetrů. Běží to živě na webu, každou hodinu nová předpověď.
+> Co z toho má město? Z předpovězené hladiny aplikace nakreslí, kam až voda dosáhne. Tady je Děčín na vrcholu povodně 2013, 1 072 centimetrů.
+>
+> [mezerník]
+>
+> Počítá se to jednoduše: výšku hladiny porovnáme s výškou terénu z leteckého laserového skenování, bod každé dva metry. Zaplavené je všechno, co je níž než hladina a zároveň spojené s řekou, prohlubeň za valem zůstane suchá. Proti úřední mapě záplavových území to sedí z 82 až 90 procent.
 
-51 slov (strop 65).
+72 slov (strop 65).
 
 Čísla: `docs/DATA.md` (rozliv z ČÚZK DMR 5G, shoda s DIBAVOD IoU 0,82 až 0,90). Kdyby se porota zeptala, jestli je to hydraulický model: záložní Z7.
 
