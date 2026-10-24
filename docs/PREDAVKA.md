@@ -1,4 +1,4 @@
-# Předávka: stav prezentace, webu a mapy (so 24. 10., 12:45) a co dodělat
+# Předávka: stav prezentace, webu a mapy (so 24. 10., 13:00) a co dodělat
 
 Pro toho, kdo pokračuje v Honzově práci (Honza na jiném účtu nebo kdokoli z týmu): tady je přesný stav a kroky. Pravidla týmu jsou v `CLAUDE.md`, mluvený script v `prezentace/SCRIPT_VITEZNY.md`, texty řečníků v `prezentace/SLAJDY.md`, kostra v `docs/PREZENTACE_7MIN.md`.
 
@@ -16,11 +16,11 @@ Pro toho, kdo pokračuje v Honzově práci (Honza na jiném účtu nebo kdokoli 
 
 Větve: `honza` má vše, `main` je o několik commitů pozadu (video, varianta ve skle, texty). Sloučit a pushnout až s čistým pracovním stromem (viz krok 3). Nikdy `git merge`, dokud jsou v pracovní kopii rozpracované změny: dnes při tom git vrátil deck na starší verzi.
 
-## Co bylo rozpracované v 12:45
+## Stav ve 13:00 (aktualizace)
 
-1. **Deck, poslední kolo úprav** (soubory `web/prezentace/index.html`, `deck.css`, `deck.js`): slajd 1 bez bílé mlhy (po dohrání se video zmenší do karty vpravo, vlevo nadpis a 18 h), slajd 8 s výrazným skleněným tlačítkem „Otevřít živou mapu“ přes snímek, linie řeky Praha–Děčín na všech slajdech stejně a bez zalomení popisků, zalamování textů (`&nbsp;`, `text-wrap: balance`), slajd 2 ve dvou krocích (nejdřív jen „Jen z balíčku by to nešlo:“, druhým krokem zbytek nadpisu, třetí sloupec grafu a trojčíslí), drobnosti z kontroly faktů (`&nbsp;` na Z3, 6, Z7, Z10; poznámka ke 44,6 cm jako napodobenině balíčku; „UTC“ u vrcholu 2013 v poznámkách). Pokud jsou tyhle změny v souborech (grep `Otevřít živou mapu` v index.html a `video-karta` nebo podobná třída v deck.css), jsou hotové; jinak je udělat.
-2. **Kontrola webu** (layout a zalamování na 1440/1024/768/390) a **kontrola grafů** (PNG v decku, SVG součet a mapa řek, grafy webu): běžely jako nezávislé kontroly; jejich nálezy se nemusely stihnout zapracovat. Nejrychlejší je kontrolu zopakovat: `src/kontrola_prezentace.py` pro deck, pro web Playwright snímky stránek na 1440 a 390 px a pohled na ně.
-3. **Kontrola faktů** proběhla: žádná věcná chyba; opravy v textech jsou v commitu 0ea3fb3.
+1. **Deck je hotový a commitnutý** na větvi `honza` (slajd 1 bez mlhy: po dohrání se video zmenší do karty vpravo, vlevo nadpis a 18 h; slajd 2 ve dvou krocích; tlačítko „Otevřít živou mapu“ na slajdu 8; linie řeky a zalamování; bez citátu na slajdu 5; PDF 21 stran). Varianta ve skle `web/prezentace-sklo/` má stejný obsah.
+2. **Opravy webu** (pilulky prahů v grafech mimo křivky, kompaktní vodočet na telefonu, dlaždice na 768–1024 px, kontrast 2. stupně, typografie) dělal agent; první část je v commitu (graf.js, vodocet.js, web funguje bez chyb), zbytek mohl zůstat nedodělaný. Když `git status` ukáže změny ve `web/js` nebo `web/css`, ověřit v prohlížeči (0 chyb konzole, čísla 646 / 738 cm na `/?povoden=2011-01&cil=decin&cas=2011-01-15T09:00`) a commitnout; když je něco rozbité, `git checkout -- web/js web/css` vrátí ověřený stav.
+3. Kontrola faktů proběhla bez věcné chyby; kontroly layoutu webu a grafů jsou zapracované, kromě velikosti písma v PNG grafech (jde jen na Macu, `src/grafy_prezentace.py`, popisky ≥ 24 pt).
 
 ## Kroky k dokončení (v tomhle pořadí)
 
