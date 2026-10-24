@@ -26,7 +26,7 @@ Hladina v Děčíně je tatáž voda změřená podruhé o 4 h později, model s
 
 ## Data a ověření
 
-**7. Proč jste brali data mimo balíček?** (Ondra, slajd Z10)
+**7. Proč jste brali data mimo balíček?** (Ondra, slajd 2)
 Balíček má dva roky a stanice v kraji, nejvýš proti proudu je Ústí, 4 hodiny před Děčínem. S ním by model měl chybu 44,6 cm, stejně jako „bude jako teď“, a propásl by polovinu povodní. Archiv ČHMÚ je stejný zdroj, za 2024 a 2025 sedí s balíčkem na centimetr.
 
 **8. Jak jste data připravili?** (Ondra)
@@ -52,7 +52,7 @@ Na testu 2021–2025 třetí stupeň zachytil pokaždé. U druhého stupně 17 z
 **14. Proč ne srážky?** (Dan, slajd 3 a Z3)
 Zkusili jsme horní mez: model dostal skutečný déšť na 3 dny dopředu, jako by předpověď byla dokonalá, a chyba klesla jen o 1 cm. Voda, která přijde za 12 až 36 h, už teče v řekách a vidíme ji v průtocích proti proudu. Srážky by pomohly na 2 až 3 dny u dešťových povodní, jenže archiv starých předpovědí na trénink nemáme.
 
-**15. Proč jen 36 hodin dopředu?** (Dan, slajd 2)
+**15. Proč jen 36 hodin dopředu?** (Dan, slajd Z10)
 Z nejvzdálenějších stanic, Berounu a Nespek na Sázavě, doteče voda do Děčína za 23 až 25 h. Voda, která do Děčína přijde později, ještě neprotekla žádnou naší stanicí, je v potocích nebo ještě nespadla. Proto je chyba na 36 h skoro dvakrát větší než na 24 h.
 
 **16. Jak moc se dá předpovědi věřit?** (Honza, slajd Z4)

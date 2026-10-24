@@ -68,7 +68,7 @@ def stupne(ax, cil="decin"):
 
 
 # hlavní slajdy ------------------------------------------------------------------------------------------------------
-def s02b_doba_dobehu():
+def z10_doba_dobehu():
     # src/doba_dobehu.py, posun s největší korelací změn průtoku, trénink; docs/DATA.md (Doba doběhu do Děčína)
     stanice = [("Ústí nad Labem (Labe)", 4), ("Kostelec (Labe)", 10), ("Nymburk (Labe)", 10), ("Mělník (Labe)", 13),
                ("Vraňany (Vltava)", 13), ("Louny (Ohře)", 16), ("Praha (Vltava)", 17), ("Předměřice (Jizera)", 18),
@@ -90,7 +90,7 @@ def s02b_doba_dobehu():
     ax.set_xlabel("doba doběhu (h)")
     ax.xaxis.set_major_locator(MultipleLocator(6))
     osa_cisla(ax, "x")
-    uloz(fig, "02b_doba_dobehu.png")
+    uloz(fig, "Z10_doba_dobehu.png")
 
 
 def s03_co_model_bere():
@@ -433,7 +433,7 @@ def z9_vicenasobna():
     uloz(fig, "Z9_vicenasobna_validace.png")
 
 
-def z10_proc_externi_data():
+def s02b_proc_externi_data():
     z = json.loads(sorted((RESULTS / "kolik_dat").glob("*_kolik_dat.json"))[-1].read_text(encoding="utf-8"))
     balicek = next(r for r in z["souhrn"] if r["sada"] == "kraj" and r["let"] == 2)["prumer_povodne"]
     h = [prumer(posledni("jako_ted")), balicek, prumer(posledni("ridge"))]
@@ -446,14 +446,14 @@ def z10_proc_externi_data():
     ax.set_ylabel(CHYBA)
     ax.yaxis.set_major_locator(MultipleLocator(10))
     osa_cisla(ax)
-    uloz(fig, "Z10_proc_externi_data.png")
+    uloz(fig, "02b_proc_externi_data.png")
 
 
 if __name__ == "__main__":
     CIL.mkdir(exist_ok=True)
     shutil.copy(GRAFY / "mapbox2_porovnani.png", CIL / "01_mapa_decin.png")
     shutil.copy(GRAFY / "mapbox_povodi.png", CIL / "02a_mapa_stanic.png")
-    s02b_doba_dobehu()
+    s02b_proc_externi_data()
     s03_co_model_bere()
     s04_cesta_k_modelu()
     print("  součet:", s05_soucet_rek())
@@ -467,4 +467,4 @@ if __name__ == "__main__":
     z6_vahy()
     z8_test()
     z9_vicenasobna()
-    z10_proc_externi_data()
+    z10_doba_dobehu()

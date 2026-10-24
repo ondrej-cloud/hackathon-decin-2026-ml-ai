@@ -5,7 +5,7 @@ Devět slajdů na 6:45, rezerva 15 s do 7:00, pak deset záložních. Každý sl
 | # | Čas | Řečník | Otázka poroty | Nadpis (odpověď) | Bod |
 |---|---|---|---|---|---|
 | 1 | 0:00–0:45 | Tobias | Co řešíte a pro koho? | Den předem víme, kam v Děčíně dosáhne voda | 1 |
-| 2 | 0:45–1:25 | Ondra | Odkud se to dá poznat? | Z Prahy teče voda do Děčína 17 hodin, ze Sázavy 25 | 2 |
+| 2 | 0:45–1:25 | Ondra | Jaká data jste použili? | Jen z balíčku by to nešlo: bereme 20 let a 12 stanic proti proudu | 2 |
 | 3 | 1:25–2:15 | Dan | Co model bere? | Bereme jen řeku, počasí nepomohlo | 3, 4 |
 | 4 | 2:15–3:25 | Honza | Jak jste vybrali model? | Čtyři modely, vyhrál nejjednodušší | 5 |
 | 5 | 3:25–4:05 | Honza | Proč zrovna přímka? | Voda v Děčíně je součet řek | 5 |
@@ -14,7 +14,7 @@ Devět slajdů na 6:45, rezerva 15 s do 7:00, pak deset záložních. Každý sl
 | 8 | 5:25–5:50 | Honza | Dá se to použít? | Každou hodinu nová předpověď z živých dat | 1 |
 | 9 | 5:50–6:45 | Dan, závěr Tobias | Kde to selže? | Co umíme, co ne a co dál | 7 |
 
-Celkem 687 slov, při 130 slovech za minutu 5:17 mluvení. Zbytek do 6:45 je video (20 s bez mluvení) a pauzy na kroky decku.
+Celkem 682 slov, při 130 slovech za minutu 5:14 mluvení. Zbytek do 6:45 je video (20 s bez mluvení) a pauzy na kroky decku.
 
 ## 1 · Den předem víme, kam v Děčíně dosáhne voda (0:00–0:45, Tobias)
 
@@ -28,19 +28,19 @@ Video běží 20 s bez mluvení, pak Tobias přes konec videa:
 
 52 slov (strop 54, mluví se od 20. sekundy videa).
 
-## 2 · Z Prahy teče voda do Děčína 17 hodin, ze Sázavy 25 (0:45–1:25, Ondra)
+## 2 · Jen z balíčku by to nešlo: bereme 20 let a 12 stanic proti proudu (0:45–1:25, Ondra)
 
-- Otázka: Odkud se to dá poznat?
-- Musí zaznít: voda přitéká třemi větvemi a doba doběhu; archiv ČHMÚ, 12 stanic, 20 let; samotný balíček (2 roky, stanice v kraji) dal 44,6 cm, stejně jako „bude jako teď“; proto den dopředu a dál z řeky nevidí nikdo.
-- Na slajdu: vlevo mapa stanic (`grafy/02a_mapa_stanic.png`), po mezerníku vpravo `grafy/02b_doba_dobehu.png`. Tři čísla **20 let · 12 stanic · 175 320 hodin**.
+- Otázka: Jaká data jste použili?
+- Musí zaznít: balíček má 2 roky a stanice jen v kraji, nejvýš proti proudu je Ústí 4 h před Děčínem; jen z něj chyba 44,6 cm, stejně jako „bude jako teď“, a polovina povodní propásnutá; proto hodinový archiv ČHMÚ, 20 let a 12 stanic na Vltavě, horním Labi a Ohři až 25 h proti proudu; stejný zdroj jako balíček; chyba 17,1 cm.
+- Na slajdu: vlevo mapa stanic (`grafy/02a_mapa_stanic.png`), vpravo `grafy/02b_proc_externi_data.png` (po mezerníku se odkryje třetí sloupec). Tři čísla **20 let · 12 stanic · 175 320 hodin**.
 
-> Labe do Děčína přitéká třemi větvemi: Vltavou, horním Labem a Ohří.
+> Balíček od pořadatelů má dva roky dat a stanice jen v kraji. Nejvýš proti proudu je Ústí, jen čtyři hodiny před Děčínem. Model jen z něj se plete o 44,6 centimetru, stejně jako „bude jako teď“, a polovinu povodní propásne.
 >
 > [mezerník]
 >
-> Voda z Ústí sem doteče za 4 hodiny, z Prahy za 17, ze Sázavy za 25. Co teče Prahou teď, je zítra v Děčíně. Proto jsme vzali hodinový archiv ČHMÚ: dvanáct stanic a dvacet let. Jen s daty z balíčku, dva roky a stanice v kraji, byla chyba 44,6 centimetru, stejně jako když řeknete, že bude jako teď. A je to i hranice: vodu, která ještě neteče žádnou stanicí, z řeky nevidí nikdo.
+> Proto jsme vzali hodinový archiv ČHMÚ: dvacet let a dvanáct stanic na Vltavě, horním Labi a Ohři, až 25 hodin proti proudu. Je to stejný zdroj jako balíček, jen delší a s víc stanicemi. Chyba klesla na 17 centimetrů.
 
-84 slov (strop 86).
+79 slov (strop 86).
 
 ## 3 · Bereme jen řeku, počasí nepomohlo (1:25–2:15, Dan)
 
@@ -208,8 +208,8 @@ Graf `grafy/Z9_vicenasobna_validace.png`. Odpovídá Ondra.
 
 Každou z 8 povodní 2006 až 2020 jsme jednou vynechali a model naučili na ostatních. Chyba 20,1 ± 7,7 cm proti 45,2 u „bude jako teď“, o 55 % méně, stejně jako na testu, a na každé povodni zvlášť o 34 až 66 % méně. Chyba víc záleží na povodni než na modelu.
 
-### Z10 · Proč jste brali data mimo balíček?
+### Z10 · Proč jen 36 hodin dopředu?
 
-Graf `grafy/Z10_proc_externi_data.png`. Odpovídá Ondra.
+Graf `grafy/Z10_doba_dobehu.png`. Odpovídá Dan.
 
-Balíček má dva roky a stanice v kraji, nejvýš proti proudu je Ústí, 4 hodiny před Děčínem. Se stanicemi jen z kraje a dvěma lety dat vyšla chyba 44,6 cm, stejně jako „bude jako teď“, a model propásl polovinu povodní; s 12 stanicemi a 20 lety 17,1. Archiv ČHMÚ je stejný zdroj, za 2024 a 2025 sedí s balíčkem na centimetr.
+Z nejvzdálenějších stanic, Berounu a Nespek na Sázavě, doteče voda do Děčína za 23 až 25 h, z Prahy za 17 h, z Ústí za 4 h. Voda, která do Děčína přijde později, ještě neprotekla žádnou naší stanicí, je v potocích nebo ještě nespadla, a z měření na řece ji nevidí nikdo. Proto je chyba na 36 h skoro dvakrát větší než na 24 h a dál by pomohla jen předpověď srážek. Doby jsou z korelace změn průtoku na trénovací části (`docs/DATA.md`).

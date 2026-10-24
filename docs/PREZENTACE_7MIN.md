@@ -9,7 +9,7 @@ Zadání chce, aby v prezentaci zaznělo sedm věcí: 1 co řešíme, 2 data, 3 
 | # | Čas | Otázka poroty | Nadpis (odpověď) | Co musí zaznít | Graf | Kdo | Bod |
 |---|---|---|---|---|---|---|---|
 | 1 | 0:00–0:45 | Co řešíte a pro koho? | Den předem víme, kam v Děčíně dosáhne voda | video Borise; hladina Děčín a Ústí za 12/24/36 h a varování před 2. a 3. stupněm; komise, hasiči, lidi u řeky | video, `01_mapa_decin.png`, velké 27 h | Tobias | 1 |
-| 2 | 0:45–1:25 | Odkud se to dá poznat? | Z Prahy teče voda do Děčína 17 hodin, ze Sázavy 25 | tři větve a doba doběhu; archiv ČHMÚ, 12 stanic, 20 let; samotný balíček 44,6 cm jako „jako teď“; proto den dopředu, dál z řeky nevidí nikdo | `02a_mapa_stanic.png`, `02b_doba_dobehu.png` | Ondra | 2 |
+| 2 | 0:45–1:25 | Jaká data jste použili? | Jen z balíčku by to nešlo: bereme 20 let a 12 stanic proti proudu | balíček 2 roky a stanice jen v kraji, Ústí 4 h před Děčínem; jen z něj 44,6 cm jako „jako teď“ a polovina povodní propásnutá; archiv ČHMÚ 20 let a 12 stanic až 25 h proti proudu, stejný zdroj; 17,1 cm | `02a_mapa_stanic.png`, `02b_proc_externi_data.png` | Ondra | 2 |
 | 3 | 1:25–2:15 | Co model bere? | Bereme jen řeku, počasí nepomohlo | 98 čísel z 12 stanic; srážky, sníh, teplota, vlhkost, tlak, vítr ani o 1 cm, co přijde do 36 h, už teče řekou; dvě pasti z budoucnosti (doplňování děr, čas denních srážek) | `03_co_model_bere.png` | Dan | 3, 4 |
 | 4 | 2:15–3:25 | Jak jste vybrali model? | Čtyři modely, vyhrál nejjednodušší | laťka 44 cm; fyzikální 25 (pevná doba putování), LightGBM 23 (neumí výš, než viděl), síť 18 (přeučí se), regrese 17; vybráno před testem; úpravy nic přes 1 cm | `04_cesta_k_modelu.png` | Honza | 5 |
 | 5 | 3:25–4:05 | Proč zrovna přímka? | Voda v Děčíně je součet řek | součet Vltavy, horního Labe a Ohře = vážený součet; Boris 198 + 80 + 89 + 116 + 96 − 2 = 577 cm, varoval; citát ze zadání | `05_soucet_rek.png` | Honza | 5 |
@@ -35,7 +35,7 @@ Za poděkováním, ukážou se jen na otázku poroty. Odpovědět rovnou grafem 
 | Z7 | Je rozliv hydraulický model? | `mapbox3_decin.jpg` |
 | Z8 | Jak dopadl test? | `Z8_test_2021_2025.png` |
 | Z9 | Není výsledek jen náhoda výběru validace? | `Z9_vicenasobna_validace.png` |
-| Z10 | Proč jste brali data mimo balíček? | `Z10_proc_externi_data.png` |
+| Z10 | Proč jen 36 hodin dopředu? | `Z10_doba_dobehu.png` |
 
 ## Grafy
 

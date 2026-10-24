@@ -19,7 +19,7 @@ Každý slajd odpovídá na jednu otázku poroty, nadpis je odpověď.
 | # | Čas | Řečník | Otázka | Nadpis |
 |---|---|---|---|---|
 | 1 | 0:00–0:45 | Tobias | Co řešíte a pro koho? | Den předem víme, kam v Děčíně dosáhne voda (video) |
-| 2 | 0:45–1:25 | Ondra | Odkud se to dá poznat? | Z Prahy teče voda do Děčína 17 hodin, ze Sázavy 25 |
+| 2 | 0:45–1:25 | Ondra | Jaká data jste použili? | Jen z balíčku by to nešlo: bereme 20 let a 12 stanic proti proudu |
 | 3 | 1:25–2:15 | Dan | Co model bere? | Bereme jen řeku, počasí nepomohlo |
 | 4 | 2:15–3:25 | Honza | Jak jste vybrali model? | Čtyři modely, vyhrál nejjednodušší |
 | 5 | 3:25–4:05 | Honza | Proč zrovna přímka? | Voda v Děčíně je součet řek |
@@ -27,7 +27,7 @@ Každý slajd odpovídá na jednu otázku poroty, nadpis je odpověď.
 | 7 | 4:40–5:25 | Ondra | Funguje to na skutečné povodni? | Boris: 3. stupeň 27 hodin předem, chyba o 55 % menší |
 | 8 | 5:25–5:50 | Honza | Dá se to použít? | Každou hodinu nová předpověď z živých dat (snímek, ne živé demo) |
 | 9 | 5:50–6:45 | Dan, závěr Tobias | Kde to selže? | Co umíme, co ne a co dál |
-| Z1–Z10 | na otázku | podle otázky | | Proč jen lineární regrese? · Co znamená „bude jako teď“? · Proč ne srážky? · Jak moc se pletete? · Funguje to i na jiné povodni? · Podle čeho model rozhoduje? · Je rozliv hydraulický model? · Jak dopadl test? · Není výsledek náhoda výběru validace? · Proč data mimo balíček? |
+| Z1–Z10 | na otázku | podle otázky | | Proč jen lineární regrese? · Co znamená „bude jako teď“? · Proč ne srážky? · Jak moc se pletete? · Funguje to i na jiné povodni? · Podle čeho model rozhoduje? · Je rozliv hydraulický model? · Jak dopadl test? · Není výsledek náhoda výběru validace? · Proč jen 36 hodin dopředu? |
 
 Rezerva je 15 s. Když se nestíhá, na slajdu 7 vynechat druhý odstavec a říct jen „na testu i ve vícenásobné validaci je chyba o 55 procent menší“.
 
