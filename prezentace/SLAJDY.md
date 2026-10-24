@@ -53,7 +53,7 @@ Pak asi 12 s ticho, voda se rozlévá mezi domy. Po dohrání, s nadpisem a 18 h
 
 - Otázka: Co model bere?
 - Musí zaznít: 98 čísel, hladina Děčín a Ústí a průtok 12 stanic teď a až 36 h zpátky; srážky, sníh, teplota, vlhkost, tlak a vítr nepomohly ani o 1 cm, protože co přijde do 36 h, už teče řekou; dvě pasti z budoucnosti v přípravě dat.
-- Na slajdu: vlevo **Bereme:** hladina Děčín a Ústí, průtok 12 stanic, teď až 36 h zpátky = 98 čísel. Vpravo `grafy/03_co_model_bere.png`. Po mezerníku rámeček „Dvě pasti z budoucnosti: doplňování děr, denní srážky“.
+- Na slajdu: vlevo **Bereme:** hladina Děčín a Ústí, průtok 12 stanic, teď až 36 h zpátky = 98 čísel. Vpravo `grafy/03_co_model_bere.png`. Pasti z budoucnosti jen v mluveném slově, rámeček na slajdu není.
 
 > Model bere jen to, co je v tu chvíli změřené na řece: hladinu v Děčíně a v Ústí a průtok na dvanácti stanicích, teď a až 36 hodin zpátky. Dohromady 98 čísel.
 >
