@@ -444,7 +444,8 @@ h2 { margin: 0 0 8px; font-size: 13px; font-weight: 600; color: var(--tlumene); 
 #stitky svg { width: 14px; height: 14px; fill: currentColor; }
 #st-pred { right: calc(100% - var(--x, 50%) + 14px); color: var(--modra); }
 #st-skut { left: calc(var(--x, 50%) + 14px); }
-.mapboxgl-compare { width: 3px; background-color: #fff; box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.15), 0 0 16px rgba(0, 0, 0, 0.25); }
+/* dělicí čára porovnání je neviditelná, zůstává jen kulatý úchyt a štítky nahoře */
+.mapboxgl-compare { width: 0; background: transparent; box-shadow: none; }
 .mapboxgl-compare .compare-swiper-vertical { width: 54px; height: 54px; left: -27px; margin: -27px 0 0 1.5px;
   background-color: #fff; background-size: 54px 54px; background-position: center;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 54 54'%3E%3Cpath d='M23 18l-9 9 9 9zM31 18l9 9-9 9z' fill='%231d1d1f'/%3E%3C/svg%3E");

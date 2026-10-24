@@ -12,7 +12,7 @@
 <div class="jeviste">
 <div class="plocha">
 
-<!-- 1 · video: krok 1 spustí video (mezerník nebo klepnutí), krok 2 (po dohrání nebo mezerníkem) nadpis a 27 h -->
+<!-- 1 · video: krok 1 spustí video (mezerník nebo klepnutí), krok 2 (po dohrání nebo mezerníkem) nadpis a 18 h -->
 <section class="slajd video" id="s-video" data-kroky="2" data-nazev="Den předem víme, kam v Děčíně dosáhne voda">
   <video id="video" muted playsinline preload="auto" poster="grafy/video_2013_poster.jpg">
     <source src="video/povoden_2013_decin_1080.mp4" type="video/mp4">
@@ -24,8 +24,8 @@
   <div class="uvod" data-krok="2">
     <h1>Den předem víme, kam v&nbsp;Děčíně dosáhne voda</h1>
     <div class="obri-blok">
-      <p class="obri"><span data-pocitej="27" data-od="0">27</span><small>h</small></p>
-      <p class="pod-obri">Boris, září 2024: 3.&nbsp;stupeň v&nbsp;Děčíně hlášen 27&nbsp;hodin předem</p>
+      <p class="obri"><span data-pocitej="18" data-od="0">18</span><small>h</small></p>
+      <p class="pod-obri">3.&nbsp;stupeň v&nbsp;Děčíně hlášen 18&nbsp;hodin předem</p>
       <p class="pod-obri tisk-popis">Snímek: Děčín v&nbsp;červnu 2013, vlevo rozliv z&nbsp;předpovědi den předem, vpravo skutečnost.</p>
     </div>
   </div>
@@ -248,6 +248,16 @@
   <h1>Jak vypadá aplikace dnes?</h1>
   <figure class="snimek"><img src="grafy/Z10_aplikace_dnes.png" alt="Web field-zero.netlify.app na Dnešku: hladina v Děčíně teď, předpověď na 12, 24 a 36 h s rozmezím a vedle oficiální předpověď ČHMÚ"></figure>
   <p class="odpoved">field-zero.netlify.app: živá data ČHMÚ, předpověď na 12, 24 a 36&nbsp;h s&nbsp;rozmezím a&nbsp;vedle oficiální předpověď ČHMÚ.</p>
+</section>
+<section class="slajd zaloha" data-kroky="0" data-nazev="Z11 · Proč je předpověď křivka, když je to lineární regrese?">
+  <h1>Proč je předpověď křivka, když je to lineární regrese?</h1>
+  <div class="graf siroky"><div class="orez"><img src="grafy/Z11_primka_a_krivka.png" alt="Vlevo přímka mezi průtokem v Mělníku a hladinou v Děčíně o 24 h později, vpravo z téže přímky vzniká v čase křivka"></div></div>
+  <p class="odpoved">Přímka je vztah mezi vstupem a&nbsp;hladinou, ne tvar v&nbsp;čase; když se do ní každou hodinu dosadí nový průtok, vznikne křivka.</p>
+</section>
+<section class="slajd zaloha" data-kroky="0" data-nazev="Z12 · Jak je to s přímkou, když je vstupů 98?">
+  <h1>Jak je to s&nbsp;přímkou, když je vstupů 98?</h1>
+  <div class="graf siroky"><div class="orez"><img src="grafy/Z12_jeden_a_98_vstupu.png" alt="Předpověď proti skutečnosti na validaci: s jedním vstupem body rozházené, chyba 26,5 cm; s 98 vstupy těsně u úhlopříčky, 7,5 cm"></div></div>
+  <p class="odpoved">S&nbsp;98 vstupy je model vážený součet; předpověď proti skutečnosti leží těsně u&nbsp;úhlopříčky, chyba 7,5&nbsp;cm místo 26,5 s&nbsp;jedním vstupem.</p>
 </section>
 
 <!-- poznámky řečníka, se stopkami -->
