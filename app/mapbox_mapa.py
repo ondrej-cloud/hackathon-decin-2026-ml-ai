@@ -587,6 +587,14 @@ const N = {svetlo: 'dusk', tema: 'default', satelit: false, mista: true, poi: fa
 // vlastní budovy podle světla Standardu: den světle šedé jako Apple Maps, noc tmavě modrošedé. Za šera bez vlastního svitu,
 // takže je nasvítí stejné slunce jako budovy Standardu (hnědé se stíny) a při přiblížení přes zoom 15 není vidět přechod.
 const BUDOVY = {dawn: ['#e2e5ea', 0.45], day: ['#e6e6eb', 0.15], dusk: ['#e6e1da', 0], night: ['#4a5b74', 0.8]};
+// západ slunce místo předvolby soumraku (ta byla tmavá jako noc): nízké teplé slunce od západojihozápadu s dlouhými stíny,
+// fialové okolní světlo ve stínech a oranžový opar u obzoru; na satelitu zůstává jeho vlastní světlo
+const ZAPAD = {
+  svetla: [{id: 'okoli', type: 'ambient', properties: {color: 'hsl(255, 20%, 62%)', intensity: 0.42}},
+           {id: 'slunce', type: 'directional', properties: {color: 'hsl(28, 98%, 67%)', intensity: 0.92, direction: [250, 78],
+             'cast-shadows': true, 'shadow-intensity': 1}}],
+  mlha: {color: 'hsl(26, 65%, 74%)', 'high-color': 'hsl(18, 85%, 60%)', 'horizon-blend': 0.15, 'space-color': 'hsl(240, 40%, 20%)',
+         'star-intensity': 0, range: [1, 12]}};
 // popisky stanic: na světlé mapě tmavé s bílým lemem, za šera, v noci a na satelitu bílé s tmavým lemem
 const popisky = m => m.satelit || N.svetlo === 'dusk' || N.svetlo === 'night'
   ? ['#ffffff', 'rgba(29, 29, 31, 0.9)'] : ['#1d1d1f', 'rgba(255, 255, 255, 0.95)'];
@@ -633,6 +641,7 @@ function vytvorMapu(kontejner, k) {
 function pridejVrstvy(m) {
   m.nacteno = true;
   for (const [klic, hodnota] of Object.entries(konfigurace(m.satelit))) m.setConfigProperty('basemap', klic, hodnota);
+  if (!m.satelit) { m.setLights(ZAPAD.svetla); m.setFog(ZAPAD.mlha); }
   m.addSource('vysky', {type: 'raster-dem', url: 'mapbox://mapbox.mapbox-terrain-dem-v1', tileSize: 512, maxzoom: 14});
   m.setTerrain({source: 'vysky', exaggeration: 1.6});
 
