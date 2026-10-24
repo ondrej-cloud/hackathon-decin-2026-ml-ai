@@ -1,0 +1,26 @@
+# Data (stahují se skripty, viz README) a modely (natrénují se za pár sekund)
+data/raw/
+data/external/*.parquet
+data/external/*.geojson
+data/external/*.csv
+data/external/*.json
+models/*.joblib
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# Klíče
+.env
+.streamlit/secrets.toml
+
+# Systém
+.DS_Store
+Thumbs.db
+
+# Web: mapy a animace s tokenem Mapboxu generuje src/export_web.py
+web/mapa/*.html
+web/animace/*.html
+.netlify

@@ -1,0 +1,19 @@
+# aplikace a web
+streamlit>=1.60
+plotly>=6
+pydeck
+pillow
+requests
+pyproj
+# data a modely
+pandas>=2.2
+numpy
+pyarrow
+scipy
+scikit-learn>=1.6
+joblib
+lightgbm
+matplotlib
+# jen rozbor LightGBM (src/rozbor_lgbm.py) a konvoluční síť (src/models/tcn.py)
+shap
+torch
