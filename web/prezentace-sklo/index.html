@@ -19,7 +19,7 @@
     <img class="jen-tisk" src="../prezentace/grafy/video_2013_poster.jpg" alt="Rozliv Labe v Děčíně v červnu 2013, snímek z videa">
   </div>
   <p class="veta">Tohle je Děčín v&nbsp;červnu 2013. <b>Voda stoupá hodinu po hodině, až k&nbsp;domům.</b></p>
-  <div class="uvod" data-krok="2">
+  <div class="uvod" data-krok="2" data-kaskada>
     <h1>Den předem víme, kam v&nbsp;Děčíně dosáhne voda</h1>
     <div class="obri-blok">
       <p class="obri"><span data-pocitej="18" data-od="0">18</span><small>h</small></p>
@@ -45,7 +45,7 @@
         <p class="stitek">Jen s&nbsp;daty z&nbsp;balíčku by model nefungoval</p>
         <div class="orez"><img src="../prezentace/grafy/02b_proc_externi_data.png" alt="Průměrná chyba během povodní: bude jako teď 44,3 cm, data z balíčku 44,6 cm, naše data 17,1 cm"></div>
       </div>
-      <ul class="trojcisli" data-krok="1">
+      <ul class="trojcisli" data-krok="1" data-kaskada>
         <li><b><span data-pocitej="20" data-od="0">20</span></b><span>let, 2006–2025</span></li>
         <li><b><span data-pocitej="12" data-od="0">12</span></b><span>stanic</span></li>
         <li><b><span data-pocitej="175320" data-od="0" data-tisice="1">175&nbsp;320</span></b><span>hodin měření</span></li>
@@ -100,7 +100,7 @@
         <li data-krok="4"><span>Mělník</span><b>+96</b></li>
         <li data-krok="5"><span>Ohře</span><b>−2</b></li>
       </ol>
-      <div class="varovani" data-krok="6">
+      <div class="varovani" data-krok="6" data-kaskada>
         <span class="odznak spa3">3.&nbsp;stupeň · nad 560&nbsp;cm</span>
         <p>Model varoval. Skutečnost 551&nbsp;cm, 3.&nbsp;stupeň přišel o&nbsp;3&nbsp;h později.</p>
       </div>
@@ -134,11 +134,11 @@
     </div>
     <div class="sloupec">
       <div class="karta dve-cisla">
-        <div data-krok="1">
+        <div data-krok="1" data-kaskada>
           <p class="cislo"><span data-pocitej="27" data-od="0">27</span><small>h</small></p>
           <p class="pod-cislo">před 3.&nbsp;stupněm v&nbsp;Děčíně, Boris</p>
         </div>
-        <div data-krok="2">
+        <div data-krok="2" data-kaskada>
           <p class="cislo modra">−<span data-pocitej="55" data-od="0">55</span><small>%</small></p>
           <p class="pod-cislo">test 22,4 proti 50,2&nbsp;cm<br>vícenásobná validace 20,1 proti 45,2&nbsp;cm</p>
         </div>
@@ -172,7 +172,7 @@
     <div><b>Nevidíme</b><p>Přívalové povodně na malých přítocích, jako je Ploučnice nebo Bílina.</p></div>
     <div><b>Co dál</b><p>Předpověď počasí na 2 až 3&nbsp;dny: u&nbsp;povodně 9/2010 by chyba na 72&nbsp;h klesla o&nbsp;40&nbsp;%. Archiv starých předpovědí ale není.</p></div>
   </div>
-  <div class="zaver" data-krok="1">
+  <div class="zaver" data-krok="1" data-kaskada>
     <p class="zaver-veta">Z&nbsp;otevřených dat zdarma: o&nbsp;povodni v&nbsp;Děčíně víte den předem, s&nbsp;modelem, který se vejde na jeden obrázek.</p>
     <div class="dekujeme">
       <p>Děkujeme.</p>
@@ -259,6 +259,31 @@
   <h1>Jak je to s&nbsp;přímkou, když je vstupů 98?</h1>
   <div class="graf siroky"><div class="orez"><img src="../prezentace/grafy/Z12_jeden_a_98_vstupu.png" alt="Předpověď proti skutečnosti na validaci: s jedním vstupem body rozházené, chyba 26,5 cm; s 98 vstupy těsně u úhlopříčky, 7,5 cm"></div></div>
   <p class="odpoved">S&nbsp;98 vstupy je model vážený součet; předpověď proti skutečnosti leží těsně u&nbsp;úhlopříčky, chyba 7,5&nbsp;cm místo 26,5 s&nbsp;jedním vstupem.</p>
+</section>
+<section class="slajd zaloha" data-kroky="0" data-nazev="Z13 · Jak znáte hladinu bez šířky koryta?">
+  <h1>Jak znáte hladinu bez šířky koryta?</h1>
+  <p class="odpoved">Proti proudu bereme průtok, tedy kolik vody proteče za sekundu, a&nbsp;ten na šířce koryta nezávisí. Průtoky se sčítají: Mělník je skoro přesně Vltava + horní Labe.</p>
+  <p class="odpoved">Jak se průtok projeví na hladině v&nbsp;Děčíně, se model naučil z&nbsp;20&nbsp;let hodinových měření přímo tam. Tvar koryta je v&nbsp;těch datech schovaný, ČHMÚ ho má změřený v&nbsp;měrné křivce.</p>
+</section>
+<section class="slajd zaloha" data-kroky="0" data-nazev="Z14 · Jak se model učí?">
+  <h1>Jak se model učí?</h1>
+  <p class="odpoved">Hladina za 24&nbsp;h = bias + váha₁ × vstup₁ + … + váha₉₈ × vstup₉₈. Váhy najde metoda nejmenších čtverců: ty, se kterými je součet čtverců chyb na 108&nbsp;tisících hodinách 2006–2018 nejmenší.</p>
+  <p class="odpoved">S&nbsp;jedním vstupem: sklon = Σ(x − x̄)(y − ȳ) / Σ(x − x̄)², bias = ȳ − sklon · x̄, vyjde hladina za 24&nbsp;h = 111 + 0,41 × průtok v&nbsp;Mělníku. S&nbsp;98 vstupy je to soustava 99 rovnic, vyřešená přesně za 0,4&nbsp;s. Ridge přidá malou pokutu za příliš velké váhy.</p>
+</section>
+<section class="slajd zaloha" data-kroky="0" data-nazev="Z15 · K čemu je předpověď den předem?">
+  <h1>K čemu je předpověď den předem?</h1>
+  <p class="odpoved">Boris, vydáno 14.&nbsp;9. 2024 v&nbsp;11:00 na 15.&nbsp;9. v&nbsp;11:00: „zítra jako dnes“ 389&nbsp;cm, tedy žádné varování. Náš model 577&nbsp;cm, 3.&nbsp;stupeň. Skutečnost 551&nbsp;cm, 3.&nbsp;stupeň o&nbsp;3&nbsp;h později.</p>
+  <p class="odpoved">Na validaci model zachytil předem všech 24 překročení 2. a&nbsp;3. stupně bez planého poplachu, „zítra jako dnes“ ani jedno. Že prší, ví každý; jestli Děčín dosáhne 450, nebo 650&nbsp;cm a kdy, ne.</p>
+</section>
+<section class="slajd zaloha" data-kroky="0" data-nazev="Z16 · Předpovídáte i povodně z deště v kraji?">
+  <h1>Předpovídáte i povodně z&nbsp;deště v&nbsp;kraji?</h1>
+  <p class="odpoved">Jen částečně. Model vidí vodu, až když teče některou z&nbsp;našich stanic; Ploučnici a&nbsp;Bílinu, kam prší v&nbsp;kraji, neměříme. Povodeň 8/2010 z&nbsp;deště v&nbsp;Lužických horách měla ve vícenásobné validaci druhou největší chybu, 28,6&nbsp;cm, a&nbsp;nejmenší zlepšení, 34&nbsp;%.</p>
+  <p class="odpoved">Učili i&nbsp;ověřovali jsme na všech povodních, takže −55&nbsp;% už tyhle slabší případy obsahuje. Pomohla by stanice na Ploučnici nebo srážky v&nbsp;reálném čase.</p>
+</section>
+<section class="slajd zaloha" data-kroky="0" data-nazev="Z17 · Proč má předpověď výkyvy a zuby?">
+  <h1>Proč má předpověď výkyvy a&nbsp;zuby?</h1>
+  <p class="odpoved">Zpoždění na začátku vzestupu: část vody ještě neteče žádnou naší stanicí a&nbsp;model sází na průměr, prudký vzestup dál pokračoval jen ve 22&nbsp;% případů.</p>
+  <p class="odpoved">Hrb nad skutečností, až o&nbsp;42&nbsp;cm: při velké vodě se vlna rozlije do nivy a&nbsp;zploští. Zuby při nízké vodě: hodinové kolísání od elektráren na Vltavě a&nbsp;jezů, daleko pod 1.&nbsp;stupněm. Varování nic z&nbsp;toho nezměnilo.</p>
 </section>
 
 <!-- poznámky řečníka, se stopkami -->

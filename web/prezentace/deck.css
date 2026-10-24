@@ -393,3 +393,33 @@ b, strong { font-weight: 700; }
 @media print {
   .snimek-mapy .schema, .snimek-mapy .schema.je { opacity: 1; inset: auto 28px 28px auto; width: 46%; height: 64%; padding: 8px 12px; border-radius: 14px; box-shadow: 0 2px 12px rgba(0, 0, 0, 0.18); }
 }
+
+/* Dotažení animací: jednotná křivka --ven, nic nového se neobjevuje skokem.
+   Přechod zpět: přicházející slajd přijede shora (třídu zpet dává deck.js jen na okamžik před aktivací, pak ji odebere). */
+.slajd.zpet:not(.aktivni) { transform: translateY(-14px); transition: none; }
+/* „hned“ (vstup zpět, tisk): kroky i jejich potomci bez přechodu, i tam, kde má prvek vlastní přechod (dopln, kryt, schéma, sloupce součtu) */
+.slajd.hned [data-krok], .slajd.hned [data-odkryj], .slajd.hned [data-krok] *, .slajd.hned [data-odkryj] * { transition: none !important; }
+/* kaskáda potomků bloku, který nastupuje krokem (úvod, trojčíslí, varování, závěr, dvě čísla): blok nastoupí, potomci po 70 ms, nejvýš 8;
+   při kroku zpět mizí všichni spolu a rychleji */
+[data-krok][data-kaskada] > * { opacity: 0; transform: translateY(12px); transition: opacity 420ms var(--ven), transform 420ms var(--ven); transition-delay: calc(var(--start, 0ms) + var(--n, 0) * 70ms); }
+[data-krok][data-kaskada].je > * { opacity: 1; transform: none; }
+[data-krok][data-kaskada]:not(.je) > * { transition-delay: 0ms; transition-duration: 300ms; }
+[data-kaskada] > :nth-child(2) { --n: 1; }
+[data-kaskada] > :nth-child(3) { --n: 2; }
+[data-kaskada] > :nth-child(4) { --n: 3; }
+[data-kaskada] > :nth-child(5) { --n: 4; }
+[data-kaskada] > :nth-child(6) { --n: 5; }
+[data-kaskada] > :nth-child(7) { --n: 6; }
+[data-kaskada] > :nth-child(n + 8) { --n: 7; }
+.uvod[data-kaskada] { --start: 200ms; }
+/* 8 · schéma rozlivu: čisté prolnutí bez posunu (kryje celý snímek), tlačítko mapy pod ním zhasne prolnutím, ne skokem */
+.snimek-mapy .schema, .snimek-mapy .schema.je { transform: none; transition: opacity 420ms var(--ven); }
+.tlacitko-mapa { transition: transform 220ms var(--ven), background-color 160ms ease, opacity 240ms var(--ven); }
+/* 5 · sloupce součtu rostou a zároveň se prolnou */
+#soucet .sloupec { transition: transform 700ms var(--ven), opacity 320ms var(--ven); }
+@media (prefers-reduced-motion: reduce) {
+  .slajd.zpet, [data-kaskada] > * { transform: none !important; }
+}
+@media print {
+  [data-kaskada] > * { opacity: 1 !important; transform: none !important; }
+}

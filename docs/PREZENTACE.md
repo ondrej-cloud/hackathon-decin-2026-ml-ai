@@ -2,7 +2,7 @@
 
 Hlavní prezentace je HTML deck na https://field-zero.netlify.app/prezentace/ (zdroj `web/prezentace/`: `index.html`, `deck.css`, `deck.js`, `reka.js`, grafy v `grafy/`, video ve `video/`). Pořadí, nadpisy a grafy odpovídají kostře `docs/PREZENTACE_7MIN.md`, texty řečníků jsou doslova z `prezentace/SLAJDY.md` a jsou i v poznámkách decku (klávesa N). Canva deck https://www.canva.com/d/xVAIR8am2CrRslj je jen starší záloha se starou kostrou.
 
-Ovládání: šipky nebo mezerník = další krok (na úvodním slajdu první mezerník nebo klepnutí spustí video, druhý mezerník nebo konec videa ukáže nadpis a 18 h), N poznámky řečníka s časem, kroky a stopkami, F celá obrazovka, B černá, Home/End (End skočí na konec, šipkou zpět na záložní slajd). Stopky běží od prvního posunu jen v panelu poznámek (od 6:30 oranžové, od 7:00 červené); na ploše není počítadlo slajdů ani čas. Snímek mapy na slajdu 8 a snímek aplikace na Z10 jsou odkazy (pilulka „Otevřít živou mapu“ / „Otevřít aplikaci“): klepnutím se v nové kartě otevře živá mapa `mapa.html?povoden=2013-06&cil=decin`, resp. web; deck v původní kartě běží dál. Tisk (Ctrl+P, 1920 × 1080, všechny kroky odkryté, video jako poster) dává zálohu `docs/prezentace.pdf`, 21 stran (9 hlavních + Z1–Z12).
+Ovládání: šipky nebo mezerník = další krok (na úvodním slajdu první mezerník nebo klepnutí spustí video, druhý mezerník nebo konec videa ukáže nadpis a 18 h), N poznámky řečníka s časem, kroky a stopkami, F celá obrazovka, B černá, Home/End (End skočí na konec, šipkou zpět na záložní slajd). Stopky běží od prvního posunu jen v panelu poznámek (od 6:30 oranžové, od 7:00 červené); na ploše není počítadlo slajdů ani čas. Snímek mapy na slajdu 8 a snímek aplikace na Z10 jsou odkazy (pilulka „Otevřít živou mapu“ / „Otevřít aplikaci“): klepnutím se v nové kartě otevře živá mapa `mapa.html?povoden=2013-06&cil=decin`, resp. web; deck v původní kartě běží dál. Tisk (Ctrl+P, 1920 × 1080, všechny kroky odkryté, video jako poster) dává zálohu `docs/prezentace.pdf`, 26 stran (9 hlavních + Z1–Z17).
 
 Lokálně: `.venv\Scripts\python -m http.server 8622 -d web` a otevřít http://127.0.0.1:8622/prezentace/ (deck musí běžet přes server kvůli videu a písmům). PDF se tiskne Playwrightem (`deck.tisk()`, `emulate_media('print')`, `page.pdf` 1920 × 1080); po výměně videa nebo posteru `video_2013_poster.jpg` se musí přegenerovat, strana 1 bere poster místo videa.
 
@@ -19,7 +19,7 @@ Lokálně: `.venv\Scripts\python -m http.server 8622 -d web` a otevřít http://
 | 7 | Na všech povodních o polovinu menší chyba, Boris 27 hodin předem | `07a_boris_2024.png` a pod ním řádek 2013, vpravo karta 27 h a −55 %, `07b_vicenasobna_validace.png` | 3 (27 h samo po 3 s, −55 % s grafem, řádek 2013) |
 | 8 | Z předpovědi mapa: kam až voda dosáhne | `08_mapa_rozlivu.png` (Děčín 6. 6. 2013 při 1 072 cm, rozliv z výšky terénu proti hladině), klikací, QR na web | 0 |
 | 9 | Co neumíme a co dál | tři karty, závěrečná věta, QR na repozitář, jediná řádka se zdroji (licence map) | 1 |
-| Z1–Z12 | otázky poroty | `Z1`–`Z6`, `mapbox3_decin.jpg` (Z7), `Z8_test_2021_2025.png`, `Z9_doba_dobehu.png`, `Z10_aplikace_dnes.png` (klikací), `Z11_primka_a_krivka.png`, `Z12_jeden_a_98_vstupu.png` | 0 |
+| Z1–Z17 | otázky poroty | `Z1`–`Z6`, `mapbox3_decin.jpg` (Z7), `Z8_test_2021_2025.png`, `Z9_doba_dobehu.png`, `Z10_aplikace_dnes.png` (klikací), `Z11_primka_a_krivka.png`, `Z12_jeden_a_98_vstupu.png` | 0 |
 
 V decku není žádné porovnání předpovědi se skutečností: video na slajdu 1 ukazuje rozliv ze změřené hladiny hodinu po hodině, snímek na slajdu 8 jeden rozliv při 1 072 cm. Grafy jsou kopie z `docs/grafy/prezentace/` (kreslí je `python src/grafy_prezentace.py`, snímky mapy a aplikace dělá Playwright ze světlého webu). Horních 7 % každého PNG grafu (jeho nadpis) je v kartě oříznuto, nadpis má slajd.
 
@@ -37,7 +37,7 @@ Jedna paleta pro všechny slajdy: pozadí #f5f5f7, bílé karty s rohem 22 px, j
 
 Slajd 1: přechody do barvy stránky jen na 22 % výšky nahoře a dole, mapa zůstává vidět; nadpis a 18 h mají lehký bílý nádech jen pod sebou (rozostřený obdélník), ne přes celou mapu. Slajd 5: SVG součtu vyplní kartu od kraje ke kraji (vnitřek 1108 × 696 px = viewBox 1 : 1), číslo 577 cm sedí na horní hraně karty, citát ze zadání je dole v pravém sloupci.
 
-Plocha je 16:9 (1920 × 1080) a škáluje se na šířku i výšku okna; na MacBooku Air 13" (1470 × 956, 16:10) jsou nad a pod plochou pruhy v barvě pozadí, písmo zůstává čitelné (nejmenší text 17 px na ploše, tedy 13 px na Airu). Ověřeno Playwrightem (Chrome) na 1920 × 1080, 1470 × 956 a 1280 × 832 (DPR 2): všech 21 slajdů ve všech krocích bez chyb konzole, bez prvků mimo plochu a bez překryvu nadpisu s linií řeky; snímky `docs/grafy/deck8_1..9.png`, `deck8_5_karta.png`, `deck8_air_1.png`.
+Plocha je 16:9 (1920 × 1080) a škáluje se na šířku i výšku okna; na MacBooku Air 13" (1470 × 956, 16:10) jsou nad a pod plochou pruhy v barvě pozadí, písmo zůstává čitelné (nejmenší text 17 px na ploše, tedy 13 px na Airu). Ověřeno Playwrightem (Chrome) na 1920 × 1080, 1470 × 956 a 1280 × 832 (DPR 2): všech 26 slajdů ve všech krocích bez chyb konzole, bez prvků mimo plochu a bez překryvu nadpisu s linií řeky; snímky `docs/grafy/deck8_1..9.png`, `deck8_5_karta.png`, `deck8_air_1.png`.
 
 ## Animace
 
