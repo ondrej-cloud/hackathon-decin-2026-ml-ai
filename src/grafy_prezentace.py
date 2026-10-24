@@ -68,7 +68,7 @@ def stupne(ax, cil="decin"):
 
 
 # hlavní slajdy ------------------------------------------------------------------------------------------------------
-def z10_doba_dobehu():
+def z9_doba_dobehu():
     # src/doba_dobehu.py, posun s největší korelací změn průtoku, trénink; docs/DATA.md (Doba doběhu do Děčína)
     stanice = [("Ústí nad Labem (Labe)", 4), ("Kostelec (Labe)", 10), ("Nymburk (Labe)", 10), ("Mělník (Labe)", 13),
                ("Vraňany (Vltava)", 13), ("Louny (Ohře)", 16), ("Praha (Vltava)", 17), ("Předměřice (Jizera)", 18),
@@ -90,7 +90,7 @@ def z10_doba_dobehu():
     ax.set_xlabel("doba doběhu (h)")
     ax.xaxis.set_major_locator(MultipleLocator(6))
     osa_cisla(ax, "x")
-    uloz(fig, "Z10_doba_dobehu.png")
+    uloz(fig, "Z9_doba_dobehu.png")
 
 
 def s03_co_model_bere():
@@ -255,7 +255,7 @@ def povoden(titulek, ridge_soubor, jako_ted_soubor, od, do, nazev, mesic):
 
 def s07_boris():
     return povoden("Boris 2024: varování {h} hodin předem", "ridge_test", "jako_ted_test", "2024-09-10",
-                   "2024-09-22 23:00", "07_boris_2024.png", 9)
+                   "2024-09-22 23:00", "07a_boris_2024.png", 9)
 
 
 def dvojice_sloupcu(ax, x, a, b, s=0.36):
@@ -409,7 +409,7 @@ def z8_test():
     uloz(fig, "Z8_test_2021_2025.png")
 
 
-def z9_vicenasobna():
+def s07b_vicenasobna():
     R = pd.read_csv(sorted((RESULTS / "krizova_validace").glob("*.csv"))[-1])
     P = R.groupby(["povoden", "model"]).chyba.mean().unstack()
     P = P.loc[sorted(P.index)]
@@ -430,7 +430,7 @@ def z9_vicenasobna():
     ax.yaxis.set_major_locator(MultipleLocator(20))
     osa_cisla(ax)
     ax.legend(loc="upper left", ncol=2, frameon=False)
-    uloz(fig, "Z9_vicenasobna_validace.png")
+    uloz(fig, "07b_vicenasobna_validace.png")
 
 
 def s02b_proc_externi_data():
@@ -451,7 +451,7 @@ def s02b_proc_externi_data():
 
 if __name__ == "__main__":
     CIL.mkdir(exist_ok=True)
-    shutil.copy(GRAFY / "mapbox2_porovnani.png", CIL / "01_mapa_decin.png")
+    shutil.copy(GRAFY / "mapbox2_porovnani.png", CIL / "08_mapa_rozlivu.png")
     shutil.copy(GRAFY / "mapbox_povodi.png", CIL / "02a_mapa_stanic.png")
     s02b_proc_externi_data()
     s03_co_model_bere()
@@ -459,6 +459,7 @@ if __name__ == "__main__":
     print("  součet:", s05_soucet_rek())
     s06_jak_overujeme()
     print("  Boris předstih h:", s07_boris())
+    s07b_vicenasobna()
     z1_srovnani_modelu()
     z2_jako_ted()
     z3_srazky()
@@ -466,5 +467,4 @@ if __name__ == "__main__":
     print("  2011 předstih h:", z5_povoden_2011())
     z6_vahy()
     z8_test()
-    z9_vicenasobna()
-    z10_doba_dobehu()
+    z9_doba_dobehu()
