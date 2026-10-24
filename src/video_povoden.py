@@ -69,7 +69,8 @@ CEKEJ = """() => {
 SKRYJ = """(mesto) => {
   zavriUvod(); pauza(); porovnat(true);
   document.querySelector('.uvod')?.remove();
-  for (const id of ['vlevo', 'vpravo']) document.getElementById(id)?.remove();
+  // boxy jen skrýt: panelAnimace() do nich zapisuje (#p-den), po remove() by každý snímek vyhodil chybu a smyčka by umřela
+  for (const id of ['vlevo', 'vpravo']) { const e = document.getElementById(id); if (e) e.style.display = 'none'; }
   document.querySelector('.napoveda')?.remove();
   const n = document.getElementById('najeti'); if (n) n.style.display = 'none';
   if (typeof N !== 'undefined') N.poi = false;
@@ -131,10 +132,10 @@ class Natoceni:
         self.snimky.mkdir(parents=True, exist_ok=True)
         self.html = self.tmp / "povoden.html"
         self.log = self.tmp / "log.json"
-        slug = re.sub(r"\W+", "_", a.povoden.split()[0]).strip("_")
-        self.video = ROOT / "docs/grafy" / f"video_povoden_{slug}_{a.cil}.mp4"
-        self.web_video = ROOT / "web/prezentace/video" / f"povoden_{slug.split('_')[-1]}_{a.cil}_1080.mp4"
-        self.poster = ROOT / "web/prezentace/grafy" / f"video_{slug.split('_')[-1]}_poster.jpg"
+        rok = re.sub(r"\W+", "_", a.povoden.split()[0]).strip("_").split("_")[-1]  # „6/2013“ → 2013
+        self.video = ROOT / "docs/grafy" / f"video_povoden_{rok}_{a.cil}.mp4"
+        self.web_video = ROOT / "web/prezentace/video" / f"povoden_{rok}_{a.cil}_1080.mp4"
+        self.poster = ROOT / "web/prezentace/grafy" / f"video_{rok}_poster.jpg"
         self.mesto = mapbox_mapa.MESTA[a.cil]
         self.lista_od = 852
         if platform.system() == "Windows":
