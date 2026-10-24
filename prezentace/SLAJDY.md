@@ -14,7 +14,7 @@ Devět slajdů na 6:45, rezerva 15 s do 7:00, pak dvanáct záložních. Každý
 | 8 | 5:25–5:55 | Tobias | Co z toho má město? | Z předpovědi mapa: kam až voda dosáhne | 1 |
 | 9 | 5:55–6:45 | Tobias | Kde to selže? | Co neumíme a co dál | 7 |
 
-Celkem 771 slov, při 130 slovech za minutu 5:55 mluvení. Zbytek do 6:45 je ticho nad videem (asi 12 s) a pauzy na kroky decku.
+Celkem 783 slov, při 130 slovech za minutu 6:01 mluvení. Zbytek do 6:45 je ticho nad videem (asi 12 s) a pauzy na kroky decku.
 
 ## 1 · Den předem víme, kam v Děčíně dosáhne voda (0:00–0:40, Honza)
 
@@ -75,7 +75,7 @@ Pak asi 12 s ticho, voda se rozlévá mezi domy. Po dohrání, s nadpisem a 18 h
 - Musí zaznít: laťka „bude jako teď“ 44 cm; čtyři modely se stejnými pravidly a u každého jedna věta, proč prohrál; výběr před testem; úpravy přímky nic přes 1 cm.
 - Na slajdu: `grafy/04_cesta_k_modelu.png`, tři skupiny sloupců (začátek, čtyři modely, úpravy přímky), odkrývají se mezerníkem.
 
-> Začali jsme laťkou: předpovědí, že bude jako teď. Při povodních se plete o 44 centimetrů.
+> Začali jsme laťkou: předpovědí, že bude jako teď. Při povodních se plete o 44 centimetrů, a s daty jen z balíčku vyšlo totéž.
 >
 > [mezerník]
 >
@@ -83,9 +83,9 @@ Pak asi 12 s ticho, voda se rozlévá mezi domy. Po dohrání, s nadpisem a 18 h
 >
 > [mezerník]
 >
-> Pak jsme zkoušeli vylepšit i ji: polynom, větší váhu povodní, všechna malá zlepšení dohromady. Nic nebylo lepší o víc než centimetr.
+> Pak jsme zkoušeli vylepšit i ji: dobu putování podle průtoku, polynom, větší váhu povodní, všechna malá zlepšení dohromady. Nic nebylo lepší o víc než centimetr.
 
-126 slov (strop 140).
+138 slov (strop 140).
 
 Zdroje: `docs/CESTA_MODELU.md` (sekce 1, 2 a 6). LightGBM a povodeň 2013: první pokus pá 17:46, vrchol 823 místo 1 072 cm. Síť 128-64 má asi 21 tisíc vah, verze 64-32 měla na tréninku 5 cm a na validaci 22 cm.
 
