@@ -1,0 +1,1693 @@
+model,cil,horizont,varianta,uroven,druh,rezim,n,pokryti,sirka
+ridge,decin,12,globalni,0.8,v čase vydání,vse,6358,0.7977,24.9158
+ridge,decin,12,globalni,0.8,skutečný vývoj,pokles,1816,0.7808,24.8316
+ridge,decin,12,globalni,0.8,skutečný vývoj,klid,2353,0.9133,25.0165
+ridge,decin,12,globalni,0.8,skutečný vývoj,vzestup,1692,0.763,24.9893
+ridge,decin,12,globalni,0.8,skutečný vývoj,rychly_vzestup,497,0.4306,24.4965
+ridge,decin,12,globalni,0.8,skutečný vývoj,zacatek_vzestupu,112,0.4375,24.8506
+ridge,decin,12,trend6,0.8,v čase vydání,stoupa,2259,0.7919,32.3764
+ridge,decin,12,trend6,0.8,v čase vydání,drzi,2189,0.7944,20.212
+ridge,decin,12,trend6,0.8,v čase vydání,klesa,1910,0.7921,23.1563
+ridge,decin,12,trend6,0.8,skutečný vývoj,pokles,1816,0.75,23.1966
+ridge,decin,12,trend6,0.8,skutečný vývoj,klid,2353,0.9078,24.3397
+ridge,decin,12,trend6,0.8,skutečný vývoj,vzestup,1692,0.7665,27.9814
+ridge,decin,12,trend6,0.8,skutečný vývoj,rychly_vzestup,497,0.495,29.9196
+ridge,decin,12,trend6,0.8,skutečný vývoj,zacatek_vzestupu,112,0.4286,25.9192
+ridge,decin,12,rezim,0.8,v čase vydání,vzestup,1871,0.7932,34.4986
+ridge,decin,12,rezim,0.8,v čase vydání,klid,2793,0.7934,19.1049
+ridge,decin,12,rezim,0.8,v čase vydání,pokles,1694,0.7839,25.9405
+ridge,decin,12,rezim,0.8,skutečný vývoj,pokles,1816,0.745,24.4367
+ridge,decin,12,rezim,0.8,skutečný vývoj,klid,2353,0.8899,21.1216
+ridge,decin,12,rezim,0.8,skutečný vývoj,vzestup,1692,0.7748,30.2527
+ridge,decin,12,rezim,0.8,skutečný vývoj,rychly_vzestup,497,0.5433,33.3732
+ridge,decin,12,rezim,0.8,skutečný vývoj,zacatek_vzestupu,112,0.5536,33.755
+ridge,decin,12,rezim_vyska,0.8,v čase vydání,vzestup_pod,1099,0.7989,31.8457
+ridge,decin,12,rezim_vyska,0.8,v čase vydání,vzestup_nad,772,0.7953,34.9937
+ridge,decin,12,rezim_vyska,0.8,v čase vydání,klid_nad,963,0.7799,18.6399
+ridge,decin,12,rezim_vyska,0.8,v čase vydání,pokles_nad,1079,0.7878,29.5417
+ridge,decin,12,rezim_vyska,0.8,v čase vydání,klid_pod,1830,0.7995,18.7857
+ridge,decin,12,rezim_vyska,0.8,v čase vydání,pokles_pod,615,0.7951,20.2712
+ridge,decin,12,rezim_vyska,0.8,skutečný vývoj,pokles,1816,0.7621,24.7054
+ridge,decin,12,rezim_vyska,0.8,skutečný vývoj,klid,2353,0.8721,20.6716
+ridge,decin,12,rezim_vyska,0.8,skutečný vývoj,vzestup,1692,0.792,29.4986
+ridge,decin,12,rezim_vyska,0.8,skutečný vývoj,rychly_vzestup,497,0.5412,30.7181
+ridge,decin,12,rezim_vyska,0.8,skutečný vývoj,zacatek_vzestupu,112,0.5536,30.7429
+ridge,decin,12,zmena6,0.8,v čase vydání,z5,1228,0.785,40.4192
+ridge,decin,12,zmena6,0.8,v čase vydání,z4,643,0.7932,24.5918
+ridge,decin,12,zmena6,0.8,v čase vydání,z3,724,0.7914,22.6181
+ridge,decin,12,zmena6,0.8,v čase vydání,z2,978,0.7965,18.6264
+ridge,decin,12,zmena6,0.8,v čase vydání,z1,1091,0.7974,16.2023
+ridge,decin,12,zmena6,0.8,v čase vydání,z0,1694,0.7839,25.9405
+ridge,decin,12,zmena6,0.8,skutečný vývoj,pokles,1816,0.7428,23.8977
+ridge,decin,12,zmena6,0.8,skutečný vývoj,klid,2353,0.8649,20.023
+ridge,decin,12,zmena6,0.8,skutečný vývoj,vzestup,1692,0.7908,30.5985
+ridge,decin,12,zmena6,0.8,skutečný vývoj,rychly_vzestup,497,0.6076,38.9822
+ridge,decin,12,zmena6,0.8,skutečný vývoj,zacatek_vzestupu,112,0.6071,39.417
+ridge,decin,12,tym_trenink,0.8,v čase vydání,300-450,3021,0.7269,17.4984
+ridge,decin,12,tym_trenink,0.8,v čase vydání,450-600,1009,0.7512,20.7762
+ridge,decin,12,tym_trenink,0.8,v čase vydání,600-10000,549,0.7523,37.0735
+ridge,decin,12,tym_trenink,0.8,v čase vydání,0-300,1779,0.6773,16.8063
+ridge,decin,12,tym_trenink,0.8,skutečný vývoj,pokles,1816,0.7709,20.8031
+ridge,decin,12,tym_trenink,0.8,skutečný vývoj,klid,2353,0.8483,18.3249
+ridge,decin,12,tym_trenink,0.8,skutečný vývoj,vzestup,1692,0.6011,19.7759
+ridge,decin,12,tym_trenink,0.8,skutečný vývoj,rychly_vzestup,497,0.3199,19.5569
+ridge,decin,12,tym_trenink,0.8,skutečný vývoj,zacatek_vzestupu,112,0.2232,17.2011
+ridge,decin,12,globalni,0.95,v čase vydání,vse,6358,0.9427,49.9449
+ridge,decin,12,globalni,0.95,skutečný vývoj,pokles,1816,0.9554,49.5409
+ridge,decin,12,globalni,0.95,skutečný vývoj,klid,2353,0.9885,50.494
+ridge,decin,12,globalni,0.95,skutečný vývoj,vzestup,1692,0.9409,50.2127
+ridge,decin,12,globalni,0.95,skutečný vývoj,rychly_vzestup,497,0.6861,47.9095
+ridge,decin,12,globalni,0.95,skutečný vývoj,zacatek_vzestupu,112,0.7589,49.6909
+ridge,decin,12,trend6,0.95,v čase vydání,stoupa,2259,0.9349,67.7097
+ridge,decin,12,trend6,0.95,v čase vydání,drzi,2189,0.9502,34.7358
+ridge,decin,12,trend6,0.95,v čase vydání,klesa,1910,0.9466,40.4023
+ridge,decin,12,trend6,0.95,skutečný vývoj,pokles,1816,0.9312,41.5838
+ridge,decin,12,trend6,0.95,skutečný vývoj,klid,2353,0.9868,45.2314
+ridge,decin,12,trend6,0.95,skutečný vývoj,vzestup,1692,0.9492,55.4553
+ridge,decin,12,trend6,0.95,skutečný vývoj,rychly_vzestup,497,0.7666,61.1373
+ridge,decin,12,trend6,0.95,skutečný vývoj,zacatek_vzestupu,112,0.7054,50.137
+ridge,decin,12,rezim,0.95,v čase vydání,vzestup,1871,0.9466,69.7759
+ridge,decin,12,rezim,0.95,v čase vydání,klid,2793,0.9449,31.5329
+ridge,decin,12,rezim,0.95,v čase vydání,pokles,1694,0.928,59.8961
+ridge,decin,12,rezim,0.95,skutečný vývoj,pokles,1816,0.9152,53.6136
+ridge,decin,12,rezim,0.95,skutečný vývoj,klid,2353,0.9873,37.8646
+ridge,decin,12,rezim,0.95,skutečný vývoj,vzestup,1692,0.9427,59.2394
+ridge,decin,12,rezim,0.95,skutečný vývoj,rychly_vzestup,497,0.8089,67.194
+ridge,decin,12,rezim,0.95,skutečný vývoj,zacatek_vzestupu,112,0.8571,67.8534
+ridge,decin,12,rezim_vyska,0.95,v čase vydání,vzestup_pod,1099,0.9427,76.4452
+ridge,decin,12,rezim_vyska,0.95,v čase vydání,vzestup_nad,772,0.908,107.1953
+ridge,decin,12,rezim_vyska,0.95,v čase vydání,klid_nad,963,0.947,32.2561
+ridge,decin,12,rezim_vyska,0.95,v čase vydání,pokles_nad,1079,0.8999,63.9077
+ridge,decin,12,rezim_vyska,0.95,v čase vydání,klid_pod,1830,0.9503,30.5519
+ridge,decin,12,rezim_vyska,0.95,v čase vydání,pokles_pod,615,0.9431,35.943
+ridge,decin,12,rezim_vyska,0.95,skutečný vývoj,pokles,1816,0.9169,49.4837
+ridge,decin,12,rezim_vyska,0.95,skutečný vývoj,klid,2353,0.9766,38.0971
+ridge,decin,12,rezim_vyska,0.95,skutečný vývoj,vzestup,1692,0.9409,75.5289
+ridge,decin,12,rezim_vyska,0.95,skutečný vývoj,rychly_vzestup,497,0.7726,75.4572
+ridge,decin,12,rezim_vyska,0.95,skutečný vývoj,zacatek_vzestupu,112,0.8482,72.3024
+ridge,decin,12,zmena6,0.95,v čase vydání,z5,1228,0.9397,84.7344
+ridge,decin,12,zmena6,0.95,v čase vydání,z4,643,0.9471,45.8978
+ridge,decin,12,zmena6,0.95,v čase vydání,z3,724,0.942,35.3097
+ridge,decin,12,zmena6,0.95,v čase vydání,z2,978,0.9427,30.9162
+ridge,decin,12,zmena6,0.95,v čase vydání,z1,1091,0.9533,30.2463
+ridge,decin,12,zmena6,0.95,v čase vydání,z0,1694,0.928,59.8961
+ridge,decin,12,zmena6,0.95,skutečný vývoj,pokles,1816,0.9163,53.3254
+ridge,decin,12,zmena6,0.95,skutečný vývoj,klid,2353,0.9809,36.4258
+ridge,decin,12,zmena6,0.95,skutečný vývoj,vzestup,1692,0.9427,59.814
+ridge,decin,12,zmena6,0.95,skutečný vývoj,rychly_vzestup,497,0.829,80.6335
+ridge,decin,12,zmena6,0.95,skutečný vývoj,zacatek_vzestupu,112,0.875,81.7647
+ridge,decin,12,tym_trenink,0.95,v čase vydání,300-450,3021,0.91,31.6203
+ridge,decin,12,tym_trenink,0.95,v čase vydání,450-600,1009,0.9217,43.474
+ridge,decin,12,tym_trenink,0.95,v čase vydání,600-10000,549,0.867,83.3265
+ridge,decin,12,tym_trenink,0.95,v čase vydání,0-300,1779,0.8842,30.7164
+ridge,decin,12,tym_trenink,0.95,skutečný vývoj,pokles,1816,0.9405,41.246
+ridge,decin,12,tym_trenink,0.95,skutečný vývoj,klid,2353,0.9639,34.5288
+ridge,decin,12,tym_trenink,0.95,skutečný vývoj,vzestup,1692,0.8694,38.331
+ridge,decin,12,tym_trenink,0.95,skutečný vývoj,rychly_vzestup,497,0.5654,37.7781
+ridge,decin,12,tym_trenink,0.95,skutečný vývoj,zacatek_vzestupu,112,0.4911,31.7729
+ridge,decin,24,globalni,0.8,v čase vydání,vse,6358,0.7999,44.428
+ridge,decin,24,globalni,0.8,skutečný vývoj,pokles,1648,0.7773,44.1823
+ridge,decin,24,globalni,0.8,skutečný vývoj,klid,2514,0.9503,44.6553
+ridge,decin,24,globalni,0.8,skutečný vývoj,vzestup,1032,0.8391,44.7624
+ridge,decin,24,globalni,0.8,skutečný vývoj,rychly_vzestup,1164,0.4725,43.9885
+ridge,decin,24,globalni,0.8,skutečný vývoj,zacatek_vzestupu,406,0.4409,44.4038
+ridge,decin,24,trend6,0.8,v čase vydání,stoupa,2329,0.7969,62.9368
+ridge,decin,24,trend6,0.8,v čase vydání,drzi,2208,0.798,33.2138
+ridge,decin,24,trend6,0.8,v čase vydání,klesa,1821,0.7957,37.7742
+ridge,decin,24,trend6,0.8,skutečný vývoj,pokles,1648,0.7439,39.2057
+ridge,decin,24,trend6,0.8,skutečný vývoj,klid,2514,0.9336,42.683
+ridge,decin,24,trend6,0.8,skutečný vývoj,vzestup,1032,0.8101,50.3356
+ridge,decin,24,trend6,0.8,skutečný vývoj,rychly_vzestup,1164,0.5653,55.7049
+ridge,decin,24,trend6,0.8,skutečný vývoj,zacatek_vzestupu,406,0.4458,44.8575
+ridge,decin,24,rezim,0.8,v čase vydání,vzestup,1682,0.7961,76.1671
+ridge,decin,24,rezim,0.8,v čase vydání,klid,3138,0.798,35.1761
+ridge,decin,24,rezim,0.8,v čase vydání,pokles,1538,0.7971,37.363
+ridge,decin,24,rezim,0.8,skutečný vývoj,pokles,1648,0.736,36.882
+ridge,decin,24,rezim,0.8,skutečný vývoj,klid,2514,0.9069,37.5116
+ridge,decin,24,rezim,0.8,skutečný vývoj,vzestup,1032,0.7829,55.5367
+ridge,decin,24,rezim,0.8,skutečný vývoj,rychly_vzestup,1164,0.6598,71.7872
+ridge,decin,24,rezim,0.8,skutečný vývoj,zacatek_vzestupu,406,0.5911,69.7477
+ridge,decin,24,rezim_vyska,0.8,v čase vydání,vzestup_pod,1022,0.7975,71.8425
+ridge,decin,24,rezim_vyska,0.8,v čase vydání,vzestup_nad,660,0.7773,69.4385
+ridge,decin,24,rezim_vyska,0.8,v čase vydání,klid_nad,996,0.7801,37.2875
+ridge,decin,24,rezim_vyska,0.8,v čase vydání,pokles_nad,1079,0.7915,39.534
+ridge,decin,24,rezim_vyska,0.8,v čase vydání,klid_pod,2142,0.7894,35.1747
+ridge,decin,24,rezim_vyska,0.8,v čase vydání,pokles_pod,459,0.7952,31.429
+ridge,decin,24,rezim_vyska,0.8,skutečný vývoj,pokles,1648,0.7591,37.5276
+ridge,decin,24,rezim_vyska,0.8,skutečný vývoj,klid,2514,0.8775,37.5101
+ridge,decin,24,rezim_vyska,0.8,skutečný vývoj,vzestup,1032,0.7694,53.332
+ridge,decin,24,rezim_vyska,0.8,skutečný vývoj,rychly_vzestup,1164,0.6564,66.6957
+ridge,decin,24,rezim_vyska,0.8,skutečný vývoj,zacatek_vzestupu,406,0.6256,65.369
+ridge,decin,24,zmena6,0.8,v čase vydání,z5,1071,0.7908,85.3966
+ridge,decin,24,zmena6,0.8,v čase vydání,z4,611,0.7987,60.9992
+ridge,decin,24,zmena6,0.8,v čase vydání,z3,801,0.7965,41.3331
+ridge,decin,24,zmena6,0.8,v čase vydání,z2,1162,0.7917,33.4338
+ridge,decin,24,zmena6,0.8,v čase vydání,z1,1175,0.7974,32.2743
+ridge,decin,24,zmena6,0.8,v čase vydání,z0,1538,0.7971,37.363
+ridge,decin,24,zmena6,0.8,skutečný vývoj,pokles,1648,0.7712,36.1254
+ridge,decin,24,zmena6,0.8,skutečný vývoj,klid,2514,0.8437,36.2847
+ridge,decin,24,zmena6,0.8,skutečný vývoj,vzestup,1032,0.8372,53.2843
+ridge,decin,24,zmena6,0.8,skutečný vývoj,rychly_vzestup,1164,0.6873,77.6038
+ridge,decin,24,zmena6,0.8,skutečný vývoj,zacatek_vzestupu,406,0.5961,72.6217
+ridge,decin,24,tym_trenink,0.8,v čase vydání,300-450,2849,0.668,26.351
+ridge,decin,24,tym_trenink,0.8,v čase vydání,450-600,997,0.7392,27.9641
+ridge,decin,24,tym_trenink,0.8,v čase vydání,600-10000,525,0.6933,69.5176
+ridge,decin,24,tym_trenink,0.8,v čase vydání,0-300,1987,0.6004,21.5002
+ridge,decin,24,tym_trenink,0.8,skutečný vývoj,pokles,1648,0.7743,32.7399
+ridge,decin,24,tym_trenink,0.8,skutečný vývoj,klid,2514,0.8154,25.922
+ridge,decin,24,tym_trenink,0.8,skutečný vývoj,vzestup,1032,0.5136,27.8607
+ridge,decin,24,tym_trenink,0.8,skutečný vývoj,rychly_vzestup,1164,0.293,29.4642
+ridge,decin,24,tym_trenink,0.8,skutečný vývoj,zacatek_vzestupu,406,0.2118,24.5902
+ridge,decin,24,globalni,0.95,v čase vydání,vse,6358,0.9421,100.2006
+ridge,decin,24,globalni,0.95,skutečný vývoj,pokles,1648,0.9581,99.118
+ridge,decin,24,globalni,0.95,skutečný vývoj,klid,2514,0.9901,101.3196
+ridge,decin,24,globalni,0.95,skutečný vývoj,vzestup,1032,0.9864,101.4652
+ridge,decin,24,globalni,0.95,skutečný vývoj,rychly_vzestup,1164,0.7766,98.1953
+ridge,decin,24,globalni,0.95,skutečný vývoj,zacatek_vzestupu,406,0.7635,100.0688
+ridge,decin,24,trend6,0.95,v čase vydání,stoupa,2329,0.9292,122.4063
+ridge,decin,24,trend6,0.95,v čase vydání,drzi,2208,0.947,81.7548
+ridge,decin,24,trend6,0.95,v čase vydání,klesa,1821,0.95,75.3925
+ridge,decin,24,trend6,0.95,skutečný vývoj,pokles,1648,0.9333,82.1649
+ridge,decin,24,trend6,0.95,skutečný vývoj,klid,2514,0.9909,91.8387
+ridge,decin,24,trend6,0.95,skutečný vývoj,vzestup,1032,0.9874,104.4495
+ridge,decin,24,trend6,0.95,skutečný vývoj,rychly_vzestup,1164,0.805,110.6585
+ridge,decin,24,trend6,0.95,skutečný vývoj,zacatek_vzestupu,406,0.7291,95.2955
+ridge,decin,24,rezim,0.95,v čase vydání,vzestup,1682,0.9417,141.9487
+ridge,decin,24,rezim,0.95,v čase vydání,klid,3138,0.9465,67.3997
+ridge,decin,24,rezim,0.95,v čase vydání,pokles,1538,0.9311,90.6459
+ridge,decin,24,rezim,0.95,skutečný vývoj,pokles,1648,0.912,85.2344
+ridge,decin,24,rezim,0.95,skutečný vývoj,klid,2514,0.9873,73.8762
+ridge,decin,24,rezim,0.95,skutečný vývoj,vzestup,1032,0.9709,104.0999
+ridge,decin,24,rezim,0.95,skutečný vývoj,rychly_vzestup,1164,0.8582,134.0629
+ridge,decin,24,rezim,0.95,skutečný vývoj,zacatek_vzestupu,406,0.8054,129.5222
+ridge,decin,24,rezim_vyska,0.95,v čase vydání,vzestup_pod,1022,0.9432,136.7495
+ridge,decin,24,rezim_vyska,0.95,v čase vydání,vzestup_nad,660,0.8924,180.4177
+ridge,decin,24,rezim_vyska,0.95,v čase vydání,klid_nad,996,0.9378,54.6782
+ridge,decin,24,rezim_vyska,0.95,v čase vydání,pokles_nad,1079,0.9064,98.3634
+ridge,decin,24,rezim_vyska,0.95,v čase vydání,klid_pod,2142,0.9482,68.7715
+ridge,decin,24,rezim_vyska,0.95,v čase vydání,pokles_pod,459,0.9346,59.4141
+ridge,decin,24,rezim_vyska,0.95,skutečný vývoj,pokles,1648,0.9163,82.7061
+ridge,decin,24,rezim_vyska,0.95,skutečný vývoj,klid,2514,0.9733,71.35
+ridge,decin,24,rezim_vyska,0.95,skutečný vývoj,vzestup,1032,0.9661,110.8647
+ridge,decin,24,rezim_vyska,0.95,skutečný vývoj,rychly_vzestup,1164,0.8342,140.8254
+ridge,decin,24,rezim_vyska,0.95,skutečný vývoj,zacatek_vzestupu,406,0.8522,133.105
+ridge,decin,24,zmena6,0.95,v čase vydání,z5,1071,0.929,162.5187
+ridge,decin,24,zmena6,0.95,v čase vydání,z4,611,0.9493,111.9939
+ridge,decin,24,zmena6,0.95,v čase vydání,z3,801,0.9476,91.8237
+ridge,decin,24,zmena6,0.95,v čase vydání,z2,1162,0.9432,61.9634
+ridge,decin,24,zmena6,0.95,v čase vydání,z1,1175,0.9421,58.9964
+ridge,decin,24,zmena6,0.95,v čase vydání,z0,1538,0.9311,90.6459
+ridge,decin,24,zmena6,0.95,skutečný vývoj,pokles,1648,0.9163,83.2603
+ridge,decin,24,zmena6,0.95,skutečný vývoj,klid,2514,0.9745,71.6233
+ridge,decin,24,zmena6,0.95,skutečný vývoj,vzestup,1032,0.9622,104.0897
+ridge,decin,24,zmena6,0.95,skutečný vývoj,rychly_vzestup,1164,0.8729,147.8333
+ridge,decin,24,zmena6,0.95,skutečný vývoj,zacatek_vzestupu,406,0.8227,138.9454
+ridge,decin,24,tym_trenink,0.95,v čase vydání,300-450,2849,0.8852,50.3789
+ridge,decin,24,tym_trenink,0.95,v čase vydání,450-600,997,0.8927,74.6054
+ridge,decin,24,tym_trenink,0.95,v čase vydání,600-10000,525,0.8343,97.5553
+ridge,decin,24,tym_trenink,0.95,v čase vydání,0-300,1987,0.7836,40.9718
+ridge,decin,24,tym_trenink,0.95,skutečný vývoj,pokles,1648,0.943,64.3048
+ridge,decin,24,tym_trenink,0.95,skutečný vývoj,klid,2514,0.9626,50.4646
+ridge,decin,24,tym_trenink,0.95,skutečný vývoj,vzestup,1032,0.8052,51.9668
+ridge,decin,24,tym_trenink,0.95,skutečný vývoj,rychly_vzestup,1164,0.5172,55.04
+ridge,decin,24,tym_trenink,0.95,skutečný vývoj,zacatek_vzestupu,406,0.4015,47.7273
+ridge,decin,36,globalni,0.8,v čase vydání,vse,6358,0.7992,85.4972
+ridge,decin,36,globalni,0.8,skutečný vývoj,pokles,1540,0.7682,84.8228
+ridge,decin,36,globalni,0.8,skutečný vývoj,klid,2600,0.9504,86.0697
+ridge,decin,36,globalni,0.8,skutečný vývoj,vzestup,577,0.9012,86.3248
+ridge,decin,36,globalni,0.8,skutečný vývoj,rychly_vzestup,1641,0.5527,84.932
+ridge,decin,36,globalni,0.8,skutečný vývoj,zacatek_vzestupu,756,0.5132,85.629
+ridge,decin,36,trend6,0.8,v čase vydání,stoupa,2361,0.7908,116.3735
+ridge,decin,36,trend6,0.8,v čase vydání,drzi,2231,0.8001,71.5302
+ridge,decin,36,trend6,0.8,v čase vydání,klesa,1766,0.7945,59.5253
+ridge,decin,36,trend6,0.8,skutečný vývoj,pokles,1540,0.7357,70.7984
+ridge,decin,36,trend6,0.8,skutečný vývoj,klid,2600,0.9415,81.5496
+ridge,decin,36,trend6,0.8,skutečný vývoj,vzestup,577,0.8873,95.1559
+ridge,decin,36,trend6,0.8,skutečný vývoj,rychly_vzestup,1641,0.5862,99.6344
+ridge,decin,36,trend6,0.8,skutečný vývoj,zacatek_vzestupu,756,0.463,82.7267
+ridge,decin,36,rezim,0.8,v čase vydání,vzestup,1502,0.787,138.2092
+ridge,decin,36,rezim,0.8,v čase vydání,klid,3505,0.7986,68.6633
+ridge,decin,36,rezim,0.8,v čase vydání,pokles,1351,0.7839,59.2981
+ridge,decin,36,rezim,0.8,skutečný vývoj,pokles,1540,0.7162,62.0747
+ridge,decin,36,rezim,0.8,skutečný vývoj,klid,2600,0.9112,71.0406
+ridge,decin,36,rezim,0.8,skutečný vývoj,vzestup,577,0.87,89.865
+ridge,decin,36,rezim,0.8,skutečný vývoj,rychly_vzestup,1641,0.6496,119.5698
+ridge,decin,36,rezim,0.8,skutečný vývoj,zacatek_vzestupu,756,0.545,107.6212
+ridge,decin,36,rezim_vyska,0.8,v čase vydání,vzestup_pod,953,0.7859,139.5458
+ridge,decin,36,rezim_vyska,0.8,v čase vydání,vzestup_nad,549,0.7723,119.4553
+ridge,decin,36,rezim_vyska,0.8,v čase vydání,klid_nad,1043,0.7833,63.5286
+ridge,decin,36,rezim_vyska,0.8,v čase vydání,pokles_nad,1047,0.7717,60.4265
+ridge,decin,36,rezim_vyska,0.8,v čase vydání,klid_pod,2462,0.7957,72.94
+ridge,decin,36,rezim_vyska,0.8,v čase vydání,pokles_pod,304,0.7961,49.9994
+ridge,decin,36,rezim_vyska,0.8,skutečný vývoj,pokles,1540,0.7442,61.0843
+ridge,decin,36,rezim_vyska,0.8,skutečný vývoj,klid,2600,0.8758,71.7476
+ridge,decin,36,rezim_vyska,0.8,skutečný vývoj,vzestup,577,0.8631,89.6053
+ridge,decin,36,rezim_vyska,0.8,skutečný vývoj,rychly_vzestup,1641,0.6569,116.1225
+ridge,decin,36,rezim_vyska,0.8,skutečný vývoj,zacatek_vzestupu,756,0.6058,107.8282
+ridge,decin,36,zmena6,0.8,v čase vydání,z4,627,0.7895,131.9863
+ridge,decin,36,zmena6,0.8,v čase vydání,z5,875,0.7931,141.6115
+ridge,decin,36,zmena6,0.8,v čase vydání,z3,854,0.7939,101.5555
+ridge,decin,36,zmena6,0.8,v čase vydání,z2,1456,0.7926,62.7096
+ridge,decin,36,zmena6,0.8,v čase vydání,z1,1195,0.79,57.7405
+ridge,decin,36,zmena6,0.8,v čase vydání,z0,1351,0.7839,59.2981
+ridge,decin,36,zmena6,0.8,skutečný vývoj,pokles,1540,0.75,59.1164
+ridge,decin,36,zmena6,0.8,skutečný vývoj,klid,2600,0.8562,69.9967
+ridge,decin,36,zmena6,0.8,skutečný vývoj,vzestup,577,0.8406,98.719
+ridge,decin,36,zmena6,0.8,skutečný vývoj,rychly_vzestup,1641,0.7057,124.2041
+ridge,decin,36,zmena6,0.8,skutečný vývoj,zacatek_vzestupu,756,0.6296,113.1196
+ridge,decin,36,tym_trenink,0.8,v čase vydání,0-300,2203,0.4803,28.189
+ridge,decin,36,tym_trenink,0.8,v čase vydání,300-450,2681,0.5901,40.5941
+ridge,decin,36,tym_trenink,0.8,v čase vydání,450-600,973,0.7461,40.2789
+ridge,decin,36,tym_trenink,0.8,v čase vydání,600-10000,501,0.6926,87.4124
+ridge,decin,36,tym_trenink,0.8,skutečný vývoj,pokles,1540,0.7571,46.9792
+ridge,decin,36,tym_trenink,0.8,skutečný vývoj,klid,2600,0.7473,36.2567
+ridge,decin,36,tym_trenink,0.8,skutečný vývoj,vzestup,577,0.4315,40.7024
+ridge,decin,36,tym_trenink,0.8,skutečný vývoj,rychly_vzestup,1641,0.2163,38.8894
+ridge,decin,36,tym_trenink,0.8,skutečný vývoj,zacatek_vzestupu,756,0.1058,33.4177
+ridge,decin,36,globalni,0.95,v čase vydání,vse,6358,0.9457,161.8246
+ridge,decin,36,globalni,0.95,skutečný vývoj,pokles,1540,0.9714,161.0118
+ridge,decin,36,globalni,0.95,skutečný vývoj,klid,2600,0.9869,162.4969
+ridge,decin,36,globalni,0.95,skutečný vývoj,vzestup,577,0.9723,162.8351
+ridge,decin,36,globalni,0.95,skutečný vývoj,rychly_vzestup,1641,0.847,161.1667
+ridge,decin,36,globalni,0.95,skutečný vývoj,zacatek_vzestupu,756,0.8598,162.0804
+ridge,decin,36,trend6,0.95,v čase vydání,stoupa,2361,0.9424,187.8394
+ridge,decin,36,trend6,0.95,v čase vydání,drzi,2231,0.948,145.0456
+ridge,decin,36,trend6,0.95,v čase vydání,klesa,1766,0.9479,138.4227
+ridge,decin,36,trend6,0.95,skutečný vývoj,pokles,1540,0.9377,146.9656
+ridge,decin,36,trend6,0.95,skutečný vývoj,klid,2600,0.995,155.9245
+ridge,decin,36,trend6,0.95,skutečný vývoj,vzestup,577,0.9844,167.9849
+ridge,decin,36,trend6,0.95,skutečný vývoj,rychly_vzestup,1641,0.8623,172.3838
+ridge,decin,36,trend6,0.95,skutečný vývoj,zacatek_vzestupu,756,0.828,156.7427
+ridge,decin,36,rezim,0.95,v čase vydání,vzestup,1502,0.9421,208.8426
+ridge,decin,36,rezim,0.95,v čase vydání,klid,3505,0.9484,143.7115
+ridge,decin,36,rezim,0.95,v čase vydání,pokles,1351,0.9334,113.5304
+ridge,decin,36,rezim,0.95,skutečný vývoj,pokles,1540,0.9071,122.0474
+ridge,decin,36,rezim,0.95,skutečný vývoj,klid,2600,0.9881,144.3374
+ridge,decin,36,rezim,0.95,skutečný vývoj,vzestup,577,0.9861,163.3059
+ridge,decin,36,rezim,0.95,skutečný vývoj,rychly_vzestup,1641,0.8927,190.9276
+ridge,decin,36,rezim,0.95,skutečný vývoj,zacatek_vzestupu,756,0.8717,180.458
+ridge,decin,36,rezim_vyska,0.95,v čase vydání,vzestup_pod,953,0.9423,201.0605
+ridge,decin,36,rezim_vyska,0.95,v čase vydání,vzestup_nad,549,0.8834,201.4251
+ridge,decin,36,rezim_vyska,0.95,v čase vydání,klid_nad,1043,0.9396,102.7285
+ridge,decin,36,rezim_vyska,0.95,v čase vydání,pokles_nad,1047,0.9226,124.3574
+ridge,decin,36,rezim_vyska,0.95,v čase vydání,klid_pod,2462,0.9492,136.3872
+ridge,decin,36,rezim_vyska,0.95,v čase vydání,pokles_pod,304,0.9178,90.0413
+ridge,decin,36,rezim_vyska,0.95,skutečný vývoj,pokles,1540,0.9201,117.5076
+ridge,decin,36,rezim_vyska,0.95,skutečný vývoj,klid,2600,0.9754,129.1322
+ridge,decin,36,rezim_vyska,0.95,skutečný vývoj,vzestup,577,0.9723,152.6655
+ridge,decin,36,rezim_vyska,0.95,skutečný vývoj,rychly_vzestup,1641,0.872,181.5391
+ridge,decin,36,rezim_vyska,0.95,skutečný vývoj,zacatek_vzestupu,756,0.8664,170.8368
+ridge,decin,36,zmena6,0.95,v čase vydání,z4,627,0.9458,200.0647
+ridge,decin,36,zmena6,0.95,v čase vydání,z5,875,0.9371,225.6387
+ridge,decin,36,zmena6,0.95,v čase vydání,z3,854,0.9496,176.1479
+ridge,decin,36,zmena6,0.95,v čase vydání,z2,1456,0.9444,126.1504
+ridge,decin,36,zmena6,0.95,v čase vydání,z1,1195,0.9414,104.5274
+ridge,decin,36,zmena6,0.95,v čase vydání,z0,1351,0.9334,113.5304
+ridge,decin,36,zmena6,0.95,skutečný vývoj,pokles,1540,0.9065,112.0392
+ridge,decin,36,zmena6,0.95,skutečný vývoj,klid,2600,0.9815,129.6449
+ridge,decin,36,zmena6,0.95,skutečný vývoj,vzestup,577,0.9619,166.8075
+ridge,decin,36,zmena6,0.95,skutečný vývoj,rychly_vzestup,1641,0.9031,200.734
+ridge,decin,36,zmena6,0.95,skutečný vývoj,zacatek_vzestupu,756,0.8757,186.4726
+ridge,decin,36,tym_trenink,0.95,v čase vydání,0-300,2203,0.7049,59.1253
+ridge,decin,36,tym_trenink,0.95,v čase vydání,300-450,2681,0.8743,87.4344
+ridge,decin,36,tym_trenink,0.95,v čase vydání,450-600,973,0.8798,85.0503
+ridge,decin,36,tym_trenink,0.95,v čase vydání,600-10000,501,0.8443,123.8862
+ridge,decin,36,tym_trenink,0.95,skutečný vývoj,pokles,1540,0.9597,91.182
+ridge,decin,36,tym_trenink,0.95,skutečný vývoj,klid,2600,0.9585,75.1298
+ridge,decin,36,tym_trenink,0.95,skutečný vývoj,vzestup,577,0.7868,80.5078
+ridge,decin,36,tym_trenink,0.95,skutečný vývoj,rychly_vzestup,1641,0.4583,77.5594
+ridge,decin,36,tym_trenink,0.95,skutečný vývoj,zacatek_vzestupu,756,0.3148,70.0316
+ridge,usti,12,globalni,0.8,v čase vydání,vse,6358,0.7968,28.7787
+ridge,usti,12,globalni,0.8,skutečný vývoj,pokles,1848,0.7587,28.6943
+ridge,usti,12,globalni,0.8,skutečný vývoj,klid,2307,0.9371,28.9061
+ridge,usti,12,globalni,0.8,skutečný vývoj,vzestup,1669,0.7693,28.8235
+ridge,usti,12,globalni,0.8,skutečný vývoj,rychly_vzestup,534,0.4082,28.3806
+ridge,usti,12,globalni,0.8,skutečný vývoj,zacatek_vzestupu,142,0.331,28.646
+ridge,usti,12,trend6,0.8,v čase vydání,stoupa,2301,0.7936,34.754
+ridge,usti,12,trend6,0.8,v čase vydání,drzi,2101,0.7996,23.8305
+ridge,usti,12,trend6,0.8,v čase vydání,klesa,1956,0.7919,26.5401
+ridge,usti,12,trend6,0.8,skutečný vývoj,pokles,1848,0.7554,26.8789
+ridge,usti,12,trend6,0.8,skutečný vývoj,klid,2307,0.9194,27.7838
+ridge,usti,12,trend6,0.8,skutečný vývoj,vzestup,1669,0.7711,30.616
+ridge,usti,12,trend6,0.8,skutečný vývoj,rychly_vzestup,534,0.47,31.9883
+ridge,usti,12,trend6,0.8,skutečný vývoj,zacatek_vzestupu,142,0.2958,27.1939
+ridge,usti,12,rezim,0.8,v čase vydání,vzestup,1844,0.7923,40.3036
+ridge,usti,12,rezim,0.8,v čase vydání,klid,2745,0.7985,21.4232
+ridge,usti,12,rezim,0.8,v čase vydání,pokles,1769,0.7841,29.3436
+ridge,usti,12,rezim,0.8,skutečný vývoj,pokles,1848,0.7284,27.7013
+ridge,usti,12,rezim,0.8,skutečný vývoj,klid,2307,0.9098,23.8479
+ridge,usti,12,rezim,0.8,skutečný vývoj,vzestup,1669,0.7735,34.6044
+ridge,usti,12,rezim,0.8,skutečný vývoj,rychly_vzestup,534,0.5693,39.4596
+ridge,usti,12,rezim,0.8,skutečný vývoj,zacatek_vzestupu,142,0.5,39.9381
+ridge,usti,12,rezim_vyska,0.8,v čase vydání,vzestup_pod,1272,0.7956,36.8973
+ridge,usti,12,rezim_vyska,0.8,v čase vydání,vzestup_nad,572,0.7885,42.4572
+ridge,usti,12,rezim_vyska,0.8,v čase vydání,klid_nad,678,0.7699,21.9423
+ridge,usti,12,rezim_vyska,0.8,v čase vydání,pokles_nad,890,0.7629,40.6798
+ridge,usti,12,rezim_vyska,0.8,v čase vydání,klid_pod,2067,0.7963,21.5953
+ridge,usti,12,rezim_vyska,0.8,v čase vydání,pokles_pod,879,0.7838,23.8779
+ridge,usti,12,rezim_vyska,0.8,skutečný vývoj,pokles,1848,0.7332,30.3677
+ridge,usti,12,rezim_vyska,0.8,skutečný vývoj,klid,2307,0.8682,24.1689
+ridge,usti,12,rezim_vyska,0.8,skutečný vývoj,vzestup,1669,0.7933,33.8653
+ridge,usti,12,rezim_vyska,0.8,skutečný vývoj,rychly_vzestup,534,0.5936,36.5701
+ridge,usti,12,rezim_vyska,0.8,skutečný vývoj,zacatek_vzestupu,142,0.5915,36.2552
+ridge,usti,12,zmena6,0.8,v čase vydání,z5,1222,0.7815,48.077
+ridge,usti,12,zmena6,0.8,v čase vydání,z4,622,0.7862,28.9466
+ridge,usti,12,zmena6,0.8,v čase vydání,z3,693,0.7994,24.0433
+ridge,usti,12,zmena6,0.8,v čase vydání,z2,1003,0.7886,20.9232
+ridge,usti,12,zmena6,0.8,v čase vydání,z1,1049,0.7884,20.8884
+ridge,usti,12,zmena6,0.8,v čase vydání,z0,1769,0.7841,29.3436
+ridge,usti,12,zmena6,0.8,skutečný vývoj,pokles,1848,0.73,27.5789
+ridge,usti,12,zmena6,0.8,skutečný vývoj,klid,2307,0.8717,23.3494
+ridge,usti,12,zmena6,0.8,skutečný vývoj,vzestup,1669,0.7789,34.9141
+ridge,usti,12,zmena6,0.8,skutečný vývoj,rychly_vzestup,534,0.6423,47.0395
+ridge,usti,12,zmena6,0.8,skutečný vývoj,zacatek_vzestupu,142,0.6056,47.3121
+ridge,usti,12,tym_trenink,0.8,v čase vydání,300-450,2712,0.6965,20.4538
+ridge,usti,12,tym_trenink,0.8,v čase vydání,450-600,1531,0.757,22.1308
+ridge,usti,12,tym_trenink,0.8,v čase vydání,600-10000,579,0.7306,56.9838
+ridge,usti,12,tym_trenink,0.8,v čase vydání,0-300,1536,0.6615,18.9959
+ridge,usti,12,tym_trenink,0.8,skutečný vývoj,pokles,1848,0.7549,25.8447
+ridge,usti,12,tym_trenink,0.8,skutečný vývoj,klid,2307,0.8448,21.6737
+ridge,usti,12,tym_trenink,0.8,skutečný vývoj,vzestup,1669,0.5968,24.5971
+ridge,usti,12,tym_trenink,0.8,skutečný vývoj,rychly_vzestup,534,0.2753,23.8007
+ridge,usti,12,tym_trenink,0.8,skutečný vývoj,zacatek_vzestupu,142,0.0986,20.3211
+ridge,usti,12,globalni,0.95,v čase vydání,vse,6358,0.9446,58.7607
+ridge,usti,12,globalni,0.95,skutečný vývoj,pokles,1848,0.9486,58.375
+ridge,usti,12,globalni,0.95,skutečný vývoj,klid,2307,0.9866,59.4494
+ridge,usti,12,globalni,0.95,skutečný vývoj,vzestup,1669,0.9413,58.7603
+ridge,usti,12,globalni,0.95,skutečný vývoj,rychly_vzestup,534,0.7603,57.1215
+ridge,usti,12,globalni,0.95,skutečný vývoj,zacatek_vzestupu,142,0.7606,58.4482
+ridge,usti,12,trend6,0.95,v čase vydání,stoupa,2301,0.9365,76.0409
+ridge,usti,12,trend6,0.95,v čase vydání,drzi,2101,0.9515,46.6459
+ridge,usti,12,trend6,0.95,v čase vydání,klesa,1956,0.9448,50.6113
+ridge,usti,12,trend6,0.95,skutečný vývoj,pokles,1848,0.9253,52.9297
+ridge,usti,12,trend6,0.95,skutečný vývoj,klid,2307,0.9874,56.5597
+ridge,usti,12,trend6,0.95,skutečný vývoj,vzestup,1669,0.9581,64.294
+ridge,usti,12,trend6,0.95,skutečný vývoj,rychly_vzestup,534,0.7772,68.0995
+ridge,usti,12,trend6,0.95,skutečný vývoj,zacatek_vzestupu,142,0.6901,55.1519
+ridge,usti,12,rezim,0.95,v čase vydání,vzestup,1844,0.9441,75.5434
+ridge,usti,12,rezim,0.95,v čase vydání,klid,2745,0.9468,36.5348
+ridge,usti,12,rezim,0.95,v čase vydání,pokles,1769,0.922,76.7588
+ridge,usti,12,rezim,0.95,skutečný vývoj,pokles,1848,0.9075,68.4463
+ridge,usti,12,rezim,0.95,skutečný vývoj,klid,2307,0.9913,44.6148
+ridge,usti,12,rezim,0.95,skutečný vývoj,vzestup,1669,0.9395,63.9464
+ridge,usti,12,rezim,0.95,skutečný vývoj,rychly_vzestup,534,0.8221,73.4735
+ridge,usti,12,rezim,0.95,skutečný vývoj,zacatek_vzestupu,142,0.8521,74.6604
+ridge,usti,12,rezim_vyska,0.95,v čase vydání,vzestup_pod,1272,0.9379,61.1879
+ridge,usti,12,rezim_vyska,0.95,v čase vydání,vzestup_nad,572,0.9126,140.1318
+ridge,usti,12,rezim_vyska,0.95,v čase vydání,klid_nad,678,0.944,35.9537
+ridge,usti,12,rezim_vyska,0.95,v čase vydání,pokles_nad,890,0.8719,81.9586
+ridge,usti,12,rezim_vyska,0.95,v čase vydání,klid_pod,2067,0.9478,36.0321
+ridge,usti,12,rezim_vyska,0.95,v čase vydání,pokles_pod,879,0.9465,36.8786
+ridge,usti,12,rezim_vyska,0.95,skutečný vývoj,pokles,1848,0.9075,55.4208
+ridge,usti,12,rezim_vyska,0.95,skutečný vývoj,klid,2307,0.9736,42.5442
+ridge,usti,12,rezim_vyska,0.95,skutečný vývoj,vzestup,1669,0.9371,75.0271
+ridge,usti,12,rezim_vyska,0.95,skutečný vývoj,rychly_vzestup,534,0.8146,68.1898
+ridge,usti,12,rezim_vyska,0.95,skutečný vývoj,zacatek_vzestupu,142,0.8521,60.0433
+ridge,usti,12,zmena6,0.95,v čase vydání,z5,1222,0.9394,97.0061
+ridge,usti,12,zmena6,0.95,v čase vydání,z4,622,0.9389,49.0525
+ridge,usti,12,zmena6,0.95,v čase vydání,z3,693,0.9481,41.4987
+ridge,usti,12,zmena6,0.95,v čase vydání,z2,1003,0.9422,35.2314
+ridge,usti,12,zmena6,0.95,v čase vydání,z1,1049,0.9447,36.3381
+ridge,usti,12,zmena6,0.95,v čase vydání,z0,1769,0.922,76.7588
+ridge,usti,12,zmena6,0.95,skutečný vývoj,pokles,1848,0.9075,68.3895
+ridge,usti,12,zmena6,0.95,skutečný vývoj,klid,2307,0.9831,43.6497
+ridge,usti,12,zmena6,0.95,skutečný vývoj,vzestup,1669,0.9395,66.4422
+ridge,usti,12,zmena6,0.95,skutečný vývoj,rychly_vzestup,534,0.8296,91.9048
+ridge,usti,12,zmena6,0.95,skutečný vývoj,zacatek_vzestupu,142,0.8592,92.5258
+ridge,usti,12,tym_trenink,0.95,v čase vydání,300-450,2712,0.8934,34.8174
+ridge,usti,12,tym_trenink,0.95,v čase vydání,450-600,1531,0.9236,43.3271
+ridge,usti,12,tym_trenink,0.95,v čase vydání,600-10000,579,0.8601,142.4611
+ridge,usti,12,tym_trenink,0.95,v čase vydání,0-300,1536,0.8743,35.2766
+ridge,usti,12,tym_trenink,0.95,skutečný vývoj,pokles,1848,0.9248,52.3077
+ridge,usti,12,tym_trenink,0.95,skutečný vývoj,klid,2307,0.9731,40.8179
+ridge,usti,12,tym_trenink,0.95,skutečný vývoj,vzestup,1669,0.8682,48.9585
+ridge,usti,12,tym_trenink,0.95,skutečný vývoj,rychly_vzestup,534,0.515,46.6013
+ridge,usti,12,tym_trenink,0.95,skutečný vývoj,zacatek_vzestupu,142,0.3592,37.7583
+ridge,usti,24,globalni,0.8,v čase vydání,vse,6358,0.7957,53.2
+ridge,usti,24,globalni,0.8,skutečný vývoj,pokles,1701,0.7454,52.9359
+ridge,usti,24,globalni,0.8,skutečný vývoj,klid,2502,0.956,53.4603
+ridge,usti,24,globalni,0.8,skutečný vývoj,vzestup,946,0.8541,53.6095
+ridge,usti,24,globalni,0.8,skutečný vývoj,rychly_vzestup,1209,0.4888,52.7125
+ridge,usti,24,globalni,0.8,skutečný vývoj,zacatek_vzestupu,458,0.4651,53.1214
+ridge,usti,24,trend6,0.8,v čase vydání,stoupa,2359,0.7991,72.2646
+ridge,usti,24,trend6,0.8,v čase vydání,drzi,2112,0.7959,38.2649
+ridge,usti,24,trend6,0.8,v čase vydání,klesa,1887,0.797,43.3831
+ridge,usti,24,trend6,0.8,skutečný vývoj,pokles,1701,0.7349,45.5572
+ridge,usti,24,trend6,0.8,skutečný vývoj,klid,2502,0.9444,49.7929
+ridge,usti,24,trend6,0.8,skutečný vývoj,vzestup,946,0.8467,58.1815
+ridge,usti,24,trend6,0.8,skutečný vývoj,rychly_vzestup,1209,0.5426,62.8925
+ridge,usti,24,trend6,0.8,skutečný vývoj,zacatek_vzestupu,458,0.4148,49.0191
+ridge,usti,24,rezim,0.8,v čase vydání,vzestup,1640,0.7939,90.562
+ridge,usti,24,rezim,0.8,v čase vydání,klid,3179,0.7924,39.0563
+ridge,usti,24,rezim,0.8,v čase vydání,pokles,1539,0.7921,42.2192
+ridge,usti,24,rezim,0.8,skutečný vývoj,pokles,1701,0.726,41.5765
+ridge,usti,24,rezim,0.8,skutečný vývoj,klid,2502,0.9105,42.186
+ridge,usti,24,rezim,0.8,skutečný vývoj,vzestup,946,0.7674,61.9667
+ridge,usti,24,rezim,0.8,skutečný vývoj,rychly_vzestup,1209,0.6625,85.0006
+ridge,usti,24,rezim,0.8,skutečný vývoj,zacatek_vzestupu,458,0.6223,81.3425
+ridge,usti,24,rezim_vyska,0.8,v čase vydání,vzestup_pod,1162,0.8003,86.9524
+ridge,usti,24,rezim_vyska,0.8,v čase vydání,vzestup_nad,478,0.7824,82.5823
+ridge,usti,24,rezim_vyska,0.8,v čase vydání,klid_nad,706,0.7805,38.9543
+ridge,usti,24,rezim_vyska,0.8,v čase vydání,pokles_nad,894,0.7752,44.558
+ridge,usti,24,rezim_vyska,0.8,v čase vydání,klid_pod,2473,0.7942,40.2963
+ridge,usti,24,rezim_vyska,0.8,v čase vydání,pokles_pod,645,0.7891,40.6459
+ridge,usti,24,rezim_vyska,0.8,skutečný vývoj,pokles,1701,0.7302,42.379
+ridge,usti,24,rezim_vyska,0.8,skutečný vývoj,klid,2502,0.8837,42.8841
+ridge,usti,24,rezim_vyska,0.8,skutečný vývoj,vzestup,946,0.7833,61.2346
+ridge,usti,24,rezim_vyska,0.8,skutečný vývoj,rychly_vzestup,1209,0.684,79.7422
+ridge,usti,24,rezim_vyska,0.8,skutečný vývoj,zacatek_vzestupu,458,0.6463,77.0377
+ridge,usti,24,zmena6,0.8,v čase vydání,z5,1013,0.7868,98.1665
+ridge,usti,24,zmena6,0.8,v čase vydání,z4,627,0.7959,84.2404
+ridge,usti,24,zmena6,0.8,v čase vydání,z3,732,0.806,46.755
+ridge,usti,24,zmena6,0.8,v čase vydání,z2,1191,0.7859,39.252
+ridge,usti,24,zmena6,0.8,v čase vydání,z1,1256,0.797,36.5674
+ridge,usti,24,zmena6,0.8,v čase vydání,z0,1539,0.7921,42.2192
+ridge,usti,24,zmena6,0.8,skutečný vývoj,pokles,1701,0.7643,40.9216
+ridge,usti,24,zmena6,0.8,skutečný vývoj,klid,2502,0.8497,42.2753
+ridge,usti,24,zmena6,0.8,skutečný vývoj,vzestup,946,0.8288,63.5259
+ridge,usti,24,zmena6,0.8,skutečný vývoj,rychly_vzestup,1209,0.6882,89.8785
+ridge,usti,24,zmena6,0.8,skutečný vývoj,zacatek_vzestupu,458,0.631,84.2974
+ridge,usti,24,tym_trenink,0.8,v čase vydání,300-450,2585,0.6248,29.2857
+ridge,usti,24,tym_trenink,0.8,v čase vydání,450-600,1493,0.7582,32.8384
+ridge,usti,24,tym_trenink,0.8,v čase vydání,600-10000,555,0.7117,77.3853
+ridge,usti,24,tym_trenink,0.8,v čase vydání,0-300,1725,0.5768,23.9165
+ridge,usti,24,tym_trenink,0.8,skutečný vývoj,pokles,1701,0.7654,37.5555
+ridge,usti,24,tym_trenink,0.8,skutečný vývoj,klid,2502,0.8078,29.5929
+ridge,usti,24,tym_trenink,0.8,skutečný vývoj,vzestup,946,0.5127,31.8482
+ridge,usti,24,tym_trenink,0.8,skutečný vývoj,rychly_vzestup,1209,0.2721,33.8166
+ridge,usti,24,tym_trenink,0.8,skutečný vývoj,zacatek_vzestupu,458,0.1659,28.4323
+ridge,usti,24,globalni,0.95,v čase vydání,vse,6358,0.9451,114.3328
+ridge,usti,24,globalni,0.95,skutečný vývoj,pokles,1701,0.9553,113.6232
+ridge,usti,24,globalni,0.95,skutečný vývoj,klid,2502,0.9904,115.1202
+ridge,usti,24,globalni,0.95,skutečný vývoj,vzestup,946,0.9863,115.0958
+ridge,usti,24,globalni,0.95,skutečný vývoj,rychly_vzestup,1209,0.8048,113.1048
+ridge,usti,24,globalni,0.95,skutečný vývoj,zacatek_vzestupu,458,0.8079,114.1252
+ridge,usti,24,trend6,0.95,v čase vydání,stoupa,2359,0.9419,138.664
+ridge,usti,24,trend6,0.95,v čase vydání,drzi,2112,0.9517,97.9413
+ridge,usti,24,trend6,0.95,v čase vydání,klesa,1887,0.9449,95.0753
+ridge,usti,24,trend6,0.95,skutečný vývoj,pokles,1701,0.9295,101.6179
+ridge,usti,24,trend6,0.95,skutečný vývoj,klid,2502,0.9936,109.5898
+ridge,usti,24,trend6,0.95,skutečný vývoj,vzestup,946,0.9873,120.9836
+ridge,usti,24,trend6,0.95,skutečný vývoj,rychly_vzestup,1209,0.8387,125.6171
+ridge,usti,24,trend6,0.95,skutečný vývoj,zacatek_vzestupu,458,0.7751,108.2064
+ridge,usti,24,rezim,0.95,v čase vydání,vzestup,1640,0.9451,154.1649
+ridge,usti,24,rezim,0.95,v čase vydání,klid,3179,0.9453,79.4042
+ridge,usti,24,rezim,0.95,v čase vydání,pokles,1539,0.9272,106.6189
+ridge,usti,24,rezim,0.95,skutečný vývoj,pokles,1701,0.9024,99.9658
+ridge,usti,24,rezim,0.95,skutečný vývoj,klid,2502,0.9932,86.5092
+ridge,usti,24,rezim,0.95,skutečný vývoj,vzestup,946,0.9736,112.9171
+ridge,usti,24,rezim,0.95,skutečný vývoj,rychly_vzestup,1209,0.861,145.6042
+ridge,usti,24,rezim,0.95,skutečný vývoj,zacatek_vzestupu,458,0.8297,140.3362
+ridge,usti,24,rezim_vyska,0.95,v čase vydání,vzestup_pod,1162,0.9492,134.7576
+ridge,usti,24,rezim_vyska,0.95,v čase vydání,vzestup_nad,478,0.8766,194.0899
+ridge,usti,24,rezim_vyska,0.95,v čase vydání,klid_nad,706,0.9462,61.1565
+ridge,usti,24,rezim_vyska,0.95,v čase vydání,pokles_nad,894,0.8949,112.9144
+ridge,usti,24,rezim_vyska,0.95,v čase vydání,klid_pod,2473,0.9482,82.4097
+ridge,usti,24,rezim_vyska,0.95,v čase vydání,pokles_pod,645,0.9349,68.4613
+ridge,usti,24,rezim_vyska,0.95,skutečný vývoj,pokles,1701,0.9048,90.9764
+ridge,usti,24,rezim_vyska,0.95,skutečný vývoj,klid,2502,0.9808,83.6509
+ridge,usti,24,rezim_vyska,0.95,skutečný vývoj,vzestup,946,0.9704,114.3365
+ridge,usti,24,rezim_vyska,0.95,skutečný vývoj,rychly_vzestup,1209,0.8495,139.9787
+ridge,usti,24,rezim_vyska,0.95,skutečný vývoj,zacatek_vzestupu,458,0.8406,129.5455
+ridge,usti,24,zmena6,0.95,v čase vydání,z5,1013,0.9348,178.8977
+ridge,usti,24,zmena6,0.95,v čase vydání,z4,627,0.9474,131.1999
+ridge,usti,24,zmena6,0.95,v čase vydání,z3,732,0.944,102.1152
+ridge,usti,24,zmena6,0.95,v čase vydání,z2,1191,0.9454,67.1025
+ridge,usti,24,zmena6,0.95,v čase vydání,z1,1256,0.9482,71.6422
+ridge,usti,24,zmena6,0.95,v čase vydání,z0,1539,0.9272,106.6189
+ridge,usti,24,zmena6,0.95,skutečný vývoj,pokles,1701,0.9065,98.0084
+ridge,usti,24,zmena6,0.95,skutečný vývoj,klid,2502,0.9844,81.3224
+ridge,usti,24,zmena6,0.95,skutečný vývoj,vzestup,946,0.9588,113.6537
+ridge,usti,24,zmena6,0.95,skutečný vývoj,rychly_vzestup,1209,0.8801,160.8973
+ridge,usti,24,zmena6,0.95,skutečný vývoj,zacatek_vzestupu,458,0.8515,151.0256
+ridge,usti,24,tym_trenink,0.95,v čase vydání,300-450,2585,0.8646,60.102
+ridge,usti,24,tym_trenink,0.95,v čase vydání,450-600,1493,0.9116,63.549
+ridge,usti,24,tym_trenink,0.95,v čase vydání,600-10000,555,0.8559,174.0963
+ridge,usti,24,tym_trenink,0.95,v čase vydání,0-300,1725,0.7693,47.1772
+ridge,usti,24,tym_trenink,0.95,skutečný vývoj,pokles,1701,0.9347,77.5454
+ridge,usti,24,tym_trenink,0.95,skutečný vývoj,klid,2502,0.9644,59.7814
+ridge,usti,24,tym_trenink,0.95,skutečný vývoj,vzestup,946,0.8118,65.5111
+ridge,usti,24,tym_trenink,0.95,skutečný vývoj,rychly_vzestup,1209,0.5186,70.1367
+ridge,usti,24,tym_trenink,0.95,skutečný vývoj,zacatek_vzestupu,458,0.4148,57.5249
+ridge,usti,36,globalni,0.8,v čase vydání,vse,6358,0.7987,94.7979
+ridge,usti,36,globalni,0.8,skutečný vývoj,pokles,1577,0.7552,94.309
+ridge,usti,36,globalni,0.8,skutečný vývoj,klid,2605,0.9451,95.237
+ridge,usti,36,globalni,0.8,skutečný vývoj,vzestup,480,0.9062,95.4867
+ridge,usti,36,globalni,0.8,skutečný vývoj,rychly_vzestup,1696,0.5837,94.3831
+ridge,usti,36,globalni,0.8,skutečný vývoj,zacatek_vzestupu,808,0.5582,94.8551
+ridge,usti,36,trend6,0.8,v čase vydání,stoupa,2401,0.7843,121.6873
+ridge,usti,36,trend6,0.8,v čase vydání,drzi,2125,0.8019,78.515
+ridge,usti,36,trend6,0.8,v čase vydání,klesa,1832,0.7964,74.7957
+ridge,usti,36,trend6,0.8,skutečný vývoj,pokles,1577,0.7343,82.7811
+ridge,usti,36,trend6,0.8,skutečný vývoj,klid,2605,0.9451,91.4576
+ridge,usti,36,trend6,0.8,skutečný vývoj,vzestup,480,0.9083,102.1145
+ridge,usti,36,trend6,0.8,skutečný vývoj,rychly_vzestup,1696,0.5837,105.0905
+ridge,usti,36,trend6,0.8,skutečný vývoj,zacatek_vzestupu,808,0.4777,88.5023
+ridge,usti,36,rezim,0.8,v čase vydání,vzestup,1453,0.797,145.3856
+ridge,usti,36,rezim,0.8,v čase vydání,klid,3557,0.7976,77.3748
+ridge,usti,36,rezim,0.8,v čase vydání,pokles,1348,0.793,58.9899
+ridge,usti,36,rezim,0.8,skutečný vývoj,pokles,1577,0.7273,64.7669
+ridge,usti,36,rezim,0.8,skutečný vývoj,klid,2605,0.9079,78.8915
+ridge,usti,36,rezim,0.8,skutečný vývoj,vzestup,480,0.8875,97.8992
+ridge,usti,36,rezim,0.8,skutečný vývoj,rychly_vzestup,1696,0.6639,124.6137
+ridge,usti,36,rezim,0.8,skutečný vývoj,zacatek_vzestupu,808,0.5681,112.4693
+ridge,usti,36,rezim_vyska,0.8,v čase vydání,vzestup_pod,1052,0.7937,147.0704
+ridge,usti,36,rezim_vyska,0.8,v čase vydání,vzestup_nad,401,0.7681,123.6569
+ridge,usti,36,rezim_vyska,0.8,v čase vydání,klid_nad,737,0.7666,60.4273
+ridge,usti,36,rezim_vyska,0.8,v čase vydání,pokles_nad,868,0.788,62.477
+ridge,usti,36,rezim_vyska,0.8,v čase vydání,klid_pod,2820,0.7968,79.1984
+ridge,usti,36,rezim_vyska,0.8,v čase vydání,pokles_pod,480,0.7771,52.4539
+ridge,usti,36,rezim_vyska,0.8,skutečný vývoj,pokles,1577,0.7242,62.8596
+ridge,usti,36,rezim_vyska,0.8,skutečný vývoj,klid,2605,0.8845,76.9221
+ridge,usti,36,rezim_vyska,0.8,skutečný vývoj,vzestup,480,0.8729,97.0448
+ridge,usti,36,rezim_vyska,0.8,skutečný vývoj,rychly_vzestup,1696,0.6763,121.1638
+ridge,usti,36,rezim_vyska,0.8,skutečný vývoj,zacatek_vzestupu,808,0.6213,112.4656
+ridge,usti,36,zmena6,0.8,v čase vydání,z4,668,0.7919,149.9764
+ridge,usti,36,zmena6,0.8,v čase vydání,z5,785,0.7987,144.8468
+ridge,usti,36,zmena6,0.8,v čase vydání,z3,804,0.7948,116.0001
+ridge,usti,36,zmena6,0.8,v čase vydání,z2,1522,0.7845,69.8447
+ridge,usti,36,zmena6,0.8,v čase vydání,z1,1231,0.7864,64.1787
+ridge,usti,36,zmena6,0.8,v čase vydání,z0,1348,0.793,58.9899
+ridge,usti,36,zmena6,0.8,skutečný vývoj,pokles,1577,0.7464,61.3759
+ridge,usti,36,zmena6,0.8,skutečný vývoj,klid,2605,0.8622,77.4486
+ridge,usti,36,zmena6,0.8,skutečný vývoj,vzestup,480,0.8542,108.4079
+ridge,usti,36,zmena6,0.8,skutečný vývoj,rychly_vzestup,1696,0.7034,130.5424
+ridge,usti,36,zmena6,0.8,skutečný vývoj,zacatek_vzestupu,808,0.625,121.3379
+ridge,usti,36,tym_trenink,0.8,v čase vydání,300-450,2465,0.5643,41.4955
+ridge,usti,36,tym_trenink,0.8,v čase vydání,450-600,1445,0.7377,49.8214
+ridge,usti,36,tym_trenink,0.8,v čase vydání,600-10000,531,0.7721,100.3979
+ridge,usti,36,tym_trenink,0.8,v čase vydání,0-300,1917,0.4653,29.9964
+ridge,usti,36,tym_trenink,0.8,skutečný vývoj,pokles,1577,0.7819,54.1938
+ridge,usti,36,tym_trenink,0.8,skutečný vývoj,klid,2605,0.7543,40.2821
+ridge,usti,36,tym_trenink,0.8,skutečný vývoj,vzestup,480,0.4167,43.3484
+ridge,usti,36,tym_trenink,0.8,skutečný vývoj,rychly_vzestup,1696,0.2129,43.5653
+ridge,usti,36,tym_trenink,0.8,skutečný vývoj,zacatek_vzestupu,808,0.0866,37.0967
+ridge,usti,36,globalni,0.95,v čase vydání,vse,6358,0.9478,176.3974
+ridge,usti,36,globalni,0.95,skutečný vývoj,pokles,1577,0.9626,175.6624
+ridge,usti,36,globalni,0.95,skutečný vývoj,klid,2605,0.9889,176.9984
+ridge,usti,36,globalni,0.95,skutečný vývoj,vzestup,480,0.975,177.4441
+ridge,usti,36,globalni,0.95,skutečný vývoj,rychly_vzestup,1696,0.8632,175.8613
+ridge,usti,36,globalni,0.95,skutečný vývoj,zacatek_vzestupu,808,0.8639,176.6841
+ridge,usti,36,trend6,0.95,v čase vydání,stoupa,2401,0.9429,197.8861
+ridge,usti,36,trend6,0.95,v čase vydání,drzi,2125,0.9511,159.3276
+ridge,usti,36,trend6,0.95,v čase vydání,klesa,1832,0.9503,159.5517
+ridge,usti,36,trend6,0.95,skutečný vývoj,pokles,1577,0.9372,164.7022
+ridge,usti,36,trend6,0.95,skutečný vývoj,klid,2605,0.995,172.1404
+ridge,usti,36,trend6,0.95,skutečný vývoj,vzestup,480,0.9833,180.887
+ridge,usti,36,trend6,0.95,skutečný vývoj,rychly_vzestup,1696,0.875,183.377
+ridge,usti,36,trend6,0.95,skutečný vývoj,zacatek_vzestupu,808,0.8478,168.7876
+ridge,usti,36,rezim,0.95,v čase vydání,vzestup,1453,0.9408,219.2077
+ridge,usti,36,rezim,0.95,v čase vydání,klid,3557,0.9491,156.1519
+ridge,usti,36,rezim,0.95,v čase vydání,pokles,1348,0.9325,129.8386
+ridge,usti,36,rezim,0.95,skutečný vývoj,pokles,1577,0.9036,137.8376
+ridge,usti,36,rezim,0.95,skutečný vývoj,klid,2605,0.9896,157.0497
+ridge,usti,36,rezim,0.95,skutečný vývoj,vzestup,480,0.9875,175.0449
+ridge,usti,36,rezim,0.95,skutečný vývoj,rychly_vzestup,1696,0.898,199.5622
+ridge,usti,36,rezim,0.95,skutečný vývoj,zacatek_vzestupu,808,0.8861,188.8097
+ridge,usti,36,rezim_vyska,0.95,v čase vydání,vzestup_pod,1052,0.9487,216.6949
+ridge,usti,36,rezim_vyska,0.95,v čase vydání,vzestup_nad,401,0.8579,193.7367
+ridge,usti,36,rezim_vyska,0.95,v čase vydání,klid_nad,737,0.9308,135.943
+ridge,usti,36,rezim_vyska,0.95,v čase vydání,pokles_nad,868,0.9032,144.3375
+ridge,usti,36,rezim_vyska,0.95,v čase vydání,klid_pod,2820,0.9507,158.7998
+ridge,usti,36,rezim_vyska,0.95,v čase vydání,pokles_pod,480,0.9354,105.1707
+ridge,usti,36,rezim_vyska,0.95,skutečný vývoj,pokles,1577,0.9062,138.0503
+ridge,usti,36,rezim_vyska,0.95,skutečný vývoj,klid,2605,0.9835,154.3599
+ridge,usti,36,rezim_vyska,0.95,skutečný vývoj,vzestup,480,0.9625,170.6246
+ridge,usti,36,rezim_vyska,0.95,skutečný vývoj,rychly_vzestup,1696,0.8779,193.2259
+ridge,usti,36,rezim_vyska,0.95,skutečný vývoj,zacatek_vzestupu,808,0.8762,185.3812
+ridge,usti,36,zmena6,0.95,v čase vydání,z4,668,0.9446,209.4912
+ridge,usti,36,zmena6,0.95,v čase vydání,z5,785,0.9439,229.6829
+ridge,usti,36,zmena6,0.95,v čase vydání,z3,804,0.9465,188.647
+ridge,usti,36,zmena6,0.95,v čase vydání,z2,1522,0.9514,153.7824
+ridge,usti,36,zmena6,0.95,v čase vydání,z1,1231,0.9448,115.2146
+ridge,usti,36,zmena6,0.95,v čase vydání,z0,1348,0.9325,129.8386
+ridge,usti,36,zmena6,0.95,skutečný vývoj,pokles,1577,0.9042,127.6092
+ridge,usti,36,zmena6,0.95,skutečný vývoj,klid,2605,0.9846,148.4621
+ridge,usti,36,zmena6,0.95,skutečný vývoj,vzestup,480,0.9833,179.2987
+ridge,usti,36,zmena6,0.95,skutečný vývoj,rychly_vzestup,1696,0.9068,205.6457
+ridge,usti,36,zmena6,0.95,skutečný vývoj,zacatek_vzestupu,808,0.8911,193.9438
+ridge,usti,36,tym_trenink,0.95,v čase vydání,300-450,2465,0.8337,93.2773
+ridge,usti,36,tym_trenink,0.95,v čase vydání,450-600,1445,0.9266,91.6528
+ridge,usti,36,tym_trenink,0.95,v čase vydání,600-10000,531,0.8362,139.1003
+ridge,usti,36,tym_trenink,0.95,v čase vydání,0-300,1917,0.6781,62.8823
+ridge,usti,36,tym_trenink,0.95,skutečný vývoj,pokles,1577,0.9423,99.1908
+ridge,usti,36,tym_trenink,0.95,skutečný vývoj,klid,2605,0.9601,81.6091
+ridge,usti,36,tym_trenink,0.95,skutečný vývoj,vzestup,480,0.8146,86.1342
+ridge,usti,36,tym_trenink,0.95,skutečný vývoj,rychly_vzestup,1696,0.4481,86.3293
+ridge,usti,36,tym_trenink,0.95,skutečný vývoj,zacatek_vzestupu,808,0.3094,78.2842
+ridge30,decin,12,globalni,0.8,v čase vydání,vse,6358,0.7979,25.3233
+ridge30,decin,12,globalni,0.8,skutečný vývoj,pokles,1816,0.7737,25.2403
+ridge30,decin,12,globalni,0.8,skutečný vývoj,klid,2353,0.901,25.4726
+ridge30,decin,12,globalni,0.8,skutečný vývoj,vzestup,1692,0.7807,25.3286
+ridge30,decin,12,globalni,0.8,skutečný vývoj,rychly_vzestup,497,0.4567,24.9015
+ridge30,decin,12,globalni,0.8,skutečný vývoj,zacatek_vzestupu,112,0.4732,25.3124
+ridge30,decin,12,trend6,0.8,v čase vydání,stoupa,2259,0.7964,33.179
+ridge30,decin,12,trend6,0.8,v čase vydání,drzi,2189,0.7976,19.7932
+ridge30,decin,12,trend6,0.8,v čase vydání,klesa,1910,0.7969,23.9953
+ridge30,decin,12,trend6,0.8,skutečný vývoj,pokles,1816,0.7445,23.6601
+ridge30,decin,12,trend6,0.8,skutečný vývoj,klid,2353,0.898,24.595
+ridge30,decin,12,trend6,0.8,skutečný vývoj,vzestup,1692,0.8014,28.3654
+ridge30,decin,12,trend6,0.8,skutečný vývoj,rychly_vzestup,497,0.495,30.7378
+ridge30,decin,12,trend6,0.8,skutečný vývoj,zacatek_vzestupu,112,0.4554,26.3583
+ridge30,decin,12,rezim,0.8,v čase vydání,vzestup,1959,0.7871,34.1408
+ridge30,decin,12,rezim,0.8,v čase vydání,klid,2652,0.7998,17.9338
+ridge30,decin,12,rezim,0.8,v čase vydání,pokles,1747,0.7762,28.353
+ridge30,decin,12,rezim,0.8,skutečný vývoj,pokles,1816,0.739,26.2734
+ridge30,decin,12,rezim,0.8,skutečný vývoj,klid,2353,0.8882,20.6679
+ridge30,decin,12,rezim,0.8,skutečný vývoj,vzestup,1692,0.7801,30.1723
+ridge30,decin,12,rezim,0.8,skutečný vývoj,rychly_vzestup,497,0.5372,33.3586
+ridge30,decin,12,rezim,0.8,skutečný vývoj,zacatek_vzestupu,112,0.6071,33.8899
+ridge30,decin,12,rezim_vyska,0.8,v čase vydání,vzestup_pod,1173,0.7945,29.3418
+ridge30,decin,12,rezim_vyska,0.8,v čase vydání,vzestup_nad,786,0.7913,36.4768
+ridge30,decin,12,rezim_vyska,0.8,v čase vydání,klid_nad,944,0.8008,17.8405
+ridge30,decin,12,rezim_vyska,0.8,v čase vydání,pokles_nad,1084,0.7712,34.4823
+ridge30,decin,12,rezim_vyska,0.8,v čase vydání,klid_pod,1708,0.798,17.3122
+ridge30,decin,12,rezim_vyska,0.8,v čase vydání,pokles_pod,663,0.7979,21.1676
+ridge30,decin,12,rezim_vyska,0.8,skutečný vývoj,pokles,1816,0.7627,27.5211
+ridge30,decin,12,rezim_vyska,0.8,skutečný vývoj,klid,2353,0.861,19.9829
+ridge30,decin,12,rezim_vyska,0.8,skutečný vývoj,vzestup,1692,0.8002,28.9865
+ridge30,decin,12,rezim_vyska,0.8,skutečný vývoj,rychly_vzestup,497,0.5493,29.918
+ridge30,decin,12,rezim_vyska,0.8,skutečný vývoj,zacatek_vzestupu,112,0.6518,28.8278
+ridge30,decin,12,zmena6,0.8,v čase vydání,z5,1334,0.7819,40.9458
+ridge30,decin,12,zmena6,0.8,v čase vydání,z4,625,0.7792,25.2462
+ridge30,decin,12,zmena6,0.8,v čase vydání,z3,707,0.8006,21.025
+ridge30,decin,12,zmena6,0.8,v čase vydání,z2,889,0.8009,16.6284
+ridge30,decin,12,zmena6,0.8,v čase vydání,z1,1056,0.8078,17.1172
+ridge30,decin,12,zmena6,0.8,v čase vydání,z0,1747,0.7762,28.353
+ridge30,decin,12,zmena6,0.8,skutečný vývoj,pokles,1816,0.7401,26.0906
+ridge30,decin,12,zmena6,0.8,skutečný vývoj,klid,2353,0.8649,20.0603
+ridge30,decin,12,zmena6,0.8,skutečný vývoj,vzestup,1692,0.7955,31.6357
+ridge30,decin,12,zmena6,0.8,skutečný vývoj,rychly_vzestup,497,0.5875,39.3284
+ridge30,decin,12,zmena6,0.8,skutečný vývoj,zacatek_vzestupu,112,0.6875,39.8657
+ridge30,decin,12,globalni,0.95,v čase vydání,vse,6358,0.9457,52.2906
+ridge30,decin,12,globalni,0.95,skutečný vývoj,pokles,1816,0.9559,51.9382
+ridge30,decin,12,globalni,0.95,skutečný vývoj,klid,2353,0.9873,52.8211
+ridge30,decin,12,globalni,0.95,skutečný vývoj,vzestup,1692,0.9391,52.4161
+ridge30,decin,12,globalni,0.95,skutečný vývoj,rychly_vzestup,497,0.7344,50.6394
+ridge30,decin,12,globalni,0.95,skutečný vývoj,zacatek_vzestupu,112,0.8482,52.275
+ridge30,decin,12,trend6,0.95,v čase vydání,stoupa,2259,0.9292,75.5068
+ridge30,decin,12,trend6,0.95,v čase vydání,drzi,2189,0.9475,33.5633
+ridge30,decin,12,trend6,0.95,v čase vydání,klesa,1910,0.9398,44.3061
+ridge30,decin,12,trend6,0.95,skutečný vývoj,pokles,1816,0.9135,44.2819
+ridge30,decin,12,trend6,0.95,skutečný vývoj,klid,2353,0.9834,47.9009
+ridge30,decin,12,trend6,0.95,skutečný vývoj,vzestup,1692,0.9515,60.468
+ridge30,decin,12,trend6,0.95,skutečný vývoj,rychly_vzestup,497,0.7746,66.8529
+ridge30,decin,12,trend6,0.95,skutečný vývoj,zacatek_vzestupu,112,0.7946,53.8122
+ridge30,decin,12,rezim,0.95,v čase vydání,vzestup,1959,0.9428,73.0866
+ridge30,decin,12,rezim,0.95,v čase vydání,klid,2652,0.948,31.0678
+ridge30,decin,12,rezim,0.95,v čase vydání,pokles,1747,0.9382,65.093
+ridge30,decin,12,rezim,0.95,skutečný vývoj,pokles,1816,0.9246,58.1454
+ridge30,decin,12,rezim,0.95,skutečný vývoj,klid,2353,0.9868,39.2005
+ridge30,decin,12,rezim,0.95,skutečný vývoj,vzestup,1692,0.9444,63.0716
+ridge30,decin,12,rezim,0.95,skutečný vývoj,rychly_vzestup,497,0.8068,69.8954
+ridge30,decin,12,rezim,0.95,skutečný vývoj,zacatek_vzestupu,112,0.8571,72.1075
+ridge30,decin,12,rezim_vyska,0.95,v čase vydání,vzestup_pod,1173,0.9454,68.0108
+ridge30,decin,12,rezim_vyska,0.95,v čase vydání,vzestup_nad,786,0.9186,114.5132
+ridge30,decin,12,rezim_vyska,0.95,v čase vydání,klid_nad,944,0.9407,31.5995
+ridge30,decin,12,rezim_vyska,0.95,v čase vydání,pokles_nad,1084,0.9207,71.6696
+ridge30,decin,12,rezim_vyska,0.95,v čase vydání,klid_pod,1708,0.9461,30.7288
+ridge30,decin,12,rezim_vyska,0.95,v čase vydání,pokles_pod,663,0.9502,34.2228
+ridge30,decin,12,rezim_vyska,0.95,skutečný vývoj,pokles,1816,0.9312,53.5773
+ridge30,decin,12,rezim_vyska,0.95,skutečný vývoj,klid,2353,0.9737,38.6745
+ridge30,decin,12,rezim_vyska,0.95,skutečný vývoj,vzestup,1692,0.9391,75.6319
+ridge30,decin,12,rezim_vyska,0.95,skutečný vývoj,rychly_vzestup,497,0.7887,72.8601
+ridge30,decin,12,rezim_vyska,0.95,skutečný vývoj,zacatek_vzestupu,112,0.875,66.1064
+ridge30,decin,12,zmena6,0.95,v čase vydání,z5,1334,0.9445,84.7601
+ridge30,decin,12,zmena6,0.95,v čase vydání,z4,625,0.9472,51.5799
+ridge30,decin,12,zmena6,0.95,v čase vydání,z3,707,0.9477,32.5082
+ridge30,decin,12,zmena6,0.95,v čase vydání,z2,889,0.946,30.2545
+ridge30,decin,12,zmena6,0.95,v čase vydání,z1,1056,0.9403,31.4836
+ridge30,decin,12,zmena6,0.95,v čase vydání,z0,1747,0.9382,65.093
+ridge30,decin,12,zmena6,0.95,skutečný vývoj,pokles,1816,0.9224,58.1774
+ridge30,decin,12,zmena6,0.95,skutečný vývoj,klid,2353,0.9822,37.9452
+ridge30,decin,12,zmena6,0.95,skutečný vývoj,vzestup,1692,0.945,63.4287
+ridge30,decin,12,zmena6,0.95,skutečný vývoj,rychly_vzestup,497,0.8249,80.2709
+ridge30,decin,12,zmena6,0.95,skutečný vývoj,zacatek_vzestupu,112,0.875,81.8386
+ridge30,decin,24,globalni,0.8,v čase vydání,vse,6358,0.7962,43.0231
+ridge30,decin,24,globalni,0.8,skutečný vývoj,pokles,1648,0.7536,42.7685
+ridge30,decin,24,globalni,0.8,skutečný vývoj,klid,2514,0.9399,43.317
+ridge30,decin,24,globalni,0.8,skutečný vývoj,vzestup,1032,0.8275,43.2863
+ridge30,decin,24,globalni,0.8,skutečný vývoj,rychly_vzestup,1164,0.518,42.5154
+ridge30,decin,24,globalni,0.8,skutečný vývoj,zacatek_vzestupu,406,0.5369,43.0894
+ridge30,decin,24,trend6,0.8,v čase vydání,stoupa,2329,0.7943,55.9588
+ridge30,decin,24,trend6,0.8,v čase vydání,drzi,2208,0.7989,33.0858
+ridge30,decin,24,trend6,0.8,v čase vydání,klesa,1821,0.7902,37.3223
+ridge30,decin,24,trend6,0.8,skutečný vývoj,pokles,1648,0.7275,38.0121
+ridge30,decin,24,trend6,0.8,skutečný vývoj,klid,2514,0.9244,40.6952
+ridge30,decin,24,trend6,0.8,skutečný vývoj,vzestup,1032,0.8343,46.3791
+ridge30,decin,24,trend6,0.8,skutečný vývoj,rychly_vzestup,1164,0.5747,50.284
+ridge30,decin,24,trend6,0.8,skutečný vývoj,zacatek_vzestupu,406,0.5419,42.3219
+ridge30,decin,24,rezim,0.8,v čase vydání,vzestup,1744,0.785,66.3591
+ridge30,decin,24,rezim,0.8,v čase vydání,klid,2978,0.7958,33.1265
+ridge30,decin,24,rezim,0.8,v čase vydání,pokles,1636,0.7818,41.9732
+ridge30,decin,24,rezim,0.8,skutečný vývoj,pokles,1648,0.7306,40.2914
+ridge30,decin,24,rezim,0.8,skutečný vývoj,klid,2514,0.8934,35.7657
+ridge30,decin,24,rezim,0.8,skutečný vývoj,vzestup,1032,0.7936,51.4776
+ridge30,decin,24,rezim,0.8,skutečný vývoj,rychly_vzestup,1164,0.6435,63.238
+ridge30,decin,24,rezim,0.8,skutečný vývoj,zacatek_vzestupu,406,0.6552,63.931
+ridge30,decin,24,rezim_vyska,0.8,v čase vydání,vzestup_pod,1093,0.7941,60.4699
+ridge30,decin,24,rezim_vyska,0.8,v čase vydání,vzestup_nad,651,0.7819,81.3609
+ridge30,decin,24,rezim_vyska,0.8,v čase vydání,klid_nad,956,0.7929,35.7313
+ridge30,decin,24,rezim_vyska,0.8,v čase vydání,pokles_nad,1128,0.7642,45.6755
+ridge30,decin,24,rezim_vyska,0.8,v čase vydání,klid_pod,2022,0.7868,31.9744
+ridge30,decin,24,rezim_vyska,0.8,v čase vydání,pokles_pod,508,0.7894,27.9999
+ridge30,decin,24,rezim_vyska,0.8,skutečný vývoj,pokles,1648,0.7567,40.2225
+ridge30,decin,24,rezim_vyska,0.8,skutečný vývoj,klid,2514,0.8592,35.291
+ridge30,decin,24,rezim_vyska,0.8,skutečný vývoj,vzestup,1032,0.7752,52.3318
+ridge30,decin,24,rezim_vyska,0.8,skutečný vývoj,rychly_vzestup,1164,0.6718,64.0913
+ridge30,decin,24,rezim_vyska,0.8,skutečný vývoj,zacatek_vzestupu,406,0.702,61.7255
+ridge30,decin,24,zmena6,0.8,v čase vydání,z5,1207,0.7722,80.0186
+ridge30,decin,24,zmena6,0.8,v čase vydání,z4,537,0.7933,48.1416
+ridge30,decin,24,zmena6,0.8,v čase vydání,z3,827,0.8005,37.1662
+ridge30,decin,24,zmena6,0.8,v čase vydání,z2,1023,0.7918,32.5925
+ridge30,decin,24,zmena6,0.8,v čase vydání,z1,1128,0.8032,31.1452
+ridge30,decin,24,zmena6,0.8,v čase vydání,z0,1636,0.7818,41.9732
+ridge30,decin,24,zmena6,0.8,skutečný vývoj,pokles,1648,0.7615,39.8829
+ridge30,decin,24,zmena6,0.8,skutečný vývoj,klid,2514,0.8492,35.0417
+ridge30,decin,24,zmena6,0.8,skutečný vývoj,vzestup,1032,0.8256,48.8806
+ridge30,decin,24,zmena6,0.8,skutečný vývoj,rychly_vzestup,1164,0.6641,73.9229
+ridge30,decin,24,zmena6,0.8,skutečný vývoj,zacatek_vzestupu,406,0.6576,73.1639
+ridge30,decin,24,globalni,0.95,v čase vydání,vse,6358,0.941,98.929
+ridge30,decin,24,globalni,0.95,skutečný vývoj,pokles,1648,0.9684,97.3787
+ridge30,decin,24,globalni,0.95,skutečný vývoj,klid,2514,0.9901,100.7346
+ridge30,decin,24,globalni,0.95,skutečný vývoj,vzestup,1032,0.9845,100.5195
+ridge30,decin,24,globalni,0.95,skutečný vývoj,rychly_vzestup,1164,0.7577,95.8139
+ridge30,decin,24,globalni,0.95,skutečný vývoj,zacatek_vzestupu,406,0.7759,98.8399
+ridge30,decin,24,trend6,0.95,v čase vydání,stoupa,2329,0.9253,135.9594
+ridge30,decin,24,trend6,0.95,v čase vydání,drzi,2208,0.9466,71.3777
+ridge30,decin,24,trend6,0.95,v čase vydání,klesa,1821,0.9484,66.6517
+ridge30,decin,24,trend6,0.95,skutečný vývoj,pokles,1648,0.9393,75.9656
+ridge30,decin,24,trend6,0.95,skutečný vývoj,klid,2514,0.9857,88.4338
+ridge30,decin,24,trend6,0.95,skutečný vývoj,vzestup,1032,0.9738,107.6061
+ridge30,decin,24,trend6,0.95,skutečný vývoj,rychly_vzestup,1164,0.8084,117.7496
+ridge30,decin,24,trend6,0.95,skutečný vývoj,zacatek_vzestupu,406,0.7537,94.1917
+ridge30,decin,24,rezim,0.95,v čase vydání,vzestup,1744,0.9398,143.8695
+ridge30,decin,24,rezim,0.95,v čase vydání,klid,2978,0.9459,61.1823
+ridge30,decin,24,rezim,0.95,v čase vydání,pokles,1636,0.9328,94.8334
+ridge30,decin,24,rezim,0.95,skutečný vývoj,pokles,1648,0.9114,88.2456
+ridge30,decin,24,rezim,0.95,skutečný vývoj,klid,2514,0.9865,69.3543
+ridge30,decin,24,rezim,0.95,skutečný vývoj,vzestup,1032,0.9632,105.6431
+ridge30,decin,24,rezim,0.95,skutečný vývoj,rychly_vzestup,1164,0.8643,136.9827
+ridge30,decin,24,rezim,0.95,skutečný vývoj,zacatek_vzestupu,406,0.8498,136.4096
+ridge30,decin,24,rezim_vyska,0.95,v čase vydání,vzestup_pod,1093,0.9451,121.2587
+ridge30,decin,24,rezim_vyska,0.95,v čase vydání,vzestup_nad,651,0.9017,196.8095
+ridge30,decin,24,rezim_vyska,0.95,v čase vydání,klid_nad,956,0.9435,60.7351
+ridge30,decin,24,rezim_vyska,0.95,v čase vydání,pokles_nad,1128,0.914,103.6795
+ridge30,decin,24,rezim_vyska,0.95,v čase vydání,klid_pod,2022,0.9476,59.0512
+ridge30,decin,24,rezim_vyska,0.95,v čase vydání,pokles_pod,508,0.9331,54.4053
+ridge30,decin,24,rezim_vyska,0.95,skutečný vývoj,pokles,1648,0.9211,86.2012
+ridge30,decin,24,rezim_vyska,0.95,skutečný vývoj,klid,2514,0.973,66.7119
+ridge30,decin,24,rezim_vyska,0.95,skutečný vývoj,vzestup,1032,0.9632,109.7517
+ridge30,decin,24,rezim_vyska,0.95,skutečný vývoj,rychly_vzestup,1164,0.8462,137.1774
+ridge30,decin,24,rezim_vyska,0.95,skutečný vývoj,zacatek_vzestupu,406,0.8793,129.4222
+ridge30,decin,24,zmena6,0.95,v čase vydání,z5,1207,0.9337,158.5995
+ridge30,decin,24,zmena6,0.95,v čase vydání,z4,537,0.9311,91.7404
+ridge30,decin,24,zmena6,0.95,v čase vydání,z3,827,0.942,67.7303
+ridge30,decin,24,zmena6,0.95,v čase vydání,z2,1023,0.9492,66.91
+ridge30,decin,24,zmena6,0.95,v čase vydání,z1,1128,0.9282,55.6258
+ridge30,decin,24,zmena6,0.95,v čase vydání,z0,1636,0.9328,94.8334
+ridge30,decin,24,zmena6,0.95,skutečný vývoj,pokles,1648,0.9193,87.2987
+ridge30,decin,24,zmena6,0.95,skutečný vývoj,klid,2514,0.9718,68.8103
+ridge30,decin,24,zmena6,0.95,skutečný vývoj,vzestup,1032,0.9545,93.0353
+ridge30,decin,24,zmena6,0.95,skutečný vývoj,rychly_vzestup,1164,0.8651,146.2025
+ridge30,decin,24,zmena6,0.95,skutečný vývoj,zacatek_vzestupu,406,0.8399,141.3469
+ridge30,decin,36,globalni,0.8,v čase vydání,vse,6358,0.7999,74.6024
+ridge30,decin,36,globalni,0.8,skutečný vývoj,pokles,1540,0.8026,74.0656
+ridge30,decin,36,globalni,0.8,skutečný vývoj,klid,2600,0.945,75.099
+ridge30,decin,36,globalni,0.8,skutečný vývoj,vzestup,577,0.8614,75.1718
+ridge30,decin,36,globalni,0.8,skutečný vývoj,rychly_vzestup,1641,0.546,74.1192
+ridge30,decin,36,globalni,0.8,skutečný vývoj,zacatek_vzestupu,756,0.5397,74.7604
+ridge30,decin,36,trend6,0.8,v čase vydání,stoupa,2361,0.7937,98.791
+ridge30,decin,36,trend6,0.8,v čase vydání,drzi,2231,0.7974,63.8197
+ridge30,decin,36,trend6,0.8,v čase vydání,klesa,1766,0.7905,56.7284
+ridge30,decin,36,trend6,0.8,skutečný vývoj,pokles,1540,0.7481,64.5083
+ridge30,decin,36,trend6,0.8,skutečný vývoj,klid,2600,0.9412,72.33
+ridge30,decin,36,trend6,0.8,skutečný vývoj,vzestup,577,0.8631,82.6695
+ridge30,decin,36,trend6,0.8,skutečný vývoj,rychly_vzestup,1641,0.5801,85.7457
+ridge30,decin,36,trend6,0.8,skutečný vývoj,zacatek_vzestupu,756,0.5132,73.2003
+ridge30,decin,36,rezim,0.8,v čase vydání,vzestup,1643,0.7839,124.6405
+ridge30,decin,36,rezim,0.8,v čase vydání,klid,3207,0.7951,61.8006
+ridge30,decin,36,rezim,0.8,v čase vydání,pokles,1508,0.7805,63.3815
+ridge30,decin,36,rezim,0.8,skutečný vývoj,pokles,1540,0.7201,63.3484
+ridge30,decin,36,rezim,0.8,skutečný vývoj,klid,2600,0.9031,65.323
+ridge30,decin,36,rezim,0.8,skutečný vývoj,vzestup,577,0.8527,82.6828
+ridge30,decin,36,rezim,0.8,skutečný vývoj,rychly_vzestup,1641,0.6496,111.794
+ridge30,decin,36,rezim,0.8,skutečný vývoj,zacatek_vzestupu,756,0.6045,105.7915
+ridge30,decin,36,rezim_vyska,0.8,v čase vydání,vzestup_pod,1077,0.7864,120.3447
+ridge30,decin,36,rezim_vyska,0.8,v čase vydání,vzestup_nad,566,0.7845,115.8553
+ridge30,decin,36,rezim_vyska,0.8,v čase vydání,klid_nad,954,0.782,56.1238
+ridge30,decin,36,rezim_vyska,0.8,v čase vydání,pokles_nad,1119,0.7721,67.3645
+ridge30,decin,36,rezim_vyska,0.8,v čase vydání,klid_pod,2253,0.7914,62.4983
+ridge30,decin,36,rezim_vyska,0.8,v čase vydání,pokles_pod,389,0.7866,48.2121
+ridge30,decin,36,rezim_vyska,0.8,skutečný vývoj,pokles,1540,0.7461,63.3817
+ridge30,decin,36,rezim_vyska,0.8,skutečný vývoj,klid,2600,0.8688,63.3812
+ridge30,decin,36,rezim_vyska,0.8,skutečný vývoj,vzestup,577,0.844,80.0888
+ridge30,decin,36,rezim_vyska,0.8,skutečný vývoj,rychly_vzestup,1641,0.6673,106.6796
+ridge30,decin,36,rezim_vyska,0.8,skutečný vývoj,zacatek_vzestupu,756,0.6402,101.8224
+ridge30,decin,36,zmena6,0.8,v čase vydání,z5,1060,0.7792,130.9558
+ridge30,decin,36,zmena6,0.8,v čase vydání,z4,583,0.7804,119.0113
+ridge30,decin,36,zmena6,0.8,v čase vydání,z3,808,0.7983,81.7694
+ridge30,decin,36,zmena6,0.8,v čase vydání,z2,1292,0.7779,55.0937
+ridge30,decin,36,zmena6,0.8,v čase vydání,z1,1107,0.7877,56.3431
+ridge30,decin,36,zmena6,0.8,v čase vydání,z0,1508,0.7805,63.3815
+ridge30,decin,36,zmena6,0.8,skutečný vývoj,pokles,1540,0.761,62.2381
+ridge30,decin,36,zmena6,0.8,skutečný vývoj,klid,2600,0.8485,64.3317
+ridge30,decin,36,zmena6,0.8,skutečný vývoj,vzestup,577,0.8007,86.0454
+ridge30,decin,36,zmena6,0.8,skutečný vývoj,rychly_vzestup,1641,0.6947,116.1738
+ridge30,decin,36,zmena6,0.8,skutečný vývoj,zacatek_vzestupu,756,0.6614,109.6334
+ridge30,decin,36,globalni,0.95,v čase vydání,vse,6358,0.9434,160.6273
+ridge30,decin,36,globalni,0.95,skutečný vývoj,pokles,1540,0.9766,158.7867
+ridge30,decin,36,globalni,0.95,skutečný vývoj,klid,2600,0.9888,162.5094
+ridge30,decin,36,globalni,0.95,skutečný vývoj,vzestup,577,0.9879,162.2582
+ridge30,decin,36,globalni,0.95,skutečný vývoj,rychly_vzestup,1641,0.8245,158.7991
+ridge30,decin,36,globalni,0.95,skutečný vývoj,zacatek_vzestupu,756,0.8743,161.026
+ridge30,decin,36,trend6,0.95,v čase vydání,stoupa,2361,0.9271,188.8189
+ridge30,decin,36,trend6,0.95,v čase vydání,drzi,2231,0.9476,130.84
+ridge30,decin,36,trend6,0.95,v čase vydání,klesa,1766,0.9473,118.2471
+ridge30,decin,36,trend6,0.95,skutečný vývoj,pokles,1540,0.9565,131.6595
+ridge30,decin,36,trend6,0.95,skutečný vývoj,klid,2600,0.985,144.5697
+ridge30,decin,36,trend6,0.95,skutečný vývoj,vzestup,577,0.9879,161.2653
+ridge30,decin,36,trend6,0.95,skutečný vývoj,rychly_vzestup,1641,0.8361,167.4851
+ridge30,decin,36,trend6,0.95,skutečný vývoj,zacatek_vzestupu,756,0.8082,145.8771
+ridge30,decin,36,rezim,0.95,v čase vydání,vzestup,1643,0.941,209.8446
+ridge30,decin,36,rezim,0.95,v čase vydání,klid,3207,0.9467,123.7104
+ridge30,decin,36,rezim,0.95,v čase vydání,pokles,1508,0.9377,112.2906
+ridge30,decin,36,rezim,0.95,skutečný vývoj,pokles,1540,0.9143,115.1459
+ridge30,decin,36,rezim,0.95,skutečný vývoj,klid,2600,0.99,127.4851
+ridge30,decin,36,rezim,0.95,skutečný vývoj,vzestup,577,0.9757,151.23
+ridge30,decin,36,rezim,0.95,skutečný vývoj,rychly_vzestup,1641,0.8842,191.8356
+ridge30,decin,36,rezim,0.95,skutečný vývoj,zacatek_vzestupu,756,0.8611,182.1619
+ridge30,decin,36,rezim_vyska,0.95,v čase vydání,vzestup_pod,1077,0.9396,181.3413
+ridge30,decin,36,rezim_vyska,0.95,v čase vydání,vzestup_nad,566,0.894,216.9157
+ridge30,decin,36,rezim_vyska,0.95,v čase vydání,klid_nad,954,0.9423,110.9896
+ridge30,decin,36,rezim_vyska,0.95,v čase vydání,pokles_nad,1119,0.9321,131.8366
+ridge30,decin,36,rezim_vyska,0.95,v čase vydání,klid_pod,2253,0.9458,117.686
+ridge30,decin,36,rezim_vyska,0.95,v čase vydání,pokles_pod,389,0.9229,95.8315
+ridge30,decin,36,rezim_vyska,0.95,skutečný vývoj,pokles,1540,0.9182,123.6824
+ridge30,decin,36,rezim_vyska,0.95,skutečný vývoj,klid,2600,0.9781,120.7022
+ridge30,decin,36,rezim_vyska,0.95,skutečný vývoj,vzestup,577,0.9723,143.7034
+ridge30,decin,36,rezim_vyska,0.95,skutečný vývoj,rychly_vzestup,1641,0.8726,174.7103
+ridge30,decin,36,rezim_vyska,0.95,skutečný vývoj,zacatek_vzestupu,756,0.881,164.4137
+ridge30,decin,36,zmena6,0.95,v čase vydání,z5,1060,0.9396,220.3964
+ridge30,decin,36,zmena6,0.95,v čase vydání,z4,583,0.9451,189.8826
+ridge30,decin,36,zmena6,0.95,v čase vydání,z3,808,0.9468,156.9445
+ridge30,decin,36,zmena6,0.95,v čase vydání,z2,1292,0.9443,108.4359
+ridge30,decin,36,zmena6,0.95,v čase vydání,z1,1107,0.9341,99.1361
+ridge30,decin,36,zmena6,0.95,v čase vydání,z0,1508,0.9377,112.2906
+ridge30,decin,36,zmena6,0.95,skutečný vývoj,pokles,1540,0.9175,109.9631
+ridge30,decin,36,zmena6,0.95,skutečný vývoj,klid,2600,0.9804,118.8762
+ridge30,decin,36,zmena6,0.95,skutečný vývoj,vzestup,577,0.9532,153.9499
+ridge30,decin,36,zmena6,0.95,skutečný vývoj,rychly_vzestup,1641,0.8946,196.8675
+ridge30,decin,36,zmena6,0.95,skutečný vývoj,zacatek_vzestupu,756,0.8796,186.0206
+ridge30,usti,12,globalni,0.8,v čase vydání,vse,6358,0.7947,29.459
+ridge30,usti,12,globalni,0.8,skutečný vývoj,pokles,1848,0.7657,29.3816
+ridge30,usti,12,globalni,0.8,skutečný vývoj,klid,2307,0.9163,29.6182
+ridge30,usti,12,globalni,0.8,skutečný vývoj,vzestup,1669,0.7621,29.4361
+ridge30,usti,12,globalni,0.8,skutečný vývoj,rychly_vzestup,534,0.4719,29.1106
+ridge30,usti,12,globalni,0.8,skutečný vývoj,zacatek_vzestupu,142,0.4366,29.3949
+ridge30,usti,12,trend6,0.8,v čase vydání,stoupa,2301,0.7857,34.6935
+ridge30,usti,12,trend6,0.8,v čase vydání,drzi,2101,0.7949,24.3301
+ridge30,usti,12,trend6,0.8,v čase vydání,klesa,1956,0.7894,28.213
+ridge30,usti,12,trend6,0.8,skutečný vývoj,pokles,1848,0.7419,27.8933
+ridge30,usti,12,trend6,0.8,skutečný vývoj,klid,2307,0.9077,28.4818
+ridge30,usti,12,trend6,0.8,skutečný vývoj,vzestup,1669,0.7711,30.9026
+ridge30,usti,12,trend6,0.8,skutečný vývoj,rychly_vzestup,534,0.5056,32.3991
+ridge30,usti,12,trend6,0.8,skutečný vývoj,zacatek_vzestupu,142,0.4014,27.9753
+ridge30,usti,12,rezim,0.8,v čase vydání,vzestup,1928,0.792,38.5312
+ridge30,usti,12,rezim,0.8,v čase vydání,klid,2520,0.7929,21.4783
+ridge30,usti,12,rezim,0.8,v čase vydání,pokles,1910,0.7874,31.3423
+ridge30,usti,12,rezim,0.8,skutečný vývoj,pokles,1848,0.7284,29.453
+ridge30,usti,12,rezim,0.8,skutečný vývoj,klid,2307,0.9081,24.6665
+ridge30,usti,12,rezim,0.8,skutečný vývoj,vzestup,1669,0.7693,33.993
+ridge30,usti,12,rezim,0.8,skutečný vývoj,rychly_vzestup,534,0.5693,37.8435
+ridge30,usti,12,rezim,0.8,skutečný vývoj,zacatek_vzestupu,142,0.5775,38.5148
+ridge30,usti,12,rezim_vyska,0.8,v čase vydání,vzestup_pod,1350,0.7933,35.9769
+ridge30,usti,12,rezim_vyska,0.8,v čase vydání,vzestup_nad,578,0.7993,46.3305
+ridge30,usti,12,rezim_vyska,0.8,v čase vydání,klid_nad,624,0.7917,21.2259
+ridge30,usti,12,rezim_vyska,0.8,v čase vydání,pokles_nad,938,0.774,42.6074
+ridge30,usti,12,rezim_vyska,0.8,v čase vydání,klid_pod,1896,0.7954,21.4435
+ridge30,usti,12,rezim_vyska,0.8,v čase vydání,pokles_pod,972,0.7942,25.5278
+ridge30,usti,12,rezim_vyska,0.8,skutečný vývoj,pokles,1848,0.7543,31.846
+ridge30,usti,12,rezim_vyska,0.8,skutečný vývoj,klid,2307,0.8669,24.8629
+ridge30,usti,12,rezim_vyska,0.8,skutečný vývoj,vzestup,1669,0.7873,34.8865
+ridge30,usti,12,rezim_vyska,0.8,skutečný vývoj,rychly_vzestup,534,0.6086,36.6905
+ridge30,usti,12,rezim_vyska,0.8,skutečný vývoj,zacatek_vzestupu,142,0.6408,35.7328
+ridge30,usti,12,zmena6,0.8,v čase vydání,z5,1307,0.7751,45.0953
+ridge30,usti,12,zmena6,0.8,v čase vydání,z4,621,0.7907,29.5352
+ridge30,usti,12,zmena6,0.8,v čase vydání,z3,663,0.7994,23.6393
+ridge30,usti,12,zmena6,0.8,v čase vydání,z2,847,0.7839,20.6896
+ridge30,usti,12,zmena6,0.8,v čase vydání,z1,1010,0.798,21.383
+ridge30,usti,12,zmena6,0.8,v čase vydání,z0,1910,0.7874,31.3423
+ridge30,usti,12,zmena6,0.8,skutečný vývoj,pokles,1848,0.7376,29.3786
+ridge30,usti,12,zmena6,0.8,skutečný vývoj,klid,2307,0.8713,24.2797
+ridge30,usti,12,zmena6,0.8,skutečný vývoj,vzestup,1669,0.7795,34.8414
+ridge30,usti,12,zmena6,0.8,skutečný vývoj,rychly_vzestup,534,0.6255,43.9764
+ridge30,usti,12,zmena6,0.8,skutečný vývoj,zacatek_vzestupu,142,0.6479,44.4161
+ridge30,usti,12,globalni,0.95,v čase vydání,vse,6358,0.9427,57.7282
+ridge30,usti,12,globalni,0.95,skutečný vývoj,pokles,1848,0.9464,57.3095
+ridge30,usti,12,globalni,0.95,skutečný vývoj,klid,2307,0.9853,58.4741
+ridge30,usti,12,globalni,0.95,skutečný vývoj,vzestup,1669,0.9341,57.6327
+ridge30,usti,12,globalni,0.95,skutečný vývoj,rychly_vzestup,534,0.7734,56.253
+ridge30,usti,12,globalni,0.95,skutečný vývoj,zacatek_vzestupu,142,0.838,57.5964
+ridge30,usti,12,trend6,0.95,v čase vydání,stoupa,2301,0.9326,78.4816
+ridge30,usti,12,trend6,0.95,v čase vydání,drzi,2101,0.951,43.855
+ridge30,usti,12,trend6,0.95,v čase vydání,klesa,1956,0.9443,51.4816
+ridge30,usti,12,trend6,0.95,skutečný vývoj,pokles,1848,0.9242,52.8505
+ridge30,usti,12,trend6,0.95,skutečný vývoj,klid,2307,0.9861,56.3704
+ridge30,usti,12,trend6,0.95,skutečný vývoj,vzestup,1669,0.9419,64.9019
+ridge30,usti,12,trend6,0.95,skutečný vývoj,rychly_vzestup,534,0.8165,70.0149
+ridge30,usti,12,trend6,0.95,skutečný vývoj,zacatek_vzestupu,142,0.7676,54.8166
+ridge30,usti,12,rezim,0.95,v čase vydání,vzestup,1928,0.9419,77.1185
+ridge30,usti,12,rezim,0.95,v čase vydání,klid,2520,0.9472,35.6487
+ridge30,usti,12,rezim,0.95,v čase vydání,pokles,1910,0.9236,78.0222
+ridge30,usti,12,rezim,0.95,skutečný vývoj,pokles,1848,0.9096,69.9711
+ridge30,usti,12,rezim,0.95,skutečný vývoj,klid,2307,0.99,46.5953
+ridge30,usti,12,rezim,0.95,skutečný vývoj,vzestup,1669,0.9329,66.1084
+ridge30,usti,12,rezim,0.95,skutečný vývoj,rychly_vzestup,534,0.8333,75.6643
+ridge30,usti,12,rezim,0.95,skutečný vývoj,zacatek_vzestupu,142,0.8662,77.132
+ridge30,usti,12,rezim_vyska,0.95,v čase vydání,vzestup_pod,1350,0.9393,57.2265
+ridge30,usti,12,rezim_vyska,0.95,v čase vydání,vzestup_nad,578,0.8927,152.3947
+ridge30,usti,12,rezim_vyska,0.95,v čase vydání,klid_nad,624,0.9439,36.6932
+ridge30,usti,12,rezim_vyska,0.95,v čase vydání,pokles_nad,938,0.8763,85.287
+ridge30,usti,12,rezim_vyska,0.95,v čase vydání,klid_pod,1896,0.9462,35.0593
+ridge30,usti,12,rezim_vyska,0.95,v čase vydání,pokles_pod,972,0.9259,38.4368
+ridge30,usti,12,rezim_vyska,0.95,skutečný vývoj,pokles,1848,0.9113,57.5347
+ridge30,usti,12,rezim_vyska,0.95,skutečný vývoj,klid,2307,0.9623,43.8404
+ridge30,usti,12,rezim_vyska,0.95,skutečný vývoj,vzestup,1669,0.9305,77.2335
+ridge30,usti,12,rezim_vyska,0.95,skutečný vývoj,rychly_vzestup,534,0.809,66.8576
+ridge30,usti,12,rezim_vyska,0.95,skutečný vývoj,zacatek_vzestupu,142,0.8732,56.7929
+ridge30,usti,12,zmena6,0.95,v čase vydání,z5,1307,0.9441,99.1406
+ridge30,usti,12,zmena6,0.95,v čase vydání,z4,621,0.9517,51.1101
+ridge30,usti,12,zmena6,0.95,v čase vydání,z3,663,0.9532,37.795
+ridge30,usti,12,zmena6,0.95,v čase vydání,z2,847,0.9469,34.6443
+ridge30,usti,12,zmena6,0.95,v čase vydání,z1,1010,0.9416,35.904
+ridge30,usti,12,zmena6,0.95,v čase vydání,z0,1910,0.9236,78.0222
+ridge30,usti,12,zmena6,0.95,skutečný vývoj,pokles,1848,0.9058,69.9321
+ridge30,usti,12,zmena6,0.95,skutečný vývoj,klid,2307,0.984,45.4033
+ridge30,usti,12,zmena6,0.95,skutečný vývoj,vzestup,1669,0.9485,69.9011
+ridge30,usti,12,zmena6,0.95,skutečný vývoj,rychly_vzestup,534,0.8371,94.3046
+ridge30,usti,12,zmena6,0.95,skutečný vývoj,zacatek_vzestupu,142,0.8592,94.6049
+ridge30,usti,24,globalni,0.8,v čase vydání,vse,6358,0.7954,48.0236
+ridge30,usti,24,globalni,0.8,skutečný vývoj,pokles,1701,0.7719,47.8023
+ridge30,usti,24,globalni,0.8,skutečný vývoj,klid,2502,0.9357,48.2598
+ridge30,usti,24,globalni,0.8,skutečný vývoj,vzestup,946,0.8319,48.3571
+ridge30,usti,24,globalni,0.8,skutečný vývoj,rychly_vzestup,1209,0.5095,47.5849
+ridge30,usti,24,globalni,0.8,skutečný vývoj,zacatek_vzestupu,458,0.5284,47.9949
+ridge30,usti,24,trend6,0.8,v čase vydání,stoupa,2359,0.7953,63.2292
+ridge30,usti,24,trend6,0.8,v čase vydání,drzi,2112,0.7898,36.6567
+ridge30,usti,24,trend6,0.8,v čase vydání,klesa,1887,0.7965,41.1235
+ridge30,usti,24,trend6,0.8,skutečný vývoj,pokles,1701,0.7337,42.588
+ridge30,usti,24,trend6,0.8,skutečný vývoj,klid,2502,0.9281,45.869
+ridge30,usti,24,trend6,0.8,skutečný vývoj,vzestup,946,0.834,52.3822
+ridge30,usti,24,trend6,0.8,skutečný vývoj,rychly_vzestup,1209,0.5691,55.7623
+ridge30,usti,24,trend6,0.8,skutečný vývoj,zacatek_vzestupu,458,0.5066,45.2943
+ridge30,usti,24,rezim,0.8,v čase vydání,vzestup,1709,0.7864,77.1979
+ridge30,usti,24,rezim,0.8,v čase vydání,klid,2950,0.7946,36.237
+ridge30,usti,24,rezim,0.8,v čase vydání,pokles,1699,0.781,44.0989
+ridge30,usti,24,rezim,0.8,skutečný vývoj,pokles,1701,0.7331,42.6226
+ridge30,usti,24,rezim,0.8,skutečný vývoj,klid,2502,0.8917,39.6261
+ridge30,usti,24,rezim,0.8,skutečný vývoj,vzestup,946,0.7992,56.7455
+ridge30,usti,24,rezim,0.8,skutečný vývoj,rychly_vzestup,1209,0.646,73.1411
+ridge30,usti,24,rezim,0.8,skutečný vývoj,zacatek_vzestupu,458,0.6594,72.5836
+ridge30,usti,24,rezim_vyska,0.8,v čase vydání,vzestup_pod,1235,0.7903,67.1076
+ridge30,usti,24,rezim_vyska,0.8,v čase vydání,vzestup_nad,474,0.7764,88.6474
+ridge30,usti,24,rezim_vyska,0.8,v čase vydání,klid_nad,657,0.7854,41.7153
+ridge30,usti,24,rezim_vyska,0.8,v čase vydání,pokles_nad,947,0.7835,46.5779
+ridge30,usti,24,rezim_vyska,0.8,v čase vydání,klid_pod,2293,0.7955,35.9082
+ridge30,usti,24,rezim_vyska,0.8,v čase vydání,pokles_pod,752,0.7806,38.5752
+ridge30,usti,24,rezim_vyska,0.8,skutečný vývoj,pokles,1701,0.7625,42.6603
+ridge30,usti,24,rezim_vyska,0.8,skutečný vývoj,klid,2502,0.8705,40.2442
+ridge30,usti,24,rezim_vyska,0.8,skutečný vývoj,vzestup,946,0.7558,54.8909
+ridge30,usti,24,rezim_vyska,0.8,skutečný vývoj,rychly_vzestup,1209,0.6807,68.3012
+ridge30,usti,24,rezim_vyska,0.8,skutečný vývoj,zacatek_vzestupu,458,0.6725,64.8864
+ridge30,usti,24,zmena6,0.8,v čase vydání,z5,1148,0.7666,94.2516
+ridge30,usti,24,zmena6,0.8,v čase vydání,z4,561,0.7914,53.7175
+ridge30,usti,24,zmena6,0.8,v čase vydání,z3,731,0.7989,43.7722
+ridge30,usti,24,zmena6,0.8,v čase vydání,z2,1081,0.7946,36.3347
+ridge30,usti,24,zmena6,0.8,v čase vydání,z1,1138,0.7988,35.3117
+ridge30,usti,24,zmena6,0.8,v čase vydání,z0,1699,0.781,44.0989
+ridge30,usti,24,zmena6,0.8,skutečný vývoj,pokles,1701,0.7578,42.2741
+ridge30,usti,24,zmena6,0.8,skutečný vývoj,klid,2502,0.8525,39.548
+ridge30,usti,24,zmena6,0.8,skutečný vývoj,vzestup,946,0.8256,53.2233
+ridge30,usti,24,zmena6,0.8,skutečný vývoj,rychly_vzestup,1209,0.6617,85.6194
+ridge30,usti,24,zmena6,0.8,skutečný vývoj,zacatek_vzestupu,458,0.6572,82.4258
+ridge30,usti,24,globalni,0.95,v čase vydání,vse,6358,0.9424,111.4113
+ridge30,usti,24,globalni,0.95,skutečný vývoj,pokles,1701,0.9653,110.1449
+ridge30,usti,24,globalni,0.95,skutečný vývoj,klid,2502,0.9888,113.107
+ridge30,usti,24,globalni,0.95,skutečný vývoj,vzestup,946,0.9915,112.2057
+ridge30,usti,24,globalni,0.95,skutečný vývoj,rychly_vzestup,1209,0.7758,109.0624
+ridge30,usti,24,globalni,0.95,skutečný vývoj,zacatek_vzestupu,458,0.821,110.8635
+ridge30,usti,24,trend6,0.95,v čase vydání,stoupa,2359,0.9368,148.5605
+ridge30,usti,24,trend6,0.95,v čase vydání,drzi,2112,0.9522,84.6186
+ridge30,usti,24,trend6,0.95,v čase vydání,klesa,1887,0.9475,86.152
+ridge30,usti,24,trend6,0.95,skutečný vývoj,pokles,1701,0.9412,93.7929
+ridge30,usti,24,trend6,0.95,skutečný vývoj,klid,2502,0.9872,104.6268
+ridge30,usti,24,trend6,0.95,skutečný vývoj,vzestup,946,0.9841,121.2425
+ridge30,usti,24,trend6,0.95,skutečný vývoj,rychly_vzestup,1209,0.8329,128.8043
+ridge30,usti,24,trend6,0.95,skutečný vývoj,zacatek_vzestupu,458,0.7904,102.3502
+ridge30,usti,24,rezim,0.95,v čase vydání,vzestup,1709,0.938,160.4054
+ridge30,usti,24,rezim,0.95,v čase vydání,klid,2950,0.9458,72.7739
+ridge30,usti,24,rezim,0.95,v čase vydání,pokles,1699,0.9364,106.6678
+ridge30,usti,24,rezim,0.95,skutečný vývoj,pokles,1701,0.9112,99.5704
+ridge30,usti,24,rezim,0.95,skutečný vývoj,klid,2502,0.992,82.7116
+ridge30,usti,24,rezim,0.95,skutečný vývoj,vzestup,946,0.9715,115.9798
+ridge30,usti,24,rezim,0.95,skutečný vývoj,rychly_vzestup,1209,0.8544,152.2035
+ridge30,usti,24,rezim,0.95,skutečný vývoj,zacatek_vzestupu,458,0.8035,149.3438
+ridge30,usti,24,rezim_vyska,0.95,v čase vydání,vzestup_pod,1235,0.9449,124.4449
+ridge30,usti,24,rezim_vyska,0.95,v čase vydání,vzestup_nad,474,0.8819,199.7012
+ridge30,usti,24,rezim_vyska,0.95,v čase vydání,klid_nad,657,0.9498,66.0724
+ridge30,usti,24,rezim_vyska,0.95,v čase vydání,pokles_nad,947,0.9081,113.7858
+ridge30,usti,24,rezim_vyska,0.95,v čase vydání,klid_pod,2293,0.9429,70.4555
+ridge30,usti,24,rezim_vyska,0.95,v čase vydání,pokles_pod,752,0.9202,71.6278
+ridge30,usti,24,rezim_vyska,0.95,skutečný vývoj,pokles,1701,0.9083,92.0106
+ridge30,usti,24,rezim_vyska,0.95,skutečný vývoj,klid,2502,0.9796,78.0496
+ridge30,usti,24,rezim_vyska,0.95,skutečný vývoj,vzestup,946,0.9556,107.5534
+ridge30,usti,24,rezim_vyska,0.95,skutečný vývoj,rychly_vzestup,1209,0.8462,133.4951
+ridge30,usti,24,rezim_vyska,0.95,skutečný vývoj,zacatek_vzestupu,458,0.845,124.3722
+ridge30,usti,24,zmena6,0.95,v čase vydání,z5,1148,0.9443,162.9565
+ridge30,usti,24,zmena6,0.95,v čase vydání,z4,561,0.943,130.6511
+ridge30,usti,24,zmena6,0.95,v čase vydání,z3,731,0.9398,88.1717
+ridge30,usti,24,zmena6,0.95,v čase vydání,z2,1081,0.9399,68.3522
+ridge30,usti,24,zmena6,0.95,v čase vydání,z1,1138,0.9455,69.8395
+ridge30,usti,24,zmena6,0.95,v čase vydání,z0,1699,0.9364,106.6678
+ridge30,usti,24,zmena6,0.95,skutečný vývoj,pokles,1701,0.9142,98.9826
+ridge30,usti,24,zmena6,0.95,skutečný vývoj,klid,2502,0.9808,81.0656
+ridge30,usti,24,zmena6,0.95,skutečný vývoj,vzestup,946,0.9641,109.9224
+ridge30,usti,24,zmena6,0.95,skutečný vývoj,rychly_vzestup,1209,0.8784,152.3867
+ridge30,usti,24,zmena6,0.95,skutečný vývoj,zacatek_vzestupu,458,0.8384,146.9818
+ridge30,usti,36,globalni,0.8,v čase vydání,vse,6358,0.7988,81.286
+ridge30,usti,36,globalni,0.8,skutečný vývoj,pokles,1577,0.7869,80.8038
+ridge30,usti,36,globalni,0.8,skutečný vývoj,klid,2605,0.9393,81.7485
+ridge30,usti,36,globalni,0.8,skutečný vývoj,vzestup,480,0.8979,81.9325
+ridge30,usti,36,globalni,0.8,skutečný vývoj,rychly_vzestup,1696,0.566,80.841
+ridge30,usti,36,globalni,0.8,skutečný vývoj,zacatek_vzestupu,808,0.5668,81.3618
+ridge30,usti,36,trend6,0.8,v čase vydání,stoupa,2401,0.7934,107.5602
+ridge30,usti,36,trend6,0.8,v čase vydání,drzi,2125,0.8,64.9264
+ridge30,usti,36,trend6,0.8,v čase vydání,klesa,1832,0.792,70.0551
+ridge30,usti,36,trend6,0.8,skutečný vývoj,pokles,1577,0.7743,73.8784
+ridge30,usti,36,trend6,0.8,skutečný vývoj,klid,2605,0.9328,80.2663
+ridge30,usti,36,trend6,0.8,skutečný vývoj,vzestup,480,0.8958,89.6164
+ridge30,usti,36,trend6,0.8,skutečný vývoj,rychly_vzestup,1696,0.5749,91.9492
+ridge30,usti,36,trend6,0.8,skutečný vývoj,zacatek_vzestupu,808,0.505,76.9971
+ridge30,usti,36,rezim,0.8,v čase vydání,vzestup,1598,0.7904,135.9303
+ridge30,usti,36,rezim,0.8,v čase vydání,klid,3234,0.7959,66.803
+ridge30,usti,36,rezim,0.8,v čase vydání,pokles,1526,0.7752,67.7253
+ridge30,usti,36,rezim,0.8,skutečný vývoj,pokles,1577,0.7299,67.834
+ridge30,usti,36,rezim,0.8,skutečný vývoj,klid,2605,0.8975,70.8883
+ridge30,usti,36,rezim,0.8,skutečný vývoj,vzestup,480,0.8792,88.558
+ridge30,usti,36,rezim,0.8,skutečný vývoj,rychly_vzestup,1696,0.6539,119.375
+ridge30,usti,36,rezim,0.8,skutečný vývoj,zacatek_vzestupu,808,0.6176,110.9428
+ridge30,usti,36,rezim_vyska,0.8,v čase vydání,vzestup_pod,1193,0.7963,126.7831
+ridge30,usti,36,rezim_vyska,0.8,v čase vydání,vzestup_nad,405,0.7852,138.7374
+ridge30,usti,36,rezim_vyska,0.8,v čase vydání,klid_nad,649,0.775,60.5881
+ridge30,usti,36,rezim_vyska,0.8,v čase vydání,pokles_nad,952,0.7868,70.6205
+ridge30,usti,36,rezim_vyska,0.8,v čase vydání,klid_pod,2585,0.7965,66.1486
+ridge30,usti,36,rezim_vyska,0.8,v čase vydání,pokles_pod,574,0.7805,58.7334
+ridge30,usti,36,rezim_vyska,0.8,skutečný vývoj,pokles,1577,0.7425,66.6008
+ridge30,usti,36,rezim_vyska,0.8,skutečný vývoj,klid,2605,0.8818,69.4293
+ridge30,usti,36,rezim_vyska,0.8,skutečný vývoj,vzestup,480,0.8604,84.9675
+ridge30,usti,36,rezim_vyska,0.8,skutečný vývoj,rychly_vzestup,1696,0.6757,113.2213
+ridge30,usti,36,rezim_vyska,0.8,skutečný vývoj,zacatek_vzestupu,808,0.6374,104.3317
+ridge30,usti,36,zmena6,0.8,v čase vydání,z5,998,0.7906,138.1732
+ridge30,usti,36,zmena6,0.8,v čase vydání,z4,600,0.8,132.3308
+ridge30,usti,36,zmena6,0.8,v čase vydání,z3,778,0.8072,101.4809
+ridge30,usti,36,zmena6,0.8,v čase vydání,z2,1294,0.7898,60.5423
+ridge30,usti,36,zmena6,0.8,v čase vydání,z1,1162,0.79,60.8719
+ridge30,usti,36,zmena6,0.8,v čase vydání,z0,1526,0.7752,67.7253
+ridge30,usti,36,zmena6,0.8,skutečný vývoj,pokles,1577,0.7565,66.6091
+ridge30,usti,36,zmena6,0.8,skutečný vývoj,klid,2605,0.853,71.665
+ridge30,usti,36,zmena6,0.8,skutečný vývoj,vzestup,480,0.8479,99.2502
+ridge30,usti,36,zmena6,0.8,skutečný vývoj,rychly_vzestup,1696,0.7064,123.4086
+ridge30,usti,36,zmena6,0.8,skutečný vývoj,zacatek_vzestupu,808,0.672,116.4084
+ridge30,usti,36,globalni,0.95,v čase vydání,vse,6358,0.9429,166.2365
+ridge30,usti,36,globalni,0.95,skutečný vývoj,pokles,1577,0.9639,165.1907
+ridge30,usti,36,globalni,0.95,skutečný vývoj,klid,2605,0.9889,167.2886
+ridge30,usti,36,globalni,0.95,skutečný vývoj,vzestup,480,0.9917,167.4375
+ridge30,usti,36,globalni,0.95,skutečný vývoj,rychly_vzestup,1696,0.839,165.253
+ridge30,usti,36,globalni,0.95,skutečný vývoj,zacatek_vzestupu,808,0.8713,166.4713
+ridge30,usti,36,trend6,0.95,v čase vydání,stoupa,2401,0.9354,191.319
+ridge30,usti,36,trend6,0.95,v čase vydání,drzi,2125,0.9478,142.5191
+ridge30,usti,36,trend6,0.95,v čase vydání,klesa,1832,0.9503,144.3551
+ridge30,usti,36,trend6,0.95,skutečný vývoj,pokles,1577,0.9531,150.559
+ridge30,usti,36,trend6,0.95,skutečný vývoj,klid,2605,0.9862,159.0519
+ridge30,usti,36,trend6,0.95,skutečný vývoj,vzestup,480,0.9917,169.5859
+ridge30,usti,36,trend6,0.95,skutečný vývoj,rychly_vzestup,1696,0.8567,173.0576
+ridge30,usti,36,trend6,0.95,skutečný vývoj,zacatek_vzestupu,808,0.8354,155.2983
+ridge30,usti,36,rezim,0.95,v čase vydání,vzestup,1598,0.9456,225.6986
+ridge30,usti,36,rezim,0.95,v čase vydání,klid,3234,0.9425,138.1951
+ridge30,usti,36,rezim,0.95,v čase vydání,pokles,1526,0.9377,132.4639
+ridge30,usti,36,rezim,0.95,skutečný vývoj,pokles,1577,0.9062,133.7384
+ridge30,usti,36,rezim,0.95,skutečný vývoj,klid,2605,0.9904,143.3501
+ridge30,usti,36,rezim,0.95,skutečný vývoj,vzestup,480,0.9917,164.9092
+ridge30,usti,36,rezim,0.95,skutečný vývoj,rychly_vzestup,1696,0.8874,204.1513
+ridge30,usti,36,rezim,0.95,skutečný vývoj,zacatek_vzestupu,808,0.8663,192.7653
+ridge30,usti,36,rezim_vyska,0.95,v čase vydání,vzestup_pod,1193,0.9497,199.6696
+ridge30,usti,36,rezim_vyska,0.95,v čase vydání,vzestup_nad,405,0.8593,194.1625
+ridge30,usti,36,rezim_vyska,0.95,v čase vydání,klid_nad,649,0.9507,150.6074
+ridge30,usti,36,rezim_vyska,0.95,v čase vydání,pokles_nad,952,0.9128,151.3174
+ridge30,usti,36,rezim_vyska,0.95,v čase vydání,klid_pod,2585,0.9451,135.6061
+ridge30,usti,36,rezim_vyska,0.95,v čase vydání,pokles_pod,574,0.9321,110.2043
+ridge30,usti,36,rezim_vyska,0.95,skutečný vývoj,pokles,1577,0.9093,140.1332
+ridge30,usti,36,rezim_vyska,0.95,skutečný vývoj,klid,2605,0.9831,141.517
+ridge30,usti,36,rezim_vyska,0.95,skutečný vývoj,vzestup,480,0.9688,155.8624
+ridge30,usti,36,rezim_vyska,0.95,skutečný vývoj,rychly_vzestup,1696,0.8756,181.594
+ridge30,usti,36,rezim_vyska,0.95,skutečný vývoj,zacatek_vzestupu,808,0.8874,174.8668
+ridge30,usti,36,zmena6,0.95,v čase vydání,z5,998,0.9389,228.9188
+ridge30,usti,36,zmena6,0.95,v čase vydání,z4,600,0.945,196.1467
+ridge30,usti,36,zmena6,0.95,v čase vydání,z3,778,0.9512,161.8164
+ridge30,usti,36,zmena6,0.95,v čase vydání,z2,1294,0.9444,126.9242
+ridge30,usti,36,zmena6,0.95,v čase vydání,z1,1162,0.938,110.361
+ridge30,usti,36,zmena6,0.95,v čase vydání,z0,1526,0.9377,132.4639
+ridge30,usti,36,zmena6,0.95,skutečný vývoj,pokles,1577,0.9042,127.3983
+ridge30,usti,36,zmena6,0.95,skutečný vývoj,klid,2605,0.9839,132.6274
+ridge30,usti,36,zmena6,0.95,skutečný vývoj,vzestup,480,0.9771,161.5782
+ridge30,usti,36,zmena6,0.95,skutečný vývoj,rychly_vzestup,1696,0.9015,202.0652
+ridge30,usti,36,zmena6,0.95,skutečný vývoj,zacatek_vzestupu,808,0.8775,189.4641
+g3,decin,12,globalni,0.8,v čase vydání,vse,6358,0.7979,24.1855
+g3,decin,12,globalni,0.8,skutečný vývoj,pokles,1816,0.7731,24.0965
+g3,decin,12,globalni,0.8,skutečný vývoj,klid,2353,0.9129,24.3409
+g3,decin,12,globalni,0.8,skutečný vývoj,vzestup,1692,0.7677,24.1822
+g3,decin,12,globalni,0.8,skutečný vývoj,rychly_vzestup,497,0.4467,23.7861
+g3,decin,12,globalni,0.8,skutečný vývoj,zacatek_vzestupu,112,0.3661,24.2124
+g3,decin,12,trend6,0.8,v čase vydání,stoupa,2259,0.7928,30.5219
+g3,decin,12,trend6,0.8,v čase vydání,drzi,2189,0.7953,18.9081
+g3,decin,12,trend6,0.8,v čase vydání,klesa,1910,0.799,23.2797
+g3,decin,12,trend6,0.8,skutečný vývoj,pokles,1816,0.7566,22.6407
+g3,decin,12,trend6,0.8,skutečný vývoj,klid,2353,0.901,23.2644
+g3,decin,12,trend6,0.8,skutečný vývoj,vzestup,1692,0.7778,26.4517
+g3,decin,12,trend6,0.8,skutečný vývoj,rychly_vzestup,497,0.499,28.5515
+g3,decin,12,trend6,0.8,skutečný vývoj,zacatek_vzestupu,112,0.3214,24.7274
+g3,decin,12,rezim,0.8,v čase vydání,vzestup,1908,0.7961,34.6028
+g3,decin,12,rezim,0.8,v čase vydání,klid,2640,0.7977,17.1406
+g3,decin,12,rezim,0.8,v čase vydání,pokles,1810,0.7801,25.1726
+g3,decin,12,rezim,0.8,skutečný vývoj,pokles,1816,0.75,23.8779
+g3,decin,12,rezim,0.8,skutečný vývoj,klid,2353,0.8712,19.3033
+g3,decin,12,rezim,0.8,skutečný vývoj,vzestup,1692,0.7861,30.3029
+g3,decin,12,rezim,0.8,skutečný vývoj,rychly_vzestup,497,0.5936,33.7634
+g3,decin,12,rezim,0.8,skutečný vývoj,zacatek_vzestupu,112,0.5982,34.2596
+g3,decin,12,rezim_vyska,0.8,v čase vydání,vzestup_pod,1123,0.8005,31.2211
+g3,decin,12,rezim_vyska,0.8,v čase vydání,vzestup_nad,785,0.7936,34.2949
+g3,decin,12,rezim_vyska,0.8,v čase vydání,klid_nad,884,0.8043,16.3017
+g3,decin,12,rezim_vyska,0.8,v čase vydání,pokles_nad,1145,0.7459,27.2399
+g3,decin,12,rezim_vyska,0.8,v čase vydání,klid_pod,1756,0.7973,17.7969
+g3,decin,12,rezim_vyska,0.8,v čase vydání,pokles_pod,665,0.785,20.3471
+g3,decin,12,rezim_vyska,0.8,skutečný vývoj,pokles,1816,0.7528,23.7441
+g3,decin,12,rezim_vyska,0.8,skutečný vývoj,klid,2353,0.8479,19.0817
+g3,decin,12,rezim_vyska,0.8,skutečný vývoj,vzestup,1692,0.8002,28.9012
+g3,decin,12,rezim_vyska,0.8,skutečný vývoj,rychly_vzestup,497,0.5895,31.0787
+g3,decin,12,rezim_vyska,0.8,skutečný vývoj,zacatek_vzestupu,112,0.6518,30.6595
+g3,decin,12,zmena6,0.8,v čase vydání,z5,1354,0.788,40.4548
+g3,decin,12,zmena6,0.8,v čase vydání,z4,554,0.8014,22.1064
+g3,decin,12,zmena6,0.8,v čase vydání,z3,682,0.7962,20.2334
+g3,decin,12,zmena6,0.8,v čase vydání,z2,1005,0.806,16.714
+g3,decin,12,zmena6,0.8,v čase vydání,z1,953,0.7985,16.3244
+g3,decin,12,zmena6,0.8,v čase vydání,z0,1810,0.7801,25.1726
+g3,decin,12,zmena6,0.8,skutečný vývoj,pokles,1816,0.7472,23.7558
+g3,decin,12,zmena6,0.8,skutečný vývoj,klid,2353,0.8576,18.9138
+g3,decin,12,zmena6,0.8,skutečný vývoj,vzestup,1692,0.7914,30.4466
+g3,decin,12,zmena6,0.8,skutečný vývoj,rychly_vzestup,497,0.6499,39.3939
+g3,decin,12,zmena6,0.8,skutečný vývoj,zacatek_vzestupu,112,0.6786,39.8376
+g3,decin,12,globalni,0.95,v čase vydání,vse,6358,0.9467,48.6566
+g3,decin,12,globalni,0.95,skutečný vývoj,pokles,1816,0.9626,48.3306
+g3,decin,12,globalni,0.95,skutečný vývoj,klid,2353,0.9873,49.1433
+g3,decin,12,globalni,0.95,skutečný vývoj,vzestup,1692,0.9368,48.7524
+g3,decin,12,globalni,0.95,skutečný vývoj,rychly_vzestup,497,0.7304,47.2169
+g3,decin,12,globalni,0.95,skutečný vývoj,zacatek_vzestupu,112,0.8125,48.5704
+g3,decin,12,trend6,0.95,v čase vydání,stoupa,2259,0.9247,66.2895
+g3,decin,12,trend6,0.95,v čase vydání,drzi,2189,0.9493,33.9941
+g3,decin,12,trend6,0.95,v čase vydání,klesa,1910,0.945,41.1582
+g3,decin,12,trend6,0.95,skutečný vývoj,pokles,1816,0.9383,41.6694
+g3,decin,12,trend6,0.95,skutečný vývoj,klid,2353,0.9822,44.7469
+g3,decin,12,trend6,0.95,skutečný vývoj,vzestup,1692,0.9362,54.4674
+g3,decin,12,trend6,0.95,skutečný vývoj,rychly_vzestup,497,0.7505,59.6643
+g3,decin,12,trend6,0.95,skutečný vývoj,zacatek_vzestupu,112,0.7054,49.322
+g3,decin,12,rezim,0.95,v čase vydání,vzestup,1908,0.9355,70.9374
+g3,decin,12,rezim,0.95,v čase vydání,klid,2640,0.9458,29.8203
+g3,decin,12,rezim,0.95,v čase vydání,pokles,1810,0.947,44.7858
+g3,decin,12,rezim,0.95,skutečný vývoj,pokles,1816,0.9262,42.3183
+g3,decin,12,rezim,0.95,skutečný vývoj,klid,2353,0.989,34.4845
+g3,decin,12,rezim,0.95,skutečný vývoj,vzestup,1692,0.9374,60.9339
+g3,decin,12,rezim,0.95,skutečný vývoj,rychly_vzestup,497,0.8068,68.4994
+g3,decin,12,rezim,0.95,skutečný vývoj,zacatek_vzestupu,112,0.8393,70.0418
+g3,decin,12,rezim_vyska,0.95,v čase vydání,vzestup_pod,1123,0.9403,70.1716
+g3,decin,12,rezim_vyska,0.95,v čase vydání,vzestup_nad,785,0.8981,85.1649
+g3,decin,12,rezim_vyska,0.95,v čase vydání,klid_nad,884,0.9434,28.7447
+g3,decin,12,rezim_vyska,0.95,v čase vydání,pokles_nad,1145,0.9362,50.5504
+g3,decin,12,rezim_vyska,0.95,v čase vydání,klid_pod,1756,0.9482,30.8984
+g3,decin,12,rezim_vyska,0.95,v čase vydání,pokles_pod,665,0.9519,35.0853
+g3,decin,12,rezim_vyska,0.95,skutečný vývoj,pokles,1816,0.9312,42.9943
+g3,decin,12,rezim_vyska,0.95,skutečný vývoj,klid,2353,0.9762,34.8906
+g3,decin,12,rezim_vyska,0.95,skutečný vývoj,vzestup,1692,0.9362,66.3921
+g3,decin,12,rezim_vyska,0.95,skutečný vývoj,rychly_vzestup,497,0.7907,68.4635
+g3,decin,12,rezim_vyska,0.95,skutečný vývoj,zacatek_vzestupu,112,0.8304,66.7103
+g3,decin,12,zmena6,0.95,v čase vydání,z5,1354,0.9453,80.3232
+g3,decin,12,zmena6,0.95,v čase vydání,z4,554,0.9495,40.3016
+g3,decin,12,zmena6,0.95,v čase vydání,z3,682,0.9457,34.032
+g3,decin,12,zmena6,0.95,v čase vydání,z2,1005,0.9483,30.9838
+g3,decin,12,zmena6,0.95,v čase vydání,z1,953,0.9465,27.9757
+g3,decin,12,zmena6,0.95,v čase vydání,z0,1810,0.947,44.7858
+g3,decin,12,zmena6,0.95,skutečný vývoj,pokles,1816,0.9224,42.0716
+g3,decin,12,zmena6,0.95,skutečný vývoj,klid,2353,0.9856,33.7205
+g3,decin,12,zmena6,0.95,skutečný vývoj,vzestup,1692,0.9433,58.3213
+g3,decin,12,zmena6,0.95,skutečný vývoj,rychly_vzestup,497,0.8652,77.9285
+g3,decin,12,zmena6,0.95,skutečný vývoj,zacatek_vzestupu,112,0.875,78.0572
+g3,decin,24,globalni,0.8,v čase vydání,vse,6358,0.7996,40.7547
+g3,decin,24,globalni,0.8,skutečný vývoj,pokles,1648,0.7743,40.4538
+g3,decin,24,globalni,0.8,skutečný vývoj,klid,2514,0.9419,41.0908
+g3,decin,24,globalni,0.8,skutečný vývoj,vzestup,1032,0.7946,41.0133
+g3,decin,24,globalni,0.8,skutečný vývoj,rychly_vzestup,1164,0.5326,40.2252
+g3,decin,24,globalni,0.8,skutečný vývoj,zacatek_vzestupu,406,0.5025,40.8158
+g3,decin,24,trend6,0.8,v čase vydání,stoupa,2329,0.7948,55.2308
+g3,decin,24,trend6,0.8,v čase vydání,drzi,2208,0.7971,31.7953
+g3,decin,24,trend6,0.8,v čase vydání,klesa,1821,0.7935,34.4432
+g3,decin,24,trend6,0.8,skutečný vývoj,pokles,1648,0.7512,35.8338
+g3,decin,24,trend6,0.8,skutečný vývoj,klid,2514,0.9224,39.1248
+g3,decin,24,trend6,0.8,skutečný vývoj,vzestup,1032,0.7859,45.2572
+g3,decin,24,trend6,0.8,skutečný vývoj,rychly_vzestup,1164,0.5911,49.3456
+g3,decin,24,trend6,0.8,skutečný vývoj,zacatek_vzestupu,406,0.5074,40.9488
+g3,decin,24,rezim,0.8,v čase vydání,vzestup,1801,0.7873,68.2893
+g3,decin,24,rezim,0.8,v čase vydání,klid,2889,0.7972,30.339
+g3,decin,24,rezim,0.8,v čase vydání,pokles,1668,0.792,34.7684
+g3,decin,24,rezim,0.8,skutečný vývoj,pokles,1648,0.7458,34.0926
+g3,decin,24,rezim,0.8,skutečný vývoj,klid,2514,0.8882,33.0329
+g3,decin,24,rezim,0.8,skutečný vývoj,vzestup,1032,0.7636,51.7944
+g3,decin,24,rezim,0.8,skutečný vývoj,rychly_vzestup,1164,0.6804,65.2499
+g3,decin,24,rezim,0.8,skutečný vývoj,zacatek_vzestupu,406,0.6626,65.0536
+g3,decin,24,rezim_vyska,0.8,v čase vydání,vzestup_pod,1144,0.7998,63.0798
+g3,decin,24,rezim_vyska,0.8,v čase vydání,vzestup_nad,657,0.7489,74.6434
+g3,decin,24,rezim_vyska,0.8,v čase vydání,klid_nad,916,0.7915,32.6959
+g3,decin,24,rezim_vyska,0.8,v čase vydání,pokles_nad,1162,0.7771,39.2649
+g3,decin,24,rezim_vyska,0.8,v čase vydání,klid_pod,1973,0.7947,30.1522
+g3,decin,24,rezim_vyska,0.8,v čase vydání,pokles_pod,506,0.7945,26.4348
+g3,decin,24,rezim_vyska,0.8,skutečný vývoj,pokles,1648,0.7573,35.6832
+g3,decin,24,rezim_vyska,0.8,skutečný vývoj,klid,2514,0.8628,33.1826
+g3,decin,24,rezim_vyska,0.8,skutečný vývoj,vzestup,1032,0.7539,51.1172
+g3,decin,24,rezim_vyska,0.8,skutečný vývoj,rychly_vzestup,1164,0.6959,64.1457
+g3,decin,24,rezim_vyska,0.8,skutečný vývoj,zacatek_vzestupu,406,0.6897,61.6528
+g3,decin,24,zmena6,0.8,v čase vydání,z5,1225,0.7902,79.1592
+g3,decin,24,zmena6,0.8,v čase vydání,z4,576,0.7917,54.4094
+g3,decin,24,zmena6,0.8,v čase vydání,z3,731,0.7962,34.4946
+g3,decin,24,zmena6,0.8,v čase vydání,z2,1152,0.7977,29.3083
+g3,decin,24,zmena6,0.8,v čase vydání,z1,1006,0.8032,28.1259
+g3,decin,24,zmena6,0.8,v čase vydání,z0,1668,0.792,34.7684
+g3,decin,24,zmena6,0.8,skutečný vývoj,pokles,1648,0.7737,33.6898
+g3,decin,24,zmena6,0.8,skutečný vývoj,klid,2514,0.8433,32.0876
+g3,decin,24,zmena6,0.8,skutečný vývoj,vzestup,1032,0.814,50.2526
+g3,decin,24,zmena6,0.8,skutečný vývoj,rychly_vzestup,1164,0.7036,73.4769
+g3,decin,24,zmena6,0.8,skutečný vývoj,zacatek_vzestupu,406,0.6576,71.851
+g3,decin,24,globalni,0.95,v čase vydání,vse,6358,0.9435,98.2016
+g3,decin,24,globalni,0.95,skutečný vývoj,pokles,1648,0.9684,96.704
+g3,decin,24,globalni,0.95,skutečný vývoj,klid,2514,0.9861,99.9577
+g3,decin,24,globalni,0.95,skutečný vývoj,vzestup,1032,0.9806,99.6391
+g3,decin,24,globalni,0.95,skutečný vývoj,rychly_vzestup,1164,0.7835,95.2546
+g3,decin,24,globalni,0.95,skutečný vývoj,zacatek_vzestupu,406,0.7783,98.0713
+g3,decin,24,trend6,0.95,v čase vydání,stoupa,2329,0.9266,131.7148
+g3,decin,24,trend6,0.95,v čase vydání,drzi,2208,0.947,68.9452
+g3,decin,24,trend6,0.95,v čase vydání,klesa,1821,0.9368,68.3421
+g3,decin,24,trend6,0.95,skutečný vývoj,pokles,1648,0.9357,75.3666
+g3,decin,24,trend6,0.95,skutečný vývoj,klid,2514,0.9849,86.6037
+g3,decin,24,trend6,0.95,skutečný vývoj,vzestup,1032,0.9709,104.1946
+g3,decin,24,trend6,0.95,skutečný vývoj,rychly_vzestup,1164,0.8033,115.1127
+g3,decin,24,trend6,0.95,skutečný vývoj,zacatek_vzestupu,406,0.734,91.5397
+g3,decin,24,rezim,0.95,v čase vydání,vzestup,1801,0.9223,150.9511
+g3,decin,24,rezim,0.95,v čase vydání,klid,2889,0.9498,56.9675
+g3,decin,24,rezim,0.95,v čase vydání,pokles,1668,0.9418,70.4637
+g3,decin,24,rezim,0.95,skutečný vývoj,pokles,1648,0.9217,68.3972
+g3,decin,24,rezim,0.95,skutečný vývoj,klid,2514,0.9845,64.0354
+g3,decin,24,rezim,0.95,skutečný vývoj,vzestup,1032,0.9593,109.1716
+g3,decin,24,rezim,0.95,skutečný vývoj,rychly_vzestup,1164,0.8522,143.9922
+g3,decin,24,rezim,0.95,skutečný vývoj,zacatek_vzestupu,406,0.8325,142.1749
+g3,decin,24,rezim_vyska,0.95,v čase vydání,vzestup_pod,1144,0.9406,119.3172
+g3,decin,24,rezim_vyska,0.95,v čase vydání,vzestup_nad,657,0.9011,152.6414
+g3,decin,24,rezim_vyska,0.95,v čase vydání,klid_nad,916,0.9432,50.8923
+g3,decin,24,rezim_vyska,0.95,v čase vydání,pokles_nad,1162,0.926,90.1883
+g3,decin,24,rezim_vyska,0.95,v čase vydání,klid_pod,1973,0.9513,57.5695
+g3,decin,24,rezim_vyska,0.95,v čase vydání,pokles_pod,506,0.9447,52.7194
+g3,decin,24,rezim_vyska,0.95,skutečný vývoj,pokles,1648,0.926,77.3211
+g3,decin,24,rezim_vyska,0.95,skutečný vývoj,klid,2514,0.9753,61.7449
+g3,decin,24,rezim_vyska,0.95,skutečný vývoj,vzestup,1032,0.9535,98.5387
+g3,decin,24,rezim_vyska,0.95,skutečný vývoj,rychly_vzestup,1164,0.86,123.812
+g3,decin,24,rezim_vyska,0.95,skutečný vývoj,zacatek_vzestupu,406,0.8621,118.6965
+g3,decin,24,zmena6,0.95,v čase vydání,z5,1225,0.9249,154.4964
+g3,decin,24,zmena6,0.95,v čase vydání,z4,576,0.9444,114.8115
+g3,decin,24,zmena6,0.95,v čase vydání,z3,731,0.9494,59.4364
+g3,decin,24,zmena6,0.95,v čase vydání,z2,1152,0.9523,54.0628
+g3,decin,24,zmena6,0.95,v čase vydání,z1,1006,0.9473,52.2646
+g3,decin,24,zmena6,0.95,v čase vydání,z0,1668,0.9418,70.4637
+g3,decin,24,zmena6,0.95,skutečný vývoj,pokles,1648,0.9333,67.6046
+g3,decin,24,zmena6,0.95,skutečný vývoj,klid,2514,0.973,60.2367
+g3,decin,24,zmena6,0.95,skutečný vývoj,vzestup,1032,0.9593,97.2111
+g3,decin,24,zmena6,0.95,skutečný vývoj,rychly_vzestup,1164,0.8746,144.3815
+g3,decin,24,zmena6,0.95,skutečný vývoj,zacatek_vzestupu,406,0.8424,139.3264
+g3,decin,36,globalni,0.8,v čase vydání,vse,6358,0.7987,74.7508
+g3,decin,36,globalni,0.8,skutečný vývoj,pokles,1540,0.8091,74.0714
+g3,decin,36,globalni,0.8,skutečný vývoj,klid,2600,0.9377,75.3589
+g3,decin,36,globalni,0.8,skutečný vývoj,vzestup,577,0.8388,75.5144
+g3,decin,36,globalni,0.8,skutečný vývoj,rychly_vzestup,1641,0.5545,74.1563
+g3,decin,36,globalni,0.8,skutečný vývoj,zacatek_vzestupu,756,0.5185,74.958
+g3,decin,36,trend6,0.8,v čase vydání,stoupa,2361,0.7929,104.7594
+g3,decin,36,trend6,0.8,v čase vydání,drzi,2231,0.801,61.6634
+g3,decin,36,trend6,0.8,v čase vydání,klesa,1766,0.7854,55.144
+g3,decin,36,trend6,0.8,skutečný vývoj,pokles,1540,0.7773,63.7353
+g3,decin,36,trend6,0.8,skutečný vývoj,klid,2600,0.9285,72.6585
+g3,decin,36,trend6,0.8,skutečný vývoj,vzestup,577,0.818,84.8196
+g3,decin,36,trend6,0.8,skutečný vývoj,rychly_vzestup,1641,0.5868,89.145
+g3,decin,36,trend6,0.8,skutečný vývoj,zacatek_vzestupu,756,0.4854,73.6208
+g3,decin,36,rezim,0.8,v čase vydání,vzestup,1723,0.7928,131.8988
+g3,decin,36,rezim,0.8,v čase vydání,klid,3124,0.7987,59.0457
+g3,decin,36,rezim,0.8,v čase vydání,pokles,1511,0.7842,53.631
+g3,decin,36,rezim,0.8,skutečný vývoj,pokles,1540,0.7325,54.7319
+g3,decin,36,rezim,0.8,skutečný vývoj,klid,2600,0.8996,63.3873
+g3,decin,36,rezim,0.8,skutečný vývoj,vzestup,577,0.8111,86.1506
+g3,decin,36,rezim,0.8,skutečný vývoj,rychly_vzestup,1641,0.677,118.1926
+g3,decin,36,rezim,0.8,skutečný vývoj,zacatek_vzestupu,756,0.6177,110.4633
+g3,decin,36,rezim_vyska,0.8,v čase vydání,vzestup_pod,1124,0.782,123.6581
+g3,decin,36,rezim_vyska,0.8,v čase vydání,vzestup_nad,599,0.7713,131.5048
+g3,decin,36,rezim_vyska,0.8,v čase vydání,klid_nad,904,0.7777,57.3933
+g3,decin,36,rezim_vyska,0.8,v čase vydání,pokles_nad,1136,0.7799,57.0411
+g3,decin,36,rezim_vyska,0.8,v čase vydání,klid_pod,2220,0.795,58.9208
+g3,decin,36,rezim_vyska,0.8,v čase vydání,pokles_pod,375,0.8027,45.2437
+g3,decin,36,rezim_vyska,0.8,skutečný vývoj,pokles,1540,0.7604,55.7209
+g3,decin,36,rezim_vyska,0.8,skutečný vývoj,klid,2600,0.8662,62.7462
+g3,decin,36,rezim_vyska,0.8,skutečný vývoj,vzestup,577,0.8354,84.4012
+g3,decin,36,rezim_vyska,0.8,skutečný vývoj,rychly_vzestup,1641,0.6648,112.4717
+g3,decin,36,rezim_vyska,0.8,skutečný vývoj,zacatek_vzestupu,756,0.627,105.0997
+g3,decin,36,zmena6,0.8,v čase vydání,z5,1105,0.7891,136.0903
+g3,decin,36,zmena6,0.8,v čase vydání,z4,618,0.7961,122.7723
+g3,decin,36,zmena6,0.8,v čase vydání,z3,770,0.8052,84.7791
+g3,decin,36,zmena6,0.8,v čase vydání,z2,1281,0.7869,53.6325
+g3,decin,36,zmena6,0.8,v čase vydání,z1,1073,0.7931,52.5261
+g3,decin,36,zmena6,0.8,v čase vydání,z0,1511,0.7842,53.631
+g3,decin,36,zmena6,0.8,skutečný vývoj,pokles,1540,0.7571,53.4744
+g3,decin,36,zmena6,0.8,skutečný vývoj,klid,2600,0.8469,63.4284
+g3,decin,36,zmena6,0.8,skutečný vývoj,vzestup,577,0.8215,90.4366
+g3,decin,36,zmena6,0.8,skutečný vývoj,rychly_vzestup,1641,0.7227,120.7721
+g3,decin,36,zmena6,0.8,skutečný vývoj,zacatek_vzestupu,756,0.6786,113.0363
+g3,decin,36,globalni,0.95,v čase vydání,vse,6358,0.9461,158.3835
+g3,decin,36,globalni,0.95,skutečný vývoj,pokles,1540,0.9773,157.1468
+g3,decin,36,globalni,0.95,skutečný vývoj,klid,2600,0.9865,159.6079
+g3,decin,36,globalni,0.95,skutečný vývoj,vzestup,577,0.9671,159.5319
+g3,decin,36,globalni,0.95,skutečný vývoj,rychly_vzestup,1641,0.8452,157.2003
+g3,decin,36,globalni,0.95,skutečný vývoj,zacatek_vzestupu,756,0.877,158.6972
+g3,decin,36,trend6,0.95,v čase vydání,stoupa,2361,0.9394,185.9038
+g3,decin,36,trend6,0.95,v čase vydání,drzi,2231,0.9476,132.7953
+g3,decin,36,trend6,0.95,v čase vydání,klesa,1766,0.9383,125.7806
+g3,decin,36,trend6,0.95,skutečný vývoj,pokles,1540,0.9468,135.777
+g3,decin,36,trend6,0.95,skutečný vývoj,klid,2600,0.9892,146.6874
+g3,decin,36,trend6,0.95,skutečný vývoj,vzestup,577,0.9705,160.7526
+g3,decin,36,trend6,0.95,skutečný vývoj,rychly_vzestup,1641,0.8525,167.0175
+g3,decin,36,trend6,0.95,skutečný vývoj,zacatek_vzestupu,756,0.8254,147.1598
+g3,decin,36,rezim,0.95,v čase vydání,vzestup,1723,0.9315,217.1169
+g3,decin,36,rezim,0.95,v čase vydání,klid,3124,0.9449,123.6478
+g3,decin,36,rezim,0.95,v čase vydání,pokles,1511,0.9265,99.6616
+g3,decin,36,rezim,0.95,skutečný vývoj,pokles,1540,0.9143,104.296
+g3,decin,36,rezim,0.95,skutečný vývoj,klid,2600,0.9812,128.0411
+g3,decin,36,rezim,0.95,skutečný vývoj,vzestup,577,0.9671,157.4514
+g3,decin,36,rezim,0.95,skutečný vývoj,rychly_vzestup,1641,0.8775,199.0156
+g3,decin,36,rezim,0.95,skutečný vývoj,zacatek_vzestupu,756,0.869,189.4013
+g3,decin,36,rezim_vyska,0.95,v čase vydání,vzestup_pod,1124,0.9404,177.788
+g3,decin,36,rezim_vyska,0.95,v čase vydání,vzestup_nad,599,0.8748,249.6705
+g3,decin,36,rezim_vyska,0.95,v čase vydání,klid_nad,904,0.9447,101.0555
+g3,decin,36,rezim_vyska,0.95,v čase vydání,pokles_nad,1136,0.9173,96.3025
+g3,decin,36,rezim_vyska,0.95,v čase vydání,klid_pod,2220,0.9441,117.87
+g3,decin,36,rezim_vyska,0.95,v čase vydání,pokles_pod,375,0.9227,100.0058
+g3,decin,36,rezim_vyska,0.95,skutečný vývoj,pokles,1540,0.9201,99.103
+g3,decin,36,rezim_vyska,0.95,skutečný vývoj,klid,2600,0.9715,120.1182
+g3,decin,36,rezim_vyska,0.95,skutečný vývoj,vzestup,577,0.9671,152.6439
+g3,decin,36,rezim_vyska,0.95,skutečný vývoj,rychly_vzestup,1641,0.8641,180.568
+g3,decin,36,rezim_vyska,0.95,skutečný vývoj,zacatek_vzestupu,756,0.8849,167.3598
+g3,decin,36,zmena6,0.95,v čase vydání,z5,1105,0.9394,228.0366
+g3,decin,36,zmena6,0.95,v čase vydání,z4,618,0.932,185.0857
+g3,decin,36,zmena6,0.95,v čase vydání,z3,770,0.9455,165.7247
+g3,decin,36,zmena6,0.95,v čase vydání,z2,1281,0.9391,103.9578
+g3,decin,36,zmena6,0.95,v čase vydání,z1,1073,0.9329,95.9845
+g3,decin,36,zmena6,0.95,v čase vydání,z0,1511,0.9265,99.6616
+g3,decin,36,zmena6,0.95,skutečný vývoj,pokles,1540,0.9091,99.2509
+g3,decin,36,zmena6,0.95,skutečný vývoj,klid,2600,0.975,117.3174
+g3,decin,36,zmena6,0.95,skutečný vývoj,vzestup,577,0.948,158.4987
+g3,decin,36,zmena6,0.95,skutečný vývoj,rychly_vzestup,1641,0.8921,201.9476
+g3,decin,36,zmena6,0.95,skutečný vývoj,zacatek_vzestupu,756,0.8889,189.9097
+g3,usti,12,globalni,0.8,v čase vydání,vse,6358,0.7985,27.0343
+g3,usti,12,globalni,0.8,skutečný vývoj,pokles,1848,0.7857,26.9574
+g3,usti,12,globalni,0.8,skutečný vývoj,klid,2307,0.925,27.1616
+g3,usti,12,globalni,0.8,skutečný vývoj,vzestup,1669,0.7478,27.0406
+g3,usti,12,globalni,0.8,skutečný vývoj,rychly_vzestup,534,0.4551,26.7304
+g3,usti,12,globalni,0.8,skutečný vývoj,zacatek_vzestupu,142,0.4085,26.9477
+g3,usti,12,trend6,0.8,v čase vydání,stoupa,2301,0.8005,33.1983
+g3,usti,12,trend6,0.8,v čase vydání,drzi,2101,0.7982,22.1706
+g3,usti,12,trend6,0.8,v čase vydání,klesa,1956,0.795,26.4708
+g3,usti,12,trend6,0.8,skutečný vývoj,pokles,1848,0.7603,26.0929
+g3,usti,12,trend6,0.8,skutečný vývoj,klid,2307,0.9142,26.5842
+g3,usti,12,trend6,0.8,skutečný vývoj,vzestup,1669,0.7621,29.208
+g3,usti,12,trend6,0.8,skutečný vývoj,rychly_vzestup,534,0.5393,30.8035
+g3,usti,12,trend6,0.8,skutečný vývoj,zacatek_vzestupu,142,0.3592,26.0559
+g3,usti,12,rezim,0.8,v čase vydání,vzestup,1871,0.8006,37.3944
+g3,usti,12,rezim,0.8,v čase vydání,klid,2584,0.7999,20.4945
+g3,usti,12,rezim,0.8,v čase vydání,pokles,1903,0.7924,26.665
+g3,usti,12,rezim,0.8,skutečný vývoj,pokles,1848,0.743,25.6282
+g3,usti,12,rezim,0.8,skutečný vývoj,klid,2307,0.8973,22.7533
+g3,usti,12,rezim,0.8,skutečný vývoj,vzestup,1669,0.7801,32.5513
+g3,usti,12,rezim,0.8,skutečný vývoj,rychly_vzestup,534,0.6142,36.4891
+g3,usti,12,rezim,0.8,skutečný vývoj,zacatek_vzestupu,142,0.5704,36.8074
+g3,usti,12,rezim_vyska,0.8,v čase vydání,vzestup_pod,1312,0.7927,34.3232
+g3,usti,12,rezim_vyska,0.8,v čase vydání,vzestup_nad,559,0.7782,42.6318
+g3,usti,12,rezim_vyska,0.8,v čase vydání,klid_nad,610,0.8016,20.0844
+g3,usti,12,rezim_vyska,0.8,v čase vydání,pokles_nad,971,0.793,29.2714
+g3,usti,12,rezim_vyska,0.8,v čase vydání,klid_pod,1974,0.7984,20.7638
+g3,usti,12,rezim_vyska,0.8,v čase vydání,pokles_pod,932,0.7983,23.6057
+g3,usti,12,rezim_vyska,0.8,skutečný vývoj,pokles,1848,0.7624,25.5984
+g3,usti,12,rezim_vyska,0.8,skutečný vývoj,klid,2307,0.8708,22.7115
+g3,usti,12,rezim_vyska,0.8,skutečný vývoj,vzestup,1669,0.7819,32.5075
+g3,usti,12,rezim_vyska,0.8,skutečný vývoj,rychly_vzestup,534,0.6199,34.7735
+g3,usti,12,rezim_vyska,0.8,skutečný vývoj,zacatek_vzestupu,142,0.5986,33.7221
+g3,usti,12,zmena6,0.8,v čase vydání,z5,1320,0.7955,42.3746
+g3,usti,12,zmena6,0.8,v čase vydání,z4,551,0.7768,28.3094
+g3,usti,12,zmena6,0.8,v čase vydání,z3,598,0.801,23.8364
+g3,usti,12,zmena6,0.8,v čase vydání,z2,1050,0.7933,19.5673
+g3,usti,12,zmena6,0.8,v čase vydání,z1,936,0.8013,20.5744
+g3,usti,12,zmena6,0.8,v čase vydání,z0,1903,0.7924,26.665
+g3,usti,12,zmena6,0.8,skutečný vývoj,pokles,1848,0.7522,25.5808
+g3,usti,12,zmena6,0.8,skutečný vývoj,klid,2307,0.8656,22.4253
+g3,usti,12,zmena6,0.8,skutečný vývoj,vzestup,1669,0.7801,33.0501
+g3,usti,12,zmena6,0.8,skutečný vývoj,rychly_vzestup,534,0.6723,41.5072
+g3,usti,12,zmena6,0.8,skutečný vývoj,zacatek_vzestupu,142,0.6408,41.7986
+g3,usti,12,globalni,0.95,v čase vydání,vse,6358,0.9426,56.3367
+g3,usti,12,globalni,0.95,skutečný vývoj,pokles,1848,0.9529,55.9485
+g3,usti,12,globalni,0.95,skutečný vývoj,klid,2307,0.9857,57.0942
+g3,usti,12,globalni,0.95,skutečný vývoj,vzestup,1669,0.9329,56.2467
+g3,usti,12,globalni,0.95,skutečný vývoj,rychly_vzestup,534,0.7509,54.6891
+g3,usti,12,globalni,0.95,skutečný vývoj,zacatek_vzestupu,142,0.7465,56.037
+g3,usti,12,trend6,0.95,v čase vydání,stoupa,2301,0.9344,75.8402
+g3,usti,12,trend6,0.95,v čase vydání,drzi,2101,0.9486,40.6474
+g3,usti,12,trend6,0.95,v čase vydání,klesa,1956,0.9484,42.7749
+g3,usti,12,trend6,0.95,skutečný vývoj,pokles,1848,0.9416,47.0608
+g3,usti,12,trend6,0.95,skutečný vývoj,klid,2307,0.984,51.5004
+g3,usti,12,trend6,0.95,skutečný vývoj,vzestup,1669,0.9383,61.2134
+g3,usti,12,trend6,0.95,skutečný vývoj,rychly_vzestup,534,0.7903,66.7256
+g3,usti,12,trend6,0.95,skutečný vývoj,zacatek_vzestupu,142,0.7183,50.568
+g3,usti,12,rezim,0.95,v čase vydání,vzestup,1871,0.9359,72.6723
+g3,usti,12,rezim,0.95,v čase vydání,klid,2584,0.9489,35.8781
+g3,usti,12,rezim,0.95,v čase vydání,pokles,1903,0.9354,61.2137
+g3,usti,12,rezim,0.95,skutečný vývoj,pokles,1848,0.9215,56.9643
+g3,usti,12,rezim,0.95,skutečný vývoj,klid,2307,0.9848,42.664
+g3,usti,12,rezim,0.95,skutečný vývoj,vzestup,1669,0.9419,62.2629
+g3,usti,12,rezim,0.95,skutečný vývoj,rychly_vzestup,534,0.8165,70.33
+g3,usti,12,rezim,0.95,skutečný vývoj,zacatek_vzestupu,142,0.8451,71.2881
+g3,usti,12,rezim_vyska,0.95,v čase vydání,vzestup_pod,1312,0.9436,58.5111
+g3,usti,12,rezim_vyska,0.95,v čase vydání,vzestup_nad,559,0.9159,98.875
+g3,usti,12,rezim_vyska,0.95,v čase vydání,klid_nad,610,0.9443,35.3443
+g3,usti,12,rezim_vyska,0.95,v čase vydání,pokles_nad,971,0.896,67.5512
+g3,usti,12,rezim_vyska,0.95,v čase vydání,klid_pod,1974,0.9478,36.5606
+g3,usti,12,rezim_vyska,0.95,v čase vydání,pokles_pod,932,0.9464,39.9345
+g3,usti,12,rezim_vyska,0.95,skutečný vývoj,pokles,1848,0.9156,51.5865
+g3,usti,12,rezim_vyska,0.95,skutečný vývoj,klid,2307,0.9731,41.3974
+g3,usti,12,rezim_vyska,0.95,skutečný vývoj,vzestup,1669,0.9455,62.9501
+g3,usti,12,rezim_vyska,0.95,skutečný vývoj,rychly_vzestup,534,0.8127,61.1989
+g3,usti,12,rezim_vyska,0.95,skutečný vývoj,zacatek_vzestupu,142,0.831,57.0867
+g3,usti,12,zmena6,0.95,v čase vydání,z5,1320,0.9364,79.2451
+g3,usti,12,zmena6,0.95,v čase vydání,z4,551,0.9474,47.2496
+g3,usti,12,zmena6,0.95,v čase vydání,z3,598,0.9482,50.3204
+g3,usti,12,zmena6,0.95,v čase vydání,z2,1050,0.9486,34.3189
+g3,usti,12,zmena6,0.95,v čase vydání,z1,936,0.9509,34.5335
+g3,usti,12,zmena6,0.95,v čase vydání,z0,1903,0.9354,61.2137
+g3,usti,12,zmena6,0.95,skutečný vývoj,pokles,1848,0.9183,56.6586
+g3,usti,12,zmena6,0.95,skutečný vývoj,klid,2307,0.9822,42.3373
+g3,usti,12,zmena6,0.95,skutečný vývoj,vzestup,1669,0.9479,61.2527
+g3,usti,12,zmena6,0.95,skutečný vývoj,rychly_vzestup,534,0.8352,76.722
+g3,usti,12,zmena6,0.95,skutečný vývoj,zacatek_vzestupu,142,0.8521,77.0623
+g3,usti,24,globalni,0.8,v čase vydání,vse,6358,0.8006,45.5786
+g3,usti,24,globalni,0.8,skutečný vývoj,pokles,1701,0.7978,45.3323
+g3,usti,24,globalni,0.8,skutečný vývoj,klid,2502,0.9376,45.8526
+g3,usti,24,globalni,0.8,skutečný vývoj,vzestup,946,0.8108,45.8721
+g3,usti,24,globalni,0.8,skutečný vývoj,rychly_vzestup,1209,0.5128,45.1287
+g3,usti,24,globalni,0.8,skutečný vývoj,zacatek_vzestupu,458,0.4978,45.5297
+g3,usti,24,trend6,0.8,v čase vydání,stoupa,2359,0.7995,64.8153
+g3,usti,24,trend6,0.8,v čase vydání,drzi,2112,0.7936,33.509
+g3,usti,24,trend6,0.8,v čase vydání,klesa,1887,0.7997,38.1432
+g3,usti,24,trend6,0.8,skutečný vývoj,pokles,1701,0.7725,40.1826
+g3,usti,24,trend6,0.8,skutečný vývoj,klid,2502,0.9257,44.1512
+g3,usti,24,trend6,0.8,skutečný vývoj,vzestup,946,0.7833,51.841
+g3,usti,24,trend6,0.8,skutečný vývoj,rychly_vzestup,1209,0.579,56.0695
+g3,usti,24,trend6,0.8,skutečný vývoj,zacatek_vzestupu,458,0.4803,43.4391
+g3,usti,24,rezim,0.8,v čase vydání,vzestup,1753,0.7946,81.0967
+g3,usti,24,rezim,0.8,v čase vydání,klid,2839,0.7894,35.2119
+g3,usti,24,rezim,0.8,v čase vydání,pokles,1766,0.7933,36.4889
+g3,usti,24,rezim,0.8,skutečný vývoj,pokles,1701,0.7549,36.4137
+g3,usti,24,rezim,0.8,skutečný vývoj,klid,2502,0.8749,38.032
+g3,usti,24,rezim,0.8,skutečný vývoj,vzestup,946,0.7664,59.0453
+g3,usti,24,rezim,0.8,skutečný vývoj,rychly_vzestup,1209,0.6923,77.4326
+g3,usti,24,rezim,0.8,skutečný vývoj,zacatek_vzestupu,458,0.6769,75.7442
+g3,usti,24,rezim_vyska,0.8,v čase vydání,vzestup_pod,1280,0.7992,74.3438
+g3,usti,24,rezim_vyska,0.8,v čase vydání,vzestup_nad,473,0.7696,81.436
+g3,usti,24,rezim_vyska,0.8,v čase vydání,klid_nad,613,0.7912,36.3133
+g3,usti,24,rezim_vyska,0.8,v čase vydání,pokles_nad,992,0.7752,37.7064
+g3,usti,24,rezim_vyska,0.8,v čase vydání,klid_pod,2226,0.7911,35.3009
+g3,usti,24,rezim_vyska,0.8,v čase vydání,pokles_pod,774,0.8049,34.6204
+g3,usti,24,rezim_vyska,0.8,skutečný vývoj,pokles,1701,0.7654,36.557
+g3,usti,24,rezim_vyska,0.8,skutečný vývoj,klid,2502,0.8601,38.1208
+g3,usti,24,rezim_vyska,0.8,skutečný vývoj,vzestup,946,0.76,56.7913
+g3,usti,24,rezim_vyska,0.8,skutečný vývoj,rychly_vzestup,1209,0.7047,72.3191
+g3,usti,24,rezim_vyska,0.8,skutečný vývoj,zacatek_vzestupu,458,0.6834,69.7024
+g3,usti,24,zmena6,0.8,v čase vydání,z5,1172,0.785,89.1165
+g3,usti,24,zmena6,0.8,v čase vydání,z4,581,0.8003,62.1295
+g3,usti,24,zmena6,0.8,v čase vydání,z3,642,0.7928,43.5851
+g3,usti,24,zmena6,0.8,v čase vydání,z2,1193,0.7938,34.585
+g3,usti,24,zmena6,0.8,v čase vydání,z1,1004,0.7978,32.4323
+g3,usti,24,zmena6,0.8,v čase vydání,z0,1766,0.7933,36.4889
+g3,usti,24,zmena6,0.8,skutečný vývoj,pokles,1701,0.7695,35.9375
+g3,usti,24,zmena6,0.8,skutečný vývoj,klid,2502,0.8469,37.4009
+g3,usti,24,zmena6,0.8,skutečný vývoj,vzestup,946,0.8087,55.3413
+g3,usti,24,zmena6,0.8,skutečný vývoj,rychly_vzestup,1209,0.7031,82.4856
+g3,usti,24,zmena6,0.8,skutečný vývoj,zacatek_vzestupu,458,0.6703,78.9582
+g3,usti,24,globalni,0.95,v čase vydání,vse,6358,0.9448,108.7095
+g3,usti,24,globalni,0.95,skutečný vývoj,pokles,1701,0.9647,107.6825
+g3,usti,24,globalni,0.95,skutečný vývoj,klid,2502,0.9864,110.0148
+g3,usti,24,globalni,0.95,skutečný vývoj,vzestup,946,0.9873,109.6866
+g3,usti,24,globalni,0.95,skutečný vývoj,rychly_vzestup,1209,0.7974,106.6884
+g3,usti,24,globalni,0.95,skutečný vývoj,zacatek_vzestupu,458,0.8253,108.3579
+g3,usti,24,trend6,0.95,v čase vydání,stoupa,2359,0.9351,136.175
+g3,usti,24,trend6,0.95,v čase vydání,drzi,2112,0.9474,80.3941
+g3,usti,24,trend6,0.95,v čase vydání,klesa,1887,0.9497,80.4484
+g3,usti,24,trend6,0.95,skutečný vývoj,pokles,1701,0.9489,87.739
+g3,usti,24,trend6,0.95,skutečný vývoj,klid,2502,0.988,97.2157
+g3,usti,24,trend6,0.95,skutečný vývoj,vzestup,946,0.9789,112.0736
+g3,usti,24,trend6,0.95,skutečný vývoj,rychly_vzestup,1209,0.8164,119.3845
+g3,usti,24,trend6,0.95,skutečný vývoj,zacatek_vzestupu,458,0.7555,95.9257
+g3,usti,24,rezim,0.95,v čase vydání,vzestup,1753,0.935,148.1001
+g3,usti,24,rezim,0.95,v čase vydání,klid,2839,0.9451,65.6314
+g3,usti,24,rezim,0.95,v čase vydání,pokles,1766,0.9422,80.586
+g3,usti,24,rezim,0.95,skutečný vývoj,pokles,1701,0.923,78.4501
+g3,usti,24,rezim,0.95,skutečný vývoj,klid,2502,0.9844,72.4662
+g3,usti,24,rezim,0.95,skutečný vývoj,vzestup,946,0.9535,107.5716
+g3,usti,24,rezim,0.95,skutečný vývoj,rychly_vzestup,1209,0.8693,142.0556
+g3,usti,24,rezim,0.95,skutečný vývoj,zacatek_vzestupu,458,0.845,138.0095
+g3,usti,24,rezim_vyska,0.95,v čase vydání,vzestup_pod,1280,0.9445,126.1704
+g3,usti,24,rezim_vyska,0.95,v čase vydání,vzestup_nad,473,0.8879,158.415
+g3,usti,24,rezim_vyska,0.95,v čase vydání,klid_nad,613,0.9413,58.6446
+g3,usti,24,rezim_vyska,0.95,v čase vydání,pokles_nad,992,0.9153,103.9466
+g3,usti,24,rezim_vyska,0.95,v čase vydání,klid_pod,2226,0.9479,65.7541
+g3,usti,24,rezim_vyska,0.95,v čase vydání,pokles_pod,774,0.9419,57.0053
+g3,usti,24,rezim_vyska,0.95,skutečný vývoj,pokles,1701,0.9153,83.4799
+g3,usti,24,rezim_vyska,0.95,skutečný vývoj,klid,2502,0.9792,69.768
+g3,usti,24,rezim_vyska,0.95,skutečný vývoj,vzestup,946,0.9524,100.8985
+g3,usti,24,rezim_vyska,0.95,skutečný vývoj,rychly_vzestup,1209,0.8644,127.3569
+g3,usti,24,rezim_vyska,0.95,skutečný vývoj,zacatek_vzestupu,458,0.8428,120.7614
+g3,usti,24,zmena6,0.95,v čase vydání,z5,1172,0.9369,156.7338
+g3,usti,24,zmena6,0.95,v čase vydání,z4,581,0.9449,125.6013
+g3,usti,24,zmena6,0.95,v čase vydání,z3,642,0.9455,81.2247
+g3,usti,24,zmena6,0.95,v čase vydání,z2,1193,0.9438,62.4666
+g3,usti,24,zmena6,0.95,v čase vydání,z1,1004,0.9472,67.8239
+g3,usti,24,zmena6,0.95,v čase vydání,z0,1766,0.9422,80.586
+g3,usti,24,zmena6,0.95,skutečný vývoj,pokles,1701,0.9236,78.5633
+g3,usti,24,zmena6,0.95,skutečný vývoj,klid,2502,0.9796,73.1171
+g3,usti,24,zmena6,0.95,skutečný vývoj,vzestup,946,0.9482,104.1573
+g3,usti,24,zmena6,0.95,skutečný vývoj,rychly_vzestup,1209,0.89,147.7563
+g3,usti,24,zmena6,0.95,skutečný vývoj,zacatek_vzestupu,458,0.8603,142.0253
+g3,usti,36,globalni,0.8,v čase vydání,vse,6358,0.7979,83.6618
+g3,usti,36,globalni,0.8,skutečný vývoj,pokles,1577,0.7869,83.1261
+g3,usti,36,globalni,0.8,skutečný vývoj,klid,2605,0.9409,84.1791
+g3,usti,36,globalni,0.8,skutečný vývoj,vzestup,480,0.8688,84.3696
+g3,usti,36,globalni,0.8,skutečný vývoj,rychly_vzestup,1696,0.5684,83.1649
+g3,usti,36,globalni,0.8,skutečný vývoj,zacatek_vzestupu,808,0.547,83.7516
+g3,usti,36,trend6,0.8,v čase vydání,stoupa,2401,0.7901,112.8696
+g3,usti,36,trend6,0.8,v čase vydání,drzi,2125,0.7958,67.5447
+g3,usti,36,trend6,0.8,v čase vydání,klesa,1832,0.7877,66.0275
+g3,usti,36,trend6,0.8,skutečný vývoj,pokles,1577,0.7705,73.2839
+g3,usti,36,trend6,0.8,skutečný vývoj,klid,2605,0.9313,81.8958
+g3,usti,36,trend6,0.8,skutečný vývoj,vzestup,480,0.8542,92.6623
+g3,usti,36,trend6,0.8,skutečný vývoj,rychly_vzestup,1696,0.5778,95.5836
+g3,usti,36,trend6,0.8,skutečný vývoj,zacatek_vzestupu,808,0.4752,78.6369
+g3,usti,36,rezim,0.8,v čase vydání,vzestup,1628,0.7869,140.6876
+g3,usti,36,rezim,0.8,v čase vydání,klid,3121,0.7937,65.2507
+g3,usti,36,rezim,0.8,v čase vydání,pokles,1609,0.7812,60.8652
+g3,usti,36,rezim,0.8,skutečný vývoj,pokles,1577,0.74,61.8553
+g3,usti,36,rezim,0.8,skutečný vývoj,klid,2605,0.8749,69.6074
+g3,usti,36,rezim,0.8,skutečný vývoj,vzestup,480,0.8521,90.1267
+g3,usti,36,rezim,0.8,skutečný vývoj,rychly_vzestup,1696,0.684,122.9274
+g3,usti,36,rezim,0.8,skutečný vývoj,zacatek_vzestupu,808,0.6213,114.8241
+g3,usti,36,rezim_vyska,0.8,v čase vydání,vzestup_pod,1232,0.7857,133.7715
+g3,usti,36,rezim_vyska,0.8,v čase vydání,vzestup_nad,396,0.702,156.4132
+g3,usti,36,rezim_vyska,0.8,v čase vydání,klid_nad,624,0.7692,65.2628
+g3,usti,36,rezim_vyska,0.8,v čase vydání,pokles_nad,986,0.7596,63.7042
+g3,usti,36,rezim_vyska,0.8,v čase vydání,klid_pod,2497,0.7946,66.2714
+g3,usti,36,rezim_vyska,0.8,v čase vydání,pokles_pod,623,0.7865,52.6044
+g3,usti,36,rezim_vyska,0.8,skutečný vývoj,pokles,1577,0.7413,61.5201
+g3,usti,36,rezim_vyska,0.8,skutečný vývoj,klid,2605,0.8752,70.8317
+g3,usti,36,rezim_vyska,0.8,skutečný vývoj,vzestup,480,0.8125,89.7895
+g3,usti,36,rezim_vyska,0.8,skutečný vývoj,rychly_vzestup,1696,0.6545,120.2251
+g3,usti,36,rezim_vyska,0.8,skutečný vývoj,zacatek_vzestupu,808,0.6101,110.5755
+g3,usti,36,zmena6,0.8,v čase vydání,z5,1013,0.7818,143.7376
+g3,usti,36,zmena6,0.8,v čase vydání,z4,615,0.7886,137.4496
+g3,usti,36,zmena6,0.8,v čase vydání,z3,727,0.8019,97.6802
+g3,usti,36,zmena6,0.8,v čase vydání,z2,1332,0.7883,63.4834
+g3,usti,36,zmena6,0.8,v čase vydání,z1,1062,0.7891,57.209
+g3,usti,36,zmena6,0.8,v čase vydání,z0,1609,0.7812,60.8652
+g3,usti,36,zmena6,0.8,skutečný vývoj,pokles,1577,0.7495,60.6079
+g3,usti,36,zmena6,0.8,skutečný vývoj,klid,2605,0.8507,71.386
+g3,usti,36,zmena6,0.8,skutečný vývoj,vzestup,480,0.8312,98.0661
+g3,usti,36,zmena6,0.8,skutečný vývoj,rychly_vzestup,1696,0.7123,127.2337
+g3,usti,36,zmena6,0.8,skutečný vývoj,zacatek_vzestupu,808,0.6671,119.9292
+g3,usti,36,globalni,0.95,v čase vydání,vse,6358,0.9473,168.6443
+g3,usti,36,globalni,0.95,skutečný vývoj,pokles,1577,0.9607,167.7104
+g3,usti,36,globalni,0.95,skutečný vývoj,klid,2605,0.9866,169.5775
+g3,usti,36,globalni,0.95,skutečný vývoj,vzestup,480,0.9875,169.71
+g3,usti,36,globalni,0.95,skutečný vývoj,rychly_vzestup,1696,0.8632,167.7776
+g3,usti,36,globalni,0.95,skutečný vývoj,zacatek_vzestupu,808,0.8824,168.8428
+g3,usti,36,trend6,0.95,v čase vydání,stoupa,2401,0.9384,188.0365
+g3,usti,36,trend6,0.95,v čase vydání,drzi,2125,0.9482,147.7362
+g3,usti,36,trend6,0.95,v čase vydání,klesa,1832,0.952,150.3515
+g3,usti,36,trend6,0.95,skutečný vývoj,pokles,1577,0.9562,154.9427
+g3,usti,36,trend6,0.95,skutečný vývoj,klid,2605,0.9873,161.7636
+g3,usti,36,trend6,0.95,skutečný vývoj,vzestup,480,0.9958,169.9246
+g3,usti,36,trend6,0.95,skutečný vývoj,rychly_vzestup,1696,0.8573,173.0875
+g3,usti,36,trend6,0.95,skutečný vývoj,zacatek_vzestupu,808,0.8416,158.3321
+g3,usti,36,rezim,0.95,v čase vydání,vzestup,1628,0.9386,216.7809
+g3,usti,36,rezim,0.95,v čase vydání,klid,3121,0.9439,142.5054
+g3,usti,36,rezim,0.95,v čase vydání,pokles,1609,0.9378,112.7844
+g3,usti,36,rezim,0.95,skutečný vývoj,pokles,1577,0.9157,118.6188
+g3,usti,36,rezim,0.95,skutečný vývoj,klid,2605,0.9862,144.3414
+g3,usti,36,rezim,0.95,skutečný vývoj,vzestup,480,0.9625,165.4354
+g3,usti,36,rezim,0.95,skutečný vývoj,rychly_vzestup,1696,0.8892,198.5075
+g3,usti,36,rezim,0.95,skutečný vývoj,zacatek_vzestupu,808,0.8812,190.1198
+g3,usti,36,rezim_vyska,0.95,v čase vydání,vzestup_pod,1232,0.9416,195.6547
+g3,usti,36,rezim_vyska,0.95,v čase vydání,vzestup_nad,396,0.8106,217.7006
+g3,usti,36,rezim_vyska,0.95,v čase vydání,klid_nad,624,0.9215,144.3017
+g3,usti,36,rezim_vyska,0.95,v čase vydání,pokles_nad,986,0.9331,124.6152
+g3,usti,36,rezim_vyska,0.95,v čase vydání,klid_pod,2497,0.9451,137.9375
+g3,usti,36,rezim_vyska,0.95,v čase vydání,pokles_pod,623,0.9342,109.5201
+g3,usti,36,rezim_vyska,0.95,skutečný vývoj,pokles,1577,0.9138,124.9782
+g3,usti,36,rezim_vyska,0.95,skutečný vývoj,klid,2605,0.9816,142.1
+g3,usti,36,rezim_vyska,0.95,skutečný vývoj,vzestup,480,0.9604,157.0527
+g3,usti,36,rezim_vyska,0.95,skutečný vývoj,rychly_vzestup,1696,0.8603,182.8923
+g3,usti,36,rezim_vyska,0.95,skutečný vývoj,zacatek_vzestupu,808,0.8577,174.3143
+g3,usti,36,zmena6,0.95,v čase vydání,z5,1013,0.9358,223.9176
+g3,usti,36,zmena6,0.95,v čase vydání,z4,615,0.9496,200.3458
+g3,usti,36,zmena6,0.95,v čase vydání,z3,727,0.9477,160.5155
+g3,usti,36,zmena6,0.95,v čase vydání,z2,1332,0.9444,139.0198
+g3,usti,36,zmena6,0.95,v čase vydání,z1,1062,0.9331,109.2078
+g3,usti,36,zmena6,0.95,v čase vydání,z0,1609,0.9378,112.7844
+g3,usti,36,zmena6,0.95,skutečný vývoj,pokles,1577,0.9138,113.4109
+g3,usti,36,zmena6,0.95,skutečný vývoj,klid,2605,0.9839,135.3441
+g3,usti,36,zmena6,0.95,skutečný vývoj,vzestup,480,0.9479,163.0983
+g3,usti,36,zmena6,0.95,skutečný vývoj,rychly_vzestup,1696,0.8962,200.2663
+g3,usti,36,zmena6,0.95,skutečný vývoj,zacatek_vzestupu,808,0.8911,190.0557

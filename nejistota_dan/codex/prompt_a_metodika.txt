@@ -1,0 +1,18 @@
+Jsi nezávislý kontrolor (code review a statistická metodika) studentského projektu: předpověď stavu Labe v Děčíně a Ústí za 12/24/36 h. Nový kus: PÁSMO NEJISTOTY (80 % a 95 %) ke každé předpovědi pro tři modely (týmový Ridge, Ridge 30 stanic, G3 = ½ Ridge 30 + ½ LightGBM 30).
+
+PRAVIDLA (závazná):
+- NIC neměň, nezapisuj, nemaž, žádné git příkazy, které něco mění. Jen čti. Python smíš spustit jen s -B, bez zápisu souborů, krátce a s malou pamětí (počítač je vytížený, max ~500 MB, desítky sekund) – NESPOUŠTĚJ oof.py ani overeni.py ani grafy.py (zapisují a trvají dlouho); smíš číst hotové soubory v nejistota_dan/oof/*.parquet a nejistota_dan/vysledky/*.csv.
+- Nečti .env, .streamlit/secrets.toml, nic z ~/.kaggle ani jiné přihlašovací údaje.
+- Test 2021–2025 se nikde nesmí použít.
+- Každý nález: [závažnost: vysoká/střední/nízká] soubor:řádek – co – proč – jak opravit. Když nic nenajdeš, napiš to výslovně. Česky, nejvýš ~70 řádků.
+
+KÓD (složka nejistota_dan/): `oof.py` (LOFO předpovědi mimo trénink přes 22 povodní, foldy kandidati/lofo_foldy.csv: fold drží okno povodně 7 dní před až 5 po vrcholu, z tréninku vyřadí okno ±20 dní; rychlý Ridge ze součtů), `nejistota_dan.py` (skupiny/režimy známé v čase vydání, konformní kvantily, funkce pasmo() pro aplikaci), `overeni.py` (vnořené ověření: kvantily jen z ostatních 21 povodní, hodnocení na vynechané; pokrytí, šířka, intervalové skóre; výběr varianty předem daným pravidlem; kvantily.json ze všech 22 povodní), `grafy.py`. Kandidáti zkopírovaní z jiné větve v `kandidati/` (README tam). Navazuje na týmový `src/nejistota.py` (kvantily chyb na tréninku), aplikace `app/predikce.py` funkce interval().
+
+OVĚŘ:
+1. Únik: nevstupuje do pásma nic, co v čase vydání t není známé (režim jen z předpovědi, stavu teď a stavu před 6 h)? Nemíchá vnořené hodnocení data vynechané povodně do kvantilů? Překrývají se okna povodní (některé povodně jsou blízko sebe, např. 2010-03-02/2010-03-22, 2012-12-29/2013-01-08, 2013-06-05/2013-06-26) a co to dělá s vnořeným hodnocením i s OOF předpověďmi (model foldu k mohl trénovat na okně povodně j)?
+2. Konformní kvantily: je oprava (n+1) správně (dolní/horní, indexy), výměnnost (autokorelace hodin v povodni, váha povodní), malé skupiny (min_n 200, náhrada globálními)?
+3. Je hodnocení férové: pokrytí po povodních a po režimech, „skutečný vývoj“ jen pro hodnocení; intervalové skóre (Winkler) správně; pravidlo výběru varianty; počet zkoušených variant (globální, trend6, režim, režim×výška, zmena6; navíc zkoušeno a zamítnuto: signál z Mělníka, poslední ověřená chyba).
+4. G3: skládá se 0,5/0,5 z OOF Ridge 30 a LightGBM 30 na stejných řádcích; odpovídá kandidati/g3.py?
+5. Ústí: foldy jsou definované podle Děčína (stejné časy oken). Je to rozumné?
+6. Přenos do aplikace: kvantily z LOFO modelů učených do 2020, aplikace používá model učený do 2018 (přehrávání) nebo na všem do 2025 (dnešek). Jaká je chyba pásma pro tyto modely a co s tím?
+7. Kód: chyby, okrajové případy (NaN, prázdné skupiny), funkce pasmo() pro skalár i pole.

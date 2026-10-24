@@ -8,7 +8,9 @@ Režim je známý v čase vydání předpovědi:
 - klid: jinak;
 případně jemněji v 6 pásmech předpovězené změny (zmena6) nebo i podle výšky hladiny teď (pod / nad 1. stupněm,
 Děčín 400 cm, Ústí 450 cm). Kterou variantu aplikace použije, vybírá overeni.py předem daným pravidlem.
-Pásmo = [předpověď + dolní kvantil, předpověď + horní kvantil], kvantily s konformní opravou (n + 1).
+Pásmo = [předpověď + dolní kvantil, předpověď + horní kvantil], pořadí kvantilu s opravou (n + 1) jako u konformní
+předpovědi. Hodiny jedné povodně ale nejsou nezávislé a chyby jsou z 22 různých LOFO modelů, takže to žádnou záruku
+nedává: pokrytí je empirické, ověřené vnořeně po blocích povodní (overeni.py).
 
 Pro aplikaci: pasmo(model, cil, horizont, pred, hladina_ted, hladina_pred_6h, uroven) → (dolní, horní) v cm,
 model "ridge" (týmový), "ridge30" nebo "g3"; kvantily čte z kvantily.json (overeni.py, ze všech 22 povodní).
@@ -23,6 +25,8 @@ import pandas as pd
 ZDE = Path(__file__).resolve().parent
 KVANTILY = ZDE / "kvantily.json"
 UROVNE = (0.8, 0.95)
+# modely aplikace (app/predikce.py) → kalibrace: ridge i ridge_vse jsou týmový Ridge, jen učený na jiných letech
+MODELY_APLIKACE = {"ridge_vse": "ridge"}
 PRAH_ZMENY = {12: 10, 24: 20, 36: 30}
 PRAH_VYSKY = {"decin": 400, "usti": 450}  # 1. stupeň povodňové aktivity
 SKUPINY = {
@@ -36,7 +40,7 @@ SKUPINY = {
 
 def skupina(varianta, cil, horizont, pred, h0, h6):
     """Režim pro každou hodinu (pole řetězců), jen z hodnot známých v čase vydání."""
-    pred, h0, h6 = (np.asarray(v, dtype=float) for v in (pred, h0, h6))
+    pred, h0, h6 = np.broadcast_arrays(*(np.asarray(v, dtype=float) for v in (pred, h0, h6)))
     if varianta == "globalni":
         return np.full(pred.shape, "vse", dtype=object)
     if varianta == "trend6":
@@ -55,6 +59,8 @@ def kvantil(e, q):
     """Konformní kvantil chyb e: pořadí ⌈(n + 1) q⌉ (horní), ⌊(n + 1) q⌋ (dolní), aby pokrytí nebylo pod nominálem."""
     e = np.sort(np.asarray(e, dtype=float))
     n = len(e)
+    if n == 0 or not np.isfinite(e).all():
+        raise ValueError("kvantil z prázdných nebo neplatných chyb")
     k = int(np.ceil((n + 1) * q)) if q > 0.5 else int(np.floor((n + 1) * q))
     return float(e[min(max(k, 1), n) - 1])
 
@@ -73,8 +79,8 @@ def kvantily_skupin(e, skupiny, uroven, min_n=200):
 
 def meze(pred, skupiny, kv):
     pred = np.asarray(pred, dtype=float)
-    d = np.array([kv.get(s, kv["vse"])[0] for s in skupiny])
-    h = np.array([kv.get(s, kv["vse"])[1] for s in skupiny])
+    d = np.array([kv.get(s, kv["vse"])[0] for s in skupiny], dtype=float)
+    h = np.array([kv.get(s, kv["vse"])[1] for s in skupiny], dtype=float)
     return pred + d, pred + h
 
 
@@ -86,8 +92,11 @@ def _ulozene():
 def pasmo(model, cil, horizont, pred, hladina_ted, hladina_pred_6h, uroven=0.8):
     """Dolní a horní mez (cm) předpovědi pred stavu za horizont hodin. Funguje pro čísla i pole."""
     z = _ulozene()
-    v = z["varianta"]
-    kv = {s: tuple(m) for s, m in z["kvantily"][f"{model}_{cil}_{horizont}"][str(uroven)].items()}
-    s = skupina(v, cil, horizont, np.atleast_1d(pred), np.atleast_1d(hladina_ted), np.atleast_1d(hladina_pred_6h))
-    d, h = meze(np.atleast_1d(pred), s, kv)
-    return (float(d[0]), float(h[0])) if np.ndim(pred) == 0 else (d, h)
+    klic = f"{MODELY_APLIKACE.get(model, model)}_{cil}_{horizont}"
+    kv = {s: tuple(m) for s, m in z["kvantily"][klic][str(uroven)].items()}
+    vstupy = (pred, hladina_ted, hladina_pred_6h)
+    p, h0, h6 = np.broadcast_arrays(*(np.atleast_1d(np.asarray(x, dtype=float)) for x in vstupy))
+    d, h = meze(p, skupina(z["varianta"], cil, horizont, p, h0, h6), kv)
+    spatne = ~(np.isfinite(p) & np.isfinite(h0) & np.isfinite(h6))  # bez vstupů žádné zdánlivě platné pásmo
+    d[spatne], h[spatne] = np.nan, np.nan
+    return (float(d[0]), float(h[0])) if all(np.ndim(x) == 0 for x in vstupy) else (d, h)

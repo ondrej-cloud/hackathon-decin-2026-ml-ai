@@ -1,3 +1,4 @@
 oof/
 __pycache__/
 *.log
+codex/*.log

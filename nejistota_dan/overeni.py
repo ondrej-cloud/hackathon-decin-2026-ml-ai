@@ -2,8 +2,10 @@
 
 python overeni.py      tabulky do vysledky/, výběr varianty (předem dané pravidlo), kvantily.json (ze všech 22 povodní)
 
-Vnořeně: pro povodeň k se kvantily berou jen z chyb ostatních 21 povodní (LOFO předpovědi mimo trénink, oof.py)
-a hodnotí se na oknech povodně k (7 dní před až 5 dní po vrcholu). Měří se pokrytí (podíl hodin, kdy je skutečnost
+Vnořeně po blocích: pro povodeň k se kvantily berou jen z chyb povodní mimo její blok (LOFO předpovědi mimo trénink,
+oof.py) a hodnotí se na okně povodně k (7 dní před až 5 dní po vrcholu). Blok = povodně, jejichž mezery (okno ± 20 dní)
+se překrývají (14 bloků z 22 povodní; okna 12/2012 a 1/2013 sdílejí 48 h, nález Codexu). Modely ostatních povodní
+přitom povodeň k při učení viděly (obyčejné LOFO); přísnou verzi bez toho počítá prisne.py pro Ridge. Měří se pokrytí (podíl hodin, kdy je skutečnost
 v pásmu), šířka a intervalové skóre (šířka + 2/α × o kolik skutečnost pásmo minula; menší = lepší, trestá úzké pásmo,
 které míjí, i zbytečně široké). Pravidlo výběru varianty (předem): nejmenší průměrné intervalové skóre přes modely,
 cíle, horizonty a obě úrovně, pokud celkové pokrytí žádné kombinace neklesne o víc než 3 p. b. pod nominál.
@@ -69,16 +71,73 @@ def hodnoceni(D, dolni, horni, uroven):
     return uvnitr, horni - dolni, skore
 
 
+def bloky(h):
+    """{fold: blok}: povodně v časovém pořadí, nový blok začne, až když mezera povodně začne po konci mezer bloku."""
+    F = pd.read_csv(ZDE / "kandidati/lofo_foldy.csv")
+    F = F[F.horizont == h].sort_values("fold")
+    out, b, konec = {}, -1, None
+    for k, od, do in zip(F.fold, pd.to_datetime(F.mezera_od), pd.to_datetime(F.mezera_do)):
+        if konec is None or od > konec:
+            b, konec = b + 1, do
+        else:
+            konec = max(konec, do)
+        out[k] = b
+    return out
+
+
 def vnorene(D, varianta, cil, h, uroven):
-    """Meze pro každou hodinu okna povodně k z kvantilů chyb ostatních povodní."""
+    """Meze pro každou hodinu okna povodně k z kvantilů chyb povodní mimo blok povodně k."""
     dolni, horni = np.empty(len(D)), np.empty(len(D))
     s = N.skupina(varianta, cil, h, D.pred, D.h0, D.h6)
     e = (D.y - D.pred).to_numpy()
     f = D.fold.to_numpy()
+    bl = D.fold.map(bloky(h)).to_numpy()
     for k in np.unique(f):
-        kv = N.kvantily_skupin(e[f != k], s[f != k], uroven)
+        kal = bl != bl[f == k][0]
+        kv = N.kvantily_skupin(e[kal], s[kal], uroven)
         dolni[f == k], horni[f == k] = N.meze(D.pred.to_numpy()[f == k], s[f == k], kv)
     return dolni, horni, s
+
+
+def kontrola_aplikace(varianta):
+    """Pásmo na modelu, který aplikace opravdu používá pro přehrávání (ridge učený na trénovací části 2006–2018,
+    app/predikce.py nacti_model): validační řádky týmového splitu, tedy 4 povodně a klidné roky 2019–2020, které
+    ten model neviděl. Řádek uvnitř mezery některé z 22 povodní dostane kvantily bez bloku té povodně, ostatní
+    (2019–2020) kvantily ze všech 22 povodní. Ridge učený na všem do 2025 (Dnešek) se ověřit nedá, neviděná data nemá."""
+    from evaluate import casti
+    from features import tabulka
+    from models import ridge
+    F = pd.read_csv(ZDE / "kandidati/lofo_foldy.csv")
+    radky = []
+    for cil, h in KOMBINACE:
+        X, y = tabulka(cil, h)
+        c = casti(cil, h).reindex(X.index)
+        tr, va = (c == "train").to_numpy(), (c == "val").to_numpy()
+        m = ridge.pipeline(ridge.PARAMETRY["alpha"]).fit(X[tr], y[tr])
+        pred = m.predict(X[va])
+        cas, yv = X.index[va], y[va].to_numpy()
+        h0, h6 = X.loc[va, f"{cil}_H_0"].to_numpy(), X.loc[va, f"{cil}_H_6"].to_numpy()
+        D = nacti("ridge", cil, h)
+        e, s = (D.y - D.pred).to_numpy(), N.skupina(varianta, cil, h, D.pred, D.h0, D.h6)
+        bl = bloky(h)
+        blD = D.fold.map(bl).to_numpy()
+        k_radku = np.full(len(cas), -1)
+        for _, f in F[F.horizont == h].iterrows():
+            k_radku[(cas >= pd.Timestamp(f.mezera_od)) & (cas <= pd.Timestamp(f.mezera_do))] = f.fold
+        sk = N.skupina(varianta, cil, h, pred, h0, h6)
+        for u in N.UROVNE:
+            dolni, horni = np.empty(len(cas)), np.empty(len(cas))
+            for k in np.unique(k_radku):
+                kal = np.ones(len(e), bool) if k < 0 else blD != bl[k]
+                r = k_radku == k
+                dolni[r], horni[r] = N.meze(pred[r], sk[r], N.kvantily_skupin(e[kal], s[kal], u))
+            uv = (yv >= dolni) & (yv <= horni)
+            klid = k_radku < 0
+            radky.append(dict(cil=cil, horizont=h, uroven=u, pokryti_povodne=uv[~klid].mean(),
+                              sirka_povodne=(horni - dolni)[~klid].mean(), pokryti_klid_2019_2020=uv[klid].mean(),
+                              sirka_klid=(horni - dolni)[klid].mean(), n_povodne=int((~klid).sum()),
+                              n_klid=int(klid.sum())))
+    return pd.DataFrame(radky)
 
 
 def radky_vysledku(D, model, cil, h, varianta, uroven, dolni, horni, s):
@@ -102,6 +161,12 @@ def radky_vysledku(D, model, cil, h, varianta, uroven, dolni, horni, s):
 
 
 if __name__ == "__main__":
+    import argparse
+    a = argparse.ArgumentParser()
+    a.add_argument("--modely", nargs="+", default=list(MODELY))
+    a.add_argument("--vystup", type=Path, default=VYSL, help="zkušební běh mimo vysledky/ (kvantily.json se neuloží)")
+    a = a.parse_args()
+    MODELY, VYSL = tuple(a.modely), a.vystup
     VYSL.mkdir(exist_ok=True)
     souhrny, povodne, rezimy = [], [], []
     for model in MODELY:
@@ -132,6 +197,14 @@ if __name__ == "__main__":
     vybrana = skore[ok[ok].index].idxmin()
     print("intervalové skóre (průměr):", skore.round(2).to_dict(), "| pokrytí v toleranci:", ok.to_dict())
     print("vybraná varianta:", vybrana)
+    print(S[S.uroven == 0.8].groupby("varianta")[["pokryti", "sirka", "pokryti_rychly_vzestup", "pokryti_zacatek",
+                                                  "pokryti_min_povoden"]].mean().round(3).to_string())
+    if VYSL != ZDE / "vysledky" or set(MODELY) != {"ridge", "ridge30", "g3"}:
+        sys.exit()
+    A = kontrola_aplikace(vybrana)
+    A.round(4).to_csv(VYSL / "kontrola_aplikace.csv", index=False, encoding="utf-8")
+    print("model aplikace (ridge do 2018) na validaci:")
+    print(A.round(3).to_string(index=False))
     # kvantily pro aplikaci ze všech 22 povodní
     out = dict(varianta=vybrana, popis=N.SKUPINY[vybrana], urovne=list(N.UROVNE), prah_zmeny=N.PRAH_ZMENY,
                prah_vysky=N.PRAH_VYSKY, zdroj="LOFO předpovědi mimo trénink, 22 povodní 2006–2020 (oof.py)", kvantily={})
@@ -143,5 +216,9 @@ if __name__ == "__main__":
             out["kvantily"][f"{model}_{cil}_{h}"] = {
                 str(u): {k: [round(v[0], 1), round(v[1], 1)] for k, v in N.kvantily_skupin(e, s, u).items()}
                 for u in N.UROVNE}
+            # kolik hodin a kolika povodní stojí za kvantily skupiny (hodiny jedné povodně nejsou nezávislé)
+            out.setdefault("pocty", {})[f"{model}_{cil}_{h}"] = {
+                k: dict(hodin=int((s == k).sum()), povodni=int(D.fold[s == k].nunique()),
+                        nahrada_vse=bool((s == k).sum() < 200)) for k in pd.unique(s)}
     N.KVANTILY.write_text(json.dumps(out, ensure_ascii=False, indent=1), encoding="utf-8")
     print("uloženo", N.KVANTILY.name)

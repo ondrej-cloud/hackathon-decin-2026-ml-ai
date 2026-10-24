@@ -66,8 +66,8 @@ def graf_povodne(povoden, titulek, model="ridge", cil="decin", h=24, varianta=No
     v95 = ((y >= d95) & (y <= h95)).mean()
     fig, ax = slajd(titulek, f"Děčín, předpověď na {h} h dopředu (týmová lineární regrese) a pásmo, do kterého má padnout "
                              f"skutečnost v 80{NB}% a 95{NB}% hodin",
-                    f"Pásmo z chyb na ostatních 21 povodních 2006–2020 (model ani pásmo tuhle povodeň neviděly) · "
-                    f"v pásmu 80{NB}%: {cislo(100 * v80)}{NB}% hodin, v pásmu 95{NB}%: {cislo(100 * v95)}{NB}% hodin")
+                    f"Pásmo z chyb na ostatních povodních 2006–2020 bez této a sousedních (model ani pásmo ji neviděly)"
+                    f" · v pásmu 80{NB}%: {cislo(100 * v80)}{NB}% hodin, v pásmu 95{NB}%: {cislo(100 * v95)}{NB}% hodin")
     ax.fill_between(t, d95, h95, color=MODRA_NEJSVETLEJSI, lw=0, label=f"pásmo 95{NB}%")
     ax.fill_between(t, d80, h80, color=MODRA_SVETLA, lw=0, label=f"pásmo 80{NB}%")
     ax.plot(t, p, color=MODRA, lw=2, label=f"předpověď na {h} h")
@@ -97,11 +97,11 @@ def graf_pokryti():
     kombinace = [(c, h) for c in ("decin", "usti") for h in (12, 24, 36)]
     hodnota = lambda var, sl: [100 * S[(S.varianta == var) & (S.cil == c) & (S.horizont == h)][sl].iloc[0]  # noqa: E731
                                for c, h in kombinace]
-    fig, ax = slajd("Nové pásmo drží slib i na povodních, dnešní je moc úzké",
+    fig, ax = slajd("Nové pásmo sedí na povodních celkově, při rychlém vzestupu je pořád užší",
                     f"Kolik skutečných hladin se na 22 povodních 2006–2020 vešlo do pásma „80{NB}%“, týmová lineární"
                     " regrese",
-                    "Ověřeno vnořeně: pro každou povodeň pásmo jen z ostatních 21 · dnešní = chyby na učicích datech"
-                    " podle výšky hladiny (src/nejistota.py) · nové = chyby mimo trénink podle očekávané změny",
+                    "Vnořeně: pásmo každé povodně jen z ostatních povodní · dnešní = chyby na učicích datech podle"
+                    " výšky hladiny · nové = chyby mimo trénink podle očekávané změny",
                     rect=(0.085, 0.17, 0.89, 0.585))
     x = np.array([0, 1, 2, 3.4, 4.4, 5.4])
     s = 0.27
@@ -129,8 +129,8 @@ def graf_pokryti():
 
 
 if __name__ == "__main__":
-    for p, t in (("2013-06-05", "Červen 2013: největší povodeň, pásmo zachytí i vrchol"),
-                 ("2010-09-28", "Září 2010: déšť přímo nad Děčínem, začátek vzestupu pásmo podcení"),
-                 ("2006-04-02", "Duben 2006: tání sněhu, předpověď vrchol přestřelí")):
+    for p, t in (("2011-01-16", "Leden 2011: skutečnost je skoro celou dobu v pásmu"),
+                 ("2010-09-28", "Září 2010: déšť nad Děčínem, vzestup přijde rychleji, než model čeká"),
+                 ("2013-06-05", "Červen 2013: na rekordní povodni je pásmo moc úzké")):
         print(graf_povodne(p, t))
     graf_pokryti()
