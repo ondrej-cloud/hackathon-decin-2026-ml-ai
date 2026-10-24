@@ -154,11 +154,16 @@ function vykresli(el) {
   (cfg.spa || []).forEach((prah, i) => {
     if (!spaVidet.includes(prah)) return;
     const yp = Y(prah), sir = uzke ? 92 : 112, vys = 20;
-    const kand = [[m.l + 8, yp - vys - 2], [m.l + 8, yp + 2], [W - m.r - sir - 8, yp - vys - 2], [W - m.r - sir - 8, yp + 2]]
-      .filter(([, y]) => y >= m.t && y + vys <= VY - m.b).map(([x, y]) => ({ x, y, w: sir, h: vys }));
-    let r = kand.find((o) => !protina(o));
+    // kandidáti: okraje nad/pod čarou, pak vnitřní polohy podél čáry zleva (křivky často kříží čáru jen u okrajů)
+    const xL = m.l + 8, xR = W - m.r - sir - 8, krok = Math.max(24, (xR - xL) / 10), nad = yp - vys - 2, pod = yp + 2;
+    const kand = [[xL, nad], [xL, pod], [xR, nad], [xR, pod]];
+    for (let x = xL + krok; x < xR - 1; x += krok) kand.push([x, nad], [x, pod]);
+    // poslední možnost: o řádek dál od čáry (na úzkém grafu u okrajů často nezbývá místo)
+    for (const x of [xL, xR]) kand.push([x, nad - vys - 4], [x, pod + vys + 4]);
+    const kandO = kand.filter(([, y]) => y >= m.t && y + vys <= VY - m.b).map(([x, y]) => ({ x, y, w: sir, h: vys }));
+    let r = kandO.find((o) => !protina(o));
     const volne = !!r;
-    if (!r) r = kand.slice().sort((a, b) => odstup(b) - odstup(a))[0] || { x: m.l + 8, y: yp - vys - 2, w: sir, h: vys };
+    if (!r) r = kandO.slice().sort((a, b) => odstup(b) - odstup(a))[0] || { x: xL, y: nad, w: sir, h: vys };
     obsazeneObd.push(r);
     const halo = volne ? "" : ` stroke="${NA_SPA[i] === "#ffffff" ? BARVY_SPA[i] : "#ffffff"}"`;
     s.push(`<rect x="${r.x.toFixed(1)}" y="${r.y.toFixed(1)}" width="${sir}" height="${vys}" rx="10" fill="${BARVY_SPA[i]}"${volne ? "" : ' fill-opacity=".92"'}/>`);
@@ -233,9 +238,12 @@ function vykresli(el) {
       `<div><i style="background:${cfg.serie[k].barva}"></i>${cfg.serie[k].nazev}${NB}<span>${cislo(v)}${NB}cm</span></div>`).join("");
     tip.hidden = false;
     const px = x / W * r.width;
-    const vlevo = px + tip.offsetWidth + 14 > r.width;
-    tip.style.left = vlevo ? "auto" : `${px + 14}px`;
-    tip.style.right = vlevo ? `${r.width - px + 14}px` : "auto";
+    // vpravo od kurzoru; když se nevejde, vlevo; když ani tam ne (úzký graf), přisadit k pravému okraji grafu
+    let vlevoPx = px + 14;
+    if (vlevoPx + tip.offsetWidth > r.width) vlevoPx = px - 14 - tip.offsetWidth;
+    if (vlevoPx < 0) vlevoPx = Math.max(0, r.width - tip.offsetWidth);
+    tip.style.left = `${vlevoPx}px`;
+    tip.style.right = "auto";
     tip.style.top = `${Math.max(0, (e.clientY - r.top) - 20)}px`;
   });
   plocha.addEventListener("pointerleave", () => { tip.hidden = true; kurzor.hidden = true; });

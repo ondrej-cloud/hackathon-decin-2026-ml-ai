@@ -42,8 +42,8 @@ export function vodocet(prahy, ted, pred, rozmezi, chmu = {}, anim = false, komp
   for (let c = dole; c <= nahore; c += 10) {
     const [x2, op] = c % 100 === 0 ? [L1, 0.6] : c % 50 === 0 ? [L0 + 30, 0.45] : [L0 + 8, 0.3];
     s.push(`<line x1="${L0}" x2="${x2}" y1="${y(c)}" y2="${y(c)}" stroke="${BARVY.text2}" stroke-opacity="${op}"/>`);
-    // číslo stupnice vynecháme, kde by ho zakryla pilulka „teď“
-    if (c % 100 === 0 && Math.abs(c - ted) >= 15) s.push(`<text x="${L0 - 8}" y="${y(c) + 5}" text-anchor="end" class="lat-cislo">${c}</text>`);
+    // číslo stupnice vynecháme, kde by ho zakryla pilulka „teď“ (26 px vysoká, číslo 13 px; měřeno v pixelech, ne v cm)
+    if (c % 100 === 0 && Math.abs(y(c) - y(ted)) >= 22) s.push(`<text x="${L0 - 8}" y="${y(c) + 5}" text-anchor="end" class="lat-cislo">${c}</text>`);
   }
   s.push(`<rect class="voda" x="${L0}" y="${y(ted)}" width="${L1 - L0}" height="${(dno - y(ted)).toFixed(1)}" fill="${BARVY.modraSvetla}" fill-opacity=".6"/>`);
   s.push(`<line x1="${L0}" x2="${W}" y1="${dno}" y2="${dno}" stroke="${BARVY.caraSilna}"/>`);

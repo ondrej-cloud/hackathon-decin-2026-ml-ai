@@ -7,10 +7,13 @@ const JEDNOTKY = /(\d)\s+(cm|mm|m³\/s|m³|m|h|%|km|ha|let|hod|kB|MB)(?![\p{L}\d
 const DATUM = /(\d{1,2})\.\s*(\d{1,2})\.\s*(\d{4})(?:\s+(\d{1,2}:\d{2}))?/g;
 const TISICE = /(\d)[  ](\d{3})(?!\d)/g;
 
+const STUPEN = /(\d)\.\s+(?=stup)/g; // řadová číslovka před „stupeň“: 2. stupeň, před 2. stupněm
+
 export function typo(s) {
   return String(s)
     .replace(DATUM, (m, d, mo, y, t) => `${d}.${NB}${mo}.${NB}${y}${t ? NB + t : ""}`)
     .replace(JEDNOTKY, `$1${NB}$2`)
+    .replace(STUPEN, `$1.${NB}`)
     .replace(PREDLOZKY, `$1$2${NB}`)
     .replace(TISICE, `$1${NB}$2`);
 }
