@@ -9,6 +9,7 @@
   const N = slajdy.length;
   const HLAVNICH = 9;
   const video = document.getElementById('video');
+  const videoRam = document.querySelector('.video-ram');
   const hudCas = document.getElementById('hud-cas');
   const poznamky = document.getElementById('poznamky');
   const cerna = document.getElementById('cerna');
@@ -165,14 +166,79 @@
     kategorie(6, ['předpověď', 'na 15. 9.'], true);
   }
 
-  /* mapa na slajdu 2: jen 7 hlavních stanic s dobou doběhu do Děčína (docs/DATA.md, korelace změn průtoku);
-     popisek: posun od stanice, zarovnání, název, hodiny */
-  const POPISKY = {
-    decin: [26, 2, 'start', 'Děčín', ''], usti: [28, 42, 'start', 'Ústí nad Labem', '4 h'], louny: [-20, 62, 'start', 'Louny', '16 h'],
-    melnik: [28, 8, 'start', 'Mělník', '13 h'], praha: [30, 16, 'start', 'Praha-Chuchle', '17 h'], nymburk: [26, -16, 'start', 'Nymburk', '10 h'],
-    beroun: [-26, 6, 'end', 'Beroun', '23 h'],
-  };
-  const NAZVY_REK = [['Vltava', 215, 700], ['Labe', 455, 330], ['Ohře', 90, 330], ['Berounka', 290, 975], ['Sázava', 495, 962], ['horní Labe', 1040, 870]];
+  /* mapa na slajdu 2: jen 7 hlavních stanic s dobou doběhu do Děčína (docs/DATA.md, korelace změn průtoku).
+     Popisek stanice má dva řádky (název, pod ním „· 17 h“ menším tlumeným písmem), název se nikdy nedělí; místo se hledá
+     postupně vpravo, vlevo, pod, nad a šikmo od tečky tak, aby popisek neležel přes řeku, přes jinou stanici ani jiný popisek
+     a zůstal celý v mapě (viewBox). Názvy řek leží podél toků mimo stanice. */
+  const CASY = { decin: '', usti: '4 h', louny: '16 h', melnik: '13 h', praha: '17 h', nymburk: '10 h', beroun: '23 h' };
+  const NAZVY_REK = [['Vltava', 215, 700], ['Labe', 455, 330], ['Ohře', 90, 330], ['Berounka', 290, 975], ['Sázava', 495, 962], ['Jizera', 730, 620], ['horní Labe', 1040, 870]];
+  const MAPA_HRANICE = [-30, 20, 1230, 1030];
+  const RADEK2 = 40, VYSKA1 = 32, VYSKA2 = 26, OKRAJ = 10;
+  /* kandidáti: [kde, vodorovné posuny]; svislá poloha se počítá z výšky bloku (jeden nebo dva řádky) */
+  const KANDIDATI = [['vpravo', [28, 44, 60]], ['vlevo', [28, 44, 60]], ['pod', [0]], ['nad', [0]], ['vpravo-nad', [28, 44]], ['vpravo-pod', [28, 44]], ['vlevo-nad', [28, 44]], ['vlevo-pod', [28, 44]]];
+  const mapaBody = d => { const c = d.match(/-?\d+(?:\.\d+)?/g).map(Number), b = []; for (let k = 0; k + 1 < c.length; k += 2) b.push([c[k], c[k + 1]]); return b; };
+  function usekVObdelniku(ax, ay, bx, by, r) {
+    let t0 = 0, t1 = 1;
+    const dx = bx - ax, dy = by - ay, p = [-dx, dx, -dy, dy], q = [ax - r[0], r[2] - ax, ay - r[1], r[3] - ay];
+    for (let k = 0; k < 4; k++) {
+      if (p[k] === 0) { if (q[k] < 0) return false; continue; }
+      const t = q[k] / p[k];
+      if (p[k] < 0) { if (t > t1) return false; if (t > t0) t0 = t; } else { if (t < t0) return false; if (t < t1) t1 = t; }
+    }
+    return true;
+  }
+  const prekryv = (a, b) => a[0] < b[2] && b[0] < a[2] && a[1] < b[3] && b[1] < a[3];
+  const bbox = t => { const b = t.getBBox(); return [b.x, b.y, b.x + b.width, b.y + b.height]; };
+  let mapaPopisky = [];
+  function rozmistiPopisky() {
+    const svg = document.getElementById('mapa'), R = window.REKA;
+    if (!svg || !R || !mapaPopisky.length) return;
+    const reky = [R.hlavni, ...Object.values(R.pritoky)].map(mapaBody);
+    const kruhy = mapaPopisky.map(p => [p.s.x - p.r, p.s.y - p.r, p.s.x + p.r, p.s.y + p.r]);
+    const obsazeno = Array.from(svg.querySelectorAll('.reka-nazev')).map(bbox);
+    const koliduje = o => {
+      if (o[0] < MAPA_HRANICE[0] || o[1] < MAPA_HRANICE[1] || o[2] > MAPA_HRANICE[2] || o[3] > MAPA_HRANICE[3]) return true;
+      const r = [o[0] - OKRAJ, o[1] - OKRAJ, o[2] + OKRAJ, o[3] + OKRAJ];
+      for (const k of kruhy) if (prekryv(r, k)) return true;
+      for (const z of obsazeno) if (prekryv(r, z)) return true;
+      for (const b of reky) for (let k = 0; k + 1 < b.length; k++) if (usekVObdelniku(b[k][0], b[k][1], b[k + 1][0], b[k + 1][1], r)) return true;
+      return false;
+    };
+    mapaPopisky.forEach(p => {
+      const { s, t, tspan, r } = p, dva = !!tspan, vyska = dva ? VYSKA1 + RADEK2 + VYSKA2 : VYSKA1;
+      const poloz = (x, y, kotva) => {
+        t.setAttribute('x', x); t.setAttribute('y', y); t.setAttribute('text-anchor', kotva);
+        if (tspan) { tspan.setAttribute('x', x); tspan.setAttribute('dy', RADEK2); }
+      };
+      let hotovo = false;
+      for (const [kde, posuny] of KANDIDATI) {
+        for (const d of posuny) {
+          const vpravo = kde.startsWith('vpravo'), vlevo = kde.startsWith('vlevo');
+          const kotva = vlevo ? 'end' : 'start';
+          const x = vpravo ? s.x + d : vlevo ? s.x - d : s.x - 16;
+          let y;                                                     /* účaří prvního řádku */
+          if (kde === 'vpravo' || kde === 'vlevo') y = s.y + VYSKA1 - vyska / 2;
+          else if (kde === 'pod' || kde.endsWith('-pod')) y = s.y + (kde === 'pod' ? r + 16 : 4) + VYSKA1;
+          else y = s.y - (kde === 'nad' ? r + 16 : 4) - vyska + VYSKA1;
+          poloz(x, y, kotva);
+          if (!koliduje(bbox(t))) { hotovo = true; break; }
+        }
+        if (hotovo) break;
+      }
+      if (!hotovo) poloz(s.x + 28, s.y + VYSKA1 - vyska / 2, 'start');
+      obsazeno.push(bbox(t));
+    });
+  }
+  /* kontrola po rozmístění: dvojice textů mapy, které se překrývají, a texty mimo viewBox (pro ověření, prázdné pole = v pořádku) */
+  function mapaKolize() {
+    const texty = Array.from(document.querySelectorAll('#mapa text')), chyby = [];
+    const b = texty.map(bbox);
+    texty.forEach((t, a) => {
+      if (b[a][0] < MAPA_HRANICE[0] || b[a][1] < MAPA_HRANICE[1] || b[a][2] > MAPA_HRANICE[2] || b[a][3] > MAPA_HRANICE[3]) chyby.push([t.textContent, 'mimo mapu']);
+      for (let c = a + 1; c < texty.length; c++) if (prekryv(b[a], b[c])) chyby.push([t.textContent, texty[c].textContent]);
+    });
+    return chyby;
+  }
   function postavMapu() {
     const svg = document.getElementById('mapa'), R = window.REKA;
     if (!R) return;
@@ -181,15 +247,22 @@
     NAZVY_REK.forEach(([t, x, y]) => svg.appendChild(el('text', { x, y, class: 'reka-nazev', 'text-anchor': 'middle' }, t)));
     const poradi = ['praha', 'beroun', 'melnik', 'nymburk', 'louny', 'usti', 'decin'];
     poradi.forEach((k, n) => {
-      const s = R.stanice[k], p = POPISKY[k], cil = k === 'decin' || k === 'usti';
+      const s = R.stanice[k], cil = k === 'decin' || k === 'usti', r = cil ? 16 : 12;
       const g = el('g', { class: 'stanice' + (cil ? ' cil' : '') });
       g.style.transitionDelay = (380 + n * 45) + 'ms';
-      g.appendChild(el('circle', { cx: s.x, cy: s.y, r: cil ? 16 : 12 }));
-      const t = el('text', { x: s.x + p[0], y: s.y + p[1] + 12, 'text-anchor': p[2] }, p[3]);
-      if (p[4]) t.appendChild(el('tspan', { class: 'cas' }, ' · ' + p[4]));
+      g.appendChild(el('circle', { cx: s.x, cy: s.y, r }));
+      const t = el('text', { x: s.x, y: s.y }, s.nazev);
+      let tspan = null;
+      if (CASY[k]) { tspan = el('tspan', { class: 'cas', x: s.x, dy: RADEK2 }, '· ' + CASY[k]); t.appendChild(tspan); }
       g.appendChild(t);
       svg.appendChild(g);
+      mapaPopisky.push({ s, t, tspan, r });
     });
+    /* nejdřív stanice s nejmenším výběrem místa (u soutoků), pak ostatní */
+    const prednost = ['usti', 'louny', 'nymburk', 'melnik', 'beroun', 'praha', 'decin'];
+    mapaPopisky.sort((a, b) => prednost.indexOf(Object.keys(R.stanice).find(k => R.stanice[k] === a.s)) - prednost.indexOf(Object.keys(R.stanice).find(k => R.stanice[k] === b.s)));
+    rozmistiPopisky();
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(rozmistiPopisky);
     svg.querySelectorAll('.reka-nazev').forEach(t => { t.style.transitionDelay = '700ms'; });
     svg.querySelectorAll('.tok').forEach(p => {
       const L = p.getTotalLength();
@@ -217,14 +290,18 @@
   function postavMini() {
     const R = window.REKA;
     if (!R) return;
+    /* viewBox: vpravo končí na konci popisku „Praha“ (x 500), nahoře na horní hraně verzálek „Děčín“ (účaří 22 − 0,727 × 150),
+       dole na spodní hraně řádku „Praha“ (účaří 985 + 34 dotahů; verzálky začínají na 876, pod tečkou v Praze, která končí na 869);
+       zarovnání xMaxYMin: pravý a horní okraj SVG jsou přesně pravý okraj obsahu a horní hrana nadpisu, výška boxu (168 px) určuje měřítko 0,152 */
     slajdy.forEach(s => {
-      const svg = el('svg', { viewBox: '150 -70 370 1030', class: 'reka-mini', 'aria-hidden': 'true' });
+      const svg = el('svg', { viewBox: '150 -87 350 1106', preserveAspectRatio: 'xMaxYMin meet', class: 'reka-mini', 'aria-hidden': 'true' });
       const p = el('path', { d: R.hlavni });
       svg.appendChild(p);
       svg.appendChild(el('text', { x: 300, y: 22, 'text-anchor': 'middle' }, 'Děčín'));
-      svg.appendChild(el('text', { x: 500, y: 956, 'text-anchor': 'end' }, 'Praha'));
+      svg.appendChild(el('text', { x: 500, y: 985, 'text-anchor': 'end' }, 'Praha'));
       const g = el('g', { class: 'tecka' });
-      g.appendChild(el('circle', { cx: 0, cy: 0, r: 30 }));
+      g.appendChild(el('circle', { cx: 0, cy: 0, r: 60, class: 'halo' }));   /* měkké halo, pulz v CSS */
+      g.appendChild(el('circle', { cx: 0, cy: 0, r: 38 }));
       svg.appendChild(g);
       s.appendChild(svg);
       const L = p.getTotalLength();
@@ -316,15 +393,71 @@
     };
     f();
   }
+  /* video se stáhne celé dopředu (fetch → blob), aby se při přehrávání nezadrhávalo o síť; než je hotové, slajd 1 ukazuje
+     v rohu tlumený ukazatel s procenty a krok 1 (mezerník) počká a spustí se sám, jakmile je blob hotový.
+     Když stažení selže (offline, file://), hraje se rovnou z adresy. Video má vlastní vrstvu (translateZ) kvůli plynulosti. */
+  let videoHotove = false, videoCeka = false;
+  function videoNacti() {
+    if (!video) return;
+    video.style.transform = 'translateZ(0)';
+    const src = video.dataset.src;
+    if (!src) { videoHotove = true; return; }
+    const ukazatel = h('p', 'video-nacita', 'Video se načítá…');
+    slajdy[0].appendChild(ukazatel);
+    let posledni = -1;
+    const procenta = p => { const c = Math.floor(p * 100); if (c !== posledni) { posledni = c; ukazatel.textContent = `Video se načítá… ${c} %`; } };
+    const hotovo = url => {
+      if (videoHotove) return;
+      videoHotove = true;
+      video.src = url;
+      ukazatel.classList.add('hotovo');
+      setTimeout(() => ukazatel.remove(), 400);
+      if (i === 0 && krok === 1 && videoCeka) { videoCeka = false; videoKrok(1); }
+      else if (i === 0 && krok === 2) { video.pause(); videoNaKonec(); }
+      videoCeka = false;
+    };
+    if (!window.fetch || !window.ReadableStream || location.protocol === 'file:') { hotovo(src); return; }
+    fetch(src).then(async r => {
+      if (!r.ok || !r.body) throw new Error(String(r.status));
+      const celkem = +r.headers.get('Content-Length') || 0;
+      const ctecka = r.body.getReader(), kusy = [];
+      let nacteno = 0;
+      for (;;) {
+        const { done, value } = await ctecka.read();
+        if (done) break;
+        kusy.push(value);
+        nacteno += value.length;
+        if (celkem) procenta(nacteno / celkem);
+      }
+      hotovo(URL.createObjectURL(new Blob(kusy, { type: r.headers.get('Content-Type') || 'video/mp4' })));
+    }).catch(() => hotovo(src));
+  }
+  /* GPU vrstva rámu jen po dobu přechodu do karty; po něm will-change: auto, ať se obraz vykreslí ostře v konečném měřítku */
+  let videoRamCasovac = 0;
+  function videoRamPrechod(hned) {
+    if (!videoRam) return;
+    clearTimeout(videoRamCasovac);
+    if (hned || REDUKCE) { videoRam.style.willChange = 'auto'; return; }
+    videoRam.style.willChange = 'transform';
+    videoRamCasovac = setTimeout(() => { videoRam.style.willChange = 'auto'; }, 700);
+  }
+  if (videoRam) {
+    videoRam.style.willChange = 'auto';
+    videoRam.addEventListener('transitionend', e => { if (e.target === videoRam && e.propertyName === 'transform') { clearTimeout(videoRamCasovac); videoRam.style.willChange = 'auto'; } });
+  }
   function videoKrok(k, hned) {
+    const bylaKarta = slajdy[0].classList.contains('je-karta');
     slajdy[0].classList.toggle('je-karta', k === 2);
+    if (bylaKarta !== (k === 2)) videoRamPrechod(hned);
     if (k === 2) miniKresli(0, hned); else miniSchovej(0);
     if (!video) return;
+    if (k !== 1) videoCeka = false;
     if (k === 0) {
       video.pause();
       try { video.currentTime = 0; } catch (e) { /* bez videa */ }
     } else if (k === 1) {
       if (hned) return;
+      if (!videoHotove) { videoCeka = true; return; }
       if (video.ended || (video.duration && video.currentTime >= video.duration - 0.1)) { try { video.currentTime = 0; } catch (e) { /* bez videa */ } }
       const p = video.play();
       if (p && p.catch) p.catch(() => {});
@@ -502,8 +635,9 @@
   postavSoucet();
   postavMapu();
   postavMini();
+  videoNacti();
   const zHashe = parseInt(location.hash.slice(1), 10);
   prejdi(zHashe >= 1 && zHashe <= N ? zHashe - 1 : 0);
 
-  window.deck = { prejdi, dalsi, predchozi, nastavKrok, tisk, get slajd() { return i; }, get krok() { return krok; } };
+  window.deck = { prejdi, dalsi, predchozi, nastavKrok, tisk, mapaKolize, get slajd() { return i; }, get krok() { return krok; }, get videoHotove() { return videoHotove; } };
 })();

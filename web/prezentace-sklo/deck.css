@@ -442,3 +442,33 @@ body[data-krok-slajdu="2"] .video .reka-mini { opacity: 1; }
 @media print {
   .snimek-mapy .schema, .snimek-mapy .schema.je { opacity: 1; inset: auto 28px 28px auto; width: 46%; height: 64%; padding: 8px 12px; border-radius: 14px; box-shadow: 0 2px 12px rgba(0, 0, 0, 0.18); }
 }
+
+/* === doplněno spolu s hlavním deck.css (video jako blob, karta videa na celých pixelech, halo tečky, dva řádky popisku stanice) === */
+/* nový viewBox linie řeky 350 × 1106 (deck.js): obsah 70 × 220 sedí v kapsli symetricky (výška kapsle beze změny) */
+.reka-mini { width: 70px; }
+/* měkké halo kolem tečky: pulz 2,4 s (scale 1 → 1,35, průhlednost 0,35 → 0), jen na aktivním slajdu; tečka sama stojí */
+.reka-mini .tecka .halo { stroke: none; opacity: 0; transform-box: fill-box; transform-origin: center; }
+.slajd.aktivni .reka-mini .tecka .halo { animation: pulz 2400ms var(--ven) infinite; }
+@keyframes pulz { 0% { transform: scale(1); opacity: 0.35; } 70% { transform: scale(1.35); opacity: 0; } 100% { transform: scale(1); opacity: 0; } }
+/* karta videa: měřítko 0,55 dává celé pixely (1056 × 594), karta 784–1840 × 272–866; will-change jen po dobu přechodu (deck.js) */
+.video-ram { will-change: auto; }
+.video.je-karta .video-ram { transform: translate(784px, 272px) scale(0.55); }
+/* ukazatel stahování videa: malá tlumená pilulka v levém dolním rohu, zmizí prolnutím, jakmile je video stažené (deck.js) */
+.video-nacita {
+  position: absolute; left: 40px; bottom: 40px; z-index: 3; margin: 0; padding: 10px 22px 12px; border-radius: var(--pilulka); pointer-events: none;
+  background: rgba(255, 255, 255, 0.72); -webkit-backdrop-filter: blur(18px) saturate(180%); backdrop-filter: blur(18px) saturate(180%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6), 0 1px 2px rgba(0, 0, 0, 0.05), 0 8px 24px rgba(0, 0, 0, 0.08);
+  font-weight: 600; font-size: 22px; line-height: 1.2; color: var(--text2); font-variant-numeric: tabular-nums; transition: opacity 300ms var(--ven);
+}
+.video-nacita.hotovo { opacity: 0; }
+/* popisek pod kartou videa: zarovnaný na levý okraj karty (784), 16 px pod její spodní hranou (866) */
+.video-popis { position: absolute; left: 784px; top: 882px; margin: 0; font-size: 22px; line-height: 1.3; color: var(--text3); white-space: nowrap; }
+/* druhý řádek popisku stanice („· 17 h“) menším tlumeným písmem */
+#mapa .stanice text tspan.cas { font-size: 36px; }
+@media (prefers-reduced-motion: reduce) {
+  .reka-mini .tecka .halo { animation: none !important; opacity: 0 !important; }
+}
+@media print {
+  .video .video-ram { transform: translate(784px, 272px) scale(0.55); }
+  .video-nacita { display: none !important; }
+}
