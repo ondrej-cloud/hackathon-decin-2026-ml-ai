@@ -20,11 +20,11 @@ Celkem 714 slov, při 130 slovech za minutu 5:29 mluvení. Zbytek do 6:45 je vid
 
 - Otázka: Co řešíte a pro koho?
 - Musí zaznít: hladina v Děčíně a Ústí za 12, 24 a 36 h; varování před 2. a 3. stupněm; komise, hasiči, lidi u řeky.
-- Na slajdu: video rozlivu Borise přes celou obrazovku, bez zvuku (`web/prezentace/video/boris_decin_720.mp4`, 24 s, náhled `grafy/video_decin_poster.jpg`). Po videu zůstane poslední snímek, nadpis a velké **27 h**.
+- Na slajdu: video povodně 6/2013 v Děčíně přes celou obrazovku, bez zvuku (`web/prezentace/video/povoden_2013_decin_1080.mp4`, 24 s, 1. 6. až 6. 6. 2013, vlevo rozliv z předpovědi vydané 24 h předem modelem učeným bez této povodně, vpravo ze skutečné hladiny, vrchol 1 072 cm proti předpovědi 952 cm; náhled `grafy/video_2013_poster.jpg`). Po videu zůstane poslední snímek, nadpis a velké **27 h** (Boris).
 
 Video běží 20 s bez mluvení, pak Honza přes konec videa:
 
-> Tohle je Děčín v září 2024. Náš model to hlásil 27 hodin předem. Předpovídáme hladinu v Děčíně a Ústí na 12, 24 a 36 hodin a varujeme před druhým a třetím stupněm. Pro komisi, hasiče a lidi u řeky je to den navíc.
+> Tohle je Děčín v červnu 2013: vlevo předpověď den předem, vpravo skutečnost. Borise 2024 hlásil model 27 hodin předem. Předpovídáme hladinu v Děčíně a Ústí na 12, 24 a 36 hodin, varujeme před druhým a třetím stupněm: komisi, hasičům a lidem u řeky.
 
 43 slov (strop 43, mluví se od 20. sekundy videa).
 
@@ -126,7 +126,7 @@ Zdroje: `docs/PREHLED.md` (test), `results/krizova_validace/` a `docs/POKUSY.md`
 
 - Otázka: Co z toho má město?
 - Musí zaznít: z předpovězené hladiny mapa rozlivu; výška terénu proti výšce hladiny; proti úřední mapě záplavových území shoda 82 až 90 %; vlevo předpověď den předem, vpravo skutečnost; běží živě na webu.
-- Na slajdu: `grafy/08_mapa_rozlivu.png` přes celý slajd (povodeň 4/2006 v Děčíně, vlevo rozliv z předpovědi vydané 24 h předem, vpravo ze skutečné hladiny: 869 proti 829 cm, pod vodou 208 proti 194 ha), dole adresa field-zero.netlify.app a QR kód.
+- Na slajdu: `grafy/08_mapa_rozlivu.png` přes celý slajd (povodeň 6/2013 v Děčíně, největší v datech, model ji při učení neviděl; vlevo rozliv z předpovědi vydané 24 h předem 952 cm, vpravo ze skutečné hladiny 1 072 cm, vrchol 6. 6. 2013 2:00), dole adresa field-zero.netlify.app a QR kód.
 
 > Co z toho má město? Z předpovězené hladiny aplikace nakreslí, kam až voda dosáhne: porovná výšku terénu s výškou hladiny. Proti úřední mapě záplavových území to sedí z 82 až 90 procent. Vlevo rozliv z předpovědi vydané den předem, vpravo ze skutečnosti. Běží to živě na webu, každou hodinu nová předpověď.
 
