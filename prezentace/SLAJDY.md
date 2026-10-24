@@ -1,6 +1,6 @@
 # Slajdy a texty řečníků
 
-Devět slajdů na 6:45, rezerva 15 s do 7:00, pak dvanáct záložních. Každý slajd odpovídá na jednu otázku, kterou by porota položila; nadpis slajdu je odpověď a pod ním jsou věci, které musí zaznít. Text řečníka je napsaný tak, jak se říká nahlas, na zhruba 130 slov za minutu. `[mezerník]` je další krok decku. Živé demo neděláme, web otevíráme až při otázkách. Body zadání: 1 co řešíme, 2 data, 3 příprava dat, 4 vstupy, 5 model, 6 ověření, 7 limity.
+Devět slajdů na 6:45, rezerva 15 s do 7:00, pak sedmnáct záložních. Každý slajd odpovídá na jednu otázku, kterou by porota položila; nadpis slajdu je odpověď a pod ním jsou věci, které musí zaznít. Text řečníka je napsaný tak, jak se říká nahlas, na zhruba 130 slov za minutu. `[mezerník]` je další krok decku. Živé demo neděláme, web otevíráme až při otázkách. Body zadání: 1 co řešíme, 2 data, 3 příprava dat, 4 vstupy, 5 model, 6 ověření, 7 limity.
 
 | # | Čas | Řečník | Otázka poroty | Nadpis (odpověď) | Bod |
 |---|---|---|---|---|---|
@@ -238,4 +238,8 @@ Přímka je vztah mezi tím, co teče proti proudu, a hladinou v Děčíně, ne 
 Graf `grafy/Z12_jeden_a_98_vstupu.png`. Odpovídá Ondra.
 
 S 98 vstupy nejde nakreslit přímku proti jednomu z nich, potřebovala by 98 os. Když ale na osu x dáme celý vážený součet, tedy předpověď modelu, a na osu y skutečnou hladinu o 24 h později, je model zase přímka a přesná předpověď leží na úhlopříčce. Na validaci (hodiny, které model neviděl, Děčín +24 h): s jediným vstupem (průtok v Mělníku) jsou body rozházené, průměrná chyba 26,5 cm, a nad 1. stupněm se přímka ohýbá vedle; s 98 vstupy leží těsně u úhlopříčky, 7,5 cm. Je to chyba přes všechny hodiny, při povodních je u Děčína na 24 h 15,5 cm (naše hlavní číslo 17,1 cm je průměr přes Děčín, Ústí a 12, 24, 36 h). Každý vstup zvlášť barevně do jednoho grafu dát nejde: mají různé jednotky (cm a m³/s) a přímka patří k jejich součtu, ne k jednomu z nich; po řekách sečtené příspěvky pro jednu hodinu ukazuje slajd 5.
+
+### Z13 až Z17 · Textové záložní slajdy bez grafu
+
+V HTML decku jako text, odpovědi podrobně v `OTAZKY.md`: Z13 Jak znáte hladinu bez šířky koryta? (otázka 6), Z14 Jak se model učí? (26 až 31, vzorce na sklon a bias), Z15 K čemu je předpověď den předem? (39, tabulka Borise), Z16 Předpovídáte i povodně z deště v kraji? (34 a 38), Z17 Proč má předpověď výkyvy a zuby? (41).
 
