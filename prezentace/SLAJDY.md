@@ -14,7 +14,7 @@ Devět slajdů na 6:45, rezerva 15 s do 7:00, pak dvanáct záložních. Každý
 | 8 | 5:25–5:55 | Tobias | Co z toho má město? | Z předpovědi mapa: kam až voda dosáhne | 1 |
 | 9 | 5:55–6:45 | Tobias | Kde to selže? | Co neumíme a co dál | 7 |
 
-Celkem 797 slov, při 130 slovech za minutu 6:07 mluvení. Zbytek do 6:45 je ticho nad videem (asi 12 s) a pauzy na kroky decku.
+Celkem 799 slov, při 130 slovech za minutu 6:08 mluvení. Zbytek do 6:45 je ticho nad videem (asi 12 s) a pauzy na kroky decku.
 
 ## 1 · Den předem víme, kam v Děčíně dosáhne voda (0:00–0:40, Honza)
 
@@ -75,7 +75,7 @@ Pak asi 12 s ticho, voda se rozlévá mezi domy. Po dohrání, s nadpisem a 18 h
 - Musí zaznít: laťka „bude jako teď“ 44 cm; čtyři modely se stejnými pravidly a u každého jedna věta, proč prohrál; výběr před testem; úpravy přímky nic přes 1 cm.
 - Na slajdu: `grafy/04_cesta_k_modelu.png`, tři skupiny sloupců (začátek, čtyři modely, úpravy přímky), odkrývají se mezerníkem.
 
-> Začali jsme nejjednodušším odhadem: že hladina za den bude stejná jako dnes. Při povodních se plete o 44 centimetrů a model s daty jen z balíčku vyšel stejně.
+> Začali jsme nejjednodušším odhadem: že hladina za den bude stejná jako dnes. Při povodních se plete o 44 centimetrů, model jen z balíčku stejně.
 >
 > [mezerník]
 >
@@ -85,7 +85,7 @@ Pak asi 12 s ticho, voda se rozlévá mezi domy. Po dohrání, s nadpisem a 18 h
 >
 > Pak jsme zkoušeli vylepšit i ji: dobu putování podle průtoku, polynom, větší váhu povodní, všechna malá zlepšení dohromady. Nic nebylo lepší o víc než centimetr.
 
-143 slov (strop 140).
+139 slov (strop 140).
 
 Zdroje: `docs/CESTA_MODELU.md` (sekce 1, 2 a 6). LightGBM a povodeň 2013: první pokus pá 17:46, vrchol 823 místo 1 072 cm. Síť 128-64 má asi 21 tisíc vah, verze 64-32 měla na tréninku 5 cm a na validaci 22 cm.
 
@@ -95,13 +95,13 @@ Zdroje: `docs/CESTA_MODELU.md` (sekce 1, 2 a 6). LightGBM a povodeň 2013: prvn�
 - Musí zaznít: voda v Děčíně je součet Vltavy, horního Labe a Ohře, lineární regrese je vážený součet; příklad Borise den předem 198 → 577 cm, nad 3. stupněm; každé číslo umíme vysvětlit; citát ze zadání.
 - Na slajdu: `grafy/05_soucet_rek.png` (v HTML decku animovaný součet, šest kroků mezerníkem), vpravo číslo, které roste 198 → 577 cm, a štítek **3. stupeň · nad 560 cm**. Dole citát „Cílem není vytvořit co nejsložitější model.“ (zadání).
 
-> Proč vyhrála přímka? Voda v Děčíně je součet toho, co přiteče po Vltavě, horním Labi a Ohři, a lineární regrese je přesně vážený součet. Tady je předpověď z Borise, vydaná den předem. Průměr 198 centimetrů,
+> Proč vyhrála přímka? Voda v Děčíně je součet toho, co přiteče po Vltavě, horním Labi a Ohři, a lineární regrese je přesně takový vážený součet. Tady je skutečná předpověď z Borise, vydaná den předem. Začíná na průměru, 198 centimetrů.
 >
-> [mezerník] Děčín a Ústí plus 80, [mezerník] Vltava 89, [mezerník] horní Labe 116, [mezerník] Mělník 96, [mezerník] Ohře minus 2.
+> [mezerník] Děčín a Ústí přidají 80, [mezerník] Vltava 89, [mezerník] horní Labe 116, [mezerník] Mělník 96, [mezerník] Ohře ubere 2.
 >
-> [mezerník] Vyjde 577, nad třetím stupněm, a model varoval. Každé číslo umíme vysvětlit. A zadání samo říká: cílem není co nejsložitější model.
+> [mezerník] Vyjde 577, nad třetím stupněm, a model varoval. Každé z těch čísel umíme vysvětlit. A zadání samo říká: cílem není co nejsložitější model.
 
-71 slov (strop 86).
+77 slov (strop 86).
 
 ## 6 · Ověřeno třikrát na povodních, které model neviděl (3:55–4:30, Honza)
 
