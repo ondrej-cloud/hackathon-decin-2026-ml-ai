@@ -1,10 +1,10 @@
 // Čárový graf v SVG bez knihoven: hladina v čase, pás nejistoty, čáry stupňů povodňové aktivity, odečet pod kurzorem.
-// cfg: {serie: [{nazev, x: [Date], y: [cm|null], barva, sirka, car, body, trojuhelnik}], pas: {x, lo, hi}|null,
-//       spa: [prahy], svisla: Date|null, vyska, osaY, legenda: element|null}
+// cfg: {serie: [{nazev, x: [Date], y: [cm|null], barva, sirka, car, body, trojuhelnik, stitek}], pas: {x, lo, hi}|null,
+//       spa: [prahy], svisla: Date|null, vyska, osaY}; stitek = název řady na konci čáry
 import { BARVY, BARVY_SPA } from "./data.js";
 import { NB, cislo, denMesic, hodina, isoZ, datumCas, typo } from "./typo.js";
 
-const NA_SPA = [BARVY.studna, BARVY.studna, BARVY.text];
+const NA_SPA = [BARVY.text, BARVY.text, "#ffffff"];
 
 export function graf(el, cfg) {
   el.__cfg = cfg;
@@ -46,7 +46,9 @@ function vykresli(el) {
   const cfg = el.__cfg;
   const W = Math.max(280, el.clientWidth || 600), VY = cfg.vyska || 400;
   const uzke = W < 520;
-  const m = { l: uzke ? 40 : 52, r: 14, t: 12, b: 40 };
+  // štítky na konci čar: na šířku mají místo vpravo od čáry, na telefonu je nahrazuje krátká legenda pod grafem
+  const stitkove = cfg.serie.filter((sr) => sr.stitek && sr.nazev);
+  const m = { l: uzke ? 46 : 52, r: stitkove.length && !uzke ? Math.min(150, Math.max(...stitkove.map((sr) => sr.nazev.length)) * 7.5 + 20) : 14, t: 12, b: 40 };
   const vx = (d) => d.getTime();
   const vsechnyX = [], vsechnyY = [];
   for (const s of cfg.serie) { for (const d of s.x) vsechnyX.push(vx(d)); for (const v of s.y) if (v != null) vsechnyY.push(v); }
@@ -74,24 +76,50 @@ function vykresli(el) {
     if (body.length > 1) {
       const horni = body.map(([x, , hi]) => `${x.toFixed(1)},${Y(hi).toFixed(1)}`);
       const dolni = body.map(([x, lo]) => `${x.toFixed(1)},${Y(lo).toFixed(1)}`).reverse();
-      s.push(`<path d="M${horni.join("L")}L${dolni.join("L")}Z" fill="${BARVY.vodaSvetla}" fill-opacity=".16"/>`);
+      s.push(`<path d="M${horni.join("L")}L${dolni.join("L")}Z" fill="${BARVY.modraSvetla}" fill-opacity=".35"/>`);
     }
   }
 
   (cfg.spa || []).forEach((prah, i) => {
     if (!spaVidet.includes(prah)) return;
     const yp = Y(prah).toFixed(1);
-    s.push(`<line x1="${m.l}" x2="${W - m.r}" y1="${yp}" y2="${yp}" stroke="${BARVY_SPA[i]}" stroke-width="1.2" stroke-dasharray="2 4"/>`);
-    const text = `${i + 1}. stupeň · ${prah} cm`, sir = uzke ? 86 : 104;
-    s.push(`<rect x="${m.l + 6}" y="${(+yp - 20).toFixed(1)}" width="${sir}" height="18" rx="3" fill="${BARVY_SPA[i]}"/>`);
-    s.push(`<text x="${m.l + 6 + sir / 2}" y="${(+yp - 7).toFixed(1)}" text-anchor="middle" class="spa-text" fill="${NA_SPA[i]}">${uzke ? `${i + 1}. st. · ${prah}` : text}</text>`);
+    s.push(`<line x1="${m.l}" x2="${W - m.r}" y1="${yp}" y2="${yp}" stroke="${BARVY_SPA[i]}" stroke-width="1.5" stroke-dasharray="3 4"/>`);
   });
 
   if (cfg.svisla) {
     const x = X(vx(cfg.svisla)).toFixed(1);
-    s.push(`<line x1="${x}" x2="${x}" y1="${m.t}" y2="${VY - m.b}" stroke="rgba(230,235,240,0.3)"/>`);
+    s.push(`<line x1="${x}" x2="${x}" y1="${m.t}" y2="${VY - m.b}" stroke="${BARVY.caraSilna}" stroke-width="1.5"/>`);
   }
 
+  // body a úseky řad v pixelech: pilulky prahů se umísťují tam, kde neprotínají křivky
+  const bodyRad = [], useky = [];
+  for (const sr of cfg.serie) {
+    let pred = null;
+    sr.x.forEach((d, i) => {
+      const v = sr.y[i];
+      if (v == null) { pred = null; return; }
+      const b = [X(vx(d)), Y(v)];
+      bodyRad.push(b);
+      if (pred && !sr.jenBody) useky.push([pred[0], pred[1], b[0], b[1]]);
+      pred = b;
+    });
+  }
+  const obsazeneObd = [];
+  const protina = (r, okraj = 6) => {
+    const x0 = r.x - okraj, x1 = r.x + r.w + okraj, y0 = r.y - okraj, y1 = r.y + r.h + okraj;
+    const uvnitr = (x, y) => x >= x0 && x <= x1 && y >= y0 && y <= y1;
+    if (bodyRad.some(([x, y]) => uvnitr(x, y))) return true;
+    for (const [ax, ay, bx, by] of useky) {
+      if (Math.max(ax, bx) < x0 || Math.min(ax, bx) > x1 || Math.max(ay, by) < y0 || Math.min(ay, by) > y1) continue;
+      // úsek protíná obdélník, když kříží některou jeho hranu (krajní body uvnitř už odchytily body řad)
+      if (ax !== bx) for (const xe of [x0, x1]) { const k = (xe - ax) / (bx - ax); if (k >= 0 && k <= 1 && uvnitr(xe, ay + k * (by - ay))) return true; }
+      if (ay !== by) for (const ye of [y0, y1]) { const k = (ye - ay) / (by - ay); if (k >= 0 && k <= 1 && uvnitr(ax + k * (bx - ax), ye)) return true; }
+    }
+    return obsazeneObd.some((o) => !(o.x + o.w < r.x || o.x > r.x + r.w || o.y + o.h < r.y || o.y > r.y + r.h));
+  };
+  const odstup = (r) => Math.min(...bodyRad.map(([x, y]) => Math.hypot(Math.max(0, r.x - x, x - r.x - r.w), Math.max(0, r.y - y, y - r.y - r.h))));
+
+  const stitky = [];
   for (const sr of cfg.serie) {
     const cesty = []; let kus = [];
     sr.x.forEach((d, i) => {
@@ -110,10 +138,51 @@ function vykresli(el) {
         if (v == null) return;
         const x = X(vx(d)).toFixed(1), y = Y(v).toFixed(1);
         if (sr.trojuhelnik) s.push(`<path d="M${x} ${y}l9 -6v12z" fill="${sr.barva}"/>`);
-        else s.push(`<circle cx="${x}" cy="${y}" r="${i === 0 && sr.prvniMaly ? 4 : 6}" fill="${sr.barva}" stroke="${BARVY.studna}" stroke-width="2"/>`);
+        else s.push(`<circle cx="${x}" cy="${y}" r="${i === 0 && sr.prvniMaly ? 4 : 6}" fill="${sr.barva}" stroke="#ffffff" stroke-width="2"/>`);
       });
     }
+    // štítek přímo na konci čáry místo legendy (jen na šířku; na telefonu je legenda pod grafem)
+    if (sr.stitek && sr.nazev && !uzke) {
+      let k = sr.y.length - 1;
+      while (k >= 0 && sr.y[k] == null) k--;
+      if (k >= 0) stitky.push({ x: X(vx(sr.x[k])), y: Y(sr.y[k]) + 4, text: sr.nazev, barva: sr.barva });
+    }
   }
+
+  // pilulky prahů: zleva nad čarou, zleva pod čarou, zprava nad, zprava pod; první místo, kde nic neprotínají.
+  // Když takové není, pilulka je poloprůhledná s textem s halo, aby čára pod ní zůstala vidět.
+  (cfg.spa || []).forEach((prah, i) => {
+    if (!spaVidet.includes(prah)) return;
+    const yp = Y(prah), sir = uzke ? 92 : 112, vys = 20;
+    // kandidáti: okraje nad/pod čarou, pak vnitřní polohy podél čáry zleva (křivky často kříží čáru jen u okrajů)
+    const xL = m.l + 8, xR = W - m.r - sir - 8, krok = Math.max(24, (xR - xL) / 10), nad = yp - vys - 2, pod = yp + 2;
+    const kand = [[xL, nad], [xL, pod], [xR, nad], [xR, pod]];
+    for (let x = xL + krok; x < xR - 1; x += krok) kand.push([x, nad], [x, pod]);
+    // poslední možnost: o řádek dál od čáry (na úzkém grafu u okrajů často nezbývá místo)
+    for (const x of [xL, xR]) kand.push([x, nad - vys - 4], [x, pod + vys + 4]);
+    const kandO = kand.filter(([, y]) => y >= m.t && y + vys <= VY - m.b).map(([x, y]) => ({ x, y, w: sir, h: vys }));
+    let r = kandO.find((o) => !protina(o));
+    const volne = !!r;
+    if (!r) r = kandO.slice().sort((a, b) => odstup(b) - odstup(a))[0] || { x: xL, y: nad, w: sir, h: vys };
+    obsazeneObd.push(r);
+    const halo = volne ? "" : ` stroke="${NA_SPA[i] === "#ffffff" ? BARVY_SPA[i] : "#ffffff"}"`;
+    s.push(`<rect x="${r.x.toFixed(1)}" y="${r.y.toFixed(1)}" width="${sir}" height="${vys}" rx="10" fill="${BARVY_SPA[i]}"${volne ? "" : ' fill-opacity=".92"'}/>`);
+    s.push(`<text x="${(r.x + sir / 2).toFixed(1)}" y="${(r.y + 14).toFixed(1)}" text-anchor="middle" class="spa-text${volne ? "" : " halo"}" fill="${NA_SPA[i]}"${halo}>${uzke ? `${i + 1}. st. · ${prah}` : `${i + 1}. stupeň · ${prah} cm`}</text>`);
+  });
+
+  stitky.sort((a, b) => a.y - b.y);
+  for (let k = 1; k < stitky.length; k++) stitky[k].y = Math.max(stitky[k].y, stitky[k - 1].y + 16);
+  const presah = stitky.length ? stitky[stitky.length - 1].y - (VY - m.b - 4) : 0;
+  for (const st of stitky) {
+    const y = Math.max(m.t + 10, st.y - Math.max(0, presah)).toFixed(1);
+    s.push(`<text x="${(st.x + 10).toFixed(1)}" y="${y}" class="cara-stitek" fill="${st.barva}">${typo(st.text)}</text>`);
+  }
+  // legenda pod grafem jen na telefonu: všechny pojmenované řady, značka odpovídá kresbě čáry
+  const legenda = uzke && stitkove.length ? `<div class="graf-legenda">${cfg.serie.filter((sr) => sr.nazev).map((sr) => {
+    const znak = sr.jenBody && sr.trojuhelnik ? `<path d="M7 5l9 -6v12z" fill="${sr.barva}"/>`
+      : `<line x1="0" x2="22" y1="5" y2="5" stroke="${sr.barva}" stroke-width="${sr.sirka || 2}"${sr.car ? ` stroke-dasharray="${sr.car}"` : ""}/>${sr.body ? `<circle cx="11" cy="5" r="4" fill="${sr.barva}" stroke="#ffffff" stroke-width="1.5"/>` : ""}`;
+    return `<span><svg width="22" height="10" aria-hidden="true">${znak}</svg>${typo(sr.nazev)}</span>`;
+  }).join("")}</div>` : "";
 
   s.push(`<g class="osa">`);
   s.push(`<line x1="${m.l}" x2="${m.l}" y1="${m.t}" y2="${VY - m.b}"/><line x1="${m.l}" x2="${W - m.r}" y1="${VY - m.b}" y2="${VY - m.b}"/>`);
@@ -133,18 +202,14 @@ function vykresli(el) {
     s.push(`<line x1="${x.toFixed(1)}" x2="${x.toFixed(1)}" y1="${VY - m.b}" y2="${VY - m.b + 4}"/>`);
     if (!t.ukaz) continue;
     const kotva = x > W - 30 ? "end" : x < m.l + 10 ? "start" : "middle";
-    s.push(`<text x="${x.toFixed(1)}" y="${VY - m.b + 18}" text-anchor="${kotva}"${t.velky ? ' fill="#c8d1d9"' : ""}>${t.text}</text>`);
+    s.push(`<text x="${x.toFixed(1)}" y="${VY - m.b + 18}" text-anchor="${kotva}"${t.velky ? ' fill="#1d1d1f" font-weight="600"' : ""}>${t.text}</text>`);
   }
   if (cfg.osaY && !uzke) s.push(`<text class="osa-nazev" transform="translate(12 ${((VY - m.b + m.t) / 2).toFixed(1)}) rotate(-90)" text-anchor="middle">${cfg.osaY}</text>`);
   s.push(`</g>`);
   s.push(`<g class="kurzor" hidden><line y1="${m.t}" y2="${VY - m.b}"/></g>`);
   s.push(`<rect class="plocha" x="${m.l}" y="${m.t}" width="${W - m.l - m.r}" height="${VY - m.t - m.b}" fill="transparent"/>`);
 
-  el.innerHTML = `<svg viewBox="0 0 ${W} ${VY}" width="${W}" height="${VY}" role="img" aria-label="${cfg.popis || "graf hladiny"}">${s.join("")}</svg><div class="graf-tip" hidden></div>`;
-  if (cfg.legenda) {
-    cfg.legenda.innerHTML = `<ul class="legenda">${cfg.serie.filter((sr) => sr.nazev).map((sr) =>
-      `<li><i class="${sr.trojuhelnik ? "troj" : ""}" style="color:${sr.barva}${sr.car ? ";border-top-style:dashed" : ""}"></i>${typo(sr.nazev)}</li>`).join("")}${cfg.pas && cfg.pas.nazev ? `<li><i class="pas"></i>${typo(cfg.pas.nazev)}</li>` : ""}</ul>`;
-  }
+  el.innerHTML = `<svg viewBox="0 0 ${W} ${VY}" width="${W}" height="${VY}" role="img" aria-label="${cfg.popis || "graf hladiny"}">${s.join("")}</svg>${legenda}<div class="graf-tip" hidden></div>`;
 
   // odečet pod kurzorem: nejbližší hodina, hodnoty všech řad v ní
   const svg = el.firstElementChild, tip = el.lastElementChild, kurzor = svg.querySelector(".kurzor");
@@ -173,9 +238,12 @@ function vykresli(el) {
       `<div><i style="background:${cfg.serie[k].barva}"></i>${cfg.serie[k].nazev}${NB}<span>${cislo(v)}${NB}cm</span></div>`).join("");
     tip.hidden = false;
     const px = x / W * r.width;
-    const vlevo = px > r.width * 0.6;
-    tip.style.left = vlevo ? "auto" : `${px + 14}px`;
-    tip.style.right = vlevo ? `${r.width - px + 14}px` : "auto";
+    // vpravo od kurzoru; když se nevejde, vlevo; když ani tam ne (úzký graf), přisadit k pravému okraji grafu
+    let vlevoPx = px + 14;
+    if (vlevoPx + tip.offsetWidth > r.width) vlevoPx = px - 14 - tip.offsetWidth;
+    if (vlevoPx < 0) vlevoPx = Math.max(0, r.width - tip.offsetWidth);
+    tip.style.left = `${vlevoPx}px`;
+    tip.style.right = "auto";
     tip.style.top = `${Math.max(0, (e.clientY - r.top) - 20)}px`;
   });
   plocha.addEventListener("pointerleave", () => { tip.hidden = true; kurzor.hidden = true; });

@@ -4,10 +4,9 @@ import { typo } from "./typo.js";
 export const $ = (s, el = document) => el.querySelector(s);
 export const $$ = (s, el = document) => [...el.querySelectorAll(s)];
 
-export function tiraz({ okamzik, model, zdroj, zive = false }) {
-  $("#t-okamzik").textContent = typo(okamzik);
-  $("#t-model").textContent = model;
-  $("#t-data").innerHTML = `<i class="tecka${zive ? " zive" : ""}"></i>${typo(zdroj)}`;
+export function tiraz({ okamzik }) {
+  const el = $("#t-okamzik");
+  if (el) el.textContent = typo(okamzik);
 }
 
 export const hlaska = (text, druh = "") => `<div class="hlaska${druh ? " " + druh : ""}" role="status">${typo(text)}</div>`;
@@ -59,4 +58,20 @@ export function naZmenu(kontejner, jmeno, fn) {
 
 export function chyba(el, text) {
   el.innerHTML = hlaska(text, "varovani");
+}
+
+// Panel Nastavení: na telefonu je sbalený na jeden řádek se shrnutím, tlačítko Změnit ho rozbalí.
+export function panelSbaleni(panel) {
+  const prepnout = $(".panel-prepnout", panel);
+  if (!prepnout) return;
+  prepnout.addEventListener("click", () => {
+    const otevrit = !panel.classList.contains("otevreny");
+    panel.classList.toggle("otevreny", otevrit);
+    prepnout.setAttribute("aria-expanded", String(otevrit));
+    prepnout.textContent = otevrit ? "Hotovo" : "Změnit";
+  });
+}
+export function shrnutiPanelu(casti) {
+  const el = $("#panel-shrnuti");
+  if (el) el.textContent = typo(casti.filter(Boolean).join("\u00A0· "));
 }

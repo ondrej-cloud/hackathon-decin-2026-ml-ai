@@ -68,7 +68,7 @@ def stupne(ax, cil="decin"):
 
 
 # hlavní slajdy ------------------------------------------------------------------------------------------------------
-def s02b_doba_dobehu():
+def z9_doba_dobehu():
     # src/doba_dobehu.py, posun s největší korelací změn průtoku, trénink; docs/DATA.md (Doba doběhu do Děčína)
     stanice = [("Ústí nad Labem (Labe)", 4), ("Kostelec (Labe)", 10), ("Nymburk (Labe)", 10), ("Mělník (Labe)", 13),
                ("Vraňany (Vltava)", 13), ("Louny (Ohře)", 16), ("Praha (Vltava)", 17), ("Předměřice (Jizera)", 18),
@@ -90,7 +90,7 @@ def s02b_doba_dobehu():
     ax.set_xlabel("doba doběhu (h)")
     ax.xaxis.set_major_locator(MultipleLocator(6))
     osa_cisla(ax, "x")
-    uloz(fig, "02b_doba_dobehu.png")
+    uloz(fig, "Z9_doba_dobehu.png")
 
 
 def s03_co_model_bere():
@@ -255,7 +255,49 @@ def povoden(titulek, ridge_soubor, jako_ted_soubor, od, do, nazev, mesic):
 
 def s07_boris():
     return povoden("Boris 2024: varování {h} hodin předem", "ridge_test", "jako_ted_test", "2024-09-10",
-                   "2024-09-22 23:00", "07_boris_2024.png", 9)
+                   "2024-09-22 23:00", "07a_boris_2024.png", 9)
+
+
+def s08b_jak_pocitame_rozliv():
+    # schéma příčného řezu údolím; čísla hladiny jako Děčín při pětileté vodě (app/rozliv_dem.py, docs/DATA.md)
+    x = np.linspace(-400, 400, 801)
+    teren = 125 + 0.003 * np.abs(x) - 4.5 * np.exp(-(x / 45) ** 2)  # koryto a mírně stoupající niva
+    teren += 4.5 * np.exp(-((x - 120) / 14) ** 2)  # val
+    teren -= 2.2 * np.exp(-((x - 175) / 30) ** 2)  # prohlubeň za valem
+    teren += np.where(x > 260, 0.04 * (x - 260), 0) + np.where(x < -300, 0.03 * (-300 - x), 0)  # svahy údolí
+    hladina = 120.07 + 7.07
+    pod = teren < hladina
+    spojeno = np.zeros_like(pod)
+    stred = len(x) // 2
+    for krok in (1, -1):  # od koryta na obě strany, dokud je terén pod hladinou
+        i = stred
+        while 0 <= i < len(x) and pod[i]:
+            spojeno[i] = True
+            i += krok
+    fig, ax = graf("Jak se počítá rozliv: terén proti hladině", (0.09, 0.13, 0.86, 0.72))
+    ax.fill_between(x, 115, teren, color="#cfc6b8", zorder=1)
+    ax.fill_between(x, teren, hladina, where=spojeno, color=MODRA_SVETLA, zorder=2, interpolate=True)
+    ax.fill_between(x, teren, hladina, where=pod & ~spojeno, facecolor="none", edgecolor=SEDA, hatch="///", lw=0,
+                    zorder=2, interpolate=True)
+    ax.plot(x, teren, color=INK2, lw=1.5, zorder=3)
+    ax.plot(x[::10], teren[::10], "o", ms=2.5, color=INK2, zorder=3)
+    ax.axhline(hladina, color=MODRA, lw=2.2, zorder=4)
+    ax.text(-395, 132.4, "hladina 127,14 m n. m. = nula vodočtu 120,07 m + 7,07 m", fontsize=15, color=MODRA,
+            weight="semibold", va="top")
+    ax.text(0, 121.6, "koryto", ha="center", fontsize=15, color=INK)
+    sipka = dict(arrowstyle="-|>", color=INK, lw=1.2)
+    ax.annotate("zaplaveno: níž než hladina\na spojené s řekou", (-180, 126.4), xytext=(-180, 129.6), ha="center",
+                fontsize=15, color=INK, arrowprops=sipka)
+    ax.annotate("níž, ale za valem: suché", (190, 125.6), xytext=(230, 130.2), ha="center", fontsize=15, color=INK,
+                arrowprops=sipka)
+    ax.text(345, 124.6, "body terénu,\nve skutečnosti\nkaždé 2 m", ha="center", fontsize=14, color=INK2)
+    ax.set_xlim(-400, 400)
+    ax.set_ylim(118, 133)
+    ax.set_xlabel("vzdálenost od osy řeky (m)")
+    ax.set_ylabel("výška (m n. m.)")
+    ax.grid(False)
+    osa_cisla(ax)
+    uloz(fig, "08b_jak_pocitame_rozliv.png")
 
 
 def dvojice_sloupcu(ax, x, a, b, s=0.36):
@@ -409,7 +451,7 @@ def z8_test():
     uloz(fig, "Z8_test_2021_2025.png")
 
 
-def z9_vicenasobna():
+def s07b_vicenasobna():
     R = pd.read_csv(sorted((RESULTS / "krizova_validace").glob("*.csv"))[-1])
     P = R.groupby(["povoden", "model"]).chyba.mean().unstack()
     P = P.loc[sorted(P.index)]
@@ -430,10 +472,10 @@ def z9_vicenasobna():
     ax.yaxis.set_major_locator(MultipleLocator(20))
     osa_cisla(ax)
     ax.legend(loc="upper left", ncol=2, frameon=False)
-    uloz(fig, "Z9_vicenasobna_validace.png")
+    uloz(fig, "07b_vicenasobna_validace.png")
 
 
-def z10_proc_externi_data():
+def s02b_proc_externi_data():
     z = json.loads(sorted((RESULTS / "kolik_dat").glob("*_kolik_dat.json"))[-1].read_text(encoding="utf-8"))
     balicek = next(r for r in z["souhrn"] if r["sada"] == "kraj" and r["let"] == 2)["prumer_povodne"]
     h = [prumer(posledni("jako_ted")), balicek, prumer(posledni("ridge"))]
@@ -446,19 +488,21 @@ def z10_proc_externi_data():
     ax.set_ylabel(CHYBA)
     ax.yaxis.set_major_locator(MultipleLocator(10))
     osa_cisla(ax)
-    uloz(fig, "Z10_proc_externi_data.png")
+    uloz(fig, "02b_proc_externi_data.png")
 
 
 if __name__ == "__main__":
     CIL.mkdir(exist_ok=True)
-    shutil.copy(GRAFY / "mapbox2_porovnani.png", CIL / "01_mapa_decin.png")
+    shutil.copy(GRAFY / "mapbox2_porovnani.png", CIL / "08_mapa_rozlivu.png")
     shutil.copy(GRAFY / "mapbox_povodi.png", CIL / "02a_mapa_stanic.png")
-    s02b_doba_dobehu()
+    s02b_proc_externi_data()
     s03_co_model_bere()
     s04_cesta_k_modelu()
     print("  součet:", s05_soucet_rek())
     s06_jak_overujeme()
     print("  Boris předstih h:", s07_boris())
+    s07b_vicenasobna()
+    s08b_jak_pocitame_rozliv()
     z1_srovnani_modelu()
     z2_jako_ted()
     z3_srazky()
@@ -466,5 +510,4 @@ if __name__ == "__main__":
     print("  2011 předstih h:", z5_povoden_2011())
     z6_vahy()
     z8_test()
-    z9_vicenasobna()
-    z10_proc_externi_data()
+    z9_doba_dobehu()

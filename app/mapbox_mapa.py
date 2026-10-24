@@ -10,7 +10,11 @@ V aplikaci (stejné argumenty jako mapa.deck):
 Animace povodně s porovnáním předpověď × skutečnost (od a do jako animace.okno):
     st.iframe(mapbox_mapa.html_animace(od, do, "decin", nazev, "Děčín"), height=720)
 Stránka animace má pro nahrávání videa globální funkce prehraj(), pauza(), nastavRychlost(h), skoc(i),
-skocNaVrchol(), porovnat(true/false), zavriUvod() a stavPrehravace(); na konci vyšle událost povoden-konec.
+skocNaVrchol(), porovnat(true/false), zavriUvod(), stavPrehravace() a prelet(pohled); na konci vyšle událost
+povoden-konec. Na stránce je vlevo nahoře přepínač pohledů, vpravo nahoře datum a přepínače zobrazení (satelit,
+popisky, zajímavá místa, 3D objekty, názvy ulic, úřední území) s tlačítkem Celá obrazovka a dole průhledný přehrávač
+s grafem hladiny. Boxy jsou průsvitné sklo (Liquid Glass), mapa pod nimi prosvítá. Porovnání předpověď × skutečnost
+není v ovládání, zapne ho jen porovnat(true) z JS (video a kontroly). Podklad je pevně soumrak a výchozí téma.
 """
 import json
 import math
@@ -45,6 +49,10 @@ MESICE = ["leden", "únor", "březen", "duben", "květen", "červen", "červenec
           "prosinec"]
 JMENA_POVODNI = {(2024, 9): "Boris"}
 NABEH = 48  # h; přehrávání začne dva dny před 1. stupněm, ať se nečeká na klidné dny na začátku okna
+# barvy stanic jako v grafech a na webu: bez stupně modrá grafů, stupně žlutá, oranžová, červená (mapa.BARVY má zelenou)
+BARVY_PULT = ([22, 124, 156], [242, 196, 55], [239, 108, 0], [198, 40, 40])
+SEDA_PULT = [142, 142, 147]
+PREBARVI = {tuple(a): b for a, b in zip(mapa.BARVY, BARVY_PULT)} | {tuple(mapa.SEDA): SEDA_PULT}
 OKOLI_DEM = 50  # cm; do animace jdou jen polygony hladin, které okno povodně potřebuje
 MAX_DEM = 4_000_000  # bajtů; když je jich víc, vložíme jen hladiny po 20 cm
 
@@ -101,7 +109,8 @@ def _stanice(cas, predpovedi):
     for b in mapa._stanice(cas, predpovedi):
         lon, lat, _ = b["pozice"]
         prvky.append({"type": "Feature", "geometry": {"type": "Point", "coordinates": [lon, lat]}, "properties": {
-            "prutok": round(b["prutok"], 1), "barva": "rgb({},{},{})".format(*b["barva"]), "popisek": b["popisek"],
+            "prutok": round(b["prutok"], 1), "barva": "rgb({},{},{})".format(*PREBARVI.get(tuple(b["barva"]), b["barva"])),
+            "popisek": b["popisek"],
             "tooltip": escape(b["tooltip"]).replace("\n", "<br>"),
         }})
     return {"type": "FeatureCollection", "features": prvky}
@@ -159,43 +168,39 @@ def _rada(hodnoty, mist=0):
     return [None if pd.isna(v) else round(float(v), mist) for v in hodnoty]
 
 
+# ikona záložky jako na webu (vodočet), vložená přímo, ať nic nehledá /favicon.ico ani v iframu
+IKONA = """<link rel="icon" href="data:image/svg+xml,%3Csvg%20viewBox='0%200%2044%2044'%20width='44'%20height='44'%20aria-hidden='true'%20xmlns='http://www.w3.org/2000/svg'%3E%3Crect%20width='44'%20height='44'%20rx='12'%20fill='%23167c9c'/%3E%3Crect%20x='15'%20y='4'%20width='14'%20height='36'%20rx='2'%20fill='%23ffffff'/%3E%3Cg%20stroke='%23167c9c'%20stroke-width='1.2'%20stroke-opacity='.8'%3E%3Cline%20x1='15'%20x2='29'%20y1='8'%20y2='8'/%3E%3Cline%20x1='15'%20x2='22'%20y1='11'%20y2='11'/%3E%3Cline%20x1='15'%20x2='22'%20y1='14'%20y2='14'/%3E%3Cline%20x1='15'%20x2='22'%20y1='17'%20y2='17'/%3E%3Cline%20x1='15'%20x2='29'%20y1='20'%20y2='20'/%3E%3Cline%20x1='15'%20x2='22'%20y1='23'%20y2='23'/%3E%3Cline%20x1='15'%20x2='22'%20y1='26'%20y2='26'/%3E%3Cline%20x1='15'%20x2='22'%20y1='29'%20y2='29'/%3E%3Cline%20x1='15'%20x2='29'%20y1='32'%20y2='32'/%3E%3Cline%20x1='15'%20x2='22'%20y1='35'%20y2='35'/%3E%3Cline%20x1='15'%20x2='22'%20y1='38'%20y2='38'/%3E%3C/g%3E%3Cpath%20d='M15%2027h14v11a2%202%200%200%201-2%202H17a2%202%200%200%201-2-2z'%20fill='%239fcad8'/%3E%3Cpath%20d='M8%2027h28'%20stroke='%23ffffff'%20stroke-width='2.2'%20stroke-linecap='round'/%3E%3C/svg%3E">"""
+
+
 def _stranka(data, porovnani=False, pisma=None):
     data = json.dumps(data, ensure_ascii=False, separators=(",", ":")).replace("</", "<\\/")
     plugin = (f'<link href="{POROVNANI}/mapbox-gl-compare.css" rel="stylesheet">\n'
               f'<script src="{POROVNANI}/mapbox-gl-compare.js"></script>') if porovnani else ""
     return (STRANKA.replace("__MAPBOX__", MAPBOX).replace("__POROVNANI__", plugin).replace("__PISMA__", _pisma(pisma))
-            .replace("__DATA__", data))
+            .replace("__IKONA__", IKONA).replace("__DATA__", data))
 
 
 def _pisma(pisma):
-    """Písma webu: ze složky `pisma` (na webu ../fonts/), bez ní z Google Fonts (aplikace, iframe bez souborů)."""
+    """Písmo jako v grafech: systémové (na Macu San Francisco), záloha Inter ze složky `pisma` (na webu ../fonts/).
+    Bez složky (iframe v aplikaci) jen systémové písmo, žádné stahování z Google Fonts."""
     if pisma:
         return PISMA_LOKALNE.replace("__PISMA__", pisma)
-    return PISMA_GOOGLE
+    return ""
 
 
 PISMA_LOKALNE = '''<style>
-@font-face { font-family: "Schibsted Grotesk"; font-style: normal; font-weight: 400 800; font-display: swap;
-  src: url("__PISMA__schibsted-grotesk-latin.woff2") format("woff2");
+@font-face { font-family: "Inter"; font-style: normal; font-weight: 100 900; font-display: swap;
+  src: url("__PISMA__inter-latin.woff2") format("woff2");
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
-@font-face { font-family: "Schibsted Grotesk"; font-style: normal; font-weight: 400 800; font-display: swap;
-  src: url("__PISMA__schibsted-grotesk-latin-ext.woff2") format("woff2");
-  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF; }
-@font-face { font-family: "Sofia Sans Extra Condensed"; font-style: normal; font-weight: 500 800; font-display: swap;
-  src: url("__PISMA__sofia-sans-extra-condensed-latin.woff2") format("woff2");
-  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
-@font-face { font-family: "Sofia Sans Extra Condensed"; font-style: normal; font-weight: 500 800; font-display: swap;
-  src: url("__PISMA__sofia-sans-extra-condensed-latin-ext.woff2") format("woff2");
+@font-face { font-family: "Inter"; font-style: normal; font-weight: 100 900; font-display: swap;
+  src: url("__PISMA__inter-latin-ext.woff2") format("woff2");
   unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF; }
 </style>'''
-PISMA_GOOGLE = '''<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400..800&family=Sofia+Sans+Extra+Condensed:wght@500..800&display=swap" rel="stylesheet">'''
 
 
 def _spolecne(token, pohled, cile=tuple(MESTA)):
-    return {"token": token, "kamery": KAMERY, "pohled": pohled, "pohledy": POHLEDY, "barvy": mapa.BARVY,
-            "seda": mapa.SEDA, "spa_barvy": BARVY, "reky": json.loads(REKY.read_text(encoding="utf-8")),
+    return {"token": token, "kamery": KAMERY, "pohled": pohled, "pohledy": POHLEDY, "barvy": BARVY_PULT,
+            "seda": SEDA_PULT, "spa_barvy": BARVY, "reky": json.loads(REKY.read_text(encoding="utf-8")),
             "budovy": [b for b in map(nacti_budovy, cile) if b]}
 
 
@@ -288,7 +293,7 @@ def html_animace(od, do, cil="decin", model="ridge", pohled="Děčín", nazev=No
 
 
 BEZ_TOKENU = """<!doctype html><html lang="cs"><meta charset="utf-8">
-<body style="margin:0;padding:24px;background:#0c1720;color:#eef3f6;font:15px sans-serif">
+<body style="margin:0;padding:24px;background:#f5f5f7;color:#1d1d1f;font:17px/1.5 -apple-system,BlinkMacSystemFont,'SF Pro Text','Helvetica Neue',Inter,Helvetica,sans-serif">
 Mapa v Mapbox GL potřebuje MAPBOX_TOKEN v souboru .env. Bez něj použijte mapu z mapa.py.</body></html>"""
 
 STRANKA = r"""<!doctype html>
@@ -297,266 +302,243 @@ STRANKA = r"""<!doctype html>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Labe · mapa povodně</title>
+__IKONA__
 __PISMA__
 <link href="__MAPBOX__/mapbox-gl.css" rel="stylesheet">
 <script src="__MAPBOX__/mapbox-gl.js"></script>
 __POROVNANI__
 <style>
 :root {
-  --pozadi: #0b0f13;
-  --sklo: rgba(15, 20, 25, 0.92);
-  --okraj: rgba(255, 255, 255, 0.08);
-  --karta: rgba(255, 255, 255, 0.04);
-  --karta-aktivni: rgba(255, 255, 255, 0.12);
-  --text: #e6ebf0;
-  --tlumene: #8b98a5;
-  --voda: #3aa0c9;
-  --voda-svetla: #7cc6e4;
-  --plne: #1e78dc;
-  --pismo: "Schibsted Grotesk", sans-serif;
-  --cisla: "Sofia Sans Extra Condensed", "Schibsted Grotesk", sans-serif;
-  --lista: 0px;  /* výška přehrávače, nastaví ji skript */
+  --pozadi: #f5f5f7;
+  --sklo: rgba(255, 255, 255, 0.58);
+  --sklo-hrana: inset 0 1px 0 rgba(255, 255, 255, 0.75), 0 0 0 1px rgba(255, 255, 255, 0.35), 0 12px 40px rgba(0, 0, 0, 0.18);
+  --linka: rgba(29, 29, 31, 0.12);
+  --karta: #ffffff;
+  --okraj: #e5e5ea;
+  --okraj-silny: #d2d2d7;
+  --draha: #e9e9eb;
+  --text: #1d1d1f;
+  --tlumene: #6e6e73;
+  --terciarni: #86868b;
+  --modra: #167c9c;
+  --modra-tmava: #136b88;
+  --modra-svetla: #9fcad8;
+  --oranzova: #cb6c31;
+  --stin: 0 1px 2px rgba(0, 0, 0, 0.04), 0 10px 30px rgba(0, 0, 0, 0.06);
+  --stin-segment: 0 1px 2px rgba(0, 0, 0, 0.1), 0 3px 8px rgba(0, 0, 0, 0.08);
+  --r: 24px;
+  --ven: cubic-bezier(0.16, 1, 0.3, 1);
+  --pismo: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Helvetica Neue", "Inter", Helvetica, sans-serif;
+  --lista: 0px;  /* výška přehrávače nad tiráží, nastaví ji skript */
+  color-scheme: light;
 }
 * { box-sizing: border-box; }
 html, body { margin: 0; height: 100%; background: var(--pozadi); color: var(--text); overflow: hidden;
-  font: 14px/1.4 var(--pismo); }
-.datum, .cm, .lista-cas b, .hodnota b, #stitky span b, .srovnani td { font-variant-numeric: tabular-nums; }
+  font: 14px/1.45 var(--pismo); -webkit-font-smoothing: antialiased; }
+.datum, .cas, .cm, .hlava span, .najeti span, .prah span, .vrchol span, .dny, #stitky span { font-variant-numeric: tabular-nums; }
 #mapy, .mapa { position: absolute; inset: 0; }
 #mapa-b { display: none; }
-.sklo { position: absolute; background: var(--sklo); border: 1px solid var(--okraj); border-radius: 12px;
-  backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); box-shadow: 0 8px 28px rgba(0, 0, 0, 0.35); }
-.sklo { z-index: 2; }
-.vlevo { top: 12px; left: 12px; width: 236px; padding: 11px; max-height: calc(100% - 56px - var(--lista)); overflow: auto; }
-.vpravo { top: 12px; right: 12px; width: 300px; padding: 11px 12px; max-height: calc(100% - 56px - var(--lista)); overflow: auto; }
-.vlevo::-webkit-scrollbar, .vpravo::-webkit-scrollbar { width: 6px; }
-.vlevo::-webkit-scrollbar-thumb, .vpravo::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.15); border-radius: 3px; }
-h2 { margin: 0 0 6px; font-size: 11px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--tlumene); }
-section + section { margin-top: 12px; }
-button { font: inherit; color: inherit; cursor: pointer; }
-button:focus-visible { outline: 2px solid var(--voda); outline-offset: 1px; }
-.polozka { display: flex; align-items: center; gap: 10px; width: 100%; text-align: left; padding: 7px 9px; margin-top: 4px;
-  background: var(--karta); border: 1px solid var(--okraj); border-radius: 9px;
-  transition: background-color 0.15s ease-out, border-color 0.15s ease-out; }
-.polozka:hover { background: rgba(255, 255, 255, 0.08); }
-.polozka:active, .volba:active, .akce:active { transform: scale(0.98); }
-.polozka[aria-pressed="true"] { background: var(--karta-aktivni); border-color: rgba(255, 255, 255, 0.85); }
-.polozka svg { flex: none; width: 20px; height: 20px; stroke: currentColor; fill: none; stroke-width: 1.6;
-  stroke-linecap: round; stroke-linejoin: round; color: var(--voda); }
-.polozka b { display: block; font-weight: 600; }
-.polozka small { display: block; color: var(--tlumene); font-size: 12px; }
-.akce-radek { display: flex; gap: 6px; margin-top: 12px; }
-.akce { flex: 1; padding: 7px 6px; font-weight: 600; font-size: 13px; background: var(--karta); border: 1px solid var(--okraj);
-  border-radius: 9px; transition: background-color 0.15s ease-out; }
-.akce:hover { background: rgba(255, 255, 255, 0.08); }
-.akce[aria-pressed="true"] { background: var(--karta-aktivni); border-color: rgba(255, 255, 255, 0.85); }
-.popis { margin-top: 12px; padding-top: 10px; border-top: 1px solid var(--okraj); color: var(--tlumene); font-size: 12.5px; }
-.popis i { display: inline-block; width: 9px; height: 9px; border-radius: 50%; margin: 0 3px 0 5px; vertical-align: -1px; }
-.popis i.plocha { border-radius: 2px; }
-.mrizka { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
-.mrizka.tri { grid-template-columns: 1fr 1fr 1fr; }
-.volba { display: flex; align-items: center; justify-content: center; gap: 7px; padding: 6px; font-weight: 600; font-size: 13px;
-  background: var(--karta); border: 1px solid var(--okraj); border-radius: 9px;
-  transition: background-color 0.15s ease-out, border-color 0.15s ease-out; }
-.volba:hover { background: rgba(255, 255, 255, 0.08); }
-.volba[aria-pressed="true"] { background: var(--karta-aktivni); border-color: rgba(255, 255, 255, 0.85); }
-.volba:disabled { opacity: 0.35; cursor: default; }
-.volba svg { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 1.7; stroke-linecap: round; }
-.tema { flex-direction: column; gap: 5px; }
-.tecky { display: flex; gap: 3px; }
-.tecky span { width: 9px; height: 9px; border-radius: 50%; }
-.prepinac { display: flex; align-items: center; justify-content: space-between; gap: 6px; width: 100%; padding: 3px 0;
-  background: none; border: 0; font-size: 13px; white-space: nowrap; text-align: left; }
-.prepinac:disabled { opacity: 0.35; cursor: default; }
-.prepinac span:last-child { flex: none; width: 30px; height: 17px; border-radius: 9px; background: rgba(255, 255, 255, 0.16);
-  position: relative; transition: background-color 0.15s ease-out; }
-.prepinac span:last-child::after { content: ""; position: absolute; top: 2px; left: 2px; width: 13px; height: 13px;
-  border-radius: 50%; background: #fff; transition: transform 0.18s cubic-bezier(0.2, 0, 0, 1); }
-.prepinac[aria-checked="true"] span:last-child { background: var(--voda); }
-.prepinac[aria-checked="true"] span:last-child::after { transform: translateX(13px); }
-.prepinace { display: grid; grid-template-columns: 1fr 1fr; column-gap: 12px; }
-.datum { font: 700 24px/1.1 var(--cisla); letter-spacing: 0.01em; }
-.radek { display: flex; align-items: baseline; gap: 7px; margin-top: 7px; }
+button { font: inherit; color: inherit; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+button:focus-visible { outline: 2px solid var(--modra); outline-offset: 2px; }
+/* Liquid Glass: průsvitné sklo, mapa pod ním prosvítá; světelná hrana nahoře, vlasová linka kolem a měkký stín.
+   Lehký bílý nádech shora drží text čitelný i nad tmavou mapou za soumraku. */
+.sklo { position: absolute; z-index: 2; border: 0; border-radius: var(--r); color: var(--text);
+  background: linear-gradient(rgba(255, 255, 255, 0.24), rgba(255, 255, 255, 0) 60%), var(--sklo);
+  backdrop-filter: blur(28px) saturate(1.7); -webkit-backdrop-filter: blur(28px) saturate(1.7); box-shadow: var(--sklo-hrana); }
+/* vlevo nahoře: jen tři pohledy jako segmentovaný přepínač */
+.vlevo { top: 12px; left: 12px; padding: 4px; }
+.segment { display: flex; gap: 2px; }
+.segment button { flex: 1 1 auto; min-height: 36px; padding: 6px 14px; font-size: 13px; font-weight: 600; white-space: nowrap;
+  color: var(--tlumene); background: transparent; border: 0; border-radius: 18px;
+  transition: background-color 0.2s ease-out, color 0.2s ease-out, box-shadow 0.2s ease-out, transform 0.1s ease-out; }
+.segment button:hover { color: var(--text); }
+.segment button:active { transform: scale(0.97); }
+.segment button[aria-pressed="true"] { color: var(--text); background: rgba(255, 255, 255, 0.92); box-shadow: var(--stin-segment); }
+/* vpravo nahoře: datum a hodina přehrávaného okamžiku, pod tím přepínače zobrazení */
+.vpravo { top: 12px; right: 12px; width: 272px; padding: 14px 16px 8px; max-height: calc(100% - 56px - var(--lista)); overflow: auto; }
+.vpravo::-webkit-scrollbar { width: 6px; }
+.vpravo::-webkit-scrollbar-thumb { background: var(--okraj-silny); border-radius: 3px; }
+.cas { font-size: 24px; font-weight: 700; letter-spacing: -0.02em; line-height: 1.15; padding-bottom: 12px; border-bottom: 1px solid var(--linka); white-space: nowrap; }
+.cas span { color: var(--tlumene); font-weight: 600; }
+.prepinace { padding-top: 6px; }
+.prepinac { display: flex; align-items: center; justify-content: space-between; gap: 12px; width: 100%; min-height: 34px; padding: 0;
+  font-size: 14px; font-weight: 500; text-align: left; background: transparent; border: 0; border-radius: 8px; }
+.prepinac:disabled { opacity: 0.4; cursor: default; }
+.prepinac span:last-child { position: relative; flex: none; width: 34px; height: 20px; border-radius: 10px; background: rgba(29, 29, 31, 0.2);
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.08); transition: background-color 0.2s ease-out; }
+.prepinac span:last-child::after { content: ""; position: absolute; top: 2px; left: 2px; width: 16px; height: 16px; border-radius: 50%;
+  background: #fff; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25); transition: transform 0.22s var(--ven); }
+.prepinac[aria-checked="true"] span:last-child { background: var(--modra); }
+.prepinac[aria-checked="true"] span:last-child::after { transform: translateX(14px); }
+/* poslední řádek boxu: tlačítko Celá obrazovka ve stejném řádku jako přepínače, vpravo ikona místo kolébky */
+.prepinac.cela { margin-top: 6px; padding-top: 8px; border-top: 1px solid var(--linka); border-radius: 0; font-weight: 600; }
+.prepinac.cela b { flex: none; display: grid; place-items: center; width: 34px; height: 20px; }
+.prepinac.cela svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round;
+  transition: transform 0.22s var(--ven); }
+.prepinac.cela:hover svg { transform: scale(1.08); }
+.nastaveni-tlacitko { display: none; top: 12px; right: 12px; width: 44px; height: 44px; padding: 0; border-radius: 50%; z-index: 3;
+  place-items: center; transition: transform 0.1s ease-out; }
+.nastaveni-tlacitko:active { transform: scale(0.94); }
+.nastaveni-tlacitko svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+/* karta předpovědi statické mapy (bez animace) */
+h2 { margin: 0 0 8px; font-size: 13px; font-weight: 600; color: var(--tlumene); }
+.datum { font-size: 19px; font-weight: 700; letter-spacing: -0.02em; line-height: 1.15; }
+.radek { display: flex; align-items: baseline; gap: 8px; margin-top: 8px; }
 .radek .jmeno { flex: 1; color: var(--tlumene); }
 .radek .jmeno b { color: var(--text); font-weight: 600; }
-.cm { font: 700 22px/1.1 var(--cisla); }
-.cm.pred { color: var(--voda); }
-.odznak { font-size: 11.5px; font-weight: 700; padding: 2px 7px; border-radius: 6px; white-space: nowrap; }
-.mesto + .mesto { margin-top: 6px; padding-top: 6px; border-top: 1px solid var(--okraj); }
-.maly { margin-top: 2px; font-size: 12.5px; color: var(--tlumene); }
-.veta { margin-top: 9px; padding-top: 8px; border-top: 1px solid var(--okraj); font-size: 12.5px; color: var(--tlumene); }
-.veta b { color: var(--text); }
-.srovnani { width: 100%; margin-top: 6px; border-collapse: collapse; font-size: 13px; }
-.srovnani th { font-size: 11px; font-weight: 600; color: var(--tlumene); text-align: left; padding: 0 0 3px; }
-.srovnani td { padding: 3px 4px 3px 0; white-space: nowrap; }
-.srovnani td:first-child { color: var(--tlumene); }
-.srovnani .cm { font-size: 20px; }
-.srovnani .pred { color: var(--voda); }
-.srovnani small { color: var(--tlumene); }
-.segment { display: flex; gap: 4px; margin-top: 9px; }
-.segment .volba { flex: 1; font-size: 12.5px; padding: 5px 4px; }
-/* přehrávač povodně: přes celou šířku mapy nad atribucí */
-.lista { left: 12px; right: 12px; bottom: 32px; padding: 12px 18px 8px; z-index: 3; }
-.lista-horni { display: flex; align-items: center; gap: 24px; }
-.hraj { flex: none; width: 54px; height: 54px; border-radius: 50%; border: 0; background: var(--voda); color: #06141b;
-  display: grid; place-items: center; box-shadow: 0 0 0 5px rgba(58, 160, 201, 0.18);
-  transition: background-color 0.15s ease-out, transform 0.12s ease-out; }
-.hraj:hover { background: var(--voda-svetla); }
+.cm { font-size: 22px; font-weight: 800; letter-spacing: -0.03em; line-height: 1.1; }
+.cm.pred { color: var(--modra); }
+.odznak { font-size: 13px; font-weight: 700; padding: 3px 10px; border-radius: 999px; white-space: nowrap; line-height: 1.2; }
+.mesto + .mesto { margin-top: 8px; padding-top: 8px; border-top: 1px solid var(--linka); }
+.maly { margin-top: 3px; font-size: 12.5px; color: var(--tlumene); }
+/* přehrávač dole přes celou šířku: jen tlačítko a graf hladiny v čase; štítek s hodnotou jede nad grafem s hlavou */
+.lista { left: 12px; right: 12px; bottom: 32px; z-index: 3; padding: 30px 20px 10px; display: grid; grid-template-columns: auto 1fr;
+  column-gap: 18px; align-items: center; border-radius: 28px; }
+.hraj { width: 54px; height: 54px; border-radius: 50%; border: 0; background: var(--modra); color: #fff; display: grid; place-items: center;
+  box-shadow: 0 4px 12px rgba(22, 124, 156, 0.3); transition: background-color 0.2s ease-out, transform 0.1s ease-out; }
+.hraj:hover { background: var(--modra-tmava); }
 .hraj:active { transform: scale(0.95); }
 .hraj svg { width: 22px; height: 22px; fill: currentColor; }
-.lista-cas { flex: none; display: flex; align-items: baseline; gap: 9px; min-width: 196px; }
-.lista-cas b { font: 800 34px/1 var(--cisla); letter-spacing: 0.01em; }
-.lista-cas b + b { color: var(--voda-svetla); }
-.lista-cas small { color: var(--tlumene); font-size: 12px; font-weight: 600; }
-.hodnota { flex: none; display: grid; grid-template-columns: auto auto; justify-content: start; align-items: center; column-gap: 9px; }
-.hodnota-nazev { grid-column: 1 / -1; display: flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 700;
-  letter-spacing: 0.1em; text-transform: uppercase; color: var(--tlumene); }
-.hodnota b { font: 800 32px/1.05 var(--cisla); white-space: nowrap; }
-.hodnota.pred b { color: var(--voda-svetla); }
-.hodnota.rozdil b { font-weight: 700; color: var(--tlumene); }
-.vzor { display: inline-block; width: 14px; height: 3px; border-radius: 2px; background: var(--text); }
-.pred .vzor { background: var(--voda-svetla); }
-.rychlost { margin-left: auto; display: flex; align-items: center; gap: 4px; }
-.rychlost > span { margin-right: 6px; font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--tlumene); }
-.rychlost button { padding: 7px 11px; font-size: 13px; font-weight: 600; background: var(--karta); border: 1px solid var(--okraj);
-  border-radius: 9px; white-space: nowrap; transition: background-color 0.15s ease-out, border-color 0.15s ease-out; }
-.rychlost button:hover { background: rgba(255, 255, 255, 0.08); }
-.rychlost button[aria-pressed="true"] { background: var(--karta-aktivni); border-color: rgba(255, 255, 255, 0.85); }
-.osa { position: relative; height: 74px; margin-top: 12px; cursor: pointer; touch-action: none; border-radius: 6px;
-  background: rgba(255, 255, 255, 0.025); }
-.osa:focus-visible { outline: 2px solid var(--voda); outline-offset: 3px; }
+/* plocha grafu je průhledná, mapa prosvítá; jen jemná mřížka ve čtvrtinách a základna */
+.osa { position: relative; height: 74px; cursor: pointer; touch-action: none; border-radius: 12px;
+  background: linear-gradient(var(--linka), var(--linka)) 0 100% / 100% 1px no-repeat,
+    repeating-linear-gradient(to top, transparent 0 calc(25% - 1px), rgba(29, 29, 31, 0.07) calc(25% - 1px) 25%); }
+.osa:focus-visible { outline: 2px solid var(--modra); outline-offset: 3px; }
 .graf { position: absolute; inset: 0; pointer-events: none; }
 .graf svg, .uvod-graf svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
-.prah { position: absolute; left: 0; right: 0; border-top: 1px dashed var(--c); opacity: 0.8; }
-.prah span { position: absolute; left: calc(4px + var(--k) * 82px); bottom: 1px; padding: 0 4px; border-radius: 4px; background: #0f1419;
-  font-size: 10.5px; font-weight: 700; color: var(--c); white-space: nowrap; }
-.prah span { z-index: 1; }  /* nad čarou vrcholu */
+.prah { position: absolute; left: 0; right: 0; border-top: 1px dashed var(--c); opacity: 0.9; }
+.prah span { position: absolute; left: calc(6px + var(--k) * 88px); bottom: 2px; padding: 1px 7px; border-radius: 999px;
+  background: var(--c); color: var(--t, #fff); font-size: 10.5px; font-weight: 700; white-space: nowrap; z-index: 1; }
 .prah i { font-style: normal; }
-.vrchol { position: absolute; top: 0; bottom: 0; border-left: 1px solid rgba(230, 235, 240, 0.55); }
-.vrchol span { position: absolute; top: 1px; left: 6px; padding: 0 5px; border-radius: 4px; background: rgba(15, 20, 25, 0.85);
-  font-size: 11px; font-weight: 700; white-space: nowrap; }
+.vrchol { position: absolute; top: 0; bottom: 0; border-left: 1px solid rgba(29, 29, 31, 0.35); }
+.vrchol span { position: absolute; top: 3px; left: 6px; padding: 1px 8px; border-radius: 999px; background: rgba(255, 255, 255, 0.72);
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.5), 0 1px 4px rgba(0, 0, 0, 0.12); font-size: 11px; font-weight: 600; white-space: nowrap; }
 .vrchol.vlevo-od span { left: auto; right: 6px; }
-.pasmo { position: absolute; left: 0; right: 0; bottom: -7px; height: 4px; border-radius: 2px; overflow: hidden;
-  background: rgba(255, 255, 255, 0.06); pointer-events: none; }
+.pasmo { position: absolute; left: 0; right: 0; bottom: -8px; height: 4px; border-radius: 2px; overflow: hidden;
+  background: rgba(29, 29, 31, 0.1); pointer-events: none; }
 .pasmo i { position: absolute; top: 0; bottom: 0; }
-.hlava { position: absolute; top: -5px; bottom: -9px; width: 2px; margin-left: -1px; background: #fff; pointer-events: none;
-  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.35); }
+.hlava { position: absolute; top: -5px; bottom: -9px; width: 2px; margin-left: -1px; background: var(--modra); pointer-events: none; }
 .hlava i { position: absolute; left: 50%; width: 12px; height: 12px; margin: -6px 0 0 -6px; border-radius: 50%; background: #fff;
-  box-shadow: 0 0 0 4px rgba(58, 160, 201, 0.45); }
-.najeti { position: absolute; top: 0; bottom: 0; width: 1px; background: rgba(255, 255, 255, 0.4); pointer-events: none; display: none; }
-.najeti span { position: absolute; bottom: calc(100% + 4px); transform: translateX(-50%); padding: 2px 7px; border-radius: 6px;
-  background: #0b0f13; border: 1px solid var(--okraj); font-size: 11.5px; font-weight: 600; white-space: nowrap; }
-.dny { position: relative; height: 15px; margin-top: 11px; font-size: 11px; color: var(--tlumene); }
+  box-shadow: 0 0 0 3px var(--modra), 0 1px 4px rgba(0, 0, 0, 0.25); }
+.hlava span, .najeti span { position: absolute; bottom: calc(100% + 8px); left: 50%; transform: translateX(-50%); padding: 3px 10px;
+  border-radius: 999px; background: rgba(255, 255, 255, 0.8); color: var(--text); font-size: 12.5px; font-weight: 600; line-height: 1.3;
+  white-space: nowrap; backdrop-filter: blur(16px) saturate(1.6); -webkit-backdrop-filter: blur(16px) saturate(1.6);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.85), 0 0 0 1px rgba(255, 255, 255, 0.45), 0 4px 14px rgba(0, 0, 0, 0.16); }
+.hlava span { transition: opacity 0.2s ease-out; }
+.kraj-l span { left: -1px; transform: none; }
+.kraj-p span { left: auto; right: -1px; transform: none; }
+.osa.najizdi .hlava span { opacity: 0; }
+.najeti { position: absolute; top: 0; bottom: 0; width: 1px; background: rgba(29, 29, 31, 0.3); pointer-events: none; display: none; }
+.dny { grid-column: 2; position: relative; height: 15px; margin-top: 10px; font-size: 11.5px; color: rgba(29, 29, 31, 0.72); }
 .dny span { position: absolute; top: 0; transform: translateX(-50%); white-space: nowrap; }
 /* úvodní okno animace */
 .uvod { position: absolute; inset: 0; z-index: 10; display: grid; place-items: center; padding: 16px;
-  background: radial-gradient(ellipse at center, rgba(8, 12, 16, 0.45), rgba(8, 12, 16, 0.82)); transition: opacity 0.3s ease-out; }
+  background: rgba(245, 245, 247, 0.6); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); transition: opacity 0.3s ease-out; }
 .uvod.pryc { opacity: 0; pointer-events: none; }
-.uvod-karta { width: min(640px, 100%); max-height: 100%; overflow: auto; padding: 26px 30px 22px; background: var(--sklo);
-  border: 1px solid var(--okraj); border-radius: 16px; backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
-  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.5); }
-.uvod-nadtitul { font-size: 12px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--voda-svetla); }
-.uvod h1 { margin: 8px 0 0; font: 800 60px/0.95 var(--cisla); letter-spacing: 0; text-wrap: balance; }
-.uvod h1 span { color: var(--tlumene); font-weight: 700; }
-.uvod-rozsah { margin: 12px 0 0; color: var(--tlumene); font-size: 14.5px; }
+.uvod-karta { width: min(640px, 100%); max-height: 100%; overflow: auto; padding: 28px 32px 24px; background: var(--karta);
+  border: 1px solid var(--okraj); border-radius: var(--r); box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 0 24px 60px rgba(0, 0, 0, 0.12); }
+.uvod h1 { margin: 0; font-size: 44px; font-weight: 700; letter-spacing: -0.02em; line-height: 1.05; text-wrap: balance; }
+.uvod h1 span { color: var(--tlumene); font-weight: 600; }
+.uvod-rozsah { margin: 12px 0 0; color: var(--tlumene); font-size: 15px; }
 .uvod-rozsah b { color: var(--text); font-weight: 600; }
-.uvod-graf { position: relative; height: 124px; margin-top: 38px; }
+.uvod-graf { position: relative; height: 124px; margin-top: 36px; background: var(--karta); border: 1px solid var(--okraj); border-radius: 12px; }
 /* v úvodu je štítek vrcholu nad grafem, ať nezakryje popisky stupňů */
-.uvod-graf .vrchol { top: -20px; }
-.uvod-legenda { display: flex; gap: 18px; margin-top: 8px; font-size: 12.5px; color: var(--tlumene); }
-.uvod-legenda span { display: flex; align-items: center; gap: 7px; }
-.uvod-hraj { margin-top: 18px; width: 100%; height: 62px; display: flex; align-items: center; justify-content: center; gap: 12px;
-  border: 0; border-radius: 12px; background: var(--voda); color: #06141b; font: 800 28px/1 var(--cisla); letter-spacing: 0.02em;
-  transition: background-color 0.15s ease-out, transform 0.12s ease-out; }
-.uvod-hraj:hover { background: var(--voda-svetla); }
+.uvod-graf .vrchol { top: -22px; }
+.uvod-graf .vrchol span { top: 0; }
+.uvod-hraj { margin-top: 20px; width: 100%; height: 56px; display: flex; align-items: center; justify-content: center; gap: 10px;
+  border: 0; border-radius: 999px; background: var(--modra); color: #fff; font-size: 18px; font-weight: 600; letter-spacing: -0.01em;
+  transition: background-color 0.2s ease-out, transform 0.1s ease-out; }
+.uvod-hraj:hover { background: var(--modra-tmava); }
 .uvod-hraj:active { transform: scale(0.98); }
-.uvod-hraj svg { width: 22px; height: 22px; fill: currentColor; }
-.uvod-napoveda { margin: 14px 0 0; font-size: 12.5px; color: var(--tlumene); }
-kbd { font: 600 11.5px var(--pismo); padding: 1px 6px; border-radius: 5px; border: 1px solid rgba(255, 255, 255, 0.18);
-  background: rgba(255, 255, 255, 0.06); color: var(--text); }
-/* jeden okamžik: štítek, že celá povodeň jde přehrát v jiném režimu */
-.napoveda { left: calc(250px + (100% - 565px) / 2); transform: translateX(-50%); bottom: 34px; max-width: calc(100% - 600px);
-  display: flex; align-items: center; gap: 8px; padding: 7px 14px 7px 10px; border-radius: 999px; font-size: 13px; color: var(--tlumene); }
-.napoveda svg { flex: none; width: 18px; height: 18px; stroke: var(--voda-svetla); fill: none; stroke-width: 1.7; stroke-linejoin: round; }
-.napoveda b { color: var(--text); font-weight: 600; }
-/* porovnání: popisky stran a výrazné držadlo */
-#stitky { position: absolute; top: 16px; left: 50%; display: none; pointer-events: none; z-index: 2; }
-#stitky span { position: absolute; top: 0; display: flex; align-items: center; gap: 8px; white-space: nowrap; padding: 7px 12px;
-  border-radius: 10px; background: var(--sklo); border: 1px solid var(--okraj); font-size: 13px; font-weight: 700;
-  letter-spacing: 0.06em; text-transform: uppercase; box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35); }
-#stitky span b { font: 800 24px/1 var(--cisla); letter-spacing: 0; text-transform: none; }
+.uvod-hraj svg { width: 20px; height: 20px; fill: currentColor; }
+/* porovnání: popisky stran u dělicí čáry (hodnoty má štítek na ose) a výrazné držadlo */
+#stitky { position: absolute; top: 16px; left: 0; right: 0; height: 40px; display: none; overflow: hidden; pointer-events: none; z-index: 2; }
+#stitky span { position: absolute; top: 0; display: flex; align-items: center; gap: 8px; white-space: nowrap; padding: 8px 14px;
+  border-radius: 999px; background: var(--sklo); border: 0; font-size: 13px; font-weight: 600;
+  box-shadow: var(--sklo-hrana); backdrop-filter: blur(28px) saturate(1.7); -webkit-backdrop-filter: blur(28px) saturate(1.7); }
+#stitky i { font-style: normal; }
 #stitky svg { width: 14px; height: 14px; fill: currentColor; }
-#st-pred { right: 14px; color: var(--voda-svetla); }
-#st-skut { left: 14px; }
-.mapboxgl-compare { width: 3px; background-color: #e6ebf0; box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.35), 0 0 16px rgba(124, 198, 228, 0.6); }
+#st-pred { right: calc(100% - var(--x, 50%) + 14px); color: var(--modra); }
+#st-skut { left: calc(var(--x, 50%) + 14px); }
+/* dělicí čára porovnání je neviditelná, zůstává jen kulatý úchyt a štítky nahoře */
+.mapboxgl-compare { width: 0; background: transparent; box-shadow: none; }
 .mapboxgl-compare .compare-swiper-vertical { width: 54px; height: 54px; left: -27px; margin: -27px 0 0 1.5px;
-  background-color: #e6ebf0; background-size: 54px 54px; background-position: center;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 54 54'%3E%3Cpath d='M23 18l-9 9 9 9zM31 18l9 9-9 9z' fill='%230f1419'/%3E%3C/svg%3E");
-  box-shadow: 0 0 0 4px rgba(15, 20, 25, 0.55), 0 8px 22px rgba(0, 0, 0, 0.55); }
+  background-color: #fff; background-size: 54px 54px; background-position: center;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 54 54'%3E%3Cpath d='M23 18l-9 9 9 9zM31 18l9 9-9 9z' fill='%231d1d1f'/%3E%3C/svg%3E");
+  box-shadow: 0 0 0 1px var(--okraj-silny), 0 8px 22px rgba(0, 0, 0, 0.22); }
 /* tiráž: nezakryje logo Mapboxu a když se nevejde na řádek, zalomí se na dva vyrovnané */
 .mapboxgl-ctrl-bottom-right .mapboxgl-ctrl-attrib:not(.mapboxgl-compact) { max-width: calc(100vw - 120px); text-align: right;
   text-wrap: balance; }
-.mapboxgl-popup-content { background: #151c22; color: #fff; font: 13.5px/1.4 var(--pismo);
-  border-radius: 9px; padding: 10px 28px 10px 12px; border: 1px solid var(--okraj); }
-.mapboxgl-popup-close-button { color: #fff; font-size: 18px; padding: 0 7px; }
+.mapboxgl-map, .mapboxgl-ctrl-attrib { font-family: var(--pismo); }
+.mapboxgl-popup-content { background: var(--karta); color: var(--text); font: 13.5px/1.45 var(--pismo);
+  border-radius: 14px; padding: 10px 30px 10px 14px; border: 1px solid var(--okraj); box-shadow: var(--stin); }
+.mapboxgl-popup-close-button { color: var(--tlumene); font-size: 18px; padding: 0 8px; border-radius: 0 14px 0 10px; }
+.mapboxgl-popup-close-button:hover { background: var(--draha); }
 .mapboxgl-popup-anchor-top .mapboxgl-popup-tip, .mapboxgl-popup-anchor-top-left .mapboxgl-popup-tip,
-.mapboxgl-popup-anchor-top-right .mapboxgl-popup-tip { border-bottom-color: #151c22; }
+.mapboxgl-popup-anchor-top-right .mapboxgl-popup-tip { border-bottom-color: #fff; }
 .mapboxgl-popup-anchor-bottom .mapboxgl-popup-tip, .mapboxgl-popup-anchor-bottom-left .mapboxgl-popup-tip,
-.mapboxgl-popup-anchor-bottom-right .mapboxgl-popup-tip { border-top-color: #151c22; }
-.mapboxgl-popup-anchor-left .mapboxgl-popup-tip { border-right-color: #151c22; }
-.mapboxgl-popup-anchor-right .mapboxgl-popup-tip { border-left-color: #151c22; }
-@media (max-width: 1180px) {
-  .hodnota.rozdil, .rychlost > span { display: none; }
-  .lista-horni { gap: 16px; }
+.mapboxgl-popup-anchor-bottom-right .mapboxgl-popup-tip { border-top-color: #fff; }
+.mapboxgl-popup-anchor-left .mapboxgl-popup-tip { border-right-color: #fff; }
+.mapboxgl-popup-anchor-right .mapboxgl-popup-tip { border-left-color: #fff; }
+/* užší okno: štítky porovnání pod řádkem boxů, pak nad přehrávačem */
+@media (max-width: 1100px) {
+  #stitky { top: 68px; }
 }
-@media (max-width: 760px) {
-  .vlevo { right: 12px; width: auto; max-height: none; padding: 6px; overflow-x: auto; overflow-y: hidden; }
-  .vlevo h2, .vlevo .popis, .polozka small, .nastaveni { display: none; }
-  .vlevo .seznam { display: flex; gap: 4px; }
-  .vlevo .seznam .polozka { width: auto; flex: none; margin: 0; }
-  .vlevo section + section { margin: 0 0 0 4px; }
-  .vlevo { display: flex; align-items: center; scrollbar-width: none; }
-  .vlevo > * { flex: none; }
-  .akce-radek { margin: 0 0 0 4px; }
-  .akce { flex: none; white-space: nowrap; }
-  .vpravo { top: auto; bottom: 34px; left: 12px; right: 12px; width: auto; max-height: 42%; }
-  .anim .vpravo, .napoveda { display: none; }
-  .lista { left: 8px; right: 8px; padding: 8px 10px 6px; }
-  .lista-horni { flex-wrap: wrap; gap: 6px 14px; }
-  .hraj { width: 44px; height: 44px; }
-  .lista-cas { min-width: 0; }
-  .lista-cas b, .hodnota b { font-size: 24px; }
-  .uvod h1 { font-size: 36px; }
-  .uvod-karta { padding: 18px 18px 0; }
+@media (max-width: 900px) {
+  #stitky { top: auto; bottom: calc(var(--lista) + 44px); }
+  body:not(.animace) .vpravo { top: auto; bottom: 34px; left: 12px; right: 12px; width: auto; max-height: 42%; }
+  .lista { left: 8px; right: 8px; padding: 28px 12px 8px; column-gap: 12px; }
+  .hraj { width: 46px; height: 46px; }
+}
+/* telefon nebo nízké okno: pravý box sbalený za kulatou ikonou vpravo nahoře, otevře se z ní */
+@media (max-width: 740px), (max-height: 520px) {
+  .animace .nastaveni-tlacitko { display: grid; }
+  .animace .vpravo { top: 64px; right: 12px; width: min(288px, calc(100vw - 24px)); max-height: calc(100% - 108px - var(--lista));
+    transform-origin: top right; opacity: 0; visibility: hidden; transform: translateY(-6px) scale(0.96);
+    transition: opacity 0.2s ease-out, transform 0.24s var(--ven), visibility 0s linear 0.24s; }
+  .animace .vpravo.otevrene { opacity: 1; visibility: visible; transform: none;
+    transition: opacity 0.2s ease-out, transform 0.24s var(--ven), visibility 0s; }
+}
+/* telefon: pohledy jako pás nahoře vedle ikony, přehrávač nižší */
+@media (max-width: 740px) {
+  .vlevo { right: 64px; padding: 3px; overflow-x: auto; scrollbar-width: none; }
+  .vlevo::-webkit-scrollbar { display: none; }
+  .segment button { min-height: 34px; padding: 6px 10px; font-size: 12.5px; border-radius: 17px; }
+  .uvod h1 { font-size: 32px; }
+  .uvod-karta { padding: 18px 18px 0; border-radius: 18px; }
   .uvod-graf { height: 84px; margin-top: 32px; }
-  .lista .prah span { left: calc(4px + var(--k) * 31px); }
-  .lista .prah i { display: none; }
-  .uvod-hraj { position: sticky; bottom: 0; height: 56px; font-size: 24px; margin-top: 14px; box-shadow: 0 -12px 16px rgba(15, 20, 25, 0.9); }
-  .uvod-napoveda { display: none; }
+  .uvod-hraj { position: sticky; bottom: 0; height: 52px; font-size: 17px; margin-top: 14px; box-shadow: 0 -12px 16px rgba(255, 255, 255, 0.95); }
   .uvod-karta::after { content: ""; display: block; height: 14px; }
-  .rychlost, .hodnota-nazev i { display: none; }
-  .hodnota-nazev { font-size: 10px; }
-  .osa { height: 48px; margin-top: 8px; }
+  .lista .prah span { left: calc(6px + var(--k) * 34px); }
+  .lista .prah i { display: none; }
+  .lista .vrchol span { display: none; }  /* na telefonu by překryl pilulky stupňů, čára stačí */
+  .osa { height: 54px; }
   .dny { margin-top: 9px; }
+  #st-pred i { display: none; }
 }
 @media (max-height: 520px) {
   .uvod h1 { font-size: 28px; }
-  .uvod-graf, .uvod-legenda, .uvod-napoveda { display: none; }
+  .uvod-graf { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition-duration: 0.01ms !important; }
+}
+@media (prefers-reduced-transparency: reduce) {
+  .sklo, .hlava span, .najeti span, #stitky span { background: rgba(255, 255, 255, 0.96); backdrop-filter: none; -webkit-backdrop-filter: none; }
 }
 </style>
 </head>
 <body>
 <div id="mapy"><div class="mapa" id="mapa"></div><div class="mapa" id="mapa-b"></div></div>
-<div id="stitky"><span id="st-pred"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-8 7 8 7z"/></svg>Předpověď 24 h předem<b></b></span><span id="st-skut">Skutečnost<b></b><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l8 7-8 7z"/></svg></span></div>
-<aside class="sklo vlevo" id="vlevo"></aside>
+<div id="stitky"><span id="st-pred"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-8 7 8 7z"/></svg>Předpověď<i>&nbsp;24&nbsp;h předem</i></span><span id="st-skut">Skutečnost<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l8 7-8 7z"/></svg></span></div>
+<nav class="sklo vlevo" id="vlevo" aria-label="Pohled"></nav>
 <aside class="sklo vpravo" id="vpravo"></aside>
+<button class="sklo nastaveni-tlacitko" id="nastaveni-tlacitko" aria-controls="vpravo" aria-expanded="false" aria-label="Zobrazení"></button>
 <script type="application/json" id="data">__DATA__</script>
 <script>
-// Vlastní HTML stránky, dokud ji skript nezměnil: když iframe nepovolí celou obrazovku, otevře se v nové záložce.
-const KOPIE = '<!doctype html>\n' + document.documentElement.outerHTML;
 const D = JSON.parse(document.getElementById('data').textContent);
 const A = D.anim;  // jen v animaci: hodinové řady
 mapboxgl.accessToken = D.token;
-const STAV = (() => { try { return JSON.parse(decodeURIComponent(location.hash.slice(1))); } catch (e) { return {}; } })();
 const STUPNE = ['bez stupně', '1. stupeň', '2. stupeň', '3. stupeň'];
 const css = c => `rgb(${c[0]},${c[1]},${c[2]})`;
 const cislo = v => v == null ? '–' : Math.round(v).toLocaleString('cs-CZ');
@@ -575,10 +557,13 @@ const BUDOVY_OSM = D.budovy.length ? {type: 'FeatureCollection', features: D.bud
 // pevné mezery uvnitř zdrojů a před tečkou: tiráž se láme jen mezi zdroji
 const ATRIBUCE = ['Měření a N-leté průtoky © ČHMÚ', 'Záplavová území DIBAVOD (VÚV TGM)', DEM ? 'Terén ČÚZK DMR 5G' : '',
   BUDOVY_OSM ? 'Řeky a budovy © OpenStreetMap' : 'Řeky © OpenStreetMap'].filter(Boolean).map(t => t.replaceAll(' ', '\u00a0')).join('\u00a0· ');
-const N = Object.assign({svetlo: 'dusk', tema: 'default', satelit: false, mista: true, poi: true, objekty: true,
-                         ulice: false, uredni: false}, STAV.nast);
-// vlastní budovy podle světla Standardu: den světle šedé, noc tmavě modrošedé; trocha svitu, ať jsou vidět i za šera
-const BUDOVY = {dawn: ['#e2e5ea', 0.45], day: ['#e6e9ed', 0.15], dusk: ['#d2d8e1', 0.7], night: ['#4a5b74', 0.8]};
+// podklad: pevně soumrak a výchozí téma (nepřepínají se); zobrazení přepíná pravý box, výchozí jsou popisky míst a 3D objekty
+const N = {svetlo: 'dusk', tema: 'default', satelit: false, mista: true, poi: false, objekty: true, ulice: false, uredni: false};
+// vlastní budovy podle světla Standardu: den světle šedé jako Apple Maps, noc tmavě modrošedé; trocha svitu, ať jsou vidět i za šera
+const BUDOVY = {dawn: ['#e2e5ea', 0.45], day: ['#e6e6eb', 0.15], dusk: ['#d2d8e1', 0.7], night: ['#4a5b74', 0.8]};
+// popisky stanic: na světlé mapě tmavé s bílým lemem, za šera, v noci a na satelitu bílé s tmavým lemem
+const popisky = m => m.satelit || N.svetlo === 'dusk' || N.svetlo === 'night'
+  ? ['#ffffff', 'rgba(29, 29, 31, 0.9)'] : ['#1d1d1f', 'rgba(255, 255, 255, 0.95)'];
 const uredni = () => N.uredni || !DEM;  // úřední N-letá území místo rozlivu z terénu
 function nastavZdroj() {
   if (!A) return;
@@ -586,23 +571,17 @@ function nastavZdroj() {
   A.urovne = A.rozlivy[A.zdroj];
 }
 nastavZdroj();
-const SIROKO = innerWidth > 760;
+const SIROKO = innerWidth > 900;  // stejná hranice jako v CSS: od 900 px dolů je karta předpovědi dole
 
-const IKONY = {
-  'celé povodí': '<path d="M4 19c3-1 3-5 6-6s4-4 3-8"/><path d="M13 5c2 2 4 2 6 1"/><circle cx="6" cy="17" r="1.6"/><circle cx="12" cy="11" r="1.6"/><circle cx="14" cy="5" r="1.6"/>',
-  'mesto': '<path d="M3 20h18"/><path d="M5 20V9l5-3v14"/><path d="M10 20V4l6 3v13"/><path d="M16 20v-9l4 2v7"/>',
-  'animace': '<circle cx="12" cy="12" r="9"/><path d="M10 8.5v7l5.5-3.5z"/>',
-  'porovnani': '<rect x="3" y="4" width="18" height="16" rx="2"/><path d="M12 2v20"/><path d="M7 10l-2 2 2 2M17 10l2 2-2 2"/>',
-  'dawn': '<path d="M4 18h16"/><path d="M7 18a5 5 0 0 1 10 0"/><path d="M12 6v3M5.6 10.6l1.5 1.5M18.4 10.6l-1.5 1.5"/>',
-  'day': '<circle cx="12" cy="12" r="4"/><path d="M12 3v2M12 19v2M3 12h2M19 12h2M5.6 5.6l1.4 1.4M17 17l1.4 1.4M5.6 18.4L7 17M17 7l1.4-1.4"/>',
-  'dusk': '<path d="M4 18h16"/><path d="M7 18a5 5 0 0 1 10 0"/><path d="M12 11V6M10 8l2-2 2 2"/>',
-  'night': '<path d="M19 14.5A7.5 7.5 0 0 1 9.5 5a7.5 7.5 0 1 0 9.5 9.5z"/>'
-};
+const IKONY = {nastaveni: '<path d="M4 7h8M17 7h3M4 17h3M12 17h8"/><circle cx="14" cy="7" r="2.5"/><circle cx="9" cy="17" r="2.5"/>',
+               zavrit: '<path d="M6 6l12 12M18 6L6 18"/>',
+               cela: '<path d="M4 9V4h5M15 4h5v5M20 15v5h-5M9 20H4v-5"/>',
+               zmensit: '<path d="M9 4v5H4M20 9h-5V4M15 20v-5h5M4 15h5v5"/>'};
 const svg = (d, vb = 24) => `<svg viewBox="0 0 ${vb} ${vb}" aria-hidden="true">${d}</svg>`;
 
 function kamera(pohled) {
-  // střed záběru mezi panely a nad přehrávačem; celé povodí se musí vejít i do užšího okna
-  const k = {...D.kamery[pohled], padding: SIROKO ? {top: 0, bottom: A ? 190 : 40, left: 250, right: 315} : {top: 60, bottom: 220, left: 0, right: 0}};
+  // střed záběru nad přehrávačem (a vedle karty předpovědi); celé povodí se musí vejít i do užšího okna
+  const k = {...D.kamery[pohled], padding: SIROKO ? {top: 0, bottom: A ? 180 : 40, left: 0, right: A ? 0 : 315} : {top: 0, bottom: A ? 170 : 220, left: 0, right: 0}};
   if (pohled === 'celé povodí') k.zoom += Math.max(-1.3, Math.log2(Math.min(1, innerWidth / 1350)));
   return k;
 }
@@ -624,7 +603,6 @@ function vytvorMapu(kontejner, k) {
   m.addControl(new mapboxgl.AttributionControl({customAttribution: ATRIBUCE}), 'bottom-right');
   m.on('style.load', () => pridejVrstvy(m));
   klikani(m);
-  for (const udalost of ['mousedown', 'touchstart', 'wheel']) m.getCanvasContainer().addEventListener(udalost, zastavOblet, {passive: true});
   return m;
 }
 
@@ -638,25 +616,25 @@ function pridejVrstvy(m) {
   if (D.uzemi) {
     m.addSource('uzemi', {type: 'geojson', data: D.uzemi});
     m.addLayer({id: 'uzemi', type: 'fill', source: 'uzemi', slot: 'middle', paint: {
-      'fill-color': ['case', ['get', 'plne'], '#1e78dc', '#7cc4ff'],
-      'fill-opacity': ['case', ['get', 'plne'], 0.6, A ? 0.08 : 0.14], 'fill-emissive-strength': 0.8
+      'fill-color': ['case', ['get', 'plne'], '#167c9c', '#9fcad8'],
+      'fill-opacity': ['case', ['get', 'plne'], 0.58, A ? 0.12 : 0.2], 'fill-emissive-strength': 0.8
     }});
     m.addLayer({id: 'uzemi-obrys', type: 'line', source: 'uzemi', slot: 'middle', paint: {
-      'line-color': ['case', ['get', 'plne'], '#cfe9ff', '#8fd0ff'], 'line-emissive-strength': 1,
-      'line-width': ['interpolate', ['linear'], ['zoom'], 10, 0.5, 15, 1.6], 'line-opacity': 0.7
+      'line-color': ['case', ['get', 'plne'], '#0e5d77', '#167c9c'], 'line-emissive-strength': 1,
+      'line-width': ['interpolate', ['linear'], ['zoom'], 10, 0.5, 15, 1.6], 'line-opacity': 0.8
     }});
   }
   m.addSource('rozliv', {type: 'geojson', data: A ? PRAZDNE : (D.dem ?? PRAZDNE)});
   m.addLayer({id: 'rozliv', type: 'fill', source: 'rozliv', slot: 'middle', paint: {
-    'fill-color': '#1e78dc', 'fill-opacity': 0.62, 'fill-emissive-strength': 0.8}});
+    'fill-color': '#167c9c', 'fill-opacity': 0.62, 'fill-emissive-strength': 0.8}});
   m.addLayer({id: 'rozliv-obrys', type: 'line', source: 'rozliv', slot: 'middle', paint: {
-    'line-color': '#d4ecff', 'line-width': ['interpolate', ['linear'], ['zoom'], 10, 0.6, 15, 1.8],
+    'line-color': '#0e5d77', 'line-width': ['interpolate', ['linear'], ['zoom'], 10, 0.6, 15, 1.8],
     'line-opacity': 0.85, 'line-emissive-strength': 1}});
   if (D.skut) {
     // skutečný rozliv o 24 h později čárkovaně přes předpověď (jen v archivu, kde ho známe)
     m.addSource('skutecnost', {type: 'geojson', data: D.skut});
     m.addLayer({id: 'skutecnost', type: 'line', source: 'skutecnost', slot: 'middle', paint: {
-      'line-color': '#ffffff', 'line-width': 2, 'line-dasharray': [2, 1.5], 'line-opacity': 0.9, 'line-emissive-strength': 1}});
+      'line-color': '#1d1d1f', 'line-width': 2, 'line-dasharray': [2, 1.5], 'line-opacity': 0.9, 'line-emissive-strength': 1}});
   }
   // Budovy i z dálky: Standard kreslí 3D budovy až od zoomu 15 a dlaždice Streets v8 mají pod 15 jen pár velkých budov,
   // proto u Děčína a Ústí obrysy z OpenStreetMap (od zoomu 11). Vrstva je ve slotu middle za rozlivem, takže domy stojí
@@ -676,7 +654,7 @@ function pridejVrstvy(m) {
     }});
   m.addSource('reky', {type: 'geojson', data: D.reky});
   m.addLayer({id: 'reky', type: 'line', source: 'reky', slot: 'middle', layout: {'line-join': 'round', 'line-cap': 'round'}, paint: {
-    'line-color': '#8fd3ff', 'line-emissive-strength': 1,
+    'line-color': '#167c9c', 'line-emissive-strength': 1,
     'line-width': ['interpolate', ['exponential', 1.5], ['zoom'], 7, 1.5, 10, 3, 14, 6],
     // řeky jsou zjednodušené, ve městě je přesnější podklad
     'line-opacity': ['interpolate', ['linear'], ['zoom'], 10, 0.9, 13, 0.25]
@@ -699,7 +677,7 @@ function pridejVrstvy(m) {
     'text-radial-offset': ['interpolate', ['linear'], ['zoom'],
       7, ['+', 0.62, ['*', 0.023, s]], 11, ['+', 0.72, ['*', 0.037, s]], 15, ['+', 0.64, ['*', 0.021, s]]],
     'text-justify': 'auto', 'symbol-sort-key': ['-', 0, ['get', 'prutok']]
-  }, paint: {'text-color': '#ffffff', 'text-halo-color': 'rgba(10, 15, 20, 0.95)', 'text-halo-width': 1.6,
+  }, paint: {'text-color': popisky(m)[0], 'text-halo-color': popisky(m)[1], 'text-halo-width': 1.6,
              'text-emissive-strength': 1}});
   m.klic = undefined;
   viditelnostRozlivu(m);
@@ -733,7 +711,7 @@ function klikani(m) {
   }
 }
 
-const k0 = STAV.kamera ? {...kamera(STAV.pohled ?? D.pohled), ...STAV.kamera} : kamera(D.pohled);
+const k0 = kamera(D.pohled);
 const mapaA = vytvorMapu('mapa', k0);
 mapaA.satelit = N.satelit;
 let mapaB = null, porovnani = null;
@@ -741,9 +719,9 @@ const mapy = () => mapaB && rezim === 'porovnani' ? [mapaA, mapaB] : [mapaA];
 
 // ---------- animace: hodinové řady ----------
 const K = A ? A.H.length - 1 : 0;
-let cas = A ? Math.min(STAV.cas ?? A.start, K) : 0, rezim = A ? (STAV.rezim ?? 'animace') : null;
-let hraje = false, rychlost = STAV.rychlost ?? 6;  // rychlost v hodinách povodně za sekundu
-let podle = STAV.podle ?? 'skutecnost';  // čí hladina plní jednu mapu
+let cas = A ? A.start : 0, rezim = A ? 'animace' : null;
+let hraje = false, rychlost = 6;  // rychlost v hodinách povodně za sekundu
+const podle = 'skutecnost';  // jednu mapu plní změřená hladina, předpověď je v porovnání vlevo
 const hodina = () => Math.round(cas);
 const stupenH = (spa, h) => h == null ? null : spa.filter(m => h >= m).length;
 const barvaStupne = st => st == null ? D.seda : D.barvy[st];
@@ -793,39 +771,11 @@ function obnovMapu(m, i) {
     `Záplavové území Q${u.N} (DIBAVOD, VÚV TGM): ${cislo(u.ha)} ha<br>Vyplní se od hladiny ${u.h} cm podle ČHMÚ`}});
 }
 
-// ---------- levý panel ----------
-let pohled = STAV.pohled ?? D.pohled;
-function polozka(id, nazev, podtitul, ikona) {
-  return `<button class="polozka" data-id="${id}">${svg(ikona)}<span><b>${nazev}</b><small>${podtitul}</small></span></button>`;
-}
-document.getElementById('vlevo').innerHTML = `
-  <section><h2>Pohledy</h2><div class="seznam" id="pohledy">${D.pohledy.map(([id, nazev, podtitul]) =>
-    polozka(id, nazev, podtitul, id === 'celé povodí' ? IKONY[id] : IKONY.mesto)).join('')}</div></section>
-  ${A ? `<section><h2>Povodeň</h2><div class="seznam" id="rezimy">
-    ${polozka('animace', 'Animace povodně', 'čas běží po hodinách', IKONY.animace)}
-    ${polozka('porovnani', 'Porovnání', 'předpověď × skutečnost', IKONY.porovnani)}</div></section>` : ''}
-  <div class="akce-radek"><button class="akce" id="oblet" aria-pressed="false">Obletět</button>
-    <button class="akce" id="cela">Celá obrazovka</button></div>
-  <div class="popis" id="popis"></div>`;
-const B = D.barvy, kruh = c => `<i style="background:${css(c)}"></i>`;
-function popis() {
-  document.getElementById('popis').innerHTML = (A ?
-    `Voda v ${A.mesto === 'Děčín' ? 'Děčíně' : 'Ústí'}: ${uredni() ? 'úřední záplavové území Q5, Q20 nebo Q100 (DIBAVOD), které hladina dosáhla' :
-     'rozliv z výškového modelu terénu pro hladinu v té hodině'}. Porovnání: vlevo z předpovědi vydané o 24 h dřív, vpravo ze změřené hladiny.` :
-    uredni() ? 'Modře úřední záplavové území (DIBAVOD) pro N-letou vodu, kterou dosáhne předpověď na 24 h.' :
-    'Modře rozliv z výškového modelu terénu pro předpověď na 24 h, čárkovaně pro hladinu, která pak opravdu nastala.') +
-    `<br>Stanice: velikost je průtok, barva stupeň: ${kruh(B[0])}bez ${kruh(B[1])}1. ${kruh(B[2])}2. ${kruh(B[3])}3.`;
-}
-popis();
-
-function oznac(id, hodnota) {
-  for (const b of document.querySelectorAll(`#${id} .polozka`)) b.setAttribute('aria-pressed', b.dataset.id === hodnota);
-}
-for (const b of document.querySelectorAll('#pohledy .polozka')) b.addEventListener('click', () => prelet(b.dataset.id));
+// ---------- pohledy: prelet(pohled) pro nahrávání videa a deck, bez tlačítek ----------
+let pohled = D.pohled;
 function prelet(p) {
-  zastavOblet();
   pohled = p;
-  oznac('pohledy', p);
+  oznacPohled(p);
   mapaA.flyTo({...kamera(p), duration: 3500, essential: true});
   mapaA.once('moveend', () => dolad(p));
   if (!A) panel();
@@ -840,99 +790,77 @@ function dolad(p) {
   });
 }
 
-// obletění: pomalé otáčení kamery kolem středu, zastaví ho tah myší nebo kolečko
-let oblet = null;
-function zastavOblet() {
-  if (oblet) cancelAnimationFrame(oblet);
-  oblet = null;
-  document.getElementById('oblet').setAttribute('aria-pressed', false);
-}
-document.getElementById('oblet').addEventListener('click', () => {
-  if (oblet) return zastavOblet();
-  document.getElementById('oblet').setAttribute('aria-pressed', true);
-  let minule = null;
-  const krok = ts => {
-    if (minule != null) mapaA.setBearing(mapaA.getBearing() + (ts - minule) / 1000 * 5);
-    minule = ts;
-    oblet = requestAnimationFrame(krok);
-  };
-  oblet = requestAnimationFrame(krok);
-});
+// ---------- levý box: tři pohledy jako segmentovaný přepínač ----------
+const vlevo = document.getElementById('vlevo'), vpravo = document.getElementById('vpravo');
+vlevo.innerHTML = `<div class="segment" role="group">${D.pohledy.map(([id, nazev]) =>
+  `<button data-id="${id}" aria-pressed="false">${nazev.replaceAll(' ', '\u00a0')}</button>`).join('')}</div>`;
+function oznacPohled(p) { for (const b of vlevo.querySelectorAll('button')) b.setAttribute('aria-pressed', b.dataset.id === p); }
+vlevo.addEventListener('click', e => { const b = e.target.closest('button'); if (b && b.dataset.id !== pohled) prelet(b.dataset.id); });
+oznacPohled(pohled);
 
-// celá obrazovka: v iframu Streamlitu bývá zakázaná, pak stejná stránka v nové záložce, kde funguje
-function stav() {
-  const c = mapaA.getCenter();
-  return {nast: N, pohled, cas, rezim, podle, hraje, rychlost,
-          kamera: {center: [c.lng, c.lat], zoom: mapaA.getZoom(), pitch: mapaA.getPitch(), bearing: mapaA.getBearing()}};
-}
-async function celaObrazovka() {
-  if (document.fullscreenElement) return document.exitFullscreen();
-  try {
-    if (!document.fullscreenEnabled) throw new Error('celá obrazovka je v iframu zakázaná');
-    await document.documentElement.requestFullscreen();
-  } catch (e) {
-    const url = /^https?:/.test(location.href) ? location.href.split('#')[0]
-      : URL.createObjectURL(new Blob([KOPIE], {type: 'text/html'}));
-    if (!window.open(url + '#' + encodeURIComponent(JSON.stringify(stav())), '_blank')) {
-      document.getElementById('cela').textContent = 'Povolte vyskakovací okna';
-    }
-  }
-}
-document.getElementById('cela').addEventListener('click', celaObrazovka);
-// bez podpory celé obrazovky (Safari na iPhonu) a mimo iframe nemá tlačítko co dělat
-if (window === window.top && !document.fullscreenEnabled) document.getElementById('cela').hidden = true;
-document.addEventListener('fullscreenchange', () => {
-  document.getElementById('cela').textContent = document.fullscreenElement ? 'Zavřít' : 'Celá obrazovka';
-});
-
-// ---------- pravý panel: osvětlení, téma, zobrazení, předpověď ----------
-const SVETLA = [['dawn', 'Svítání'], ['day', 'Den'], ['dusk', 'Soumrak'], ['night', 'Noc']];
-const TEMATA = [['default', 'Výchozí', ['#f2efe9', '#a8d4f0', '#c9e4b4']], ['faded', 'Vybledlé', ['#e9e6e1', '#bfd3df', '#d3dccb']],
-                ['monochrome', 'Mono', ['#f0f0f0', '#b9b9b9', '#6d6d6d']]];
+// ---------- pravý box: v animaci datum a přepínače zobrazení, na statické mapě karta předpovědi ----------
 const PREPINACE = [['satelit', 'Satelit'], ['mista', 'Popisky míst'], ['poi', 'Zajímavá místa'], ['objekty', '3D objekty'],
-                   ['ulice', 'Názvy ulic'], ...(DEM ? [['uredni', 'Úřední území']] : [])];
-document.getElementById('vpravo').innerHTML = `
-  <section class="nastaveni"><h2>Osvětlení</h2><div class="mrizka" id="svetla">${SVETLA.map(([id, nazev]) =>
-    `<button class="volba" data-id="${id}">${svg(IKONY[id])}${nazev}</button>`).join('')}</div></section>
-  <section class="nastaveni"><h2>Barevné téma</h2><div class="mrizka tri" id="temata">${TEMATA.map(([id, nazev, barvy]) =>
-    `<button class="volba tema" data-id="${id}"><span class="tecky">${barvy.map(b => `<span style="background:${b}"></span>`).join('')}</span>${nazev}</button>`).join('')}</div></section>
-  <section class="nastaveni"><h2>Zobrazení</h2><div class="prepinace">${PREPINACE.map(([id, nazev]) =>
-    `<button class="prepinac" role="switch" data-id="${id}"><span>${nazev}</span><span></span></button>`).join('')}</div></section>
-  <section><h2 id="nadpis-panelu">${A ? `Povodeň · ${A.mesto}` : 'Předpověď'}</h2><div id="panel"></div></section>`;
+                   ['ulice', 'Názvy ulic'], ['uredni', 'Úřední území']];
+const prepinac = (id, nazev) => `<button class="prepinac" role="switch" aria-checked="false" data-id="${id}">` +
+  `<span>${nazev.replaceAll(' ', '\u00a0')}</span><span></span></button>`;
+const tlacitkoBoxu = document.getElementById('nastaveni-tlacitko');
+if (A) {
+  document.body.classList.add('animace');
+  vpravo.innerHTML = `<div class="cas"><b id="p-den"></b><span id="p-hodina"></span></div>
+    <div class="prepinace">${PREPINACE.map(([id, nazev]) => prepinac(id, nazev)).join('')}<button class="prepinac cela" id="cela" type="button" aria-pressed="false"><span>Celá\u00a0obrazovka</span><b>${svg(IKONY.cela)}</b></button></div>`;
+  // na telefonu a v nízkém okně je box sbalený za kulatou ikonou
+  tlacitkoBoxu.innerHTML = svg(IKONY.nastaveni);
+  tlacitkoBoxu.addEventListener('click', () => {
+    const otevrene = vpravo.classList.toggle('otevrene');
+    tlacitkoBoxu.setAttribute('aria-expanded', otevrene);
+    tlacitkoBoxu.innerHTML = svg(otevrene ? IKONY.zavrit : IKONY.nastaveni);
+  });
+} else {
+  vpravo.innerHTML = '<section><h2>Předpověď</h2><div id="panel"></div></section>';
+  tlacitkoBoxu.remove();
+}
+
+// celá obrazovka: celý dokument; v rámu, kde je zakázaná, se stejná stránka otevře v nové kartě
+const cela = document.getElementById('cela');
+const vRamu = (() => { try { return window.self !== window.top; } catch (e) { return true; } })();
+const novaKarta = () => { if (vRamu && location.protocol !== 'about:') open(location.href, '_blank', 'noopener'); };
+function celaObrazovka() {
+  if (document.fullscreenElement) return document.exitFullscreen();
+  if (document.fullscreenEnabled && document.documentElement.requestFullscreen) {
+    document.documentElement.requestFullscreen({navigationUI: 'hide'}).catch(novaKarta);
+  } else novaKarta();
+}
+function popisekCele() {
+  if (!cela) return;
+  const v = Boolean(document.fullscreenElement);
+  cela.firstChild.textContent = v ? 'Zavřít' : 'Celá\u00a0obrazovka';
+  cela.lastChild.innerHTML = svg(v ? IKONY.zmensit : IKONY.cela);
+  cela.setAttribute('aria-pressed', v);
+}
+if (cela && !document.fullscreenEnabled && (!vRamu || location.protocol === 'about:')) cela.hidden = true;
+document.addEventListener('fullscreenchange', () => { popisekCele(); for (const m of [mapaA, mapaB].filter(Boolean)) m.resize(); });
 
 function nastaveni() {
-  for (const b of document.querySelectorAll('#svetla .volba')) b.setAttribute('aria-pressed', b.dataset.id === N.svetlo);
-  for (const b of document.querySelectorAll('#temata .volba')) {
-    b.setAttribute('aria-pressed', b.dataset.id === N.tema);
-    b.disabled = N.satelit;  // satelitní Standard témata nemá
-  }
-  for (const b of document.querySelectorAll('.prepinac')) {
-    b.setAttribute('aria-checked', N[b.dataset.id]);
-    if (b.dataset.id === 'objekty') b.disabled = N.satelit;
+  for (const b of vpravo.querySelectorAll('.prepinac[role="switch"]')) {
+    const id = b.dataset.id;
+    b.setAttribute('aria-checked', id === 'uredni' ? uredni() : N[id]);
+    b.disabled = (id === 'objekty' && N.satelit) || (id === 'uredni' && !DEM);  // satelit 3D objekty nemá; bez terénu jsou území vždy
   }
 }
 function podklad(klic, hodnota) {
   for (const m of [mapaA, mapaB].filter(Boolean)) if (m.nacteno) m.setConfigProperty('basemap', klic, hodnota);
 }
-document.getElementById('svetla').addEventListener('click', e => {
-  const b = e.target.closest('.volba'); if (!b) return;
-  N.svetlo = b.dataset.id; podklad('lightPreset', N.svetlo); budovy(); nastaveni();
-});
 function budovy() {
   for (const m of [mapaA, mapaB].filter(Boolean)) if (m.nacteno && m.getLayer('budovy')) {
-    m.setPaintProperty('budovy', 'fill-extrusion-color', BUDOVY[N.svetlo][0]);
-    m.setPaintProperty('budovy', 'fill-extrusion-emissive-strength', BUDOVY[N.svetlo][1]);
     m.setLayoutProperty('budovy', 'visibility', m.satelit || N.objekty ? 'visible' : 'none');
   }
 }
-document.getElementById('temata').addEventListener('click', e => {
-  const b = e.target.closest('.volba'); if (!b || b.disabled) return;
-  N.tema = b.dataset.id; podklad('theme', N.tema); nastaveni();
-});
 const KONFIG = {mista: ['showPlaceLabels'], poi: ['showPointOfInterestLabels', 'showTransitLabels'], objekty: ['show3dObjects'],
                 ulice: ['showRoadLabels']};
-for (const b of document.querySelectorAll('.prepinac')) b.addEventListener('click', () => {
-  if (b.disabled) return;
+vpravo.addEventListener('click', e => {
+  const b = e.target.closest('.prepinac');
+  if (!b || b.disabled) return;
+  if (b.id === 'cela') return celaObrazovka();
   const id = b.dataset.id;
   N[id] = !N[id];
   if (id === 'satelit') {
@@ -940,27 +868,21 @@ for (const b of document.querySelectorAll('.prepinac')) b.addEventListener('clic
     for (const m of [mapaA, mapaB].filter(Boolean)) { m.satelit = N.satelit; m.nacteno = false; m.setStyle(STYL[N.satelit ? 'satelit' : 'standard']); }
   } else if (id === 'uredni') {
     nastavZdroj();
-    for (const m of [mapaA, mapaB].filter(Boolean)) {
-      viditelnostRozlivu(m);
-      m.klic = undefined;
-      if (A) obnovMapu(m, hodina());
-    }
-    popis();
-    panel();
+    for (const m of [mapaA, mapaB].filter(Boolean)) { viditelnostRozlivu(m); m.klic = undefined; obnovMapu(m, hodina()); }
   } else {
     for (const klic of KONFIG[id]) podklad(klic, N[id]);
     if (id === 'objekty') budovy();
   }
   nastaveni();
 });
+nastaveni();
 
 function odznak(st) {
-  const pozadi = st ? D.spa_barvy[st] : 'rgba(255,255,255,0.1)', text = st === 1 ? '#1a1a1a' : st ? '#fff' : 'var(--text)';
+  const pozadi = st ? D.spa_barvy[st] : 'var(--draha)', text = st === 1 ? '#1d1d1f' : st ? '#fff' : 'var(--tlumene)';
   return `<span class="odznak" style="background:${pozadi};color:${text}">${st == null ? 'chybí' : STUPNE[st]}</span>`;
 }
 function panel() {
   if (A) return panelAnimace(hodina());
-  const vybrane = D.mesta.find(m => m.nazev === pohled) ?? D.mesta[0];
   const dem = !uredni();
   document.getElementById('panel').innerHTML = `<div class="datum">${D.datum}</div>` + D.mesta.map(m => `
     <div class="mesto">
@@ -969,41 +891,21 @@ function panel() {
         `<span class="cm pred">${cislo(m.predpoved.cm)} cm</span>${odznak(m.predpoved.stupen)}` : ''}</div>
       ${dem && m.dem ? `<div class="maly">Pod vodou ${cislo(m.dem.ha)} ha` +
         (m.skut ? ` · pak naměřeno ${cislo(m.skut.cm)} cm, ${cislo(m.skut.ha)} ha` : '') + '</div>' : ''}
-    </div>`).join('') +
-    `<div class="veta"><b>${vybrane.nazev}:</b> ${vybrane.veta}${dem ? '' : ' ' + vybrane.uzemi}</div>`;
+    </div>`).join('');
 }
 
-function panelAnimace(i) {
-  const h = A.H[i], p = A.P[i], ks = uroven(h), kp = p == null ? -1 : uroven(p);
-  const ha = k => k < 0 ? 0 : A.urovne[k].ha;
-  const plocha = k => k < 0 ? '–' : `${cislo(A.urovne[k].ha)} ha` + (A.zdroj === 'dibavod' ? ` <small>Q${A.urovne[k].N}</small>` : '');
-  const veta = A.vety[Math.round(rezim !== 'porovnani' && podle === 'predpoved' ? p : h)];
-  document.getElementById('panel').innerHTML = `<div class="datum">${A.popisky[i]}</div>
-    <table class="srovnani">
-      <tr><th></th><th>Skutečnost</th><th class="pred">Předpověď</th><th>Rozdíl</th></tr>
-      <tr><td>Hladina</td><td class="cm">${cislo(h)} cm</td><td class="cm pred">${p == null ? '–' : cislo(p) + ' cm'}</td>
-        <td>${p == null || h == null ? '–' : znamenko(p - h) + ' cm'}</td></tr>
-      <tr><td>Stupeň</td><td>${odznak(stupenH(A.spa, h))}</td><td>${p == null ? '' : odznak(stupenH(A.spa, p))}</td><td></td></tr>
-      <tr><td>${A.zdroj === 'dem' ? 'Pod vodou' : 'Území'}</td><td>${plocha(ks)}</td><td class="pred">${p == null ? '–' : plocha(kp)}</td>
-        <td>${p == null ? '–' : znamenko(ha(kp) - ha(ks)) + ' ha'}</td></tr>
-    </table>
-    <div class="maly">Předpověď vydaná o 24 h dřív: ${A.nazev_modelu}.</div>
-    ${rezim === 'porovnani' ? '' : `<div class="segment" id="podle">
-      <button class="volba" data-id="skutecnost" aria-pressed="${podle === 'skutecnost'}">Mapa: skutečnost</button>
-      <button class="volba" data-id="predpoved" aria-pressed="${podle === 'predpoved'}">Mapa: předpověď</button></div>`}
-    <div class="veta">${veta ?? 'Pro tuhle hodinu chybí měření.'}</div>`;
-  document.querySelector('#st-pred b').textContent = p == null ? '–' : cislo(p) + ' cm';
-  document.querySelector('#st-skut b').textContent = h == null ? '–' : cislo(h) + ' cm';
-  document.getElementById('podle')?.addEventListener('click', e => {
-    const b = e.target.closest('.volba'); if (!b) return;
-    podle = b.dataset.id; obnovMapu(mapaA, hodina()); panelAnimace(hodina());
-  });
+function panelAnimace(i) {  // datum a hodina v pravém boxu, hodnota na štítku hlavy osy
+  const h = A.H[i], p = A.P[i], c = A.popisky[i].split(' ');  // "17. 1. 2011 05:00 SEČ"
+  document.getElementById('p-den').textContent = c.slice(0, 3).join('\u00a0');
+  document.getElementById('p-hodina').textContent = '\u00a0· ' + c[3].replace(/^0(?=\d)/, '');
+  const stitek = document.getElementById('hlava-stitek');
+  if (stitek) stitek.textContent = h == null ? '–' :
+    cislo(h) + (rezim === 'porovnani' && p != null ? `\u00a0· předpověď\u00a0${cislo(p)}` : '') + '\u00a0cm';
 }
 
 // ---------- porovnání předpověď × skutečnost ----------
 function nastavRezim(r) {
   rezim = r;
-  oznac('rezimy', r);
   const kontejner = document.getElementById('mapa-b');
   if (r === 'porovnani') {
     kontejner.style.display = 'block';
@@ -1012,7 +914,8 @@ function nastavRezim(r) {
     if (!mapaB) { mapaB = vytvorMapu('mapa-b', k); mapaB.satelit = N.satelit; }
     else { mapaB.resize(); mapaB.jumpTo(k); }
     porovnani = new mapboxgl.Compare(mapaA, mapaB, '#mapy');
-    porovnani.setSlider(SIROKO ? 250 + (innerWidth - 250 - 315) / 2 : innerWidth / 2);
+    porovnani.setSlider(innerWidth / 2);
+    document.getElementById('stitky').style.setProperty('--x', innerWidth / 2 + 'px');
     document.getElementById('stitky').style.display = 'block';
   } else if (porovnani) {
     porovnani.remove();
@@ -1023,6 +926,7 @@ function nastavRezim(r) {
   mapaA.klic = undefined;
   for (const m of mapy()) obnovMapu(m, hodina());
   panelAnimace(hodina());
+  nastaveni();
 }
 
 // ---------- přehrávač povodně ----------
@@ -1030,9 +934,6 @@ const IKONA = {hraj: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4.
                stuj: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 4h4.5v16H6zM13.5 4H18v16h-4.5z"/></svg>',
                znovu: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5V1.5L7 6l5 4.5V7a6 6 0 1 1-6 6H4a8 8 0 1 0 8-8z"/></svg>'};
 if (A) {
-  for (const b of document.querySelectorAll('#rezimy .polozka')) b.addEventListener('click', () => nastavRezim(b.dataset.id));
-  document.body.classList.add('anim');
-  const RYCHLOSTI = [2, 6, 12];
   let minule = null, nakresleno = -1, tahne = false, uvod = null;
   const q = id => document.getElementById(id);
   const procento = i => i / K * 100;
@@ -1040,7 +941,7 @@ if (A) {
     const c = A.popisky[i].split(' ');  // "17. 1. 2011 05:00 SEČ"
     return {den: c.slice(0, 3).join(' '), hodina: c[3].replace(/^0(?=\d)/, ''), pasmo: c[4]};
   };
-  const kratce = i => { const c = casti(i); return `${c.den.replace(/ \d{4}$/, '')} v ${c.hodina}`; };
+  const kratce = i => { const c = casti(i); return `${c.den.replace(/ \d{4}$/, '')} v ${c.hodina}`.replaceAll(' ', '\u00a0'); };
 
   // graf hladiny pro časovou osu i úvod: svisle od nejnižší hladiny po vrchol s rezervou na popisek, 1. stupeň vždy
   const hodnoty = A.H.concat(A.P).filter(v => v != null);
@@ -1063,15 +964,13 @@ if (A) {
   function graf(el, id) {
     const xv = procento(A.vrchol);
     el.innerHTML = `<svg viewBox="0 0 1000 100" preserveAspectRatio="none" aria-hidden="true">
-        <defs><linearGradient id="${id}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3aa0c9" stop-opacity="0.55"/>
-          <stop offset="1" stop-color="#3aa0c9" stop-opacity="0.05"/></linearGradient></defs>
-        <path d="${cesta(A.H, true)}" fill="url(#${id})"/>
-        <path d="${cesta(A.P)}" fill="none" stroke="#7cc6e4" stroke-width="1.6" stroke-linejoin="round" vector-effect="non-scaling-stroke"/>
-        <path d="${cesta(A.H)}" fill="none" stroke="#e6ebf0" stroke-width="1.8" stroke-linejoin="round" vector-effect="non-scaling-stroke"/>
+        <path d="${cesta(A.H, true)}" fill="#167c9c" fill-opacity="0.12"/>
+        <path d="${cesta(A.P)}" fill="none" stroke="#167c9c" stroke-width="2" stroke-linejoin="round" vector-effect="non-scaling-stroke"/>
+        <path d="${cesta(A.H)}" fill="none" stroke="#1d1d1f" stroke-width="2" stroke-linejoin="round" vector-effect="non-scaling-stroke"/>
       </svg>` +
       // prahy jsou u sebe blízko, popisky proto vedle sebe
       A.spa.map((v, k) => y(v) < 0 ? '' : `<div class="prah" style="top:${y(v)}%;--c:${D.spa_barvy[k + 1]}">
-        <span style="--k:${k}"><i>${k + 1}. stupeň </i>${cislo(v)}</span></div>`).join('') +
+        <span style="--k:${k};--t:${k ? '#fff' : '#1d1d1f'}"><i>${k + 1}. stupeň </i>${cislo(v)}</span></div>`).join('') +
       `<div class="vrchol${xv > 70 ? ' vlevo-od' : ''}" style="left:${xv}%"><span>vrchol ${kratce(A.vrchol)} · ${cislo(A.H[A.vrchol])} cm</span></div>`;
   }
   function pasmo() {  // pruh pod osou: kdy byla skutečná hladina v kterém stupni
@@ -1087,18 +986,11 @@ if (A) {
 
   const lista = document.createElement('div');
   lista.className = 'sklo lista';
-  lista.innerHTML = `<div class="lista-horni">
-      <button class="hraj" id="hraj"></button>
-      <div class="lista-cas"><b id="l-den"></b><b id="l-hodina"></b><small id="l-pasmo"></small></div>
-      <div class="hodnota"><span class="hodnota-nazev"><i class="vzor"></i>Skutečnost</span><b id="l-skut"></b><span id="l-skut-st"></span></div>
-      <div class="hodnota pred"><span class="hodnota-nazev"><i class="vzor"></i>Předpověď 24 h předem</span><b id="l-pred"></b><span id="l-pred-st"></span></div>
-      <div class="hodnota rozdil"><span class="hodnota-nazev">Rozdíl</span><b id="l-rozdil"></b></div>
-      <div class="rychlost" id="rychlost" role="group" aria-label="Rychlost přehrávání"><span>Rychlost</span>${RYCHLOSTI.map(h =>
-        `<button data-h="${h}" title="${h} ${h < 5 ? 'hodiny' : 'hodin'} povodně za sekundu">${h} h/s</button>`).join('')}</div>
-    </div>
+  lista.id = 'lista';
+  lista.innerHTML = `<button class="hraj" id="hraj"></button>
     <div class="osa" id="osa" role="slider" tabindex="0" aria-label="Čas povodně" aria-valuemin="0" aria-valuemax="${K}">
       <div class="graf" id="graf-osa"></div><div class="pasmo">${pasmo()}</div>
-      <div class="najeti" id="najeti"><span></span></div><div class="hlava" id="hlava"><i></i></div>
+      <div class="najeti" id="najeti"><span></span></div><div class="hlava" id="hlava"><i></i><span id="hlava-stitek"></span></div>
     </div>
     <div class="dny" id="dny"></div>`;
   document.body.append(lista);
@@ -1120,15 +1012,16 @@ if (A) {
   addEventListener('resize', rozmer);
   if (tiraz && window.ResizeObserver) new ResizeObserver(rozmer).observe(tiraz);
 
+  // štítek u kraje osy se zarovná dovnitř, ať nevyčnívá z přehrávače
+  const kraj = (el, px) => {
+    const w = el.lastChild.offsetWidth / 2 + 6;
+    el.classList.toggle('kraj-l', px < w);
+    el.classList.toggle('kraj-p', osa.clientWidth - px < w);
+  };
   function obnovListu(i) {
-    const c = casti(i), h = A.H[i], p = A.P[i];
-    q('l-den').textContent = c.den; q('l-hodina').textContent = c.hodina; q('l-pasmo').textContent = c.pasmo;
-    q('l-skut').textContent = h == null ? '–' : cislo(h) + ' cm';
-    q('l-pred').textContent = p == null ? '–' : cislo(p) + ' cm';
-    q('l-skut-st').innerHTML = odznak(stupenH(A.spa, h));
-    q('l-pred-st').innerHTML = p == null ? '' : odznak(stupenH(A.spa, p));
-    q('l-rozdil').textContent = p == null || h == null ? '–' : znamenko(p - h) + ' cm';
+    const h = A.H[i];
     hlava.firstChild.style.top = `calc(5px + (100% - 14px) * ${(h == null ? 50 : y(h)) / 100})`;
+    kraj(hlava, procento(i) / 100 * osa.clientWidth);
     osa.setAttribute('aria-valuenow', i);
     osa.setAttribute('aria-valuetext', A.popisky[i]);
   }
@@ -1145,59 +1038,51 @@ if (A) {
   }
   function prehraj() { zavriUvod(); if (cas >= K) cas = A.start; hraje = true; minule = null; ikona(); }
   function pauza() { hraje = false; minule = null; ikona(); }
-  function nastavRychlost(h) {
-    if (+h > 0) rychlost = +h;
-    for (const b of document.querySelectorAll('#rychlost button')) b.setAttribute('aria-pressed', +b.dataset.h === rychlost);
-  }
+  function nastavRychlost(h) { if (+h > 0) rychlost = +h; }  // bez ovládání na stránce; pro video a deck
   function skoc(i) { cas = Math.max(0, Math.min(K, Math.round(+i))); minule = null; ikona(); }
   const krok = d => { pauza(); skoc(hodina() + d); };
 
   tlacitko.addEventListener('click', () => hraje ? pauza() : prehraj());
-  q('rychlost').addEventListener('click', e => { const b = e.target.closest('button'); if (b) nastavRychlost(b.dataset.h); });
   const zBodu = e => { const o = osa.getBoundingClientRect(); return Math.round(Math.min(1, Math.max(0, (e.clientX - o.left) / o.width)) * K); };
   osa.addEventListener('pointerdown', e => { tahne = true; osa.setPointerCapture(e.pointerId); cas = zBodu(e); });
+  // při najetí ukáže čas a hladinu pod kurzorem místo štítku hlavy, ať se nepřekrývají
+  const schovejNajeti = () => { najeti.style.display = 'none'; osa.classList.remove('najizdi'); };
   osa.addEventListener('pointermove', e => {
-    const i = zBodu(e);
+    const i = zBodu(e), h = A.H[i];
     if (tahne) cas = i;
+    osa.classList.add('najizdi');
     najeti.style.display = 'block';
     najeti.style.left = procento(i) + '%';
-    najeti.firstChild.textContent = kratce(i);
+    najeti.firstChild.textContent = `${kratce(i)} · ${h == null ? '–' : cislo(h) + '\u00a0cm'}`;
+    kraj(najeti, procento(i) / 100 * osa.clientWidth);
   });
-  const pust = () => { tahne = false; minule = null; };
+  const pust = e => { tahne = false; minule = null; if (e.pointerType !== 'mouse') schovejNajeti(); };
   osa.addEventListener('pointerup', pust);
   osa.addEventListener('pointercancel', pust);
-  osa.addEventListener('pointerleave', () => { najeti.style.display = 'none'; });
+  osa.addEventListener('pointerleave', schovejNajeti);
   document.addEventListener('keydown', e => {
     if (['INPUT', 'SELECT', 'TEXTAREA'].includes(e.target.tagName)) return;
     if (e.code === 'Space') { e.preventDefault(); if (!e.repeat) hraje ? pauza() : prehraj(); }
     else if (e.code === 'ArrowRight' || e.code === 'ArrowLeft') {
       e.preventDefault();
       krok((e.code === 'ArrowRight' ? 1 : -1) * (e.shiftKey ? 24 : 1));
-    }
+    } else if (e.code === 'Home' || e.code === 'End') { e.preventDefault(); pauza(); skoc(e.code === 'Home' ? 0 : K); }
   });
   // mezerník na tlačítku by ho po puštění ještě jednou stiskl
   document.addEventListener('keyup', e => { if (e.code === 'Space' && e.target.tagName === 'BUTTON') e.preventDefault(); });
 
-  // úvod: velké okno s jedním tlačítkem; nová záložka z celé obrazovky (stav v adrese) pokračuje bez něj
-  if (!Object.keys(STAV).length) {
-    uvod = document.createElement('div');
-    uvod.className = 'uvod';
-    uvod.innerHTML = `<div class="uvod-karta" role="dialog" aria-labelledby="uvod-nazev">
-      <div class="uvod-nadtitul">Celá povodeň po hodinách · předpověď × skutečnost</div>
-      <h1 id="uvod-nazev">${A.nazev} <span>· ${A.mesto}</span></h1>
-      <p class="uvod-rozsah">Data ${A.rozsah}, ${cislo(K + 1)} hodin. Vrchol <b>${kratce(A.vrchol)}, ${cislo(A.H[A.vrchol])} cm</b>
-        ${odznak(stupenH(A.spa, A.H[A.vrchol]))}</p>
-      <div class="uvod-graf" id="graf-uvod"></div>
-      <div class="uvod-legenda"><span><i class="vzor"></i>skutečnost</span><span class="pred"><i class="vzor"></i>předpověď 24 h předem (${A.nazev_modelu})</span></div>
-      <button class="uvod-hraj" id="uvod-hraj">${IKONA.hraj}Přehrát povodeň</button>
-      <p class="uvod-napoveda">Mapa ukazuje rozliv podle změřené hladiny, vlevo jde přepnout na porovnání s předpovědí.
-        <kbd>mezerník</kbd> spustí a zastaví, <kbd>←</kbd> <kbd>→</kbd> posunou o hodinu, kliknutím na osu skočíte v čase.</p></div>`;
-    document.body.append(uvod);
-    graf(q('graf-uvod'), 'g-uvod');
-    q('uvod-hraj').addEventListener('click', prehraj);
-  } else {
-    hraje = Boolean(STAV.hraje);
-  }
+  // úvod: nadpis, jedna řádka s rozsahem a vrcholem, graf a jedno tlačítko
+  uvod = document.createElement('div');
+  uvod.className = 'uvod';
+  uvod.innerHTML = `<div class="uvod-karta" role="dialog" aria-labelledby="uvod-nazev">
+    <h1 id="uvod-nazev">${A.nazev} <span>· ${A.mesto}</span></h1>
+    <p class="uvod-rozsah">${A.rozsah}, ${cislo(K + 1)} hodin. Vrchol <b>${kratce(A.vrchol)}, ${cislo(A.H[A.vrchol])} cm</b>
+      ${odznak(stupenH(A.spa, A.H[A.vrchol]))}</p>
+    <div class="uvod-graf" id="graf-uvod"></div>
+    <button class="uvod-hraj" id="uvod-hraj">${IKONA.hraj}Přehrát povodeň</button></div>`;
+  document.body.append(uvod);
+  graf(q('graf-uvod'), 'g-uvod');
+  q('uvod-hraj').addEventListener('click', prehraj);
 
   const snimek = ts => {
     if (hraje && !tahne && minule != null) {
@@ -1213,31 +1098,21 @@ if (A) {
       nakresleno = i;
     }
     hlava.style.left = procento(cas) + '%';
-    if (porovnani) stitky.style.left = porovnani.currentPosition + 'px';
+    if (porovnani) stitky.style.setProperty('--x', porovnani.currentPosition + 'px');
     requestAnimationFrame(snimek);
   };
-  // pro nahrávání videa a ovládání z konzole
-  Object.assign(window, {prehraj, pauza, nastavRychlost, skoc, zavriUvod,
+  // pro nahrávání videa a ovládání z konzole (prelet je globální funkce)
+  Object.assign(window, {prehraj, pauza, nastavRychlost, skoc, zavriUvod, prelet,
     skocNaVrchol: () => skoc(A.vrchol),
     porovnat: (ano = true) => nastavRezim(ano ? 'porovnani' : 'animace'),
     stavPrehravace: () => ({hodina: hodina(), konec: K, hraje, rychlost, rezim, datum: A.popisky[hodina()],
                             skutecnost: A.H[hodina()], predpoved: A.P[hodina()], start: A.start, vrchol: A.vrchol})});
   ikona();
-  nastavRychlost(rychlost);
-  oznac('rezimy', rezim);
-  if (rezim === 'porovnani') mapaA.once('load', () => nastavRezim('porovnani'));
   requestAnimationFrame(snimek);
-} else {
-  const napoveda = document.createElement('div');
-  napoveda.className = 'sklo napoveda';
-  napoveda.innerHTML = `${svg(IKONY.animace)}<span>Celou povodeň po hodinách přehrajete v režimu <b>Celá povodeň</b> nad mapou</span>`;
-  document.body.append(napoveda);
 }
 
-oznac('pohledy', pohled);
-nastaveni();
 panel();
-if (!STAV.kamera) dolad(pohled);
+dolad(pohled);
 </script>
 </body>
 </html>
@@ -1275,8 +1150,8 @@ def main():
     cil = b.radio("Cíl", list(MESTA), format_func=MESTA.get, horizontal=True)
     vyrobit = getattr(st, "iframe", components.html)
     vyrobit(_animace_c(povoden, cil), height=720)
-    st.caption("Okno je 14 dní před vrcholem hladiny v Děčíně a 5 dní po něm. Porovnání: vlevo rozliv z hladiny, kterou "
-               "model předpověděl o 24 h dřív, vpravo ze změřené hladiny ve stejné hodině. Terén je zvýšený 1,6×.")
+    st.caption("Okno je 14 dní před vrcholem hladiny v Děčíně a 5 dní po něm. Rozliv jde ze změřené hladiny, v grafu je "
+               "modře předpověď modelu vydaná o 24 h dřív. Terén je zvýšený 1,6×.")
     od, do = okno(povoden)
     od, do = od.tz_convert(mapa.PASMO).tz_localize(None), do.tz_convert(mapa.PASMO).tz_localize(None)
     vrchol = nacti().loc[slice(*POVODNE[povoden]), f"{cil}_H"].idxmax().tz_convert(mapa.PASMO).tz_localize(None)

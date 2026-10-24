@@ -95,7 +95,8 @@ def n_leta_voda(cil, hladina_cm):
             popis = f"{zacatek}, to je víc než stoletá voda (Q100 = {_cislo(r.Q_m3s)} m³/s podle ČHMÚ)."
         else:
             d = dalsi.iloc[0]
-            popis = (f"{zacatek}, to je zhruba {SLOVY[N]} voda (Q{N} = {_cislo(r.Q_m3s)} m³/s, "
+            popis = (f"{zacatek}, to je víc než {SLOVY[N]} a méně než {SLOVY[int(d.N)]} voda "
+                     f"(Q{N} = {_cislo(r.Q_m3s)} m³/s, "
                      f"Q{int(d.N)} = {_cislo(d.Q_m3s)} m³/s podle ČHMÚ).")
     if hladina_cm > nacti()[f"{cil}_H"].max():
         popis += " Tak vysoko jsme hladinu nikdy nezměřili, průtok může být i vyšší."
