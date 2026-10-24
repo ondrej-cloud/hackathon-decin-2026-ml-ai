@@ -3,6 +3,7 @@ Server: .venv\\Scripts\\python -m http.server 8607 -d web (adresa v ZAKLAD). Ulo
 import os
 import pathlib
 import re
+import tempfile
 from playwright.sync_api import sync_playwright
 
 ZAKLAD = os.environ.get('ZAKLAD', 'http://127.0.0.1:8607')
