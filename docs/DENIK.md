@@ -413,3 +413,7 @@ Oprava proti 9:46: slajd 7 (Funguje to doopravdy?) říká Honza, slajdy 8 (mapa
 ## so 19:52 · Ondra
 - Co: web (`web/`) po soutěži přestavěný na čistší rozložení. Nahoře jedna lišta (Předpověď, Přesnost, Mapa, Animace), ovládání v jednom řádku nad obsahem místo bočního panelu, na Předpovědi jedna karta „teď a za 12, 24, 36 h“ (dřív stejná tři čísla na pěti místech), pod ní graf a vodočet vedle sebe, průtoky a srážky sbalené v Podrobnostech. V historii graf ukazuje i to, co pak opravdu přišlo, a karta „skutečně … cm“. Přesnost má čtyři čísla v jedné kartě a tabulku po dnech sbalenou. Pryč jsou hlášky s cestami ke skriptům a „bude jako teď“ (teď „beze změny“). Prezentace beze změny.
 - Proč: po vyhlášení už web neslouží porotě, ale lidem, kteří chtějí vědět, kolik vody přijde; každé číslo má jedno místo.
+
+## so 20:32 · Ondra
+- Co: web podruhé přeskládaný, místo čtyř záložek dvě stránky. Dnes (`index.html`): živá předpověď, graf a vodočet, podrobnosti sbalené, dole odkaz na povodeň 2013. Povodně (`povodne.html`): jeden výběr povodně a města řídí celou stránku, nahoře mapa (rozliv nebo voda v řekách), pod ní jak přesná byla předpověď a pak co model hlásil hodinu po hodině. `kvalita.html`, `mapa.html` a `animace.html` jen přesměrují na Povodně se stejnými parametry, takže odkaz z decku funguje.
+- Proč: dřív se stejná povodeň vybírala na třech záložkách a navigace výběr zahazovala; teď je všechno o jedné povodni na jednom místě.

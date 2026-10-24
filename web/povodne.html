@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="cs">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Povodně z historie · Kolik vody přiteče do Děčína a Ústí</title>
+<meta name="description" content="Šest skutečných povodní na Labi v 3D mapě, hodinu po hodině: co model hlásil den předem, jak přesný byl a kdy varoval.">
+<meta name="theme-color" content="#f5f5f7">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Povodně z historie · Kolik vody přiteče do Děčína a Ústí">
+<meta property="og:description" content="Šest skutečných povodní na Labi v 3D mapě, hodinu po hodině: co model hlásil den předem, jak přesný byl a kdy varoval.">
+<meta property="og:image" content="https://field-zero.netlify.app/img/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:url" content="https://field-zero.netlify.app/povodne.html">
+<meta property="og:locale" content="cs_CZ">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="img/ikona-180.png">
+<meta name="apple-mobile-web-app-title" content="Povodňový pult">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20viewBox='0%200%2044%2044'%20width='44'%20height='44'%20aria-hidden='true'%20xmlns='http://www.w3.org/2000/svg'%3E%3Crect%20width='44'%20height='44'%20rx='12'%20fill='%23167c9c'/%3E%3Crect%20x='15'%20y='4'%20width='14'%20height='36'%20rx='2'%20fill='%23ffffff'/%3E%3Cg%20stroke='%23167c9c'%20stroke-width='1.2'%20stroke-opacity='.8'%3E%3Cline%20x1='15'%20x2='29'%20y1='8'%20y2='8'/%3E%3Cline%20x1='15'%20x2='22'%20y1='11'%20y2='11'/%3E%3Cline%20x1='15'%20x2='22'%20y1='14'%20y2='14'/%3E%3Cline%20x1='15'%20x2='22'%20y1='17'%20y2='17'/%3E%3Cline%20x1='15'%20x2='29'%20y1='20'%20y2='20'/%3E%3Cline%20x1='15'%20x2='22'%20y1='23'%20y2='23'/%3E%3Cline%20x1='15'%20x2='22'%20y1='26'%20y2='26'/%3E%3Cline%20x1='15'%20x2='22'%20y1='29'%20y2='29'/%3E%3Cline%20x1='15'%20x2='29'%20y1='32'%20y2='32'/%3E%3Cline%20x1='15'%20x2='22'%20y1='35'%20y2='35'/%3E%3Cline%20x1='15'%20x2='22'%20y1='38'%20y2='38'/%3E%3C/g%3E%3Cpath%20d='M15%2027h14v11a2%202%200%200%201-2%202H17a2%202%200%200%201-2-2z'%20fill='%239fcad8'/%3E%3Cpath%20d='M8%2027h28'%20stroke='%23ffffff'%20stroke-width='2.2'%20stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="preload" href="fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/inter-latin-ext.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="css/pult.css">
+<link rel="modulepreload" href="js/povodne.js">
+<link rel="modulepreload" href="js/typo.js">
+<link rel="modulepreload" href="js/data.js">
+<link rel="modulepreload" href="js/spolecne.js">
+<link rel="modulepreload" href="js/karty.js">
+<link rel="modulepreload" href="js/vodocet.js">
+<link rel="modulepreload" href="js/graf.js">
+<link rel="preload" href="data/povodne.json" as="fetch" crossorigin>
+<link rel="preload" href="data/metriky.json" as="fetch" crossorigin>
+<link rel="preconnect" href="https://api.mapbox.com" crossorigin>
+<script type="module" src="js/povodne.js"></script>
+</head>
+<body>
+<header class="lista"><div class="lista-obsah">
+  <a class="znacka" href="index.html"><svg viewBox="0 0 44 44" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><rect width="44" height="44" rx="12" fill="#167c9c"/><rect x="15" y="4" width="14" height="36" rx="2" fill="#ffffff"/><g stroke="#167c9c" stroke-width="1.2" stroke-opacity=".8"><line x1="15" x2="29" y1="8" y2="8"/><line x1="15" x2="22" y1="11" y2="11"/><line x1="15" x2="22" y1="14" y2="14"/><line x1="15" x2="22" y1="17" y2="17"/><line x1="15" x2="29" y1="20" y2="20"/><line x1="15" x2="22" y1="23" y2="23"/><line x1="15" x2="22" y1="26" y2="26"/><line x1="15" x2="22" y1="29" y2="29"/><line x1="15" x2="29" y1="32" y2="32"/><line x1="15" x2="22" y1="35" y2="35"/><line x1="15" x2="22" y1="38" y2="38"/></g><path d="M15 27h14v11a2 2 0 0 1-2 2H17a2 2 0 0 1-2-2z" fill="#9fcad8"/><path d="M8 27h28" stroke="#ffffff" stroke-width="2.2" stroke-linecap="round"/></svg><span>Povodňový pult</span></a>
+  <nav class="nav" aria-label="Části webu"><a href="index.html">Dnes</a><a href="povodne.html" aria-current="page">Povodně</a></nav>
+</div></header>
+<p id="oznameni" class="sr" aria-live="polite"></p>
+<main class="strana">
+  <div class="hlava"><span class="nadtitul">Povodně z&nbsp;historie</span><h1 id="nadpis">&nbsp;</h1><p id="podtitul">&nbsp;</p></div>
+  <div class="ovladani">
+    <div id="povodne"></div>
+    <div id="stanice"></div>
+  </div>
+  <section class="oddil" id="mapa" aria-label="Povodeň v mapě">
+    <div class="scena" id="scena">
+      <img id="nahled" src="img/mapbox3_decin.webp" srcset="img/mapbox3_decin_800.webp 800w, img/mapbox3_decin.webp 1600w" sizes="(max-width: 640px) 100vw, min(1120px, 94vw)" alt="" width="1600" height="900" decoding="async" fetchpriority="high">
+      <div class="scena-start"><button class="tlacitko" id="start" type="button">Přehrát povodeň</button></div>
+      <iframe id="ramec" title="Povodeň v mapě" allow="fullscreen"></iframe>
+    </div>
+    <div class="pod-scenou"><div id="vrstva"></div><p class="pozn" id="popis-mapy"></p></div>
+  </section>
+  <section class="oddil" id="presnost">
+    <div class="oddil-hlava"><div><h2>Jak přesná byla předpověď</h2><p id="presnost-popis"></p></div><div id="horizont"></div></div>
+    <div class="obsah" id="presnost-obsah"><p class="nacitam">Načítám data…</p></div>
+  </section>
+  <section class="oddil" id="okamzik">
+    <div class="oddil-hlava"><div><h2>Co model hlásil hodinu po hodině</h2><p>Posuňte čas a&nbsp;podívejte se, co model v&nbsp;tu hodinu předpověděl a&nbsp;co pak opravdu přišlo.</p></div></div>
+    <div class="cas"><output id="cas-out" for="cas">…</output><input type="range" id="cas" min="0" max="1" step="1" value="0" aria-label="Okamžik předpovědi"></div>
+    <div class="obsah" id="okamzik-obsah"></div>
+  </section>
+</main>
+<footer class="pata">
+  <p>Data ČHMÚ · mapy&nbsp;©&nbsp;Mapbox, ©&nbsp;OpenStreetMap · terén ČÚZK DMR&nbsp;5G · záplavová území DIBAVOD</p>
+  <p>Hackathon ML/AI 2026 · <a href="prezentace/">prezentace</a></p>
+</footer>
+<noscript><p class="hlaska varovani" style="margin:1rem">Stránka potřebuje JavaScript: kreslí vodočet a&nbsp;grafy z&nbsp;předpočítaných dat.</p></noscript>
+</body>
+</html>

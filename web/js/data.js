@@ -36,7 +36,7 @@ export function zapisStav(obj) {
     if (v == null || v === false || v === "") p.delete(k); else p.set(k, v);
   }
   const q = p.toString();
-  history.replaceState(null, "", location.pathname + (q ? "?" + q : ""));
+  history.replaceState(null, "", location.pathname + (q ? "?" + q : "") + location.hash);
 }
 
 export const trend = (ted, drive) => (drive == null ? "" : ted > drive * 1.05 ? "stoupá" : ted < drive * 0.95 ? "klesá" : "drží se");

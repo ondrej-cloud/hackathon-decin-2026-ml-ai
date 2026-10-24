@@ -3,63 +3,12 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Přesnost · Kolik vody přiteče do Děčína a Ústí</title>
-<meta name="description" content="Chyba modelu při povodních proti „bude jako teď“, předstih varování, propásnuté povodně a plané poplachy.">
-<meta name="theme-color" content="#f5f5f7">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Přesnost · Kolik vody přiteče do Děčína a Ústí">
-<meta property="og:description" content="Chyba modelu při povodních proti „bude jako teď“, předstih varování, propásnuté povodně a plané poplachy.">
-<meta property="og:image" content="https://field-zero.netlify.app/img/og.png">
-<meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="630">
-<meta property="og:url" content="https://field-zero.netlify.app/kvalita.html">
-<meta property="og:locale" content="cs_CZ">
-<meta name="twitter:card" content="summary_large_image">
-<link rel="manifest" href="manifest.webmanifest">
-<link rel="apple-touch-icon" href="img/ikona-180.png">
-<meta name="apple-mobile-web-app-title" content="Povodňový pult">
-<meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="default">
-<link rel="icon" href="data:image/svg+xml,%3Csvg%20viewBox='0%200%2044%2044'%20width='44'%20height='44'%20aria-hidden='true'%20xmlns='http://www.w3.org/2000/svg'%3E%3Crect%20width='44'%20height='44'%20rx='12'%20fill='%23167c9c'/%3E%3Crect%20x='15'%20y='4'%20width='14'%20height='36'%20rx='2'%20fill='%23ffffff'/%3E%3Cg%20stroke='%23167c9c'%20stroke-width='1.2'%20stroke-opacity='.8'%3E%3Cline%20x1='15'%20x2='29'%20y1='8'%20y2='8'/%3E%3Cline%20x1='15'%20x2='22'%20y1='11'%20y2='11'/%3E%3Cline%20x1='15'%20x2='22'%20y1='14'%20y2='14'/%3E%3Cline%20x1='15'%20x2='22'%20y1='17'%20y2='17'/%3E%3Cline%20x1='15'%20x2='29'%20y1='20'%20y2='20'/%3E%3Cline%20x1='15'%20x2='22'%20y1='23'%20y2='23'/%3E%3Cline%20x1='15'%20x2='22'%20y1='26'%20y2='26'/%3E%3Cline%20x1='15'%20x2='22'%20y1='29'%20y2='29'/%3E%3Cline%20x1='15'%20x2='29'%20y1='32'%20y2='32'/%3E%3Cline%20x1='15'%20x2='22'%20y1='35'%20y2='35'/%3E%3Cline%20x1='15'%20x2='22'%20y1='38'%20y2='38'/%3E%3C/g%3E%3Cpath%20d='M15%2027h14v11a2%202%200%200%201-2%202H17a2%202%200%200%201-2-2z'%20fill='%239fcad8'/%3E%3Cpath%20d='M8%2027h28'%20stroke='%23ffffff'%20stroke-width='2.2'%20stroke-linecap='round'/%3E%3C/svg%3E">
-<link rel="preload" href="fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="preload" href="fonts/inter-latin-ext.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="css/pult.css">
-<link rel="modulepreload" href="js/kvalita.js">
-<link rel="modulepreload" href="js/typo.js">
-<link rel="modulepreload" href="js/data.js">
-<link rel="modulepreload" href="js/spolecne.js">
-<link rel="modulepreload" href="js/graf.js">
-<link rel="preload" href="data/povodne.json" as="fetch" crossorigin>
-<link rel="preload" href="data/metriky.json" as="fetch" crossorigin>
+<title>Povodně z historie</title>
+<meta name="robots" content="noindex">
 <script>
-(function () {
-  var q = new URLSearchParams(location.search), p = q.get("povoden"), c = q.get("cil");
-  var l = document.createElement("link");
-  l.rel = "preload"; l.as = "fetch"; l.crossOrigin = "anonymous";
-  l.href = "data/rada_" + (/^\d{4}-\d{2}$/.test(p) ? p : "2011-01") + "_" + (c === "usti" ? "usti" : "decin") + ".json";
-  document.head.appendChild(l);
-})();
+var q = new URLSearchParams(location.search);
+location.replace("povodne.html" + (String(q) ? "?" + q : "") + "#presnost");
 </script>
-<script type="module" src="js/kvalita.js"></script>
 </head>
-<body>
-<header class="lista"><div class="lista-obsah">
-  <a class="znacka" href="index.html"><svg viewBox="0 0 44 44" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><rect width="44" height="44" rx="12" fill="#167c9c"/><rect x="15" y="4" width="14" height="36" rx="2" fill="#ffffff"/><g stroke="#167c9c" stroke-width="1.2" stroke-opacity=".8"><line x1="15" x2="29" y1="8" y2="8"/><line x1="15" x2="22" y1="11" y2="11"/><line x1="15" x2="22" y1="14" y2="14"/><line x1="15" x2="22" y1="17" y2="17"/><line x1="15" x2="29" y1="20" y2="20"/><line x1="15" x2="22" y1="23" y2="23"/><line x1="15" x2="22" y1="26" y2="26"/><line x1="15" x2="22" y1="29" y2="29"/><line x1="15" x2="29" y1="32" y2="32"/><line x1="15" x2="22" y1="35" y2="35"/><line x1="15" x2="22" y1="38" y2="38"/></g><path d="M15 27h14v11a2 2 0 0 1-2 2H17a2 2 0 0 1-2-2z" fill="#9fcad8"/><path d="M8 27h28" stroke="#ffffff" stroke-width="2.2" stroke-linecap="round"/></svg><span>Povodňový pult</span></a>
-  <nav class="nav" aria-label="Části webu"><a href="index.html">Předpověď</a><a href="kvalita.html" aria-current="page">Přesnost</a><a href="mapa.html">Mapa</a><a href="animace.html">Animace</a></nav>
-</div></header>
-<p id="oznameni" class="sr" aria-live="polite"></p>
-<main class="strana">
-  <div class="hlava"><h1 id="nadpis">Jak přesná je předpověď</h1><p id="podtitul"></p></div>
-  <div class="ovladani">
-    <div id="povodne"></div>
-    <div><span id="stanice"></span><span id="horizont"></span></div>
-  </div>
-  <div class="obsah" id="obsah"><p class="nacitam">Načítám data…</p></div>
-</main>
-<footer class="pata">
-  <p>Data ČHMÚ · mapy&nbsp;©&nbsp;Mapbox, ©&nbsp;OpenStreetMap · terén ČÚZK DMR&nbsp;5G · záplavová území DIBAVOD</p>
-  <p>Hackathon ML/AI 2026 · <a href="prezentace/">prezentace</a></p>
-</footer>
-<noscript><p class="hlaska varovani" style="margin:1rem">Stránka potřebuje JavaScript: kreslí vodočet a&nbsp;grafy z&nbsp;předpočítaných dat.</p></noscript>
-</body>
+<body><p><a href="povodne.html#presnost">Povodně z historie</a></p></body>
 </html>

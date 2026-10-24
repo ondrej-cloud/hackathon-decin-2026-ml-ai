@@ -3,12 +3,12 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Předpověď · Kolik vody přiteče do Děčína a Ústí</title>
-<meta name="description" content="Předpověď hladiny Labe v Děčíně a Ústí nad Labem na 12, 24 a 36 hodin: vodočet, stupně povodňové aktivity a rozmezí nejistoty.">
+<title>Labe dnes · Kolik vody přiteče do Děčína a Ústí</title>
+<meta name="description" content="Předpověď hladiny Labe v Děčíně a Ústí nad Labem na 12, 24 a 36 hodin z živých dat ČHMÚ: hladina teď, stupně povodňové aktivity a rozmezí nejistoty.">
 <meta name="theme-color" content="#f5f5f7">
 <meta property="og:type" content="website">
-<meta property="og:title" content="Předpověď · Kolik vody přiteče do Děčína a Ústí">
-<meta property="og:description" content="Předpověď hladiny Labe v Děčíně a Ústí nad Labem na 12, 24 a 36 hodin: vodočet, stupně povodňové aktivity a rozmezí nejistoty.">
+<meta property="og:title" content="Labe dnes · Kolik vody přiteče do Děčína a Ústí">
+<meta property="og:description" content="Předpověď hladiny Labe v Děčíně a Ústí nad Labem na 12, 24 a 36 hodin z živých dat ČHMÚ: hladina teď, stupně povodňové aktivity a rozmezí nejistoty.">
 <meta property="og:image" content="https://field-zero.netlify.app/img/og.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -24,42 +24,32 @@
 <link rel="preload" href="fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="fonts/inter-latin-ext.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="css/pult.css">
-<link rel="modulepreload" href="js/ted.js">
+<link rel="modulepreload" href="js/dnes.js">
 <link rel="modulepreload" href="js/typo.js">
 <link rel="modulepreload" href="js/data.js">
 <link rel="modulepreload" href="js/spolecne.js">
+<link rel="modulepreload" href="js/karty.js">
 <link rel="modulepreload" href="js/vodocet.js">
 <link rel="modulepreload" href="js/graf.js">
 <link rel="preload" href="data/povodne.json" as="fetch" crossorigin>
+<link rel="preload" href="data/dnesek.json" as="fetch" crossorigin>
 <script>
+// staré odkazy na přehrávání historie (?povoden=…, ?cas=…, ?dnesek=0) vedou na stránku Povodně
 (function () {
-  var q = new URLSearchParams(location.search), p = q.get("povoden"), c = q.get("cil");
-  var l = document.createElement("link");
-  l.rel = "preload"; l.as = "fetch"; l.crossOrigin = "anonymous";
-  var dnes = q.get("dnesek") === "1" || (q.get("dnesek") !== "0" && !q.has("povoden") && !q.has("cas"));
-  l.href = dnes ? "data/dnesek.json"
-    : "data/rada_" + (/^\d{4}-\d{2}$/.test(p) ? p : "2011-01") + "_" + (c === "usti" ? "usti" : "decin") + ".json";
-  document.head.appendChild(l);
+  var q = new URLSearchParams(location.search);
+  if (q.has("povoden") || q.has("cas") || q.get("dnesek") === "0") { q.delete("dnesek"); location.replace("povodne.html?" + q + "#okamzik"); }
 })();
 </script>
-<script type="module" src="js/ted.js"></script>
+<script type="module" src="js/dnes.js"></script>
 </head>
 <body>
 <header class="lista"><div class="lista-obsah">
   <a class="znacka" href="index.html"><svg viewBox="0 0 44 44" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><rect width="44" height="44" rx="12" fill="#167c9c"/><rect x="15" y="4" width="14" height="36" rx="2" fill="#ffffff"/><g stroke="#167c9c" stroke-width="1.2" stroke-opacity=".8"><line x1="15" x2="29" y1="8" y2="8"/><line x1="15" x2="22" y1="11" y2="11"/><line x1="15" x2="22" y1="14" y2="14"/><line x1="15" x2="22" y1="17" y2="17"/><line x1="15" x2="29" y1="20" y2="20"/><line x1="15" x2="22" y1="23" y2="23"/><line x1="15" x2="22" y1="26" y2="26"/><line x1="15" x2="22" y1="29" y2="29"/><line x1="15" x2="29" y1="32" y2="32"/><line x1="15" x2="22" y1="35" y2="35"/><line x1="15" x2="22" y1="38" y2="38"/></g><path d="M15 27h14v11a2 2 0 0 1-2 2H17a2 2 0 0 1-2-2z" fill="#9fcad8"/><path d="M8 27h28" stroke="#ffffff" stroke-width="2.2" stroke-linecap="round"/></svg><span>Povodňový pult</span></a>
-  <nav class="nav" aria-label="Části webu"><a href="index.html" aria-current="page">Předpověď</a><a href="kvalita.html">Přesnost</a><a href="mapa.html">Mapa</a><a href="animace.html">Animace</a></nav>
+  <nav class="nav" aria-label="Části webu"><a href="index.html" aria-current="page">Dnes</a><a href="povodne.html">Povodně</a></nav>
 </div></header>
 <p id="oznameni" class="sr" aria-live="polite"></p>
 <main class="strana">
-  <div class="hlava"><h1 id="nadpis">Hladina Labe v&nbsp;Děčíně</h1><p id="podtitul">Předpověď na 12, 24 a&nbsp;36&nbsp;hodin.</p></div>
-  <div class="ovladani">
-    <div id="rezim"></div>
-    <div id="stanice"></div>
-  </div>
-  <div class="historie" id="historie" hidden>
-    <div id="povodne"></div>
-    <div class="cas"><output id="cas-out" for="cas">…</output><input type="range" id="cas" min="0" max="1" step="1" value="0" aria-label="Okamžik předpovědi"></div>
-  </div>
+  <div class="hlava hlava-radek"><div><h1 id="nadpis">Labe dnes</h1><p id="podtitul">Předpověď na 12, 24 a&nbsp;36&nbsp;hodin.</p></div><div id="stanice"></div></div>
   <div class="obsah" id="obsah"><p class="nacitam">Načítám data…</p></div>
 </main>
 <footer class="pata">
