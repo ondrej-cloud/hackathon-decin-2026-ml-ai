@@ -10,7 +10,7 @@ Větev `dan-prezentace`, složka `prezentace_dan/`, nic není v main.
    `REPRODUKOVATELNOST.md` (hlavní čísla jdou z čistého klonu main zopakovat; otisk verze se liší Windows × Mac).
 4. **Čísla zkontrolovaná Codexem ve čtyřech kolech** (přes 1 100 čísel), všechny nalezené nesoulady jsou opravené.
 5. **Rozhodnout ráno:** Ondra 24 h (doporučeno nechat regresi) a 36 h (regrese, Ridge 30, nebo průzkumné H30), oprava
-   `verze()`, otázka 40 u mentora. Honza záložní video a hotspot, bezpečné patche 02, 03, 04, 05, 07, 08 a pásmo (01 + 10),
+   `verze()`, otázka 40 u mentora. Honza záložní video a hotspot, bezpečné patche 02, 03, 04, 05, 07, 08, pásmo (01 + 10) a kmitání při nízké vodě (11),
    čas výpočtu Dneška sladit s hodinovým průměrem. Tobias Danovy slajdy (místo slajdu 5 chce ušetřit 20–50 s), grafy
    G1–G4, formulace slajdů 4 a 7 a jestli Canva, nebo Honzova HTML prezentace z main.
 6. **Pozor v prezentaci:** Boris „27 h“ je od varování do skutečného překročení (model ho čekal o 3 h dřív). Test

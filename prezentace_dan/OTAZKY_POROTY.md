@@ -236,7 +236,7 @@ validaci to D24 zhorší z 15,5 na 16,9 cm. Provozní test v noci: ČHMÚ zveře
 je u všech stanic venku nejpozději v HH:40, proto počítat v HH:45 (to platí pro okamžité hodnoty v celou hodinu;
 aplikace bere hodinový průměr t:00–t:50, ten je kompletní později, je potřeba to sladit). Za posledních 29 dní nízké vody byla oficiální
 předpověď ČHMÚ přesnější než naše (D24 5,0 proti 7,5 cm), náš model při nízké vodě kmitá; na povodních srovnání nemáme.
-*Zdroj: docs/DENIK.md (pá 21:30, Honza), ridge_dan/PROVOZ.md (koncept, větev dan-ridge).*
+*Zdroj: docs/DENIK.md (pá 21:30, Honza), ridge_dan/PROVOZ.md (větev dan-ridge).*
 
 **38. Ta modrá plocha na mapě je váš hydraulický model?**
 Ne. Model předpoví hladinu, převedeme ji na průtok (naše měrná křivka, do 3 % od oficiální) a ukážeme oficiální záplavové

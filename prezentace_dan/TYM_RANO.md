@@ -18,7 +18,7 @@ Do main nešlo nic. Podklady pro prezentaci jsou v `prezentace_dan/` na větvi `
    78–80 % a 94–95 %, na rychlém vzestupu 59–72 %. Patch je hotový.
 5. **Revize aplikace:** 2 kritické nálezy (bez internetu je mapa a animace prázdná; Dnešek na špatné Wi-Fi na minuty
    zamrzne) a 6 vysokých (texty u Borise a testu, DIBAVOD × výškový model, pásmo). 10 patchů; se všemi prochází test 9 z 9, s 01–09 i Dneškem 10 z 10.
-6. **Provoz (Dan, koncept):** data ČHMÚ chodí po 20 min, hodnota z celé hodiny je u všech stanic venku do HH:40, proto
+6. **Provoz (Dan):** data ČHMÚ chodí po 20 min, hodnota z celé hodiny je u všech stanic venku do HH:40, proto
    počítat v HH:45 (platí pro okamžité hodnoty v celou hodinu; aplikace ale počítá hodinový průměr t:00–t:50 jako archiv, ten je kompletní až později, sjednotit a ověřit) (při doplnění chybějící hodiny poslední hodnotou je chyba D24 o 1,8 cm horší). Za 29 dní nízké vody byla
    oficiální předpověď ČHMÚ přesnější než naše (D24 5,0 proti 7,5 cm), náš model při nízké vodě kmitá.
 7. **Reprodukovatelnost main:** hlavní čísla (17,1 / 20,1 / procenta / aplikace) z čistého klonu sedí
@@ -45,7 +45,8 @@ Do main nešlo nic. Podklady pro prezentaci jsou v `prezentace_dan/` na větvi `
   (`REPRODUKOVATELNOST.md`). U mentora ověřit otázku 40 (kdo odpovídá za varování). Rozhodnout o patchích aplikace.
 - **Honza:** záložní video a hotspot (mapa bez internetu je prázdná), před porotou projít všechny záložky. Patche
   z `nejistota_dan/patche/` podle Danovy ranní zprávy: bezpečné 02, 03, 04, 05, 07, 08 (hláška bez internetu, Dnešek
-  kratší čekání a neuloží rozbitý soubor, texty Borise, testu a DIBAVOD…), pásmo 01 + 10, 06 a 09 až po vyzkoušení
+  kratší čekání a neuloží rozbitý soubor, texty Borise, testu a DIBAVOD…), pásmo 01 + 10, 11 (v Dnešku při nízké vodě průměr předpovědí za 3 h,
+  kmitání 6,2 → 3,1 cm, varování beze změny), 06 a 09 až po vyzkoušení
   v prohlížeči. Pro Dnešek předvolit `ridge_vse`; čas výpočtu (HH:45) sladit s hodinovým průměrem. V main je od 4:44 i Honzova webová verze
   (Netlify) a HTML prezentace: domluvit s Tobiasem, která verze prezentace se pouští.
 - **Tobias:** Danovy tři slajdy (`DAN_VYSTUP.md`) místo slajdu 5, nebo jako zálohu. Grafy `prezentace_dan/grafy/`:
