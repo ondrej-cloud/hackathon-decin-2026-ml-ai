@@ -1,7 +1,7 @@
 // Stránka Teď: vodočet, odečty, věta pro laika a graf 72 h kolem zvoleného okamžiku; přepínač Dnešek.
 import { typo, cislo, cm, jedn, znamenko, NB, parseIso, posun, datumCas, hodina } from "./typo.js";
 import { DATA, H, KDE, NAZVY, STUPNE, BARVY, nacti, stav, zapisStav, stupen, odznak, trend, nejblizsi } from "./data.js";
-import { $, tiraz, hlaska, stitek, dlazdice, segmenty, naZmenu, oznam, posuvnaTabulka } from "./spolecne.js";
+import { $, tiraz, hlaska, stitek, dlazdice, segmenty, naZmenu, oznam, posuvnaTabulka, panelSbaleni, shrnutiPanelu } from "./spolecne.js";
 import { vodocet } from "./vodocet.js";
 import { graf } from "./graf.js";
 
@@ -12,18 +12,8 @@ const S = { povoden: q.get("povoden") || "2011-01", cil: q.get("cil") || "decin"
 let POV, RADA, DNES, ZPRAVA = "", i = 0, prvni = true;
 const hlavni = $("#hlavni"), panel = $("#panel");
 const kompakt = () => matchMedia("(max-width: 640px)").matches;
-const prepnout = $("#panel-prepnout");
 
-// Na telefonu je panel nahoře sbalený na jeden řádek se shrnutím; tlačítko ho rozbalí.
-function panelOtevrit(otevrit) {
-  panel.classList.toggle("otevreny", otevrit);
-  prepnout.setAttribute("aria-expanded", String(otevrit));
-  prepnout.textContent = otevrit ? "Hotovo" : "Změnit";
-}
-function shrnuti(okamzik) {
-  const casti = [NAZVY[S.cil], S.dnesek ? "Dnešek" : povoden().klic, okamzik].filter(Boolean);
-  $("#panel-shrnuti").textContent = typo(casti.join(" · "));
-}
+const shrnuti = (okamzik) => shrnutiPanelu([NAZVY[S.cil], S.dnesek ? "Dnešek" : povoden().klic, okamzik]);
 
 function povoden() {
   return POV.povodne.find((p) => p.slug === S.povoden) || POV.povodne[0];
@@ -54,7 +44,7 @@ async function start() {
     if (el) el.checked = true;
   }
   $("#dnesek").checked = S.dnesek;
-  prepnout.addEventListener("click", () => panelOtevrit(!panel.classList.contains("otevreny")));
+  panelSbaleni(panel);
   // 6: vodočet má na telefonu kompaktní kresbu; při změně šířky se překreslí
   matchMedia("(max-width: 640px)").addEventListener("change", () => { if (RADA || DNES) ukaz(); });
   naZmenu(panel, "cil", (v) => { S.cil = v; prvni = true; nactiAUkaz(); });

@@ -1,13 +1,13 @@
 // Stránka Jak dobře to funguje: souhrn chyby a předstihu proti „bude jako teď“, graf celé povodně a tabulka po dnech.
 import { typo, cislo, cm, jedn, NB, parseIso, datum, denMesic } from "./typo.js";
 import { DATA, H, NAZVY, BARVY, nacti, stav, zapisStav, stupen, odznak } from "./data.js";
-import { $, tiraz, hlaska, stitek, dlazdice, segmenty, naZmenu, oznam, posuvnaTabulka } from "./spolecne.js";
+import { $, tiraz, hlaska, stitek, dlazdice, segmenty, naZmenu, oznam, posuvnaTabulka, panelSbaleni, shrnutiPanelu } from "./spolecne.js";
 import { graf } from "./graf.js";
 
 const q = stav();
 const S = { povoden: q.get("povoden") || "2011-01", cil: q.get("cil") || "decin", h: +q.get("h") || 24 };
 let POV, MET, RADA;
-const volby = $("#volby"), hlavni = $("#hlavni");
+const panel = $("#panel"), volby = $("#panel-telo"), hlavni = $("#hlavni");
 
 const povoden = () => POV.povodne.find((p) => p.slug === S.povoden) || POV.povodne[0];
 const spa = () => POV.stanice[S.cil].spa;
@@ -23,9 +23,10 @@ async function start() {
   if (!POV.stanice[S.cil]) S.cil = "decin";
   if (!H.includes(S.h)) S.h = 24;
   volby.innerHTML = `
-    <div><span class="popisek">Povodeň</span>${dlazdice("povoden", POV.povodne.map((p) => ({ hodnota: p.slug, nazev: p.klic, popis: p.nazev + (p.zdroj === "test" ? ", test" : "") })), S.povoden, "radek", "Povodeň")}</div>
-    <div><span class="popisek">Stanice</span>${segmenty("cil", Object.entries(POV.stanice).map(([k, v]) => ({ hodnota: k, nazev: v.nazev })), S.cil, "Stanice")}</div>
-    <div><span class="popisek">${typo("Předpověď vydaná … hodin předem")}</span>${segmenty("h", H.map((h) => ({ hodnota: String(h), nazev: String(h) })), String(S.h), "Předpověď vydaná kolik hodin předem")}</div>`;
+    <div class="skupina cely"><span class="sekce">Povodeň</span>${dlazdice("povoden", POV.povodne.map((p) => ({ hodnota: p.slug, nazev: p.klic, popis: p.nazev + (p.zdroj === "test" ? ", test" : "") })), S.povoden, "", "Povodeň")}</div>
+    <div class="skupina"><span class="sekce">Stanice</span>${segmenty("cil", Object.entries(POV.stanice).map(([k, v]) => ({ hodnota: k, nazev: v.nazev })), S.cil, "Stanice")}</div>
+    <div class="skupina"><span class="sekce">${typo("Předpověď vydaná … hodin předem")}</span>${segmenty("h", H.map((h) => ({ hodnota: String(h), nazev: String(h) })), String(S.h), "Předpověď vydaná kolik hodin předem")}</div>`;
+  panelSbaleni(panel);
   naZmenu(volby, "povoden", (v) => { S.povoden = v; ukaz(); });
   naZmenu(volby, "cil", (v) => { S.cil = v; ukaz(); });
   naZmenu(volby, "h", (v) => { S.h = +v; ukaz(); });
@@ -46,6 +47,7 @@ async function ukaz() {
   zapisStav({ povoden: S.povoden, cil: S.cil, h: S.h });
   const p = povoden(), h = S.h;
   tiraz({ okamzik: `${datum(p.od)} až ${datum(p.do)}` });
+  shrnutiPanelu([p.klic, NAZVY[S.cil], `${h} h předem`]);
   const m = ((MET[S.povoden] || {})[S.cil] || {})[h];
   const sou = souhrn(p.zdroj);
   let html = `<h2 class="nadpis">${typo(`${p.nazev} · ${NAZVY[S.cil]} · ${h} h předem`)}</h2>`;
