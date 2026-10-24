@@ -1,0 +1,27 @@
+Jsi přísný kontrolor čísel a metody. Pracuješ JEN ČTENÍM: v repozitáři nic neměň, nevytvářej žádné soubory
+(ani AGENTS.md, ani dočasné soubory), nespouštěj git příkazy, které mění stav, nečti .env ani nic v %USERPROFILE%\.kaggle.
+Python smíš spustit jen tak, aby nic nezapisoval na disk: `python -B` a výpočty jen v paměti (bez savefig, to_csv apod.).
+Testovací část 2021–2025 NEPOUŽÍVEJ (žádné vyhodnocení na test).
+
+Kontroluješ podklad `prezentace_dan/VSTUPY_DULEZITOST.md` a skript `prezentace_dan/vstupy_dulezitost.py`
+(výsledky v `prezentace_dan/vysledky/vstupy_dulezitost.csv` a `prezentace_dan/vysledky/vstupy_dulezitost_vetve.csv`).
+Zdroj pravdy: `src/features.py`, `src/models/ridge.py`, `src/evaluate.py`, `src/data.py`, `docs/DATA.md`,
+`prezentace_dan/PREHLED_POKUSU.md`, `prezentace_dan/grafy_dan.py`.
+
+Úkoly:
+1. Ověř popis vstupů (98 sloupců, které stanice, zpoždění hladiny a průtoku, odmocnina jen z průtoků, škálování, alpha,
+   cíl = hladina) proti `src/features.py` a `src/models/ridge.py`.
+2. Ověř, že `mae_povodne` ve skriptu počítá totéž co `evaluate.vyhodnot` (okna, práh, která část dat), a že vyřazení
+   stanice opravdu vyřadí všechny její sloupce (u větví i všech stanic větve) a model se učí jen na train.
+3. Ověř, že permutace míchá sloupce stanice společně a jen ve validaci, a že se plný model nepřeučuje.
+4. Přepočítej v paměti nejvýš tyto 3 hodnoty a porovnej s CSV: plný model Děčín +24 h (15,47), vyřazení Děčína +24 h
+   (+4,43), vyřazení celé Vltavy +36 h (+5,00). Jeden fit trvá jednotky sekund.
+5. Ověř, že každé číslo v tabulkách a textu `VSTUPY_DULEZITOST.md` sedí s CSV (zaokrouhlení na 0,1), a že tvrzení
+   o srážkách (17,1 → 17,4; LOFO do 0,1 cm), o validaci (4 povodně 4/2006, 3/2009, 9/2010, 1/2011, práh 490 cm),
+   o době doběhu a o váze Prahy v Z6 mají oporu ve zdrojích (Z6: `docs/grafy/prezentace/` nebo skript, který ho kreslí).
+6. Posuď metodu: jsou závěry v části „Co z toho plyne“, odrážkách a mluveném textu poctivé vzhledem k číslům
+   (např. „čím dál dopředu, tím víc rozhoduje voda proti proudu“, „sousední stanice se zastoupí“, šum pod 1 cm)?
+   Není někde tvrzení silnější, než data dovolí?
+
+Výstup česky, stručně: tabulka `Soubor:řádek | Tvrzení | Co říká zdroj / přepočet | Oprava`, pak seznam
+přepočtených hodnot (moje × CSV), pak max. 5 vět k metodě. Na konci počet nesouladů.

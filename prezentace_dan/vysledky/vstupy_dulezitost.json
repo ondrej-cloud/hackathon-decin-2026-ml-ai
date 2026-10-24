@@ -1,0 +1,326 @@
+[
+ {
+  "horizont": 12,
+  "stanice": "decin",
+  "sloupcu": 14,
+  "zaklad": 9.005,
+  "vyrazeni": 4.687,
+  "permutace": 280.358,
+  "permutace_sd": 1.238
+ },
+ {
+  "horizont": 12,
+  "stanice": "usti",
+  "sloupcu": 14,
+  "zaklad": 9.005,
+  "vyrazeni": 1.447,
+  "permutace": 81.951,
+  "permutace_sd": 0.597
+ },
+ {
+  "horizont": 12,
+  "stanice": "louny",
+  "sloupcu": 7,
+  "zaklad": 9.005,
+  "vyrazeni": 0.563,
+  "permutace": 11.973,
+  "permutace_sd": 0.124
+ },
+ {
+  "horizont": 12,
+  "stanice": "melnik",
+  "sloupcu": 7,
+  "zaklad": 9.005,
+  "vyrazeni": 1.213,
+  "permutace": 104.249,
+  "permutace_sd": 0.541
+ },
+ {
+  "horizont": 12,
+  "stanice": "vranany",
+  "sloupcu": 7,
+  "zaklad": 9.005,
+  "vyrazeni": -0.096,
+  "permutace": -0.299,
+  "permutace_sd": 0.042
+ },
+ {
+  "horizont": 12,
+  "stanice": "kostelec",
+  "sloupcu": 7,
+  "zaklad": 9.005,
+  "vyrazeni": 0.212,
+  "permutace": 4.249,
+  "permutace_sd": 0.065
+ },
+ {
+  "horizont": 12,
+  "stanice": "praha",
+  "sloupcu": 7,
+  "zaklad": 9.005,
+  "vyrazeni": -0.016,
+  "permutace": 1.821,
+  "permutace_sd": 0.059
+ },
+ {
+  "horizont": 12,
+  "stanice": "nymburk",
+  "sloupcu": 7,
+  "zaklad": 9.005,
+  "vyrazeni": 0.135,
+  "permutace": 1.738,
+  "permutace_sd": 0.058
+ },
+ {
+  "horizont": 12,
+  "stanice": "jizera",
+  "sloupcu": 7,
+  "zaklad": 9.005,
+  "vyrazeni": -0.339,
+  "permutace": -0.339,
+  "permutace_sd": 0.009
+ },
+ {
+  "horizont": 12,
+  "stanice": "beroun",
+  "sloupcu": 7,
+  "zaklad": 9.005,
+  "vyrazeni": -0.115,
+  "permutace": 0.499,
+  "permutace_sd": 0.025
+ },
+ {
+  "horizont": 12,
+  "stanice": "sazava",
+  "sloupcu": 7,
+  "zaklad": 9.005,
+  "vyrazeni": 0.086,
+  "permutace": 1.093,
+  "permutace_sd": 0.019
+ },
+ {
+  "horizont": 12,
+  "stanice": "prelouc",
+  "sloupcu": 7,
+  "zaklad": 9.005,
+  "vyrazeni": 0.424,
+  "permutace": -0.019,
+  "permutace_sd": 0.042
+ },
+ {
+  "horizont": 24,
+  "stanice": "decin",
+  "sloupcu": 14,
+  "zaklad": 15.475,
+  "vyrazeni": 4.427,
+  "permutace": 311.59,
+  "permutace_sd": 1.833
+ },
+ {
+  "horizont": 24,
+  "stanice": "usti",
+  "sloupcu": 14,
+  "zaklad": 15.475,
+  "vyrazeni": 1.456,
+  "permutace": 165.841,
+  "permutace_sd": 1.374
+ },
+ {
+  "horizont": 24,
+  "stanice": "louny",
+  "sloupcu": 7,
+  "zaklad": 15.475,
+  "vyrazeni": 1.434,
+  "permutace": 15.407,
+  "permutace_sd": 0.274
+ },
+ {
+  "horizont": 24,
+  "stanice": "melnik",
+  "sloupcu": 7,
+  "zaklad": 15.475,
+  "vyrazeni": 1.203,
+  "permutace": 68.178,
+  "permutace_sd": 0.417
+ },
+ {
+  "horizont": 24,
+  "stanice": "vranany",
+  "sloupcu": 7,
+  "zaklad": 15.475,
+  "vyrazeni": 0.093,
+  "permutace": 0.689,
+  "permutace_sd": 0.03
+ },
+ {
+  "horizont": 24,
+  "stanice": "kostelec",
+  "sloupcu": 7,
+  "zaklad": 15.475,
+  "vyrazeni": 0.268,
+  "permutace": 12.136,
+  "permutace_sd": 0.266
+ },
+ {
+  "horizont": 24,
+  "stanice": "praha",
+  "sloupcu": 7,
+  "zaklad": 15.475,
+  "vyrazeni": -0.159,
+  "permutace": 35.016,
+  "permutace_sd": 0.269
+ },
+ {
+  "horizont": 24,
+  "stanice": "nymburk",
+  "sloupcu": 7,
+  "zaklad": 15.475,
+  "vyrazeni": 0.37,
+  "permutace": 5.924,
+  "permutace_sd": 0.117
+ },
+ {
+  "horizont": 24,
+  "stanice": "jizera",
+  "sloupcu": 7,
+  "zaklad": 15.475,
+  "vyrazeni": -0.86,
+  "permutace": 0.503,
+  "permutace_sd": 0.028
+ },
+ {
+  "horizont": 24,
+  "stanice": "beroun",
+  "sloupcu": 7,
+  "zaklad": 15.475,
+  "vyrazeni": 0.444,
+  "permutace": 1.313,
+  "permutace_sd": 0.045
+ },
+ {
+  "horizont": 24,
+  "stanice": "sazava",
+  "sloupcu": 7,
+  "zaklad": 15.475,
+  "vyrazeni": -0.008,
+  "permutace": 2.119,
+  "permutace_sd": 0.074
+ },
+ {
+  "horizont": 24,
+  "stanice": "prelouc",
+  "sloupcu": 7,
+  "zaklad": 15.475,
+  "vyrazeni": 1.368,
+  "permutace": 8.928,
+  "permutace_sd": 0.252
+ },
+ {
+  "horizont": 36,
+  "stanice": "decin",
+  "sloupcu": 14,
+  "zaklad": 26.012,
+  "vyrazeni": 3.842,
+  "permutace": 380.544,
+  "permutace_sd": 1.714
+ },
+ {
+  "horizont": 36,
+  "stanice": "usti",
+  "sloupcu": 14,
+  "zaklad": 26.012,
+  "vyrazeni": 1.847,
+  "permutace": 247.448,
+  "permutace_sd": 0.936
+ },
+ {
+  "horizont": 36,
+  "stanice": "louny",
+  "sloupcu": 7,
+  "zaklad": 26.012,
+  "vyrazeni": 1.861,
+  "permutace": 15.892,
+  "permutace_sd": 0.211
+ },
+ {
+  "horizont": 36,
+  "stanice": "melnik",
+  "sloupcu": 7,
+  "zaklad": 26.012,
+  "vyrazeni": 0.561,
+  "permutace": 8.606,
+  "permutace_sd": 0.197
+ },
+ {
+  "horizont": 36,
+  "stanice": "vranany",
+  "sloupcu": 7,
+  "zaklad": 26.012,
+  "vyrazeni": -0.139,
+  "permutace": 48.67,
+  "permutace_sd": 0.36
+ },
+ {
+  "horizont": 36,
+  "stanice": "kostelec",
+  "sloupcu": 7,
+  "zaklad": 26.012,
+  "vyrazeni": -0.125,
+  "permutace": 7.275,
+  "permutace_sd": 0.305
+ },
+ {
+  "horizont": 36,
+  "stanice": "praha",
+  "sloupcu": 7,
+  "zaklad": 26.012,
+  "vyrazeni": -0.306,
+  "permutace": 15.298,
+  "permutace_sd": 0.256
+ },
+ {
+  "horizont": 36,
+  "stanice": "nymburk",
+  "sloupcu": 7,
+  "zaklad": 26.012,
+  "vyrazeni": 0.414,
+  "permutace": 3.211,
+  "permutace_sd": 0.065
+ },
+ {
+  "horizont": 36,
+  "stanice": "jizera",
+  "sloupcu": 7,
+  "zaklad": 26.012,
+  "vyrazeni": -0.522,
+  "permutace": 2.31,
+  "permutace_sd": 0.049
+ },
+ {
+  "horizont": 36,
+  "stanice": "beroun",
+  "sloupcu": 7,
+  "zaklad": 26.012,
+  "vyrazeni": 0.842,
+  "permutace": 2.612,
+  "permutace_sd": 0.122
+ },
+ {
+  "horizont": 36,
+  "stanice": "sazava",
+  "sloupcu": 7,
+  "zaklad": 26.012,
+  "vyrazeni": 0.633,
+  "permutace": 5.384,
+  "permutace_sd": 0.142
+ },
+ {
+  "horizont": 36,
+  "stanice": "prelouc",
+  "sloupcu": 7,
+  "zaklad": 26.012,
+  "vyrazeni": 1.264,
+  "permutace": 23.857,
+  "permutace_sd": 0.493
+ }
+]

@@ -178,3 +178,18 @@ Další čísla, která se dají říct u slajdu:
 - Čára „bude jako teď“ v grafu není, aby zůstal čitelný. Její chyba v okně je 97,4 cm.
 - Chybí Ústí a horizonty 12 a 36 h. Ostatních 5 velkých povodní je v grafu session ridge
   `ridge_dan\grafy\srovnani_g3_tym_povodne.png`.
+
+---
+
+## V1–V4 · vstupy finálního modelu a jejich důležitost
+
+Kreslí je `prezentace_dan/vstupy_dulezitost.py`. Na rozdíl od G1–G4 tenhle skript trénuje: týmový Ridge pro Děčín
++12/+24/+36 h, pokaždé bez jedné stanice nebo větve, jen na train části, vyhodnocení na validaci, test se nepoužije.
+Běží asi 2 min. S `--jen-grafy` jen překreslí obrázky z uložených CSV. Čísla, metoda a text pro slajdy jsou
+v `prezentace_dan/VSTUPY_DULEZITOST.md`.
+
+- `V1_co_jde_do_modelu.png`: schéma povodí s dobou doběhu (jako G1) a 98 vstupů (slajd A).
+- `V4_dulezitost_vetvi.png`: o kolik vzroste chyba bez vlastních měření Děčína, bez Vltavy, bez horního Labe a bez všech
+  10 stanic proti proudu (slajd B, hlavní).
+- `V2_dulezitost_stanic.png`: totéž po jednotlivých stanicích, heatmapa stanice × horizont.
+- `V3_dulezitost_permutace.png`: kontrola skupinovou permutací v plném modelu. Barva je oříznutá, čísla platí.
