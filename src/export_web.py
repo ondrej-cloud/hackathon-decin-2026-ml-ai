@@ -38,10 +38,12 @@ GRAFY = ROOT / "docs/grafy"
 TZ = "Europe/Prague"
 MODEL = "ridge"  # učený 2006–2018, povodně z validace
 MODEL_TEST = "ridge_test"  # učený na všem do 2020 jako při finálním testu, povodeň z testu (Boris)
-UCEN = {MODEL: "2006–2018", MODEL_TEST: "2006–2020"}
+MODEL_2013 = "ridge_bez2013"  # jako ridge_test, jen bez povodně 6/2013 a 20 dní kolem ní (ta je v tréninku)
+UCEN = {MODEL: "2006–2018", MODEL_TEST: "2006–2020", MODEL_2013: "2006–2020 bez povodně 2013"}
 # slug pro web, klíč v app/app.py a app/animace.py, název
 POVODNE_WEB = [("2006-04", "4/2006", "Duben 2006"), ("2009-03", "3/2009", "Březen 2009"),
                ("2010-09", "9/2010", "Září 2010"), ("2011-01", "1/2011", "Leden 2011"),
+               ("2013-06", "6/2013", "Červen 2013, model ji neviděl"),
                ("2024-09", "9/2024 Boris (test)", "Září 2024, Boris")]
 STANICE = {"decin": "Děčín", "usti": "Ústí nad Labem"}
 VSTUPY_GRAF = ("praha_Q", "melnik_Q", "usti_H", "decin_H")
@@ -56,8 +58,13 @@ def cesky(t):
     return t.tz_convert(TZ).strftime("%Y-%m-%dT%H:%M")
 
 
+def zdroj_povodne(klic):
+    """test = Boris (model ridge_test), trenink = 6/2013 (model učený bez ní), jinak validace."""
+    return "test" if "test" in klic else "trenink" if klic == "6/2013" else "validace"
+
+
 def model_povodne(zdroj):
-    return MODEL_TEST if zdroj == "test" else MODEL
+    return {"test": MODEL_TEST, "trenink": MODEL_2013}.get(zdroj, MODEL)
 
 
 def uloz_model_test():
@@ -170,7 +177,7 @@ def data_povodni():
         cas = hodiny(klic)
         cas_vse = pd.date_range(cas[0] - NABEH, cas[-1], freq="h")
         Dw = D.reindex(cas)
-        zdroj = "test" if "test" in klic else "validace"
+        zdroj = zdroj_povodne(klic)
         model = model_povodne(zdroj)
         zaznam = {"slug": slug, "klic": klic, "nazev": nazev, "od": cesky(cas[0]), "do": cesky(cas[-1]),
                   "zdroj": zdroj, "model": model, "ucen": UCEN[model], "vrchol": {}}
@@ -258,7 +265,7 @@ def mapy():
     (WEB / "animace").mkdir(parents=True, exist_ok=True)
     for slug, klic, _ in POVODNE_WEB:
         od, do = okno(klic)
-        model = model_povodne("test" if "test" in klic else "validace")
+        model = model_povodne(zdroj_povodne(klic))
         (WEB / "animace" / f"{slug}.html").write_text(animace.html(od, do, model, pisma=PISMA), encoding="utf-8")
         for cil in CILE:
             stranka = mapbox_mapa.html_animace(od, do, cil, model, mapbox_mapa.MESTA[cil], pisma=PISMA)
@@ -298,6 +305,9 @@ if __name__ == "__main__":
     b = M["2024-09"]["decin"]["24"]
     print(f"Boris Děčín, 24 h ({MODEL_TEST}): 3. stupeň hlášen {b['predstih_3_stupen_h']} h předem, chyba {b['chyba_model']} cm "
           f"proti {b['chyba_jako_ted']} cm, vrchol {b['vrchol_cm']} cm předpovězen na {b['vrchol_model_cm']} cm")
+    d = M["2013-06"]["decin"]["24"]
+    print(f"Povodeň 2013 Děčín, 24 h ({MODEL_2013}): 3. stupeň hlášen {d['predstih_3_stupen_h']} h předem, chyba {d['chyba_model']} cm "
+          f"proti {d['chyba_jako_ted']} cm, vrchol {d['vrchol_cm']} cm předpovězen na {d['vrchol_model_cm']} cm")
     if "--vse" in sys.argv[1:]:
         mapy()
     vypis()
