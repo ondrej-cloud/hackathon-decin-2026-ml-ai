@@ -2,17 +2,18 @@
 
 Čistý klon `main` (commit 764984a, so 24. 10. 2026 01:49) do dočasné složky mimo repozitář. Codex v něm podle README,
 CLAUDE.md, PRIPRAVA.md a app/README.md spustil, co jde bez velkého stahování, bez instalace a bez testu 2021–2025.
-Zapisovat směl jen do klonu, v repu nic nezměnil. Plný výstup: `codex/reprodukovatelnost_codex.md` (27 min).
+Zapisovat směl jen do klonu, v repu nic nezměnil. Plný výstup: `codex/reprodukovatelnost_codex.md` (1 601 s podle `codex/reprodukovatelnost_codex.md.log`).
 
 **Prostředí:** Windows 11, Python 3.12.10 (`C:\Users\danie\.venvs\hackathon`), pandas 3.1.0, numpy 2.5.2,
 scikit-learn 1.9.1, LightGBM 4.7.0, Streamlit 1.66.1, pyarrow 26.0.0, `PYTHONUTF8=1`. Internet byl při bězích blokovaný,
-běhy šly po jednom. Na notebooku zároveň běžely další dvě session, volná RAM kolem 1–2 GB.
+běhy šly po jednom. Na notebooku zároveň běžely další session (ridge, nejistota); volná RAM před
+kontrolou a během ní 1,9–2,5 GB (naměřeno při jiných krocích, ne přímo v auditu).
 
 ## Co prošlo
 
 | Příkaz | Výsledek | Čas | Proti dokumentaci |
 |---|---|---|---|
-| načtení dat (`src/data.py: nacti`) | prošlo | 24 s | 175 320 hodin, 14 sloupců: sedí |
+| kontrola importů, dat a uložených předpovědí | prošlo | 24 s | 175 320 hodin, 14 sloupců: sedí |
 | `python src/porovnej.py jako_ted --rychle` | prošlo | 6 s | Děčín +24 h 44,4 cm: sedí |
 | `python src/porovnej.py jako_ted ridge` | prošlo | 82 s | průměr 44,3 a 17,1 cm, Ridge Děčín +24 h 15,5 cm: sedí |
 | `python src/porovnej.py --prehled` | prošlo, ale část výsledků vyřadil jako staré | 9 s | viz problém 2 |
@@ -29,7 +30,7 @@ a na desetinu sedí s `docs/PREHLED.md`.
 | Závažnost | Co | Návrh opravy (kdo rozhodne: Ondra) |
 |---|---|---|
 | vysoká | **Otisk verze výsledků závisí na koncích řádků.** Na Windows (Git `core.autocrlf=true`) vychází 69a6db32, na Macu 9a31181e, i když data a kód jsou stejné. `--prehled` pak výsledky z druhého systému vyřadí jako „staré“ (tady síť a fyziku). Hlášeno už v pá 20:20 (`docs/DENIK.md`). | V `src/porovnej.py: verze()` u `.py` souborů před hashováním nahradit `\r\n` za `\n`, nebo do `.gitattributes` přidat `*.py text eol=lf`. |
-| střední | **Nové běhy LightGBM a fyzikálního modelu nedoběhly v limitech, které si kontrola dala** (6 a 2 min). Příčina neurčená. Večer stejný kód na tomhle notebooku doběhl (LightGBM do minuty na model, větev dan), takže nejspíš šlo o vytíženou RAM se dvěma dalšími session, ne o chybu. Uložené výsledky obou modelů sedí (`procenta.py`). | Při nácviku pustit `python src/porovnej.py lgbm fyzika --rychle` na volném počítači a zapsat čas. |
+| vysoká (podle kontroly) | **Nové běhy LightGBM a fyzikálního modelu nedoběhly v limitech, které si kontrola dala** (6 a 2 min). Příčina neurčená. Večer stejný LightGBM na tomhle notebooku doběhl (do minuty na model, větev dan). Domněnka: vytížená RAM s dalšími session, neověřeno. Uložené výsledky obou modelů sedí (`procenta.py`). | Při nácviku pustit `python src/porovnej.py lgbm fyzika --rychle` na volném počítači a zapsat čas. |
 | střední | **Verze knihoven nejsou zapsané.** README instaluje balíky bez verzí. Pro přestavbu mapových podkladů je potřeba `pyproj`, který README nezmiňuje. | Do `app/requirements.txt` a README dopsat ověřené verze (stačí výpis z tohoto běhu) a `pyproj` jako volitelný balík. |
 | střední | **Otisk nezahrnuje kód modelu, `data.py` ani verze knihoven.** Předpovědi v `results/predpovedi/` se přepisují pod stejným jménem a aplikace ani `procenta.py` nekontrolují, ke kterému běhu patří. | Do JSON i parquetu ukládat stejné ID běhu, aplikace ať ho ukáže. |
 | střední | **Záložka testu v aplikaci píše „trénink do 2018“**, ale uložené testové předpovědi jsou z modelu učeného do 2020 (tak se test dělal). | V `app/app.py` u testu napsat, že model byl učený na 2006–2020. |
@@ -40,7 +41,8 @@ a na desetinu sedí s `docs/PREHLED.md`.
 
 - Stahování dat ČHMÚ a přestavba tabulky (`src/stahni_chmu_hydro.py`, `src/data.py`): stovky MB, zadání to zakazovalo.
   Tabulka `data/external/labe_hodinove.parquet` je v Gitu, takže stahování pro zopakování výsledků není potřeba.
-- Trénink neuronových sítí (`mlp`, `tcn`): trvá minuty až desítky minut, RAM. Uložené výsledky sedí (`procenta.py`).
+- Trénink neuronových sítí (`mlp`, `tcn`): trvá minuty až desítky minut, RAM. Uložené výsledky MLP sedí (`procenta.py`),
+  TCN se touto kontrolou neověřoval.
 - Finální test 2021–2025: záměrně ne. Test aplikace jen zobrazil uložené předpovědi Borise.
 - Živá data ČHMÚ, Open-Meteo a mapové dlaždice: internet byl blokovaný. Aplikace bez nich jede na historii.
 - Mac: kontrolovalo se jen na Windows. Rozdíl v otisku verze je ale známý (problém 1).

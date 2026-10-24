@@ -31,7 +31,7 @@ do Děčína. Barva rozlišuje větev povodí: Vltava s Berounkou a Sázavou, ho
 - **18 nových stanic (šedě):** souřadnice jsou z metadat ČHMÚ
   `C:\Users\danie\Documents\hackathon-2026-ridge\ridge_dan\cache\hydrology\historical\metadata\meta1.json`
   (sloupce GEOGR1/GEOGR2). Seznam stanic (čísla DBC) je z `ridge_dan\stanice.py`. Souřadnice jsou spolehlivé: u 12
-  týmových stanic se metadata od `stanice_hydro.csv` liší nejvýš o 0,001°. Skript to při každém běhu kontroluje.
+  týmových stanic se metadata od `stanice_hydro.csv` teď liší nejvýš o 0,0009°. Skript při každém běhu hlídá, aby rozdíl nepřekročil 0,01°.
   Když soubor chybí nebo nesedí, šedé body vynechá.
 
 **Výhrady**
@@ -42,7 +42,9 @@ do Děčína. Barva rozlišuje větev povodí: Vltava s Berounkou a Sázavou, ho
   vodě (Děčín nad 300 cm) vychází doba skoro stejně.
 
 **Co chybí**
-- Doba doběhu 18 nových stanic se neměřila, proto u šedých bodů nejsou štítky ani hodiny. V `main`/`stanice_hydro.csv`
+- Doba doběhu 18 nových stanic v G1 není. Experimentální odhady stejnou metodou existují (`ridge_dan/STANICE_VSEM.md`),
+  u malých řízených toků jsou ale fyzikálně divné (Bílina → Děčín 37 h u LightGBM a 33 h u fyziky, Litavka 42 h),
+  proto u šedých bodů nejsou štítky ani hodiny. V `main`/`stanice_hydro.csv`
   jejich souřadnice nejsou, jsou jen v cache session ridge (viz výš).
 
 ---

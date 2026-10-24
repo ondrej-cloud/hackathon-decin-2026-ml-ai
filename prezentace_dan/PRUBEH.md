@@ -44,3 +44,10 @@ Dan (spí, noční úkol), větev `dan-prezentace` z `origin/main` 59956c9, work
   LightGBM a fyziky nedoběhly v jeho limitech (6 a 2 min), nejspíš kvůli RAM s dalšími session, uložené výsledky sedí.
   Hlavní problém: otisk verze závisí na koncích řádků (Windows × Mac). Sepsáno do `REPRODUKOVATELNOST.md` s návrhy oprav,
   v main nic neměním.
+- 02:24 K otázkám poroty přidaná tabulka „Kterým grafem odpovědět“ (Danovy G1–G4 a Ondrovy slajdy a záložní slajdy).
+- 03:01 Druhé kolo fact-checku Codexem (29 min, `codex/fact_check2_codex.md`) přes pět souborů (i `REPRODUKOVATELNOST.md`
+  a `grafy/README.md`): 1 064 čísel, 1 046 sedí, 13 nesedí, 5 neověřitelných. Všech 14 odkazovaných grafů existuje.
+  Opraveno všech 13: hlavně označení metrik (síť 64-32 = starší rozbor D24 při velké vodě; 13,6 cm jsou celá validační
+  okna, hlavní D24 je 15,5), přínos srážek na začátku vzestupu podle modelu 1,9–4,6 cm, v REPRODUKOVATELNOST závažnost
+  podle kontroly „vysoká“ a příčina „domněnka“, TCN kontrolou neověřená. Legenda G1 „doba neměřena“ → „bez doby
+  doběhu“, protože experimentální odhady pro nové stanice existují (u malých toků nespolehlivé).

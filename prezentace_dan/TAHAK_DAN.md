@@ -38,7 +38,7 @@ Děčín a Ústí × 12 / 24 / 36 h, D24 = Děčín za 24 h. Zdroje čísel jsou
 |---|---|---|
 | **lineární regrese** | vážený součet vstupů, každý vstup má jednu váhu | 98 vah; Boris: 198 cm průměr + Vltava 89 + horní Labe 116 + Mělník 95 + Děčín a Ústí 80 − Ohře 2 ≈ 577 cm (příspěvky jsou zaokrouhlené) |
 | **Ridge a regularizace** | malá pokuta za velké váhy, ať se nepřeučí | alpha 0,1 až 10 dává stejně; záporné váhy = model odečítá starší hodnotu, počítá trend |
-| **přeučení** | model se naučí trénink nazpaměť a na nových datech selže | síť 64-32 (D24): trénink 5 cm, validace 22; LightGBM (starší běh, Děčín +12 h): 4,7 proti 27,8; regrese (D24): 19,7 proti 15,5, tedy ne |
+| **přeučení** | model se naučí trénink nazpaměť a na nových datech selže | síť 64-32 (starší rozbor D24 při velké vodě): trénink 5 cm, validace 22; LightGBM (starší běh, Děčín +12 h): 4,7 proti 27,8; regrese (D24): 19,7 proti 15,5, tedy ne |
 | **neuronová síť** | vrstvy lineárních součtů s ohyby mezi nimi | 128-64 neuronů, přes 20 tisíc vah; 17,8, test 21,3 |
 | **LightGBM** | stovky malých rozhodovacích stromů za sebou | 23,1; neumí výš, než viděl (2013: 823 místo 1 072 cm) |
 | **směs modelů** | průměr předpovědí dvou modelů | G3 = ½ Ridge 30 + ½ LightGBM 30: LOFO −1,35 cm, ale validace D24 18,2 proti 15,5; regrese + síť 16,9 proti 17,1 |
@@ -52,7 +52,7 @@ Děčín a Ústí × 12 / 24 / 36 h, D24 = Děčín za 24 h. Zdroje čísel jsou
    co jde použít, nepřekonalo finální regresi aspoň o centimetr (o 1,0 cm jen dokonalá předpověď deště, která neexistuje).
 2. Přímka vyhrála, protože voda v Děčíně je součet Vltavy, Labe a Ohře posunutých o dobu putování, a velké povodně jsou
    v tréninku jen dvě. Složitý model se z nich naučí i náhodu.
-3. Jediné, co spolehlivě pomáhá, jsou stanice dál proti proudu, a to na začátku vzestupu (o 5–8 cm). Celkově to ale
+3. Na začátku vzestupu pomáhají hlavně stanice dál proti proudu (o 5–8 cm), méně i srážky. Celkově to ale
    v přísném LOFO prošla na 24 h jen směs dvou modelů (G3) a na 36 h regrese s 30 stanicemi, na validaci jsou obě
    horší, proto zůstáváme u jednoduché regrese.
 

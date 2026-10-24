@@ -162,7 +162,7 @@ def g1_stanice():
     znacky = [Line2D([], [], color=b, lw=3, marker="o", ms=10, mec="white", mew=2, label=n) for b, n, _ in VETVE.values()]
     if N is not None:
         znacky.append(Line2D([], [], ls="none", marker="o", ms=9, color="#c4c4c4", mec="white",
-                             label="18 nových stanic (doba neměřena)"))
+                             label="18 nových stanic (bez doby doběhu)"))
     fig.legend(handles=znacky, loc="upper right", bbox_to_anchor=(0.985, 0.935), handlelength=2.2, fontsize=15,
                labelspacing=0.5)
     uloz(fig, "G1_stanice_doby_dobehu.png")

@@ -13,7 +13,7 @@ teď“: val 44,3, D24 44,4. Zlepšení platí až od 1 cm. Test 2021–2025 se 
 | 4 | balíček × historie × stanice proti proudu | stačí data z balíčku? | D24: kraj 2 roky 43,0; + proti proudu 2 roky 28,2; kraj 20 let 38,3; obojí 24,3 | archiv ČHMÚ 2006–2025 a 12 stanic | CESTA §1 |
 | 5 | malé řeky v kraji | jiná úloha? | voda doteče za 0–7 h, rozhoduje déšť | odloženo | CESTA §1 |
 | 6 | **lineární regrese (Ridge), Honza** | vážený součet 98 vstupů, odmocnina průtoků | val **17,1** (alpha 0,1–100: 17,1–17,5; cíl změna 17,1; stanice podle horizontu 17,6) | **finální model** | CESTA §2 |
-| 7 | neuronová síť (MLP), Ondra | umí zakřivené vztahy | 64-32: 26,0 (přeučená: D24 trénink 5 / validace 22 cm); 128-64: **17,8**; váhy na povodně 18,2 | stejná jen v rámci náhody | CESTA §2 |
+| 7 | neuronová síť (MLP), Ondra | umí zakřivené vztahy | 64-32: 26,0 (přeučená: starší rozbor D24 při velké vodě, trénink 5 / validace 22 cm); 128-64: **17,8**; váhy na povodně 18,2 | stejná jen v rámci náhody | CESTA §2 |
 | 8 | LightGBM, Dan | stromy bývají na tabulkách nejsilnější | 98 syrových vstupů 66,8 (stav) / 40,8 (změna); průtoky posunuté o dobu doběhu 24,3; + sezóna a trend **23,1**; proti přeučení 22,1–23,8; přímky v listech 97,8; oprava zbytku po Ridge 18,7 | stromy neumí výš, než viděly | POKUSY pá 19:45–20:15 |
 | 9 | fyzikální model, Tobias | co řekne fyzika skoro bez učení | val **24,8** | srovnávací základ | CESTA §2 |
 | 10 | nezávislá kontrola řetězce | únik dat, chyby vyhodnocení | okno 16 dní, předstih ≤ horizont, bias, bez doplňování děr, otisk verze | vše přepočítáno | CESTA §3 |
@@ -49,4 +49,4 @@ Zdroje: `docs/PREHLED.md`, `docs/CESTA_MODELU.md`, `docs/POKUSY.md` (main); `rid
 **Jedna věta pro porotu:** čtyři úplně různé modely skončily na validaci na 17–25 cm a žádný další proveditelný pokus
 nepřekonal finální regresi (17,1) aspoň o 1 cm (o 1,0 cm jen dokonalá předpověď deště na 3 dny, která v provozu neexistuje). Strop tedy dělá informace ve vstupech, ne model. Přísným LOFO prošla na D24 jen směs G3 (−1,35 cm) a na D36
 Ridge s 30 stanicemi (−2,43 cm), na validaci jsou ale obě horší. Na začátku vzestupu pomáhají hlavně stanice dál proti
-proudu (o 5–8 cm), méně i srážky (2–3 cm), na celkovou chybu to nestačí.
+proudu (o 5–8 cm), méně i srážky (o 1,9–4,6 cm podle modelu), na celkovou chybu to nestačí.

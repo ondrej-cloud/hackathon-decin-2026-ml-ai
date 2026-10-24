@@ -71,8 +71,9 @@ hodnotil přísným LOFO. *Zdroj: docs/PREHLED.md (Rozhodnutí), ridge_dan/ZPRAV
 
 **9. Kontroloval to někdo jiný než autor?**
 Ano. Nezávislá kontrola řetězce (subagent kontrolor) a u Danových větví Codex, jen pro čtení. Našly třeba povodeň, která
-u 36 h vypadla z varování, a dobu doběhu LightGBM odhadnutou i z drženého bloku CV. Nalezené chyby jsou opravené a přepočítané, zbylé výhrady
-(nedoběhlý přepočet tří vnořených variant, pevné týmové doby doběhu LightGBM) jsou zapsané.
+u 36 h vypadla z varování, a dobu doběhu LightGBM odhadnutou i z drženého bloku CV. Kód je opravený a hlavní výsledky přepočítané.
+Přepočet tří vnořených variant (B, D, G2) po opravě nedoběhl a týmové pevné doby doběhu LightGBM zůstávají výhradou,
+obojí je zapsané.
 *Zdroj: docs/CESTA_MODELU.md §3, ridge_dan/STANICE_VSEM.md (Nálezy Codexu), ridge_dan/ZLEPSENI.md.*
 
 ## Rozdělení a validace
@@ -115,7 +116,7 @@ horší než regrese. A když opravoval zbytek po regresi, ještě ji zhoršil (
 
 **17. Nepřeučil se váš model?**
 Ne. Na trénovacích povodních má chybu 19,7 cm, na validačních 15,5 cm (D24), bez regularizace vyjde totéž. 98 vah se
-odhaduje ze 108 tisíc hodin. Přeučení jsme viděli u sítě 64-32 (D24 trénink 5, validace 22 cm) a u polynomu (19,9 a 22,8).
+odhaduje ze 108 tisíc hodin. Přeučení jsme viděli u sítě 64-32 (starší rozbor D24 při velké vodě: trénink 5, validace 22 cm) a u polynomu (19,9 a 22,8).
 *Zdroj: docs/POKUSY.md (so 0:48), docs/CESTA_MODELU.md §2.*
 
 **18. Proč jsou některé váhy záporné?**
@@ -188,7 +189,7 @@ Ano, ale předpovídáme jen 12–36 h a na to stačí změřit, co z deště u�
 u dešťových povodní (9/2010 s dokonalou předpovědí o 23 % lépe na 36 h a o 40 % na 72 h), jenže archiv předpovědí na
 trénink nemáme. *Zdroj: docs/POROZUMENI.md, docs/CESTA_MODELU.md §6.*
 
-**31. Proč nepomohly ani šestihodinové srážky, které jsou známé už 1–6 h po měření?**
+**31. Proč nepomohly ani šestihodinové srážky, které jsou známé hodinu po konci období (některé díly později)?**
 Úplnou řadu má jen 9 stanic (2 u Děčína, 7 proti proudu), u 12 z 21 stanic v NOAA ISD po roce ~2013 chybí suché termíny.
 Na bouřky je to málo bodů a déšť, který spadl dřív, už ukážou vodoměry. LightGBM se srážkami přestřelil 9/2010 (575 místo
 526 cm) a dal 4 plané poplachy 3. stupně. *Zdroj: srazky_dan/ZPRAVA_SRAZKY.md.*
@@ -203,12 +204,12 @@ užší, než by mělo být (8 z 10 místo 9 z 10), protože validační povodn�
 
 **33. Je chyba 16 cm hodně?**
 Za 24 h se voda při povodni změní v průměru o 35 cm a nejvíc o 1,7 m. Stupně v Děčíně jsou od sebe 90 a 70 cm
-(400 / 490 / 560), chyba 14 cm je menší. Do ±20 cm je 76 % předpovědí na 24 h. *Zdroj: docs/POROZUMENI.md (Jak číst výsledky).*
+(400 / 490 / 560), chyba 13,6 cm (v celých validačních oknech Děčína; hlavní číslo D24 je 15,5 cm) je menší. Do ±20 cm je 76 % předpovědí na 24 h. *Zdroj: docs/POROZUMENI.md (Jak číst výsledky).*
 
 ## Slabiny
 
 **34. Kde model selhává?**
-Na 36 h (Děčín 26,0 cm, do ±20 cm jen 51 % předpovědí). Vrcholy velkých povodní podhodnocuje (test 9/2024: 649 cm
+Na 36 h (Děčín 26,0 cm; přes Děčín a Ústí je při vodě nad 1. stupněm do ±20 cm jen 51 % předpovědí). Vrcholy velkých povodní podhodnocuje (test 9/2024: 649 cm
 předpovězeno na 611; na testu D24 bias na povodních −10,5 cm, chyba vrcholu 21,4 cm), velké povodně jsou v tréninku
 jen dvě (8/2010, 6/2013). Povodně z deště v kraji (8/2010) nevidí. Na testu propásl 2. stupeň v únoru
 2024 (vrchol 496 cm, práh 490). *Zdroj: docs/PREHLED.md, docs/POROZUMENI.md (Co model umí a co ne).*
