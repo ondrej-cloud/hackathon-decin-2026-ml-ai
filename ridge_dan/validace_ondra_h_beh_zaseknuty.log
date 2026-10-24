@@ -1,0 +1,157 @@
+{'cil': 'decin', 'h': 12, 'povoden': '2006-04', 'model': 'jako_ted', 'chyba': 26.7, 'propasnuto': 2, 'plane': 0}
+{'cil': 'decin', 'h': 12, 'povoden': '2006-04', 'model': 'h12', 'chyba': 9.6, 'propasnuto': 0, 'plane': 0}
+{'cil': 'decin', 'h': 12, 'povoden': '2006-04', 'model': 'h30', 'chyba': 17.2, 'propasnuto': 0, 'plane': 0}
+{'cil': 'decin', 'h': 12, 'povoden': '2006-06', 'model': 'jako_ted', 'chyba': 19.1, 'propasnuto': 1, 'plane': 0}
+{'cil': 'decin', 'h': 12, 'povoden': '2006-06', 'model': 'h12', 'chyba': 6.5, 'propasnuto': 0, 'plane': 0}
+{'cil': 'decin', 'h': 12, 'povoden': '2006-06', 'model': 'h30', 'chyba': 6.5, 'propasnuto': 0, 'plane': 0}
+{'cil': 'decin', 'h': 12, 'povoden': '2009-03', 'model': 'jako_ted', 'chyba': 16.3, 'propasnuto': 1, 'plane': 0}
+{'cil': 'decin', 'h': 12, 'povoden': '2009-03', 'model': 'h12', 'chyba': 6.3, 'propasnuto': 0, 'plane': 0}
+{'cil': 'decin', 'h': 12, 'povoden': '2009-03', 'model': 'h30', 'chyba': 6.0, 'propasnuto': 0, 'plane': 0}
+{'cil': 'decin', 'h': 12, 'povoden': '2010-08', 'model': 'jako_ted', 'chyba': 25.5, 'propasnuto': 2, 'plane': 0}
+{'cil': 'decin', 'h': 12, 'povoden': '2010-08', 'model': 'h12', 'chyba': 16.8, 'propasnuto': 1, 'plane': 0}
+{'cil': 'decin', 'h': 12, 'povoden': '2010-08', 'model': 'h30', 'chyba': 16.2, 'propasnuto': 0, 'plane': 0}
+{'cil': 'decin', 'h': 12, 'povoden': '2010-09', 'model': 'jako_ted', 'chyba': 24.0, 'propasnuto': 1, 'plane': 0}
+{'cil': 'decin', 'h': 12, 'povoden': '2010-09', 'model': 'h12', 'chyba': 13.2, 'propasnuto': 0, 'plane': 0}
+{'cil': 'decin', 'h': 12, 'povoden': '2010-09', 'model': 'h30', 'chyba': 12.7, 'propasnuto': 0, 'plane': 0}
+{'cil': 'decin', 'h': 12, 'povoden': '2011-01', 'model': 'jako_ted', 'chyba': 24.8, 'propasnuto': 2, 'plane': 0}
+{'cil': 'decin', 'h': 12, 'povoden': '2011-01', 'model': 'h12', 'chyba': 9.1, 'propasnuto': 0, 'plane': 0}
+{'cil': 'decin', 'h': 12, 'povoden': '2011-01', 'model': 'h30', 'chyba': 10.9, 'propasnuto': 0, 'plane': 0}
+{'cil': 'decin', 'h': 12, 'povoden': '2013-02', 'model': 'jako_ted', 'chyba': 17.4, 'propasnuto': 1, 'plane': 0}
+{'cil': 'decin', 'h': 12, 'povoden': '2013-02', 'model': 'h12', 'chyba': 6.3, 'propasnuto': 0, 'plane': 0}
+{'cil': 'decin', 'h': 12, 'povoden': '2013-02', 'model': 'h30', 'chyba': 5.2, 'propasnuto': 0, 'plane': 0}
+{'cil': 'decin', 'h': 12, 'povoden': '2013-06', 'model': 'jako_ted', 'chyba': 37.7, 'propasnuto': 3, 'plane': 0}
+{'cil': 'decin', 'h': 12, 'povoden': '2013-06', 'model': 'h12', 'chyba': 18.5, 'propasnuto': 0, 'plane': 0}
+{'cil': 'decin', 'h': 12, 'povoden': '2013-06', 'model': 'h30', 'chyba': 20.0, 'propasnuto': 0, 'plane': 0}
+{'cil': 'decin', 'h': 24, 'povoden': '2006-04', 'model': 'jako_ted', 'chyba': 55.0, 'propasnuto': 2, 'plane': 0}
+{'cil': 'decin', 'h': 24, 'povoden': '2006-04', 'model': 'h12', 'chyba': 14.3, 'propasnuto': 0, 'plane': 0}
+{'cil': 'decin', 'h': 24, 'povoden': '2006-04', 'model': 'h30', 'chyba': 22.5, 'propasnuto': 0, 'plane': 0}
+{'cil': 'decin', 'h': 24, 'povoden': '2006-06', 'model': 'jako_ted', 'chyba': 35.4, 'propasnuto': 1, 'plane': 0}
+{'cil': 'decin', 'h': 24, 'povoden': '2006-06', 'model': 'h12', 'chyba': 11.7, 'propasnuto': 0, 'plane': 0}
+{'cil': 'decin', 'h': 24, 'povoden': '2006-06', 'model': 'h30', 'chyba': 11.3, 'propasnuto': 0, 'plane': 0}
+{'cil': 'decin', 'h': 24, 'povoden': '2009-03', 'model': 'jako_ted', 'chyba': 28.3, 'propasnuto': 1, 'plane': 0}
+{'cil': 'decin', 'h': 24, 'povoden': '2009-03', 'model': 'h12', 'chyba': 9.7, 'propasnuto': 0, 'plane': 0}
+{'cil': 'decin', 'h': 24, 'povoden': '2009-03', 'model': 'h30', 'chyba': 9.2, 'propasnuto': 0, 'plane': 0}
+{'cil': 'decin', 'h': 24, 'povoden': '2010-08', 'model': 'jako_ted', 'chyba': 45.4, 'propasnuto': 2, 'plane': 0}
+{'cil': 'decin', 'h': 24, 'povoden': '2010-08', 'model': 'h12', 'chyba': 28.8, 'propasnuto': 0, 'plane': 0}
+{'cil': 'decin', 'h': 24, 'povoden': '2010-08', 'model': 'h30', 'chyba': 27.7, 'propasnuto': 0, 'plane': 0}
+{'cil': 'decin', 'h': 24, 'povoden': '2010-09', 'model': 'jako_ted', 'chyba': 45.6, 'propasnuto': 1, 'plane': 0}
+{'cil': 'decin', 'h': 24, 'povoden': '2010-09', 'model': 'h12', 'chyba': 21.5, 'propasnuto': 0, 'plane': 0}
+{'cil': 'decin', 'h': 24, 'povoden': '2010-09', 'model': 'h30', 'chyba': 21.2, 'propasnuto': 0, 'plane': 0}
+{'cil': 'decin', 'h': 24, 'povoden': '2011-01', 'model': 'jako_ted', 'chyba': 48.8, 'propasnuto': 2, 'plane': 0}
+{'cil': 'decin', 'h': 24, 'povoden': '2011-01', 'model': 'h12', 'chyba': 13.2, 'propasnuto': 0, 'plane': 1}
+{'cil': 'decin', 'h': 24, 'povoden': '2011-01', 'model': 'h30', 'chyba': 15.0, 'propasnuto': 0, 'plane': 0}
+{'cil': 'decin', 'h': 24, 'povoden': '2013-02', 'model': 'jako_ted', 'chyba': 33.5, 'propasnuto': 1, 'plane': 0}
+{'cil': 'decin', 'h': 24, 'povoden': '2013-02', 'model': 'h12', 'chyba': 11.8, 'propasnuto': 0, 'plane': 0}
+{'cil': 'decin', 'h': 24, 'povoden': '2013-02', 'model': 'h30', 'chyba': 9.6, 'propasnuto': 0, 'plane': 0}
+{'cil': 'decin', 'h': 24, 'povoden': '2013-06', 'model': 'jako_ted', 'chyba': 73.2, 'propasnuto': 3, 'plane': 0}
+{'cil': 'decin', 'h': 24, 'povoden': '2013-06', 'model': 'h12', 'chyba': 29.5, 'propasnuto': 0, 'plane': 0}
+{'cil': 'decin', 'h': 24, 'povoden': '2013-06', 'model': 'h30', 'chyba': 29.5, 'propasnuto': 0, 'plane': 0}
+{'cil': 'decin', 'h': 36, 'povoden': '2006-04', 'model': 'jako_ted', 'chyba': 83.3, 'propasnuto': 2, 'plane': 0}
+{'cil': 'decin', 'h': 36, 'povoden': '2006-04', 'model': 'h12', 'chyba': 34.2, 'propasnuto': 0, 'plane': 0}
+{'cil': 'decin', 'h': 36, 'povoden': '2006-04', 'model': 'h30', 'chyba': 31.2, 'propasnuto': 0, 'plane': 0}
+{'cil': 'decin', 'h': 36, 'povoden': '2006-06', 'model': 'jako_ted', 'chyba': 51.3, 'propasnuto': 1, 'plane': 0}
+{'cil': 'decin', 'h': 36, 'povoden': '2006-06', 'model': 'h12', 'chyba': 23.1, 'propasnuto': 0, 'plane': 0}
+{'cil': 'decin', 'h': 36, 'povoden': '2006-06', 'model': 'h30', 'chyba': 21.2, 'propasnuto': 0, 'plane': 0}
+{'cil': 'decin', 'h': 36, 'povoden': '2009-03', 'model': 'jako_ted', 'chyba': 37.7, 'propasnuto': 1, 'plane': 0}
+{'cil': 'decin', 'h': 36, 'povoden': '2009-03', 'model': 'h12', 'chyba': 17.1, 'propasnuto': 0, 'plane': 0}
+{'cil': 'decin', 'h': 36, 'povoden': '2009-03', 'model': 'h30', 'chyba': 12.6, 'propasnuto': 0, 'plane': 0}
+{'cil': 'decin', 'h': 36, 'povoden': '2010-08', 'model': 'jako_ted', 'chyba': 64.1, 'propasnuto': 2, 'plane': 0}
+{'cil': 'decin', 'h': 36, 'povoden': '2010-08', 'model': 'h12', 'chyba': 45.2, 'propasnuto': 0, 'plane': 0}
+{'cil': 'decin', 'h': 36, 'povoden': '2010-08', 'model': 'h30', 'chyba': 42.9, 'propasnuto': 0, 'plane': 0}
+{'cil': 'decin', 'h': 36, 'povoden': '2010-09', 'model': 'jako_ted', 'chyba': 66.4, 'propasnuto': 1, 'plane': 0}
+{'cil': 'decin', 'h': 36, 'povoden': '2010-09', 'model': 'h12', 'chyba': 33.3, 'propasnuto': 0, 'plane': 0}
+{'cil': 'decin', 'h': 36, 'povoden': '2010-09', 'model': 'h30', 'chyba': 32.7, 'propasnuto': 0, 'plane': 0}
+{'cil': 'decin', 'h': 36, 'povoden': '2011-01', 'model': 'jako_ted', 'chyba': 74.9, 'propasnuto': 2, 'plane': 0}
+{'cil': 'decin', 'h': 36, 'povoden': '2011-01', 'model': 'h12', 'chyba': 25.8, 'propasnuto': 0, 'plane': 0}
+{'cil': 'decin', 'h': 36, 'povoden': '2011-01', 'model': 'h30', 'chyba': 24.4, 'propasnuto': 0, 'plane': 0}
+{'cil': 'decin', 'h': 36, 'povoden': '2013-02', 'model': 'jako_ted', 'chyba': 48.9, 'propasnuto': 1, 'plane': 0}
+{'cil': 'decin', 'h': 36, 'povoden': '2013-02', 'model': 'h12', 'chyba': 21.3, 'propasnuto': 0, 'plane': 0}
+{'cil': 'decin', 'h': 36, 'povoden': '2013-02', 'model': 'h30', 'chyba': 16.9, 'propasnuto': 0, 'plane': 0}
+{'cil': 'decin', 'h': 36, 'povoden': '2013-06', 'model': 'jako_ted', 'chyba': 107.0, 'propasnuto': 3, 'plane': 0}
+{'cil': 'decin', 'h': 36, 'povoden': '2013-06', 'model': 'h12', 'chyba': 40.6, 'propasnuto': 0, 'plane': 0}
+{'cil': 'decin', 'h': 36, 'povoden': '2013-06', 'model': 'h30', 'chyba': 39.2, 'propasnuto': 0, 'plane': 0}
+{'cil': 'usti', 'h': 12, 'povoden': '2006-04', 'model': 'jako_ted', 'chyba': 26.2, 'propasnuto': 2, 'plane': 0}
+{'cil': 'usti', 'h': 12, 'povoden': '2006-04', 'model': 'h12', 'chyba': 16.6, 'propasnuto': 0, 'plane': 0}
+{'cil': 'usti', 'h': 12, 'povoden': '2006-04', 'model': 'h30', 'chyba': 24.2, 'propasnuto': 0, 'plane': 0}
+C:\Users\danie\.venvs\hackathon\Lib\site-packages\numpy\_core\fromnumeric.py:3862: RuntimeWarning: Mean of empty slice
+  return _methods._mean(a, axis=axis, dtype=dtype,
+C:\Users\danie\.venvs\hackathon\Lib\site-packages\numpy\_core\_methods.py:142: RuntimeWarning: invalid value encountered in scalar divide
+  ret = ret.dtype.type(ret / rcount)
+{'cil': 'usti', 'h': 12, 'povoden': '2006-06', 'model': 'jako_ted', 'chyba': 19.3, 'propasnuto': 0, 'plane': 0}
+C:\Users\danie\.venvs\hackathon\Lib\site-packages\numpy\_core\fromnumeric.py:3862: RuntimeWarning: Mean of empty slice
+  return _methods._mean(a, axis=axis, dtype=dtype,
+C:\Users\danie\.venvs\hackathon\Lib\site-packages\numpy\_core\_methods.py:142: RuntimeWarning: invalid value encountered in scalar divide
+  ret = ret.dtype.type(ret / rcount)
+{'cil': 'usti', 'h': 12, 'povoden': '2006-06', 'model': 'h12', 'chyba': 7.3, 'propasnuto': 0, 'plane': 0}
+C:\Users\danie\.venvs\hackathon\Lib\site-packages\numpy\_core\fromnumeric.py:3862: RuntimeWarning: Mean of empty slice
+  return _methods._mean(a, axis=axis, dtype=dtype,
+C:\Users\danie\.venvs\hackathon\Lib\site-packages\numpy\_core\_methods.py:142: RuntimeWarning: invalid value encountered in scalar divide
+  ret = ret.dtype.type(ret / rcount)
+{'cil': 'usti', 'h': 12, 'povoden': '2006-06', 'model': 'h30', 'chyba': 7.6, 'propasnuto': 0, 'plane': 0}
+{'cil': 'usti', 'h': 12, 'povoden': '2009-03', 'model': 'jako_ted', 'chyba': 17.7, 'propasnuto': 1, 'plane': 0}
+{'cil': 'usti', 'h': 12, 'povoden': '2009-03', 'model': 'h12', 'chyba': 6.3, 'propasnuto': 0, 'plane': 0}
+{'cil': 'usti', 'h': 12, 'povoden': '2009-03', 'model': 'h30', 'chyba': 6.1, 'propasnuto': 0, 'plane': 0}
+{'cil': 'usti', 'h': 12, 'povoden': '2010-08', 'model': 'jako_ted', 'chyba': 23.5, 'propasnuto': 1, 'plane': 0}
+{'cil': 'usti', 'h': 12, 'povoden': '2010-08', 'model': 'h12', 'chyba': 14.6, 'propasnuto': 0, 'plane': 0}
+{'cil': 'usti', 'h': 12, 'povoden': '2010-08', 'model': 'h30', 'chyba': 12.8, 'propasnuto': 0, 'plane': 0}
+{'cil': 'usti', 'h': 12, 'povoden': '2010-09', 'model': 'jako_ted', 'chyba': 25.2, 'propasnuto': 1, 'plane': 0}
+{'cil': 'usti', 'h': 12, 'povoden': '2010-09', 'model': 'h12', 'chyba': 14.3, 'propasnuto': 0, 'plane': 0}
+{'cil': 'usti', 'h': 12, 'povoden': '2010-09', 'model': 'h30', 'chyba': 13.6, 'propasnuto': 0, 'plane': 0}
+{'cil': 'usti', 'h': 12, 'povoden': '2011-01', 'model': 'jako_ted', 'chyba': 24.5, 'propasnuto': 2, 'plane': 0}
+{'cil': 'usti', 'h': 12, 'povoden': '2011-01', 'model': 'h12', 'chyba': 10.4, 'propasnuto': 0, 'plane': 0}
+{'cil': 'usti', 'h': 12, 'povoden': '2011-01', 'model': 'h30', 'chyba': 11.8, 'propasnuto': 0, 'plane': 0}
+{'cil': 'usti', 'h': 12, 'povoden': '2013-02', 'model': 'jako_ted', 'chyba': 17.9, 'propasnuto': 1, 'plane': 0}
+{'cil': 'usti', 'h': 12, 'povoden': '2013-02', 'model': 'h12', 'chyba': 7.0, 'propasnuto': 0, 'plane': 0}
+{'cil': 'usti', 'h': 12, 'povoden': '2013-02', 'model': 'h30', 'chyba': 6.2, 'propasnuto': 0, 'plane': 0}
+{'cil': 'usti', 'h': 12, 'povoden': '2013-06', 'model': 'jako_ted', 'chyba': 37.4, 'propasnuto': 3, 'plane': 0}
+{'cil': 'usti', 'h': 12, 'povoden': '2013-06', 'model': 'h12', 'chyba': 22.6, 'propasnuto': 0, 'plane': 0}
+{'cil': 'usti', 'h': 12, 'povoden': '2013-06', 'model': 'h30', 'chyba': 23.7, 'propasnuto': 0, 'plane': 0}
+{'cil': 'usti', 'h': 24, 'povoden': '2006-04', 'model': 'jako_ted', 'chyba': 54.2, 'propasnuto': 2, 'plane': 0}
+{'cil': 'usti', 'h': 24, 'povoden': '2006-04', 'model': 'h12', 'chyba': 15.8, 'propasnuto': 0, 'plane': 0}
+{'cil': 'usti', 'h': 24, 'povoden': '2006-04', 'model': 'h30', 'chyba': 25.1, 'propasnuto': 0, 'plane': 0}
+C:\Users\danie\.venvs\hackathon\Lib\site-packages\numpy\_core\fromnumeric.py:3862: RuntimeWarning: Mean of empty slice
+  return _methods._mean(a, axis=axis, dtype=dtype,
+C:\Users\danie\.venvs\hackathon\Lib\site-packages\numpy\_core\_methods.py:142: RuntimeWarning: invalid value encountered in scalar divide
+  ret = ret.dtype.type(ret / rcount)
+{'cil': 'usti', 'h': 24, 'povoden': '2006-06', 'model': 'jako_ted', 'chyba': 35.6, 'propasnuto': 0, 'plane': 0}
+C:\Users\danie\.venvs\hackathon\Lib\site-packages\numpy\_core\fromnumeric.py:3862: RuntimeWarning: Mean of empty slice
+  return _methods._mean(a, axis=axis, dtype=dtype,
+C:\Users\danie\.venvs\hackathon\Lib\site-packages\numpy\_core\_methods.py:142: RuntimeWarning: invalid value encountered in scalar divide
+  ret = ret.dtype.type(ret / rcount)
+{'cil': 'usti', 'h': 24, 'povoden': '2006-06', 'model': 'h12', 'chyba': 13.8, 'propasnuto': 0, 'plane': 2}
+C:\Users\danie\.venvs\hackathon\Lib\site-packages\numpy\_core\fromnumeric.py:3862: RuntimeWarning: Mean of empty slice
+  return _methods._mean(a, axis=axis, dtype=dtype,
+C:\Users\danie\.venvs\hackathon\Lib\site-packages\numpy\_core\_methods.py:142: RuntimeWarning: invalid value encountered in scalar divide
+  ret = ret.dtype.type(ret / rcount)
+{'cil': 'usti', 'h': 24, 'povoden': '2006-06', 'model': 'h30', 'chyba': 14.0, 'propasnuto': 0, 'plane': 1}
+{'cil': 'usti', 'h': 24, 'povoden': '2009-03', 'model': 'jako_ted', 'chyba': 30.1, 'propasnuto': 1, 'plane': 0}
+{'cil': 'usti', 'h': 24, 'povoden': '2009-03', 'model': 'h12', 'chyba': 11.0, 'propasnuto': 0, 'plane': 0}
+{'cil': 'usti', 'h': 24, 'povoden': '2009-03', 'model': 'h30', 'chyba': 10.1, 'propasnuto': 0, 'plane': 0}
+{'cil': 'usti', 'h': 24, 'povoden': '2010-08', 'model': 'jako_ted', 'chyba': 41.9, 'propasnuto': 1, 'plane': 0}
+{'cil': 'usti', 'h': 24, 'povoden': '2010-08', 'model': 'h12', 'chyba': 27.3, 'propasnuto': 0, 'plane': 0}
+{'cil': 'usti', 'h': 24, 'povoden': '2010-08', 'model': 'h30', 'chyba': 24.2, 'propasnuto': 0, 'plane': 0}
+{'cil': 'usti', 'h': 24, 'povoden': '2010-09', 'model': 'jako_ted', 'chyba': 45.5, 'propasnuto': 1, 'plane': 0}
+{'cil': 'usti', 'h': 24, 'povoden': '2010-09', 'model': 'h12', 'chyba': 21.2, 'propasnuto': 0, 'plane': 0}
+{'cil': 'usti', 'h': 24, 'povoden': '2010-09', 'model': 'h30', 'chyba': 20.5, 'propasnuto': 0, 'plane': 0}
+{'cil': 'usti', 'h': 24, 'povoden': '2011-01', 'model': 'jako_ted', 'chyba': 47.0, 'propasnuto': 2, 'plane': 0}
+{'cil': 'usti', 'h': 24, 'povoden': '2011-01', 'model': 'h12', 'chyba': 14.4, 'propasnuto': 0, 'plane': 0}
+{'cil': 'usti', 'h': 24, 'povoden': '2011-01', 'model': 'h30', 'chyba': 17.8, 'propasnuto': 0, 'plane': 0}
+{'cil': 'usti', 'h': 24, 'povoden': '2013-02', 'model': 'jako_ted', 'chyba': 34.1, 'propasnuto': 1, 'plane': 0}
+{'cil': 'usti', 'h': 24, 'povoden': '2013-02', 'model': 'h12', 'chyba': 13.5, 'propasnuto': 0, 'plane': 0}
+{'cil': 'usti', 'h': 24, 'povoden': '2013-02', 'model': 'h30', 'chyba': 11.0, 'propasnuto': 0, 'plane': 0}
+{'cil': 'usti', 'h': 24, 'povoden': '2013-06', 'model': 'jako_ted', 'chyba': 72.3, 'propasnuto': 3, 'plane': 0}
+{'cil': 'usti', 'h': 24, 'povoden': '2013-06', 'model': 'h12', 'chyba': 33.0, 'propasnuto': 0, 'plane': 0}
+{'cil': 'usti', 'h': 24, 'povoden': '2013-06', 'model': 'h30', 'chyba': 31.1, 'propasnuto': 0, 'plane': 0}
+{'cil': 'usti', 'h': 36, 'povoden': '2006-04', 'model': 'jako_ted', 'chyba': 82.5, 'propasnuto': 2, 'plane': 0}
+{'cil': 'usti', 'h': 36, 'povoden': '2006-04', 'model': 'h12', 'chyba': 34.0, 'propasnuto': 0, 'plane': 0}
+{'cil': 'usti', 'h': 36, 'povoden': '2006-04', 'model': 'h30', 'chyba': 31.6, 'propasnuto': 0, 'plane': 0}
+C:\Users\danie\.venvs\hackathon\Lib\site-packages\numpy\_core\fromnumeric.py:3862: RuntimeWarning: Mean of empty slice
+  return _methods._mean(a, axis=axis, dtype=dtype,
+C:\Users\danie\.venvs\hackathon\Lib\site-packages\numpy\_core\_methods.py:142: RuntimeWarning: invalid value encountered in scalar divide
+  ret = ret.dtype.type(ret / rcount)
+{'cil': 'usti', 'h': 36, 'povoden': '2006-06', 'model': 'jako_ted', 'chyba': 51.6, 'propasnuto': 0, 'plane': 0}
+C:\Users\danie\.venvs\hackathon\Lib\site-packages\numpy\_core\fromnumeric.py:3862: RuntimeWarning: Mean of empty slice
+  return _methods._mean(a, axis=axis, dtype=dtype,
+C:\Users\danie\.venvs\hackathon\Lib\site-packages\numpy\_core\_methods.py:142: RuntimeWarning: invalid value encountered in scalar divide
+  ret = ret.dtype.type(ret / rcount)
+{'cil': 'usti', 'h': 36, 'povoden': '2006-06', 'model': 'h12', 'chyba': 27.3, 'propasnuto': 0, 'plane': 2}

@@ -41,6 +41,16 @@ přesvědčivě splněná (pro Děčín, kde LOFO 36 h ukázalo −2,4 cm, chyb�
 - Složitější: dva modely, 30 stanic živě v aplikaci místo 12 (víc míst, kde může vypadnout data), LightGBM
   se hůř vysvětluje porotě.
 
+## Průzkumně: horizont 36 h s ukazatelem útlumu (H30)
+
+Ridge 30 stanic + ukazatel útlumu vlny v nivě (schodek průtoku v úsecích Polabí) je na **36 h** lepší ve všech třech
+hodnoceních: validace Děčín +36 h 25,0 proti 26,0; Ondrova validace Děčín −2,1 cm a Ústí −2,3 cm (6 z 8 povodní);
+LOFO 22 Děčín −3,44 cm (18 z 22, nejhorší +3,1). Na 24 h nic nepřináší (Ondrova validace −0,3 cm).
+Je to ale průzkumný výsledek (nápad z povodně 2006, horizont 36 h vybraný dodatečně), ne předem ověřená volba.
+**Pro tým k rozhodnutí:** jestli aplikace ukazuje 36 h, dá se H30 nabídnout jako „model pro delší předpověď“
+s touto výhradou; finální model pro 24 h zůstává týmový Ridge. Modul `src/models/h30.py` je hotový
+(fit/predict jako ostatní), joblib pro aplikaci zatím nevznikl.
+
 ## Co do prezentace
 
 Nové stanice spolehlivě zlepší začátek vzestupu a ve dvou ze tří hodnocení i průměrnou chybu, ale u velkých

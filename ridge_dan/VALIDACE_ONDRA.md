@@ -81,3 +81,29 @@ opraveno přísnou variantou; (2) týmové doby doběhu `lgbm_a.DOBA` jsou pevn�
 některé povodně vynechávané v této validaci → zděděná výhrada, týká se stejně Ondrova `lgbm` i LightGBM části G3;
 (3) importy mění `sys.path` → ověřeno, že nehrozí kolize jmen, a přesná shoda `ridge`/`lgbm` s Ondrovým během to
 potvrzuje. Podrobně v `NALEZY_CODEX.md`.
+
+## Průzkumně: ukazatel útlumu v nivě (H12, H30), so 01:49–03:09
+
+Předem zapsané (PRUBEH 23:37 a 01:53), bez ladění, Codex (j) bez nálezů. H12 = týmový Ridge + ukazatel útlumu,
+H30 = Ridge 30 stanic + ukazatel (průtok po proudu − součet přítoků ve třech úsecích Polabí, zpoždění 0/6/12/24 h).
+Moduly `src/models/h12.py`, `h30.py`, výsledek `results/krizova_validace/2026-10-24_030330.csv` (`jako_ted` shodné
+s Ondrou; první běh se zasekl na prioritě procesu, druhý dal v prvních 125 řádcích přesně stejná čísla).
+
+| Povodeň | ridge | h12 | ridge30 | h30 | g3 |
+|---|---|---|---|---|---|
+| 2006-04 | **18,4** | 20,8 | 24,5 | 25,3 | 24,1 |
+| 2006-06 | 15,6 | 15,0 | 14,9 | 14,2 | **13,4** |
+| 2009-03 | 11,2 | 11,6 | **9,6** | 9,7 | 11,0 |
+| 2010-08 | 28,6 | 29,1 | 27,2 | 27,3 | **25,7** |
+| 2010-09 | 21,6 | 22,6 | 21,3 | 22,1 | **21,2** |
+| 2011-01 | 17,3 | **16,3** | 17,7 | 17,5 | 19,2 |
+| 2013-02 | 14,3 | 14,0 | 11,9 | **11,4** | 11,7 |
+| 2013-06 | 33,9 | 31,7 | 34,6 | 31,2 | **30,6** |
+| průměr ± sm. odch. | 20,1 ± 7,7 | 20,1 ± 7,3 | 20,2 ± 8,4 | 19,8 ± 7,9 | **19,6 ± 7,1** |
+
+H30 proti Ridge −0,28 cm (lepší v 5 z 8), H12 +0,01 (4 z 8): v průměru 6 kombinací nic. Plané poplachy H30 3,
+H12 5 (Ridge 3). **Na horizontu 36 h je ale H30 výrazně lepší:** Děčín 27,6 proti 29,8 (−2,1 cm, 6 z 8 povodní,
+nejhorší +3,0), Ústí 28,8 proti 31,1 (−2,3 cm, 6 z 8, nejhorší +1,5). Tentýž pevný model pro Děčín +36 h
+v LOFO 22 (`zlepseni/pokus_H36.py`): 22,95 proti 26,39 týmového Ridge (−3,44 cm, 18 z 22, nejhorší +3,1),
+na validaci 25,0 proti 26,0. Všechno **průzkumné**: nápad vznikl z rozboru povodně 2006 a 36 h jsem vybral až
+po pohledu na rozpad po horizontech; 8 povodní je podmnožina 22.

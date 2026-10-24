@@ -68,3 +68,6 @@
 - so 01:53 · PŘEDEM ZAPSÁNO (bod 3, průzkumné): H30 = ridge30 + ukazatel útlumu v nivě přesně jako v ZLEPSENI.md (Kostelec − (Nymburk + Jizera), Mělník − (Vraňany + Kostelec), Ústí − (Mělník + Louny), zpoždění 0/6/12/24 h, m³/s, alpha 1), pro Děčín i Ústí stejně; vedle H12 = týmový Ridge + týž ukazatel (druhá předem zapsaná varianta z 23:37). Jen Ondrova validace, žádné ladění, výsledek průzkumný.
 - so 01:49 · Codex (j) na h12/h30: žádné nálezy, odpovídá předem zapsané definici; spouštím Ondrovu validaci h12 h30.
 - so 02:34 · běh h12/h30 se zasekl po 124 ze 144 řádků (proces bez CPU, nejspíš vlákna OpenBLAS při souběhu s dalšími session); zastaven a puštěn znovu s 1 vláknem (OPENBLAS/OMP_NUM_THREADS=1).
+- so 02:56 · příčina zpomalení: můj proces s normální prioritou čekal ve stavu Ready (Windows ho odsouval, druhá session běží s AboveNormal); po zvýšení priority na AboveNormal jede naplno. Ponaučení: dlouhé běhy spouštět s vyšší prioritou.
+- so 03:06 · H v Ondrově validaci: H30 19,84 (−0,28 proti Ridge, 5 z 8), H12 20,13 (+0,01); průzkumně na 36 h H30 −2,1 (Děčín) a −2,3 cm (Ústí), 6 z 8. Doplňkově (průzkumné, bez ladění): tentýž pevný H30 a H12 v LOFO 22 pro Děčín +36 h.
+- so 03:12 · H36 průzkumně: LOFO 22 Děčín +36 h H30 22,95 proti 26,39 (−3,44, 18 z 22), val 25,0 proti 26,0; zapsáno do VALIDACE_ONDRA.md a ROZHODNUTI_G3.md jako průzkumné.
