@@ -237,7 +237,8 @@ def skore(pred, horizont, zaklad_pred=None):
         lepsi = int((d < 0).sum())
         out |= dict(rozdil=round(float(d.mean()), 2), zlepseno=lepsi, zhorseno=int((d > 0).sum()),
                     nejhorsi_zhorseni=round(float(d.max()), 1),
-                    znamenkovy_p=round(float(binomtest(lepsi, int((d != 0).sum()), 0.5).pvalue), 4),
+                    # přibližný: okna blízkých povodní se překrývají (12/2012 a 1/2013 o 48 h), nejsou zcela nezávislá
+                    znamenkovy_p=round(float(binomtest(lepsi, int((d != 0).sum()), 0.5).pvalue), 4) if (d != 0).any() else None,
                     splnuje=bool(d.mean() <= -1.0 and lepsi > len(d) / 2 and d.max() <= 10.0))
     return out
 

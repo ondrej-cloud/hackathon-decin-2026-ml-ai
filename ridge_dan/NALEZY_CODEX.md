@@ -67,3 +67,22 @@ pod Ústím, parametry G3 odpovídají ZLEPSENI.md; fit Ridge30 na nesouvislé p
 | Odhad doby doběhu nových stanic počítá `diff(6)` a `shift(k)` přes okraje tréninku (dvojice, kde část zdrojových časů leží mimo předané tréninkové hodiny) | střední | Opraveno pro G3: `lgbm_stanice.doby(..., prisne=True)` bere do korelace jen dvojice se všemi časy (t, t − 6, t − k, t − k − 6) v tréninku, `g3.py` ji používá. Pohled do budoucnosti řádku to nebyl, 20denní mezera vynechanou povodeň chránila. Na foldu 2006 se tím změnila jen doba z Bíliny (32 → 33 h). Dřívější běhy (STANICE_VSEM, ZLEPSENI) použily volnou variantu, ta zůstává výchozí kvůli opakovatelnosti jejich čísel. |
 | Týmové doby doběhu (`lgbm_a.DOBA`) jsou pevné z původního splitu, který obsahuje některé povodně vynechávané v krizova_validace | střední | Zděděná vlastnost týmového LightGBM, týká se stejně Ondrova `lgbm` i G3. Týmový kód se nemění, zapsáno jako výhrada ve VALIDACE_ONDRA.md. |
 | Importy mění `sys.path` a nastavují `OPENBLAS_NUM_THREADS`, hrozí kolize jmen modulů | střední | Ověřeno, že žádný modul v `ridge_dan/` a `ridge_dan/stanice_vsem/` nemá stejné jméno jako modul v `src/` (src: data, evaluate, features, …; ridge_dan: data_ridge, hodnoceni, spolecne, …), `ridge30.py` cesty jen přidává na konec. `OPENBLAS_NUM_THREADS` se nastavuje `setdefault` až po načtení numpy v krizova_validace, tedy bez účinku; běh se spouští s 4 vlákny výslovně. Shoda `ridge` a `lgbm` s Ondrovým uloženým během (níž) potvrzuje, že se týmové modely nezměnily. |
+
+## (j) moduly h12.py a h30.py, so 01:47–01:49 (`codex/kontrola_j_h_moduly.md`)
+Bez nálezů: odpovídají předem zapsané definici i `zlepseni/pokus_H.py`, bez úniku, rozhraní v pořádku.
+
+## (k) noční zprávy VALIDACE_ONDRA.md a ROZHODNUTI_G3.md, so 03:10–03:12 (`codex/kontrola_k_nocni.md`)
+| Nález | Závažnost | Co jsem udělal |
+|---|---|---|
+| Závěr „G3 nepřekoná nejlepší týmový model o 1 cm“ platí jen pro Ondrovu validaci; v LOFO G3 překoná i síť (−1,13, 17 z 22) | střední | Opraveno, ROZHODNUTI rozlišuje hodnocení (ověřeno: −1,14 po povodních, 17 z 22, nejhorší +9,4). |
+| Ridge 30 na 36 h splní pravidlo pro Ústí (−1,00, 5 z 8) | střední | Souhlasím (na hraně, ze zaokrouhlených chyb); doplněny body (a)–(d) pro Ridge 30 na 36 h. |
+| Validace G3 18,2 a začátek 27,8 bez uloženého zdroje | střední | Uloženo `zlepseni/vysledky_G3_val.json` (stejný výpočet z uložených validačních předpovědí). |
+| Rozsah 0,1–1,1 cm, zvýraznění 36 h, Ridge 2006-06 15,5 vs 15,6, H30 na 24 h −0,3 | nízká | Opraveno (0,04–1,09; Ridge 30 tučně na 36 h; 15,6; Děčín −0,21, Ústí +0,01). |
+
+## (l) druhá nezávislá revize řetězce Ridge 30 na 36 h, so 03:13–03:25 (`codex/kontrola_l_ridge30.md`)
+Bez kritických a vysokých nálezů; data (450 zdrojových souborů proti tabulce), stanice, UTC, foldy 36 h i čísla
+v ROZHODNUTI_G3.md sedí. Závěr: věrohodné jako retrospektivní CV, převaha aspoň o 1 cm doložená není.
+| Nález | Závažnost | Co jsem udělal |
+|---|---|---|
+| Znaménkový test předpokládá nezávislé povodně, okna 12/2012 a 1/2013 sdílejí 48 h | střední | Zapsáno jako výhrada (p-hodnoty přibližné) v kódu i v ROZHODNUTI; průměry tím nejsou dotčené. |
+| `znamenkovy_p: NaN` v JSON (nestandardní) | nízká | `lofo.skore` ukládá `null`, existující `vysledky_*.json` převedené NaN → null. |

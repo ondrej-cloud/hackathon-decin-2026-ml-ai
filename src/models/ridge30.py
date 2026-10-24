@@ -36,3 +36,18 @@ def pridej_stanice(X):
 def fit(X, y, cil, horizont):
     predict = ridge.fit(pridej_stanice(X), y, cil, horizont)
     return lambda X: predict(pridej_stanice(X))
+
+
+class Model:
+    """Uložitelná podoba pro aplikaci (jako src/uloz_model.py): predict(X) z 98 týmových vstupů ze features.tabulka,
+    nové stanice si připojí sám. Potřebuje ridge_dan/tabulka/labe_ridge.parquet s řádky pro časy v X."""
+
+    def __init__(self, alpha=ridge.PARAMETRY["alpha"]):
+        self.alpha = alpha
+
+    def fit(self, X, y):
+        self.m = ridge.pipeline(self.alpha).fit(pridej_stanice(X), y)
+        return self
+
+    def predict(self, X):
+        return self.m.predict(pridej_stanice(X))

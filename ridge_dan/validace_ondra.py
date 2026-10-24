@@ -12,7 +12,7 @@ MODELY = ["jako_ted", "ridge", "mlp", "lgbm", "fyzika", "ridge30", "g3"]
 
 
 def c(x, d=1):
-    return f"{x:.{d}f}".replace(".", ",")
+    return f"{round(x + 1e-9, d):.{d}f}".replace(".", ",")  # zaokrouhlení jako pandas v krizova_validace
 
 
 if __name__ == "__main__":

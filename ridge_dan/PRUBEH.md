@@ -71,3 +71,6 @@
 - so 02:56 · příčina zpomalení: můj proces s normální prioritou čekal ve stavu Ready (Windows ho odsouval, druhá session běží s AboveNormal); po zvýšení priority na AboveNormal jede naplno. Ponaučení: dlouhé běhy spouštět s vyšší prioritou.
 - so 03:06 · H v Ondrově validaci: H30 19,84 (−0,28 proti Ridge, 5 z 8), H12 20,13 (+0,01); průzkumně na 36 h H30 −2,1 (Děčín) a −2,3 cm (Ústí), 6 z 8. Doplňkově (průzkumné, bez ladění): tentýž pevný H30 a H12 v LOFO 22 pro Děčín +36 h.
 - so 03:12 · H36 průzkumně: LOFO 22 Děčín +36 h H30 22,95 proti 26,39 (−3,44, 18 z 22), val 25,0 proti 26,0; zapsáno do VALIDACE_ONDRA.md a ROZHODNUTI_G3.md jako průzkumné.
+- so 03:14 · Codex (k): G3 v LOFO překoná i síť (−1,13), Ridge 30 36 h pro Ústí formálně splní pravidlo (−1,00, 5 z 8), chybí uložená validace G3, drobnosti v zaokrouhlení → opravuji a dělám (a)–(d) pro Ridge 30 na 36 h.
+- so 03:30 · Codex (l) bez kritických/vysokých nálezů; (a)–(d) pro Ridge 30 na 36 h hotové (modely models/ridge30_*_36.joblib, ROZHODNUTI_G3.md); opraveny nálezy k a l.
+- so 03:35 · RANNI_ZPRAVA.md hotová; noční úkol uzavřen.

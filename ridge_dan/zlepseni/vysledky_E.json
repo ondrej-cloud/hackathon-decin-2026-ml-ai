@@ -40,7 +40,7 @@
   "zlepseno": 0,
   "zhorseno": 0,
   "nejhorsi_zhorseni": 0.0,
-  "znamenkovy_p": NaN,
+  "znamenkovy_p": null,
   "splnuje": false,
   "val": {
    "mae_povodne": 26.0,

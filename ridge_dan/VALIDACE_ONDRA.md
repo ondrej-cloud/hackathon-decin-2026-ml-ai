@@ -9,7 +9,8 @@ chyba v okně kolem vrcholů nad 1. SPA, průměr přes 6 kombinací). Test 2021
 **G3 (½ Ridge 30 stanic + ½ LightGBM 30 stanic) má 19,6 ± 7,1 cm, Ondrův nejlepší model (lineární regrese)
 20,1 ± 7,7 cm: G3 je v průměru o 0,5 cm lepší a lepší v 6 z 8 povodní.** Nejlepší je v 5 z 8 povodní (Ridge
 ve 2, Ridge 30 v 1). Horší je u obou povodní s táním sněhu: duben 2006 +5,7 cm a leden 2011 +1,9 cm. Nejvíc pomůže
-v červnu 2013 (−3,3 cm). G3 je lepší ve všech 6 kombinacích cíl × horizont, ale jen o 0,1–1,1 cm. Má o jeden
+v červnu 2013 (−3,3 cm). G3 je lepší než lineární regrese ve všech 6 kombinacích cíl × horizont, ale jen o 0,04–1,09 cm
+(na 36 h je v obou cílech nejlepší Ridge 30). Má o jeden
 planý poplach víc (4 proti 3), propásnutá varování stejně (1).
 
 Zlepšení 0,5 cm je pod hranicí 1 cm, kterou jsme si dali v přísném hodnocení, a 6 z 8 povodní je ve znaménkovém
@@ -23,7 +24,7 @@ nemění.
 | Povodeň | jako teď | ridge | mlp | lgbm | fyzika | ridge30 | g3 | nejlepší |
 |---|---|---|---|---|---|---|---|---|
 | 2006-04 | 54,6 | **18,4** | 22,4 | 23,8 | 28,5 | 24,5 | 24,1 | ridge |
-| 2006-06 | 35,4 | 15,5 | 18,8 | 18,5 | 17,4 | 14,9 | **13,4** | g3 |
+| 2006-06 | 35,4 | 15,6 | 18,8 | 18,5 | 17,4 | 14,9 | **13,4** | g3 |
 | 2009-03 | 28,4 | 11,2 | 9,8 | 12,6 | 16,1 | **9,6** | 11,0 | ridge30 |
 | 2010-08 | 43,2 | 28,6 | 30,9 | 27,6 | 30,2 | 27,2 | **25,7** | g3 |
 | 2010-09 | 45,5 | 21,6 | 23,5 | 24,4 | 28,3 | 21,3 | **21,2** | g3 |
@@ -40,8 +41,8 @@ Po kombinacích (průměr přes 8 povodní, cm):
 | | Děčín 12 h | Děčín 24 h | Děčín 36 h | Ústí 12 h | Ústí 24 h | Ústí 36 h |
 |---|---|---|---|---|---|---|
 | ridge | 10,5 | 18,5 | 29,8 | 11,6 | 19,2 | 31,1 |
-| ridge30 | 11,0 | 19,1 | 29,0 | 12,0 | 20,0 | 30,1 |
-| g3 | **9,9** | **18,1** | **29,7** | **10,5** | **18,6** | **30,8** |
+| ridge30 | 11,0 | 19,1 | **29,0** | 12,0 | 20,0 | **30,1** |
+| g3 | **9,9** | **18,1** | 29,7 | **10,5** | **18,6** | 30,8 |
 
 ## Varování (součet přes 8 povodní × 6 kombinací)
 
@@ -101,7 +102,8 @@ s Ondrou; první běh se zasekl na prioritě procesu, druhý dal v prvních 125 
 | 2013-06 | 33,9 | 31,7 | 34,6 | 31,2 | **30,6** |
 | průměr ± sm. odch. | 20,1 ± 7,7 | 20,1 ± 7,3 | 20,2 ± 8,4 | 19,8 ± 7,9 | **19,6 ± 7,1** |
 
-H30 proti Ridge −0,28 cm (lepší v 5 z 8), H12 +0,01 (4 z 8): v průměru 6 kombinací nic. Plané poplachy H30 3,
+H30 proti Ridge −0,28 cm (lepší v 5 z 8), H12 +0,01 (4 z 8): v průměru 6 kombinací nic (H30 na 24 h: Děčín −0,21,
+Ústí +0,01). Plané poplachy H30 3,
 H12 5 (Ridge 3). **Na horizontu 36 h je ale H30 výrazně lepší:** Děčín 27,6 proti 29,8 (−2,1 cm, 6 z 8 povodní,
 nejhorší +3,0), Ústí 28,8 proti 31,1 (−2,3 cm, 6 z 8, nejhorší +1,5). Tentýž pevný model pro Děčín +36 h
 v LOFO 22 (`zlepseni/pokus_H36.py`): 22,95 proti 26,39 týmového Ridge (−3,44 cm, 18 z 22, nejhorší +3,1),

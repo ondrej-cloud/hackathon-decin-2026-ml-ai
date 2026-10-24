@@ -1,0 +1,9 @@
+# Ranní zpráva (Dan, noc 23./24. 10., hotovo v 03:35, větev dan-ridge)
+
+1. **G3 v Ondrově validaci** (8 povodní × 6 kombinací): 19,6 ± 7,1 cm proti lineární regresi 20,1 ± 7,7 (−0,5 cm, lepší v 6 z 8) → hranici 1 cm nesplní; Ondrova čísla `ridge`/`lgbm` jsem zopakoval přesně. Podrobně `ridge_dan/VALIDACE_ONDRA.md`.
+2. **Doporučení pro 24 h: finále zůstává týmový Ridge.** G3 je lepší jen v LOFO 22 (−1,35 cm proti Ridge, −1,14 proti síti), na 4 validačních povodních horší (18,2 proti 15,5) a prohrává u povodní s táním (2006, 2011). Shrnutí na 1 stranu: `ridge_dan/ROZHODNUTI_G3.md`.
+3. **36 h: Ridge 30 stanic** je lepší (LOFO Děčín −2,43; Ondra Děčín −0,71, Ústí −1,00 na hraně), Codex ho podruhé prověřil bez vážných nálezů, ale převaha o 1 cm doložená není. Modely jsou připravené lokálně: `models/ridge30_decin_36.joblib`, `ridge30_usti_36.joblib` (`python ridge_dan/uloz_ridge30.py`). Co potřebuje aplikace, je v ROZHODNUTI (bod d).
+4. **Průzkumně H30** (Ridge 30 + ukazatel útlumu vlny v nivě): na 36 h lepší ve všech třech hodnoceních (Ondra −2,1 / −2,3 cm, LOFO −3,44, validace 25,0 proti 26,0), na 24 h nic. Je to průzkumný výsledek (nápad z povodně 2006), modul `src/models/h30.py`.
+5. Codex v noci 4× (i, j, k, l): žádný únik z budoucnosti, opravené nálezy v `ridge_dan/NALEZY_CODEX.md`; průběh `ridge_dan/PRUBEH.md`. Test 2021–2025 se nepoužil, main nedotčen.
+6. **Rozhodnout ráno:** (a) potvrdit týmový Ridge pro 24 h; (b) pro 36 h týmový Ridge, Ridge 30, nebo H30 s výhradou; (c) zda nové stanice a rozliv do nivy dát do prezentace jako „co jsme zkoušeli“ (graf `ridge_dan/grafy/srovnani_g3_tym_povodne.png`).
+7. Pozn.: na notebooku spouštět dlouhé běhy s vyšší prioritou procesu, jinak je Windows při souběhu odsune (jeden běh se kvůli tomu v noci zasekl, opakovaný dal stejná čísla).

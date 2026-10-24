@@ -1,0 +1,20 @@
+Jsi nezávislý kontrolor. Pracuješ JEN PRO ČTENÍ.
+
+Pravidla (závazná): nic neměň, nevytvářej ani nemaž soubory, žádné git příkazy, které něco mění, nic neinstaluj,
+žádný internet. Nečti .env, nic ve %USERPROFILE%\.kaggle ani jiné přihlašovací údaje. Nepočítej nic na letech
+2021–2025. Smíš spustit krátký Python skript jen pro čtení (C:\Users\danie\.venvs\hackathon\Scripts\python.exe -B),
+nic nezapisuj, žádné trénování. Časový limit 10 minut.
+Výstup: seznam nálezů (soubor, řádek, závažnost kritická/vysoká/střední/nízká, co je špatně, návrh opravy), na konci
+jedna věta, jestli jsou zprávy připravené pro tým. Česky, stručně.
+
+Zkontroluj dvě zprávy z noci pro tým: ridge_dan/VALIDACE_ONDRA.md a ridge_dan/ROZHODNUTI_G3.md.
+Zdroje čísel: results/krizova_validace/2026-10-23_232649.csv (Ondrův běh: jako_ted, ridge, mlp, lgbm, fyzika),
+results/krizova_validace/2026-10-24_014113.csv (jako_ted, ridge, lgbm, ridge30, g3),
+results/krizova_validace/2026-10-24_030330.csv (jako_ted, h12, h30); ridge_dan/zlepseni/vysledky_*.json (LOFO 22,
+H36 = vysledky_H36.json); ridge_dan/stanice_vsem/vysledky.jsonl (validace 4 povodně); results/*_mlp.json.
+Souhrny se počítají jako v src/krizova_validace.py (průměr chyby přes 6 kombinací cíl × horizont po povodních,
+pak průměr a směrodatná odchylka přes 8 povodní).
+1. Sedí všechna čísla ve zprávách se zdroji (průměry, směrodatné odchylky, počty povodní, rozdíly, poplachy)?
+2. Je pravidlo „aspoň o 1 cm a ve většině povodní“ vyhodnocené správně pro G3 a pro Ridge 30 na 36 h?
+3. Jsou průzkumné výsledky (H12, H30, 36 h) jasně označené jako průzkumné a nedělají z nich zprávy víc, než je?
+4. Nepoužívá se nikde test 2021–2025?

@@ -1,0 +1,19 @@
+Jsi nezávislý kontrolor (druhá revize). Pracuješ JEN PRO ČTENÍ.
+
+Pravidla (závazná): nic neměň, nevytvářej ani nemaž soubory, žádné git příkazy, které něco mění, nic neinstaluj,
+žádný internet. Nečti .env, nic ve %USERPROFILE%\.kaggle ani jiné přihlašovací údaje. Nepočítej nic na letech
+2021–2025 (žádné metriky ani předpovědi). Smíš spustit krátký Python skript jen pro čtení
+(C:\Users\danie\.venvs\hackathon\Scripts\python.exe -B), nic nezapisuj, nanejvýš pár fitů Ridge. Limit 15 minut.
+Výstup: seznam nálezů (soubor, řádek, závažnost kritická/vysoká/střední/nízká, co je špatně, návrh opravy), na konci
+jedna věta, jestli je výsledek Ridge 30 na 36 h věrohodný. Česky, stručně.
+
+Prověř celý řetězec modelu Ridge 30 stanic (src/models/ridge30.py) pro horizont 36 h od dat po hodnocení:
+1. Data: ridge_dan/stahni_hydro.py, ridge_dan/stanice.py, ridge_dan/data_ridge.py (hodinové průtoky ČHMÚ, UTC,
+   díry, oprava ledu) – správné stanice, jednotky, časové razítko, spojení roků.
+2. Připojení 18 nových stanic k týmovým vstupům: ridge_dan/stanice_vsem/spolecne.py (nove_sloupce, data) a
+   src/models/ridge30.py (pridej_stanice) – stejné časy jako src/features.py, stejná zpoždění, bez budoucnosti.
+3. Foldy a hodnocení: src/krizova_validace.py (Ondra, neměnit) a ridge_dan/zlepseni/lofo.py (22 povodní, mezera ±20 dní,
+   foldy v ridge_dan/stanice_vsem/lofo_foldy.csv) – žádný únik mezi tréninkem a hodnocenou povodní, stejné řádky.
+4. Čísla Ridge 30 na 36 h: Ondrova validace results/krizova_validace/2026-10-24_014113.csv (ridge30 vs ridge,
+   cil decin/usti, h 36), LOFO ridge_dan/zlepseni/vysledky_E.json a vysledky_H36.json (ridge30_36), validace
+   ridge_dan/stanice_vsem/vysledky.jsonl (ridge_30, kombinace usti/decin 36) – sedí s tím, co tvrdí ridge_dan/ROZHODNUTI_G3.md?
