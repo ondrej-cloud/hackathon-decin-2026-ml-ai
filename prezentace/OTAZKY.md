@@ -32,7 +32,7 @@ Balíček má dva roky a stanice v kraji, nejvýš proti proudu je Ústí, 4 hod
 **8. Jak jste data připravili?** (Ondra)
 Hodinové hladiny a průtoky ČHMÚ 2006–2025, každá hodnota je průměr za hodinu. Zkontrolovali jsme bilanci vody mezi stanicemi, měrné křivky a časy, vyřadili jsme jen 5. až 8. 2. 2006 v Děčíně (hladina 1 019 cm při průtoku 120 m³/s, nejspíš led). Díry nedoplňujeme a z průtoků bereme odmocninu, protože hladina roste s průtokem zhruba jako odmocnina.
 
-**9. Jak víte, že model nepoužívá informace z budoucnosti?** (Ondra, slajd 7)
+**9. Jak víte, že model nepoužívá informace z budoucnosti?** (Ondra, slajd 6)
 Dělíme v čase, nikdy náhodně, a kolem validačních povodní vynecháváme z učení 20 dní. Vstupy jsou jen hodnoty změřené do okamžiku předpovědi. Našli jsme dvě pasti, které budoucnost do vstupů pouštěly, doplňování děr a denní srážky, a obě jsme vyřadili.
 
 **10. Nemáte výsledek jen ze šťastně vybrané validace?** (Ondra, slajd Z9)
@@ -49,10 +49,10 @@ Na testu 2021–2025 třetí stupeň zachytil pokaždé. U druhého stupně 17 z
 
 ## Limity a provoz
 
-**14. Proč ne srážky?** (Dan, slajd 4 a Z3)
+**14. Proč ne srážky?** (Dan, slajd 3 a Z3)
 Zkusili jsme horní mez: model dostal skutečný déšť na 3 dny dopředu, jako by předpověď byla dokonalá, a chyba klesla jen o 1 cm. Voda, která přijde za 12 až 36 h, už teče v řekách a vidíme ji v průtocích proti proudu. Srážky by pomohly na 2 až 3 dny u dešťových povodní, jenže archiv starých předpovědí na trénink nemáme.
 
-**15. Proč jen 36 hodin dopředu?** (Dan, slajd 3)
+**15. Proč jen 36 hodin dopředu?** (Dan, slajd 2)
 Z nejvzdálenějších stanic, Berounu a Nespek na Sázavě, doteče voda do Děčína za 23 až 25 h. Voda, která do Děčína přijde později, ještě neprotekla žádnou naší stanicí, je v potocích nebo ještě nespadla. Proto je chyba na 36 h skoro dvakrát větší než na 24 h.
 
 **16. Jak moc se dá předpovědi věřit?** (Honza, slajd Z4)
@@ -70,7 +70,7 @@ Není. Výška terénu z ČÚZK proti výšce hladiny, ověřená proti úředn�
 **20. Komu to pomůže a co byste dělali dál?** (Tobias, dál Dan)
 Povodňové komisi města, hasičům a lidem u řeky: den navíc znamená odvézt auta, postavit pytle a vyklidit sklepy. Dál předpověď srážek na 2 až 3 dny, víc stanic proti proudu a dvoustupňové varování, nejdřív předběžná výstraha podle horní meze rozmezí, pak ostrá podle předpovědi.
 
-**21. Proč nepoužíváte vlhkost, tlak a vítr?** (Dan, slajd 4)
+**21. Proč nepoužíváte vlhkost, tlak a vítr?** (Dan, slajd 3)
 Zkusili jsme je: s vlhkostí 17,2 cm, s tlakem 17,0, s větrem 17,0 proti 17,1 bez nich, a i kdybychom je dokonale znali den předem, vyjde 17,0. Do řeky vodu nepřidají, jsou jen náznak, že bude pršet, a ani dokonale známý déšť nepomohl o víc než 1 cm. Vítr hladinu zvedá u moře nebo jezera, ne v řece.
 
 **22. Proč neukazujete živé demo?** (Honza)

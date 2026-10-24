@@ -1,143 +1,154 @@
 # Slajdy a texty řečníků
 
-Deset slajdů na 6:40, rezerva 20 s do 7:00, pak deset záložních. Živé demo neděláme, aplikace je na slajdu 9 jako snímek, aby nic nespadlo; web otevíráme až při otázkách. Text řečníka je napsaný tak, jak se říká nahlas, na zhruba 130 slov za minutu; u každého slajdu je počet slov a strop pro jeho délku. `[mezerník]` znamená další krok decku. Body zadání: 1 co řešíme, 2 data, 3 příprava dat, 4 vstupy, 5 model, 6 ověření, 7 limity.
+Devět slajdů na 6:45, rezerva 15 s do 7:00, pak deset záložních. Každý slajd odpovídá na jednu otázku, kterou by porota položila; nadpis slajdu je odpověď a pod ním jsou věci, které musí zaznít. Text řečníka je napsaný tak, jak se říká nahlas, na zhruba 130 slov za minutu. `[mezerník]` je další krok decku. Živé demo neděláme, aplikace je na slajdu 8 jako snímek a web otevíráme až při otázkách. Body zadání: 1 co řešíme, 2 data, 3 příprava dat, 4 vstupy, 5 model, 6 ověření, 7 limity.
 
-| # | Čas | Řečník | Nadpis | Slov / strop | Bod |
+| # | Čas | Řečník | Otázka poroty | Nadpis (odpověď) | Bod |
 |---|---|---|---|---|---|
-| 1 | 0:00–0:25 | Tobias | (video) | 13 / 54 | 1 |
-| 2 | 0:25–0:50 | Tobias | Den předem víte, kam až voda dosáhne | 51 / 54 | 1 |
-| 3 | 0:50–1:30 | Ondra | Co teče Prahou teď, je zítra v Děčíně | 78 / 87 | 2 |
-| 4 | 1:30–2:20 | Dan | Co model bere a co ne | 106 / 108 | 3, 4 |
-| 5 | 2:20–3:10 | Honza | Od 44 cm k 17: jak jsme došli k přímce | 100 / 108 | 5 |
-| 6 | 3:10–3:45 | Honza | Předpověď je součet: kolik centimetrů přidá každá řeka | 55 / 76 | 5 |
-| 7 | 3:45–4:20 | Ondra | Ověřujeme třikrát, na povodních, které model neviděl | 71 / 76 | 3, 6 |
-| 8 | 4:20–5:10 | Ondra | Boris: 3. stupeň hlášen 27 h předem, chyba o 55 % menší | 95 / 108 | 6 |
-| 9 | 5:10–5:40 | Honza | Aplikace: Děčín dnes a za 24 hodin | 50 / 65 | 1 |
-| 10 | 5:40–6:40 | Dan, závěr Tobias | Co umíme, co ne a co dál | 109 / 130 | 7 |
+| 1 | 0:00–0:45 | Tobias | Co řešíte a pro koho? | Den předem víme, kam v Děčíně dosáhne voda | 1 |
+| 2 | 0:45–1:25 | Ondra | Odkud se to dá poznat? | Z Prahy teče voda do Děčína 17 hodin, ze Sázavy 25 | 2 |
+| 3 | 1:25–2:15 | Dan | Co model bere? | Bereme jen řeku, počasí nepomohlo | 3, 4 |
+| 4 | 2:15–3:25 | Honza | Jak jste vybrali model? | Čtyři modely, vyhrál nejjednodušší | 5 |
+| 5 | 3:25–4:05 | Honza | Proč zrovna přímka? | Voda v Děčíně je součet řek | 5 |
+| 6 | 4:05–4:40 | Ondra | Jak víte, že to funguje? | Ověřeno třikrát na povodních, které model neviděl | 3, 6 |
+| 7 | 4:40–5:25 | Ondra | Funguje to na skutečné povodni? | Boris: 3. stupeň 27 hodin předem, chyba o 55 % menší | 6 |
+| 8 | 5:25–5:50 | Honza | Dá se to použít? | Každou hodinu nová předpověď z živých dat | 1 |
+| 9 | 5:50–6:45 | Dan, závěr Tobias | Kde to selže? | Co umíme, co ne a co dál | 7 |
 
-Celkem 728 slov, při 130 slovech za minutu 5:36 mluvení. Zbytek do 6:40 je video (25 s, mluví se až na konci) a pauzy na kroky decku.
+Celkem 687 slov, při 130 slovech za minutu 5:17 mluvení. Zbytek do 6:45 je video (20 s bez mluvení) a pauzy na kroky decku.
 
-## 1 · Video (0:00–0:25, Tobias)
+## 1 · Den předem víme, kam v Děčíně dosáhne voda (0:00–0:45, Tobias)
 
-Na slajdu: video rozlivu Labe v Děčíně při Borisovi, září 2024, přes celou obrazovku, bez zvuku (`web/prezentace/video/boris_decin_720.mp4`, náhled `grafy/video_decin_poster.jpg`). Na konci naskočí věta.
+- Otázka: Co řešíte a pro koho?
+- Musí zaznít: hladina v Děčíně a Ústí za 12, 24 a 36 h; varování před 2. a 3. stupněm; komise, hasiči, lidi u řeky.
+- Na slajdu: video rozlivu Borise přes celou obrazovku, bez zvuku (`web/prezentace/video/boris_decin_720.mp4`, 24 s, náhled `grafy/video_decin_poster.jpg`). Po videu zůstane poslední snímek (`grafy/01_mapa_decin.png`), nadpis a velké **27 h**.
 
-Text (video běží bez mluvení, věta až na konci):
+Video běží 20 s bez mluvení, pak Tobias přes konec videa:
 
-> Tohle je Děčín v září 2024. Náš model to hlásil 27 hodin předem.
+> Tohle je Děčín v září 2024. Náš model to hlásil 27 hodin předem. Předpovídáme hladinu Labe v Děčíně a v Ústí na 12, 24 a 36 hodin a varujeme před druhým a třetím stupněm. Pro povodňovou komisi, hasiče a lidi u řeky je to den navíc: odvézt auta, postavit pytle, vyklidit sklepy.
 
-13 slov. Nic dalšího neříkat.
+52 slov (strop 54, mluví se od 20. sekundy videa).
 
-## 2 · Den předem víte, kam až voda dosáhne (0:25–0:50, Tobias)
+## 2 · Z Prahy teče voda do Děčína 17 hodin, ze Sázavy 25 (0:45–1:25, Ondra)
 
-Na slajdu: snímek rozlivu v Děčíně přes celý slajd (`grafy/02_mapa_decin.png`, v HTML decku fotka `grafy/boris_decin_110.jpg`), velké číslo **27 h**, tři štítky: Povodňová komise, Hasiči, Lidé u řeky.
+- Otázka: Odkud se to dá poznat?
+- Musí zaznít: voda přitéká třemi větvemi a doba doběhu; archiv ČHMÚ, 12 stanic, 20 let; samotný balíček (2 roky, stanice v kraji) dal 44,6 cm, stejně jako „bude jako teď“; proto den dopředu a dál z řeky nevidí nikdo.
+- Na slajdu: vlevo mapa stanic (`grafy/02a_mapa_stanic.png`), po mezerníku vpravo `grafy/02b_doba_dobehu.png`. Tři čísla **20 let · 12 stanic · 175 320 hodin**.
 
-> Naše aplikace předpovídá hladinu Labe v Děčíně a v Ústí na 12, 24 a 36 hodin dopředu. Varuje před druhým a třetím stupněm povodňové aktivity a v mapě ukáže, kam voda dosáhne. Je pro povodňovou komisi, hasiče a lidi u řeky. Den navíc znamená odvézt auta, postavit pytle a vyklidit sklepy.
-
-51 slov.
-
-## 3 · Co teče Prahou teď, je zítra v Děčíně (0:50–1:30, Ondra)
-
-Na slajdu: vlevo mapa 12 stanic na Vltavě, horním Labi a Ohři (`grafy/03a_mapa_stanic.png`), tři čísla **20 let · 12 stanic · 175 320 hodin**. Po mezerníku vpravo graf `grafy/03b_doba_dobehu.png` (za kolik hodin doteče voda z každé stanice do Děčína, svislá čára 24 h).
-
-> Co teče Prahou teď, je zítra v Děčíně. Proto jsme vzali hodinový archiv ČHMÚ: dvanáct stanic na Vltavě, horním Labi a Ohři, dvacet let od roku 2006. Je to stejný zdroj jako balíček od pořadatelů, jen delší a s víc stanicemi.
+> Labe do Děčína přitéká třemi větvemi: Vltavou, horním Labem a Ohří.
 >
 > [mezerník]
 >
-> Tady je, za kolik hodin doteče voda do Děčína: z Ústí za 4, z Prahy za 17, ze Sázavy za 25. Proto předpovídáme den dopředu. Vodu, která ještě neteče žádnou stanicí, z měření na řece nevidí nikdo.
+> Voda z Ústí sem doteče za 4 hodiny, z Prahy za 17, ze Sázavy za 25. Co teče Prahou teď, je zítra v Děčíně. Proto jsme vzali hodinový archiv ČHMÚ: dvanáct stanic a dvacet let. Jen s daty z balíčku, dva roky a stanice v kraji, byla chyba 44,6 centimetru, stejně jako když řeknete, že bude jako teď. A je to i hranice: vodu, která ještě neteče žádnou stanicí, z řeky nevidí nikdo.
 
-78 slov. Čísla jsou z korelace změn průtoku na trénovací části (`docs/DATA.md`, doba doběhu do Děčína).
+84 slov (strop 86).
 
-## 4 · Co model bere a co ne (1:30–2:20, Dan)
+## 3 · Bereme jen řeku, počasí nepomohlo (1:25–2:15, Dan)
 
-Na slajdu: vlevo krátce **Bereme:** hladina Děčín a Ústí, průtok na 12 stanicích, teď a až 36 h zpátky = 98 čísel. Vpravo graf `grafy/04_co_model_bere.png` (o kolik se změní chyba na validaci proti finálním 17,1 cm, když přidáme další vstup; čára −1 cm je naše pravidlo). Dole jedna věta: „Co přijde do 36 h, už teče řekou.“
+- Otázka: Co model bere?
+- Musí zaznít: 98 čísel, hladina Děčín a Ústí a průtok 12 stanic teď a až 36 h zpátky; srážky, sníh, teplota, vlhkost, tlak a vítr nepomohly ani o 1 cm, protože co přijde do 36 h, už teče řekou; dvě pasti z budoucnosti v přípravě dat.
+- Na slajdu: vlevo **Bereme:** hladina Děčín a Ústí, průtok 12 stanic, teď až 36 h zpátky = 98 čísel. Vpravo `grafy/03_co_model_bere.png`. Po mezerníku rámeček „Dvě pasti z budoucnosti: doplňování děr, denní srážky“.
 
-> Model bere jen to, co je v tu chvíli změřené na řece: hladinu v Děčíně a v Ústí a průtok na dvanácti stanicích, teď a až 36 hodin zpátky. Dohromady 98 čísel. Průtok dáváme pod odmocninu, protože hladina roste s průtokem zhruba jako odmocnina.
+> Model bere jen to, co je v tu chvíli změřené na řece: hladinu v Děčíně a v Ústí a průtok na dvanácti stanicích, teď a až 36 hodin zpátky. Dohromady 98 čísel.
 >
 > [mezerník]
 >
-> Co nebereme, i když by to dávalo smysl? Srážky, sníh, teplotu vzduchu, vlhkost, tlak ani vítr. Všechno jsme zkusili a nic nepomohlo ani o centimetr. Déšť, který padá teď, doteče do Děčína většinou až za víc než 36 hodin. Co přijde dřív, už teče řekou a vidíme to v průtoku. I kdybychom déšť na tři dny dopředu znali přesně, chyba klesne jen o centimetr.
-
-106 slov. Kdyby se porota zeptala na teplotu vody: s povodní nesouvisí, nezkoušeli jsme ji.
-
-Čísla v grafu (validace, chyba na povodních, finální model 17,1 cm): naměřené srážky 17,1; teplota vzduchu a sníh 17,3; voda ve sněhu 17,8; vlhkost 17,2; tlak 17,0; vítr 17,0; víc stanic proti proudu (horní Ohře) 17,4; myšlenkový pokus, déšť na 3 dny dopředu přesně 16,1. Tlak a vítr jsou o desetinu lepší, to je v rámci náhody a daleko od našeho pravidla 1 cm. Zdroje: `docs/POKUSY.md` pá 20:44, pá 22:32, pá 23:14, so 0:19, so 8:42.
-
-## 5 · Od 44 cm k 17: jak jsme došli k přímce (2:20–3:10, Honza)
-
-Na slajdu: graf `grafy/05_cesta_k_modelu.png`, tři skupiny sloupců. Začátek: „bude jako teď“ 44,3, jen data jako v balíčku 44,6. Čtyři modely: fyzikální 24,8, LightGBM 23,1, neuronová síť 17,8, lineární regrese 17,1. Úpravy přímky: doba putování podle průtoku 21,8, polynom 19,9, váhy na povodně 17,2, spojení malých zlepšení 17,2. Po posledním mezerníku rámeček s citátem ze zadání.
-
-> Začali jsme laťkou „bude jako teď“: 44 centimetrů chyby při povodních. Se stanicemi jen z kraje a dvěma lety dat, jako v balíčku, vyšlo totéž. Teprve stanice proti proudu a dvacet let historie dávají výsledek.
+> Srážky, sníh, teplotu, vlhkost, tlak i vítr jsme zkusili. Nic nepomohlo ani o centimetr. Co do Děčína přiteče do 36 hodin, už teče řekou a vidíme to v průtoku. I kdybychom déšť na tři dny dopředu znali přesně, chyba klesne jen o centimetr.
 >
 > [mezerník]
 >
-> Pak čtyři modely od nejjednoduššího po složitý, každý dělal jeden z nás a pravidlo bylo stejné: změna musí zlepšit aspoň o centimetr. Fyzikální 25, LightGBM 23, neuronová síť 18, lineární regrese 17. Vybrali jsme ji před testem.
+> A při přípravě dat jsme našli dvě pasti, které braly informaci z budoucnosti: doplňování děr v datech a čas denních srážek. Obě jsme opravili.
+
+99 slov (strop 108).
+
+Čísla v grafu (validace, chyba na povodních, finální model 17,1 cm): naměřené srážky 17,1; teplota vzduchu a sníh 17,3; voda ve sněhu 17,8; vlhkost 17,2; tlak 17,0; vítr 17,0; víc stanic proti proudu 17,4; myšlenkový pokus, déšť na 3 dny dopředu přesně, 16,1. Zdroje `docs/POKUSY.md` pá 20:44, pá 22:32, pá 23:14, so 0:19, so 8:42. Teplotu vody jsme nezkoušeli, s povodní nesouvisí.
+
+## 4 · Čtyři modely, vyhrál nejjednodušší (2:15–3:25, Honza)
+
+- Otázka: Jak jste vybrali model?
+- Musí zaznít: laťka „bude jako teď“ 44 cm; čtyři modely se stejnými pravidly a u každého jedna věta, proč prohrál; výběr před testem; úpravy přímky nic přes 1 cm.
+- Na slajdu: `grafy/04_cesta_k_modelu.png`, tři skupiny sloupců (začátek, čtyři modely, úpravy přímky), odkrývají se mezerníkem.
+
+> Začali jsme laťkou: předpovědí, že bude jako teď. Při povodních se plete o 44 centimetrů.
 >
 > [mezerník]
 >
-> Pak úpravy přímky: polynom, váhy na povodně, spojení všech malých zlepšení. Nic nebylo lepší o víc než centimetr.
+> Pak čtyři modely, každý dělal jeden z nás, se stejnými pravidly: stejná data, stejné ověření a změna musí zlepšit aspoň o centimetr. Fyzikální model, 25 centimetrů: počítá s pevnou dobou putování vody, jenže ta se mezi povodněmi mění. LightGBM, rozhodovací stromy, 23: neumí předpovědět víc, než kdy viděly, u povodně 2013 daly vrchol o dva a půl metru níž. Neuronová síť, 18: skoro stejně dobrá, ale má přes dvacet tisíc vah na dvě velké povodně a snadno se přeučí. Lineární regrese, 17: nejlepší a nejjednodušší. Vybrali jsme ji před testem.
 >
 > [mezerník]
 >
-> A zadání samo říká: cílem není vytvořit co nejsložitější model.
+> Pak jsme zkoušeli vylepšit i ji: polynom, větší váhu povodní, všechna malá zlepšení dohromady. Nic nebylo lepší o víc než centimetr.
 
-100 slov. Když padne „proč přímka“: voda v Děčíně je součet Vltavy, Labe a Ohře, každá posunutá o dobu, než doteče, a velké povodně nad třetím stupněm jsou v tréninku jen dvě (víc na slajdu 6 a v Z1).
+126 slov (strop 151).
 
-## 6 · Předpověď je součet: kolik centimetrů přidá každá řeka (3:10–3:45, Honza)
+Zdroje: `docs/CESTA_MODELU.md` (sekce 1, 2 a 6). LightGBM a povodeň 2013: první pokus pá 17:46, vrchol 823 místo 1 072 cm. Síť 128-64 má asi 21 tisíc vah, verze 64-32 měla na tréninku 5 cm a na validaci 22 cm.
 
-Na slajdu: sloupce součtu (`grafy/06_predpoved_je_soucet.png`, v HTML decku animované), vpravo číslo, které roste s každým krokem: 198 → 577 cm, nakonec štítek **3. stupeň · nad 560 cm**. Šest kroků mezerníkem.
+## 5 · Voda v Děčíně je součet řek (3:25–4:05, Honza)
 
-> Lineární regrese z těch 98 čísel udělá vážený součet. Příklad z Borise, předpověď vydaná den předem. Začíná na průměru, 198 centimetrů.
+- Otázka: Proč zrovna přímka?
+- Musí zaznít: voda v Děčíně je součet Vltavy, horního Labe a Ohře, lineární regrese je vážený součet; příklad Borise den předem 198 → 577 cm, nad 3. stupněm; každé číslo umíme vysvětlit; citát ze zadání.
+- Na slajdu: `grafy/05_soucet_rek.png` (v HTML decku animovaný součet, šest kroků mezerníkem), vpravo číslo, které roste 198 → 577 cm, a štítek **3. stupeň · nad 560 cm**. Dole citát „Cílem není vytvořit co nejsložitější model.“ (zadání).
+
+> Proč vyhrála přímka? Voda v Děčíně je součet toho, co přiteče po Vltavě, horním Labi a Ohři, a lineární regrese je přesně vážený součet. Tady je předpověď z Borise, vydaná den předem. Průměr 198 centimetrů,
 >
-> [mezerník] Děčín a Ústí přidají 80. [mezerník] Vltava 89. [mezerník] Horní Labe 116. [mezerník] Mělník 96. [mezerník] Ohře ubere 2.
+> [mezerník] Děčín a Ústí plus 80, [mezerník] Vltava 89, [mezerník] horní Labe 116, [mezerník] Mělník 96, [mezerník] Ohře minus 2.
 >
-> [mezerník] Vyjde 577, nad třetím stupněm, takže model varoval. Skutečně bylo 551 a třetí stupeň přišel o tři hodiny později.
+> [mezerník] Vyjde 577, nad třetím stupněm, a model varoval. Každé číslo umíme vysvětlit. A zadání samo říká: cílem není co nejsložitější model.
 
-55 slov.
+71 slov (strop 86).
 
-## 7 · Ověřujeme třikrát, na povodních, které model neviděl (3:45–4:20, Ondra)
+## 6 · Ověřeno třikrát na povodních, které model neviděl (4:05–4:40, Ondra)
 
-Na slajdu: časová osa 2006–2025 `grafy/07_jak_overujeme.png`, vpravo tři kroky (výběr modelu, vícenásobná validace, test), věta „Dělení v čase, nikdy náhodně“, po mezerníku rámeček „Dvě pasti z budoucnosti“.
+- Otázka: Jak víte, že to funguje?
+- Musí zaznít: dělení v čase, nikdy náhodně; výběr na 4 vynechaných povodních; vícenásobná validace na 8 povodních; test 2021–2025 jednou na konci.
+- Na slajdu: `grafy/06_jak_overujeme.png`, vpravo tři kroky a věta „Dělení v čase, nikdy náhodně“.
 
-> Ověřujeme třikrát, vždy na povodních, které model neviděl. Data dělíme v čase, nikdy náhodně. Model jsme vybrali na čtyřech vynechaných povodních. Pak jsme každou z osmi povodní 2006 až 2020 jednou vynechali a model naučili na zbytku, to je vícenásobná validace. Test na letech 2021 až 2025 jsme pustili jednou, na konci.
+> Jak víme, že to funguje? Data dělíme v čase, nikdy náhodně, a ověřujeme vždycky na povodních, které model při učení neviděl. Model jsme vybrali na čtyřech vynechaných povodních. Pak jsme každou z osmi povodní 2006 až 2020 jednou vynechali a model naučili na zbytku, to je vícenásobná validace. A test na letech 2021 až 2025 jsme pustili jen jednou, úplně na konci.
+
+62 slov (strop 75).
+
+## 7 · Boris: 3. stupeň 27 hodin předem, chyba o 55 % menší (4:40–5:25, Ondra)
+
+- Otázka: Funguje to na skutečné povodni?
+- Musí zaznít: Boris je z testu, model ho neviděl; 3. stupeň 27 h předem; test 22,4 proti 50,2 cm a vícenásobná validace 20,1 proti 45,2, obojí −55 %.
+- Na slajdu: vlevo `grafy/07_boris_2024.png`, vpravo velká čísla **27 h** („před 3. stupněm v Děčíně“) a **−55 %** („test 22,4 proti 50,2 cm · vícenásobná validace 20,1 proti 45,2 cm“).
+
+> Tohle je Boris, září 2024, z testu, takže ho model nikdy neviděl. Černá je skutečnost, modrá naše předpověď vydaná 24 hodin předem a jde se skutečností. Šedá je „bude jako teď“, ta je vždycky o den pozadu. Třetí stupeň model hlásil 27 hodin předem.
 >
 > [mezerník]
 >
-> V datech jsme našli dvě pasti, které braly informaci z budoucnosti: doplňování děr a denní srážky. Obě jsme vyřadili.
+> Na celém testu je chyba při povodních 22,4 centimetru proti 50,2, o 55 procent menší. Vícenásobná validace dala taky 55 procent. Dvakrát stejné číslo, není to náhoda.
 
-71 slov.
+71 slov (strop 97).
 
-## 8 · Boris: 3. stupeň hlášen 27 h předem, chyba o 55 % menší (4:20–5:10, Ondra)
+## 8 · Každou hodinu nová předpověď z živých dat (5:25–5:50, Honza)
 
-Na slajdu: vlevo graf `grafy/08_boris_2024.png`, vpravo dvě velká čísla **27 h** („před 3. stupněm v Děčíně“) a **−55 %** („test 22,4 proti 50,2 cm · vícenásobná validace 20,1 proti 45,2 cm“).
+- Otázka: Dá se to použít?
+- Musí zaznít: Děčín dnes a za 24 h vedle oficiální předpovědi ČHMÚ; obnovuje se z živých dat.
+- Na slajdu: snímek webu na Dnešku `grafy/08_aplikace_dnes.png` přes celý slajd, dole adresa field-zero.netlify.app a QR kód.
 
-> Tohle je Boris, září 2024, z testu, takže ho model nikdy neviděl. Černá je skutečná hladina, modrá naše předpověď vydaná 24 hodin předem a jde se skutečností. Šedá čárkovaná je „bude jako teď“, ta je vždycky o den pozadu. Třetí stupeň model hlásil 27 hodin předem a vrchol 649 centimetrů předpověděl na 611.
->
-> [mezerník]
->
-> V číslech: na testu 2021 až 2025 je chyba při povodních 22,4 centimetru proti 50,2 u „bude jako teď“, o 55 procent méně. Ve vícenásobné validaci na osmi povodních 20,1 proti 45,2, zase o 55 procent. Dvakrát stejné číslo, není to náhoda.
+> A takhle to vypadá v aplikaci dnes ráno: Děčín 84 centimetrů, za 24 hodin podle nás 94, oficiální předpověď ČHMÚ 90. Každou hodinu nová předpověď z živých dat ČHMÚ, s rozmezím nejistoty a mapou rozlivu.
 
-95 slov.
+35 slov (strop 54).
 
-## 9 · Aplikace: Děčín dnes a za 24 hodin (5:10–5:40, Honza)
+Čísla jsou ze snímku (vydáno 24. 10. v 6:00). Když se snímek obnoví, přepsat je podle něj.
 
-Na slajdu: snímek webu na Dnešku `grafy/09_aplikace_dnes.png` přes celý slajd (vodočet, za 12, 24 a 36 h, vedle oficiální ČHMÚ), dole adresa field-zero.netlify.app a QR kód. Živé demo neděláme, web otevřeme až při otázkách, když o něj porota stojí.
+## 9 · Co umíme, co ne a co dál (5:50–6:45, Dan, závěr Tobias)
 
-> Takhle to vypadá v aplikaci, tohle je dnešní ráno. Děčín v šest hodin 84 centimetrů, za 24 hodin podle nás 94, oficiální předpověď ČHMÚ 90. Modrý pás je rozmezí, kam se skutečnost vejde zhruba osmkrát z deseti. Data bere živě od ČHMÚ. K tomu mapa rozlivu a přehrávání starých povodní.
-
-50 slov. Čísla jsou ze snímku (vydáno 24. 10. v 6:00); když se snímek obnoví, přepsat je podle něj.
-
-## 10 · Co umíme, co ne a co dál (5:40–6:40, Dan, závěr Tobias)
-
-Na slajdu: čtyři karty (Umíme, Neumíme, Proč ne srážky, Dál), po mezerníku závěrečná věta, Děkujeme a QR kód na repozitář.
+- Otázka: Kde to selže?
+- Musí zaznít: na 36 h skoro dvakrát větší chyba; vyšší vrchol, než jaký model viděl, podhodnotí; zpoždění živých dat; srovnání s ČHMÚ na starých povodních nemáme; dál předpověď srážek na 2–3 dny a dvoustupňové varování.
+- Na slajdu: čtyři karty (Umíme, Neumíme, Proč ne srážky, Dál), po mezerníku závěrečná věta, Děkujeme a QR kód na repozitář.
 
 Dan:
 
-> Co umíme: hladinu v Děčíně a v Ústí na 12, 24 a 36 hodin, třetí stupeň den předem a rozliv v mapě. Co neumíme: na 36 hodin je chyba skoro dvakrát větší než na 24, voda, která přijde, ještě neteče žádnou stanicí. Vrchol vyšší, než jaký model viděl v tréninku, podhodnotí. V provozu chodí data se zpožděním jedné až tří hodin. S oficiální předpovědí ČHMÚ se na starých povodních srovnat neumíme. Dál bychom přidali předpověď srážek na dva až tři dny a dvoustupňové varování: nejdřív předběžná výstraha, pak ostrá.
+> Kde to selže? Na 36 hodin je chyba skoro dvakrát větší než na 24, protože voda, která přijde, ještě neteče žádnou stanicí. Vrchol vyšší, než jaký model kdy viděl, podhodnotí. Živá data chodí se zpožděním jedné až tří hodin. A historické předpovědi ČHMÚ nemáme, takže se s nimi na starých povodních srovnat neumíme. Dál bychom přidali předpověď srážek na dva až tři dny dopředu a dvoustupňové varování.
 
 Tobias, [mezerník]:
 
 > Z otevřených dat zdarma: o povodni v Děčíně víte den předem, s modelem, který se vejde na jeden obrázek. Děkujeme.
 
-109 slov dohromady (Dan 89, Tobias 20). „Skoro dvakrát“: na testu v Děčíně 17,5 cm na 24 h a 29,9 cm na 36 h, tedy 1,7krát.
+87 slov (strop 119).
+
+„Skoro dvakrát“: na testu v Děčíně 17,5 cm na 24 h a 29,9 cm na 36 h, tedy 1,7krát.
 
 ## Záložní slajdy
 

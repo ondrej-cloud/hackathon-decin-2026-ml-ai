@@ -68,7 +68,7 @@ def stupne(ax, cil="decin"):
 
 
 # hlavní slajdy ------------------------------------------------------------------------------------------------------
-def s03b_doba_dobehu():
+def s02b_doba_dobehu():
     # src/doba_dobehu.py, posun s největší korelací změn průtoku, trénink; docs/DATA.md (Doba doběhu do Děčína)
     stanice = [("Ústí nad Labem (Labe)", 4), ("Kostelec (Labe)", 10), ("Nymburk (Labe)", 10), ("Mělník (Labe)", 13),
                ("Vraňany (Vltava)", 13), ("Louny (Ohře)", 16), ("Praha (Vltava)", 17), ("Předměřice (Jizera)", 18),
@@ -90,10 +90,10 @@ def s03b_doba_dobehu():
     ax.set_xlabel("doba doběhu (h)")
     ax.xaxis.set_major_locator(MultipleLocator(6))
     osa_cisla(ax, "x")
-    uloz(fig, "03b_doba_dobehu.png")
+    uloz(fig, "02b_doba_dobehu.png")
 
 
-def s04_co_model_bere():
+def s03_co_model_bere():
     # validace, prumer_povodne; docs/POKUSY.md pá 20:44, pá 22:32, so 23:14, so 0:19, so 8:42
     finalni = prumer(posledni("ridge"))
     polozky = [("srážky (naměřené)", 17.1, ORANZ), ("teplota vzduchu a sníh", 17.3, ORANZ),
@@ -122,10 +122,10 @@ def s04_co_model_bere():
     ax.set_xlabel(CHYBA)
     ax.xaxis.set_major_locator(MultipleLocator(1))
     osa_cisla(ax, "x")
-    uloz(fig, "04_co_model_bere.png")
+    uloz(fig, "03_co_model_bere.png")
 
 
-def s05_cesta_k_modelu():
+def s04_cesta_k_modelu():
     z = json.loads(sorted((RESULTS / "kolik_dat").glob("*_kolik_dat.json"))[-1].read_text(encoding="utf-8"))
     balicek = next(r for r in z["souhrn"] if r["sada"] == "kraj" and r["let"] == 2)["prumer_povodne"]
     skupiny = [  # validace, prumer_povodne; bez results/ běhu čísla z docs/POKUSY.md
@@ -164,10 +164,10 @@ def s05_cesta_k_modelu():
     ax.set_xlabel(CHYBA)
     ax.xaxis.set_major_locator(MultipleLocator(10))
     osa_cisla(ax, "x")
-    uloz(fig, "05_cesta_k_modelu.png")
+    uloz(fig, "04_cesta_k_modelu.png")
 
 
-def s06_predpoved_je_soucet():
+def s05_soucet_rek():
     # finální model (učený do 2020) a předpověď vydaná 14. 9. 2024 v 11:00 SELČ, se kterou varoval před 3. stupněm
     X, y = tabulka("decin", 24)
     tr = casti("decin", 24, finalni=True).reindex(X.index) == "train"
@@ -180,7 +180,7 @@ def s06_predpoved_je_soucet():
     kroky = [(k, pris[s].sum()) for k, s in skupiny.items()]
     zaklad, predpoved = m[-1].intercept_, m.predict(X.loc[[t]])[0]
     assert abs(zaklad + sum(v for _, v in kroky) - predpoved) < 0.01
-    fig, ax = graf("Předpověď je součet: kolik centimetrů přidá každá řeka", (0.09, 0.13, 0.82, 0.72))
+    fig, ax = graf("Voda v Děčíně je součet řek", (0.09, 0.13, 0.82, 0.72))
     x = np.arange(len(kroky) + 2)
     ax.bar(0, zaklad, 0.6, color=SEDA)
     ax.text(0, zaklad + 8, cislo(zaklad, 0), ha="center", va="bottom", fontsize=16, weight="semibold")
@@ -201,11 +201,11 @@ def s06_predpoved_je_soucet():
     ax.set_ylabel("hladina v Děčíně za 24 h (cm)")
     ax.yaxis.set_major_locator(MultipleLocator(100))
     osa_cisla(ax)
-    uloz(fig, "06_predpoved_je_soucet.png")
+    uloz(fig, "05_soucet_rek.png")
     return dict(zaklad=round(zaklad, 1), predpoved=round(predpoved, 1), kroky=[(k, round(v, 1)) for k, v in kroky])
 
 
-def s07_jak_overujeme():
+def s06_jak_overujeme():
     t = lambda d: mdates.date2num(pd.Timestamp(d))
     fig, ax = graf("Tři ověření, pokaždé na povodních, které model neviděl", (0.26, 0.13, 0.71, 0.68))
     vys = 0.55
@@ -230,7 +230,7 @@ def s07_jak_overujeme():
     for barva, nazev in ((MODRA_SVETLA, "učení"), (ORANZ, "ověření"), (MODRA, "test")):
         ax.barh(np.nan, 0, color=barva, label=nazev)
     ax.legend(loc="lower left", bbox_to_anchor=(0, 1.0), ncol=3, handlelength=1.2, frameon=False)
-    uloz(fig, "07_jak_overujeme.png")
+    uloz(fig, "06_jak_overujeme.png")
 
 
 def povoden(titulek, ridge_soubor, jako_ted_soubor, od, do, nazev, mesic):
@@ -253,9 +253,9 @@ def povoden(titulek, ridge_soubor, jako_ted_soubor, od, do, nazev, mesic):
     return hodin
 
 
-def s08_boris():
+def s07_boris():
     return povoden("Boris 2024: varování {h} hodin předem", "ridge_test", "jako_ted_test", "2024-09-10",
-                   "2024-09-22 23:00", "08_boris_2024.png", 9)
+                   "2024-09-22 23:00", "07_boris_2024.png", 9)
 
 
 def dvojice_sloupcu(ax, x, a, b, s=0.36):
@@ -451,14 +451,14 @@ def z10_proc_externi_data():
 
 if __name__ == "__main__":
     CIL.mkdir(exist_ok=True)
-    shutil.copy(GRAFY / "mapbox2_porovnani.png", CIL / "02_mapa_decin.png")
-    shutil.copy(GRAFY / "mapbox_povodi.png", CIL / "03a_mapa_stanic.png")
-    s03b_doba_dobehu()
-    s04_co_model_bere()
-    s05_cesta_k_modelu()
-    print("  součet:", s06_predpoved_je_soucet())
-    s07_jak_overujeme()
-    print("  Boris předstih h:", s08_boris())
+    shutil.copy(GRAFY / "mapbox2_porovnani.png", CIL / "01_mapa_decin.png")
+    shutil.copy(GRAFY / "mapbox_povodi.png", CIL / "02a_mapa_stanic.png")
+    s02b_doba_dobehu()
+    s03_co_model_bere()
+    s04_cesta_k_modelu()
+    print("  součet:", s05_soucet_rek())
+    s06_jak_overujeme()
+    print("  Boris předstih h:", s07_boris())
     z1_srovnani_modelu()
     z2_jako_ted()
     z3_srazky()
