@@ -433,3 +433,7 @@ Oprava proti 9:46: slajd 7 (Funguje to doopravdy?) říká Honza, slajdy 8 (mapa
 ## ne 18:56 · Ondra
 - Co: voda v mapě povodně je místo ploché modré plochy 3D hladina (`app/mapbox_mapa.py`, vlastní WebGL vrstva v Mapboxu). Leží v nadmořské výšce vody (nula vodočtu + stav + sklon podél Labe, nad jezem Střekov aspoň zdrž), takže zakryje spodek domů, které stojí ve vodě. Kam voda sahá, říká mapa příchodu vody po 4 m: pro každý bod nejnižší hladina z rozlivu DMR 5G, při které je pod vodou. Břeh se tak posouvá plynule i mezi spočítanými hladinami po 10 cm a z hloubky je barva (mělko světlejší, hloubka tmavá) a pěna u břehu. Vlnky jsou unášené po proudu, odráží se v nich obloha a slunce při západu. Kliknutí do vody ukáže, jak je tam hluboko. Stránka je menší (2,5 místo 5,5 MB), protože místo polygonů po 10 cm nese jeden obrázek. Ověřeno na všech 6 povodních pro Děčín i Ústí bez chyb v konzoli, 60 snímků za sekundu na M1 s vodou i bez ní, `app/test_app.py` 9 z 9.
 - Proč: plochá voda vypadala jako obarvená mapa, ne jako povodeň.
+
+## ne 20:26 · Ondra
+- Co: úvodní video 2013 natočené znovu s 3D vodou. Stejných pět záběrů a prolínaček, nově hladina stoupá plynule i uvnitř hodiny a vlnky běží v čase videa, ne podle hodin počítače, takže je pohyb vody stejný při každém natočení. 24,4 s, 60 fps, 1 727 natočených snímků bez chyb stránky, webová verze 36,6 MB. Z videa je přegenerovaná i animace v README (`docs/readme/povoden_2013.webp`, vrchol povodně 4. až 6. 6.) a plakát videa v prezentaci.
+- Proč: video a README ukazovaly ještě starou plochou vodu.
