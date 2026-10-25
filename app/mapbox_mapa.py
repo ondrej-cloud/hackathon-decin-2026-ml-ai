@@ -898,7 +898,12 @@ void main() {
   vec3 R = reflect(-V, n);
   R.z = abs(R.z);
   float kSlunci = max(dot(R, u_slunce), 0.0);
-  vec3 nebe = mix(u_obzor, u_zenit, smoothstep(0.0, 0.55, R.z)) + u_barva_slunce * (0.4 * pow(kSlunci, 6.0) + 1.4 * pow(kSlunci, 120.0));
+  // z dálky a proti světlu, kde hladina zrcadlí oblohu, se odlesk slunce rozpadne na třpyt místo hladkého zrcadla
+  float daleko = max(smoothstep(1.5, 6.0, stopa), smoothstep(0.55, 0.9, F));
+  float jiskry = smoothstep(0.5, 0.85, sum(v_svet.xy / max(stopa * 1.2, 0.5) + u_cas * vec2(1.3, 0.4)).x);
+  float odlesk = (0.4 * pow(kSlunci, 6.0) + 0.8 * pow(kSlunci, 120.0)) * mix(1.0, 0.25 + 1.8 * jiskry, daleko);
+  vec3 nebe = mix(u_obzor, u_zenit, smoothstep(0.0, 0.55, R.z)) * mix(1.0, 0.72 + 0.5 * jiskry, daleko * pow(kSlunci, 3.0))
+            + u_barva_slunce * odlesk;
   vec3 telo = mix(u_melka, u_hluboka, 1.0 - exp(-hloubka / 1.4));
   // pomalé šmouhy kalné vody unášené proudem, ať je voda živá i z dálky, kde drobné vlnky nejsou vidět
   vec2 q = v_svet.xy - smer * rychlost * u_cas * 0.5;
@@ -908,6 +913,9 @@ void main() {
   vec3 Hv = normalize(V + u_slunce);
   float nh = max(dot(n, Hv), 0.0);
   c += u_barva_slunce * (pow(nh, 900.0) * 6.0 + pow(nh, 80.0) * 0.18);
+  // odlesk slunce proti světlu stlačit do teplého třpytu, ať se nepřepálí do bílé plochy
+  float jas = max(max(c.r, c.g), c.b);
+  if (jas > 0.8) c *= (0.8 + 0.18 * (1.0 - exp(-(jas - 0.8) * 2.5))) / jas;
 
   // břeh: tenký světlý lem 1–2 px v každém přiblížení a zblízka pěna, kde je voda mělčí než 15 cm
   float odBrehu = hloubka / max(fwidth(hloubka), 1e-4);

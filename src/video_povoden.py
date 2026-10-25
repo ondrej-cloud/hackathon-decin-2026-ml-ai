@@ -110,8 +110,11 @@ SKRYJ = """({mesto, porovnani}) => {
   s.mapaB = !!mapaB;
   return s;
 }"""
-KROK = """({i, kamera, limit}) => {
+KROK = """({i, kamera, limit, f = 0, t = 0}) => {
+  // hladina stoupá plynule i uvnitř hodiny (f je zlomek hodiny), vlny běží v čase videa t, ne podle hodin počítače
   skoc(i);
+  cas = Math.min(stavPrehravace().konec, i + f);
+  nastavVodu({cas: t, plynule: false});
   const pil = document.getElementById('video-datum');
   if (pil) {
     const d = String(stavPrehravace().datum || '').replace(/ ?SEL?Č$/, '');
@@ -231,9 +234,9 @@ class Natoceni:
                 page.evaluate("() => cekej(10000)")
                 for f in range(prvni, min(z["k_do"] * KROKU, konec)):
                     t = time.time()
-                    k, kf = f // KROKU, f / KROKU  # kamera jede plynule i uvnitř hodiny, voda se mění po hodinách
+                    k, kf = f // KROKU, f / KROKU  # kamera i voda jedou plynule i uvnitř hodiny
                     kam = kamera(z, kf)
-                    vysl = page.evaluate(KROK, {"i": i0 + k, "kamera": kam, "limit": LIMIT})
+                    vysl = page.evaluate(KROK, {"i": i0 + k, "kamera": kam, "limit": LIMIT, "f": kf - k, "t": f / FPS})
                     page.screenshot(path=str(self.zabery / f"{zi}_{f:04d}.png"))
                     casy.append(time.time() - t)
                     zaznamy.append({"n": f, "k": k, "i": i0 + k, "zaber": z["nazev"], **vysl, "s": round(casy[-1], 2)})
