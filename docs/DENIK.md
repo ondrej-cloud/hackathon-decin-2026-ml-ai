@@ -429,3 +429,7 @@ Oprava proti 9:46: slajd 7 (Funguje to doopravdy?) říká Honza, slajdy 8 (mapa
 ## ne 18:03 · Ondra
 - Co: repozitář připravený na zveřejnění. Nové README s výsledkem, postupem, webem a týmem, animace povodně a snímky webu v `docs/readme/`. Pracovní poznámky z přípravy a ostatní zadání hackathonu zůstávají jen lokálně (`.gitignore`). Zdroje náhledů map v `docs/grafy/mapbox3_*.png` přepsané na verzi se západem slunce, protože hodinové nasazení z nich vyrábí `web/img/` a na webu byl pořád starý tmavý náhled.
 - Proč: vyhráli jsme a repo bude veřejné, má se dát pochopit z první stránky.
+
+## ne 19:15 · Ondra
+- Co: voda v mapě povodně je místo ploché modré plochy 3D hladina (`app/mapbox_mapa.py`, vlastní WebGL vrstva v Mapboxu). Leží v nadmořské výšce vody (nula vodočtu + stav + sklon podél Labe, nad jezem Střekov aspoň zdrž), takže zakryje spodek domů, které stojí ve vodě. Kam voda sahá, říká mapa příchodu vody po 4 m: pro každý bod nejnižší hladina z rozlivu DMR 5G, při které je pod vodou. Břeh se tak posouvá plynule i mezi spočítanými hladinami po 10 cm a z hloubky je barva (mělko světlejší, hloubka tmavá) a pěna u břehu. Vlnky jsou unášené po proudu, odráží se v nich obloha a slunce při západu. Kliknutí do vody ukáže, jak je tam hluboko. Stránka je menší (2,5 místo 5,5 MB), protože místo polygonů po 10 cm nese jeden obrázek. Ověřeno na všech 6 povodních pro Děčín i Ústí bez chyb v konzoli, 60 snímků za sekundu na M1 s vodou i bez ní, `app/test_app.py` 9 z 9.
+- Proč: plochá voda vypadala jako obarvená mapa, ne jako povodeň.

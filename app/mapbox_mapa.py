@@ -55,8 +55,9 @@ NABEH = 48  # h; přehrávání začne dva dny před 1. stupněm, ať se neček�
 BARVY_PULT = ([22, 124, 156], [242, 196, 55], [239, 108, 0], [198, 40, 40])
 SEDA_PULT = [142, 142, 147]
 PREBARVI = {tuple(a): b for a, b in zip(mapa.BARVY, BARVY_PULT)} | {tuple(mapa.SEDA): SEDA_PULT}
-OKOLI_DEM = 50  # cm; do animace jdou jen polygony hladin, které okno povodně potřebuje
-MAX_DEM = 4_000_000  # bajtů; když je jich víc, vložíme jen hladiny po 20 cm
+OKOLI_DEM = 50  # cm; voda v animaci pokryje i hladiny o tolik nad nejvyšší v okně povodně
+VODA_PIXEL = 4  # m, mapa příchodu vody pro 3D hladinu
+VODA_SKLON = 0.02  # m na jeden stupeň zeleného kanálu (převýšení hladiny proti vodočtu)
 
 
 def _soubor_dem(cil):
@@ -252,7 +253,7 @@ def html_animace(od, do, cil="decin", model="ridge", pohled="Děčín", nazev=No
                for s in metadata.itertuples(index=False)]
     # řady a rozliv pro obě města: po přepnutí pohledu na druhé město je vidět i jeho voda a graf jeho hladiny;
     # druhé město má rozliv po 20 cm, ať stránka nenaroste dvakrát
-    rady = {c: _rada_mesta(c, cas, T, model, hrube=c != cil) for c in MESTA}
+    rady = {c: _rada_mesta(c, cas, T, model) for c in MESTA}
     H = rady[cil]["H"]
 
     mistni = cas.tz_convert(mapa.PASMO)
@@ -278,8 +279,9 @@ def html_animace(od, do, cil="decin", model="ridge", pohled="Děčín", nazev=No
     return _stranka(data, porovnani=True, pisma=pisma)
 
 
-def _rada_mesta(cil, cas, T, model, hrube=False):
-    """Hladina, předpověď 24 h předem a úrovně rozlivu jednoho města pro animaci."""
+def _rada_mesta(cil, cas, T, model):
+    """Hladina, předpověď 24 h předem a rozliv jednoho města pro animaci: úřední území jako polygony,
+    rozliv z terénu jako mapa příchodu vody pro 3D hladinu (plochy po 10 cm jen pro popisky)."""
     hodina = pd.Timedelta(hours=1)
     X = _vstupy(cil)
     X = X[X.index.isin(cas - 24 * hodina)]
@@ -289,15 +291,114 @@ def _rada_mesta(cil, cas, T, model, hrube=False):
     rozlivy = {"dibavod": sorted(({"h": int(hladiny[N]), "N": N, "ha": round(_plocha_ha(s)),
                                    "g": {"type": "MultiPolygon", "coordinates": s}}
                                   for N, usek, s in _uzemi() if usek == cil), key=lambda u: u["h"])}
+    voda = None
     if _dem(cil):
         hodnoty = [v for v in H + Pr if v is not None]
         od_cm, do_cm = min(hodnoty) - OKOLI_DEM, max(hodnoty) + OKOLI_DEM
         urovne = [u for u in _dem(cil) if od_cm <= u["h"] <= do_cm] or [_dem_pro(cil, min(hodnoty))]
-        if hrube or len(json.dumps(urovne)) > MAX_DEM:
-            urovne = [u for u in urovne if u["h"] % 20 == 0]
-        rozlivy["dem"] = urovne
-    return {"mesto": MESTA[cil], "H": H, "P": Pr, "spa": SPA[cil], "rozlivy": rozlivy,
+        rozlivy["dem"] = [{"h": u["h"], "ha": u["ha"]} for u in urovne]
+        voda = _voda(cil, do_cm)
+    return {"mesto": MESTA[cil], "H": H, "P": Pr, "spa": SPA[cil], "rozlivy": rozlivy, "voda": voda,
             "vrchol": max(range(len(H)), key=lambda i: -1 if H[i] is None else H[i])}
+
+
+def _osa_labe(cil):
+    """Osa Labe kolem vodočtu z reky.geojson (po proudu) v metrech od vodočtu, x na východ, y na sever."""
+    from rozliv_dem import VODOCET
+    lon0, lat0 = VODOCET[cil]
+    useky = {(f["properties"]["od"], f["properties"]["do"]): f["geometry"]["coordinates"]
+             for f in json.loads(REKY.read_text(encoding="utf-8"))["features"]}
+    body = useky[("usti", "decin")] if cil == "decin" else useky[("melnik", "usti")] + useky[("usti", "decin")][1:]
+    sx = 111320 * math.cos(math.radians(lat0))
+    return [((lon - lon0) * sx, (lat - lat0) * 110540) for lon, lat in body]
+
+
+def _po_ose(osa, P):
+    """Vzdálenost po ose od jejího začátku k nejbližšímu bodu osy pro body P (n × 2, m); za konci osy pokračuje rovně."""
+    import numpy as np
+    A, B = np.array(osa[:-1]), np.array(osa[1:])
+    delky = np.hypot(*(B - A).T)
+    s = np.concatenate([[0], np.cumsum(delky)])
+    vysledek = np.empty(len(P))
+    for k in range(0, len(P), 4000):
+        p = P[k:k + 4000, None, :]
+        t = np.einsum("nij,ij->ni", p - A, B - A) / delky ** 2
+        t[:, 1:] = np.maximum(t[:, 1:], 0)
+        t[:, :-1] = np.minimum(t[:, :-1], 1)
+        vzdal = np.hypot(*(p - (A + t[..., None] * (B - A))).transpose(2, 0, 1))
+        j = vzdal.argmin(axis=1)
+        vysledek[k:k + 4000] = s[j] + t[np.arange(len(j)), j] * delky[j]
+    return vysledek
+
+
+def _staniceni(osa, P):
+    """Staničení bodů P (m od vodočtu) v m, kladné proti proudu jako v rozliv_dem.osa."""
+    import numpy as np
+    return _po_ose(osa, np.zeros((1, 2)))[0] - _po_ose(osa, P)
+
+
+@cache
+def _prichod(cil):
+    """Mapa příchodu vody po VODA_PIXEL m ve čtverci rozlivu kolem vodočtu jako pole RGB:
+    R nejnižší hladina z rozliv_dem_<cil>.geojson, při které je pixel pod vodou (index po 10 cm od nejnižší
+    spočítané, 255 = nikdy), G převýšení hladiny proti vodočtu podle staničení (VODA_SKLON m na stupeň, 128 = 0),
+    B směr proudu po spádu hladiny (0–255 je celý kruh od východu přes jih). Vrací pole, západ, sever, krok ve stupních
+    a nejnižší hladinu."""
+    import numpy as np
+    from PIL import Image, ImageDraw
+    from rozliv_dem import POLOMER, SKLON, VODOCET
+    lon0, lat0 = VODOCET[cil]
+    sx, sy = 111320 * math.cos(math.radians(lat0)), 110540
+    n = 2 * POLOMER // VODA_PIXEL
+    zapad, sever = lon0 - POLOMER / sx, lat0 + POLOMER / sy
+    urovne = _dem(cil)
+    l0 = urovne[0]["h"]
+    pole = np.zeros((n, n, 3), np.uint8)
+    pole[..., 0] = 255
+    # od nejvyšší hladiny k nejnižší, takže v pixelu zůstane ta nejnižší, při které je pod vodou
+    for u in reversed(urovne):
+        maska = Image.new("L", (n, n))
+        kresli = ImageDraw.Draw(maska)
+        for polygon_ in u["g"]["coordinates"]:
+            for k, kruh in enumerate(polygon_):
+                kresli.polygon([((lon - zapad) * sx / VODA_PIXEL, (sever - lat) * sy / VODA_PIXEL) for lon, lat in kruh],
+                               fill=0 if k else 255)
+        pole[np.asarray(maska) > 0, 0] = (u["h"] - l0) // 10
+    # staničení stačí v hrubé mřížce po 8 pixelech, mění se pomalu
+    m = n // 8
+    stred = (np.arange(m) + 0.5) * 8 * VODA_PIXEL - POLOMER
+    X, Y = np.meshgrid(stred, -stred)
+    st_hrube = _staniceni(_osa_labe(cil), np.column_stack([X.ravel(), Y.ravel()])).reshape(m, m)
+    vetsi = lambda a: np.asarray(Image.fromarray(a.astype(np.float32), "F").resize((n, n), Image.BILINEAR))
+    pole[..., 1] = np.clip(np.round(SKLON * vetsi(st_hrube) / 1000 / VODA_SKLON) + 128, 0, 255)
+    # voda teče proti růstu staničení; řádky jdou k jihu, sloupce k východu
+    k_jihu, k_vychodu = np.gradient(-st_hrube)
+    uhel = np.arctan2(vetsi(np.sin(np.arctan2(k_jihu, k_vychodu))), vetsi(np.cos(np.arctan2(k_jihu, k_vychodu))))
+    pole[..., 2] = np.round(uhel % (2 * np.pi) / (2 * np.pi) * 256).astype(int) % 256
+    return pole, zapad, sever, VODA_PIXEL / sx, VODA_PIXEL / sy, l0
+
+
+def _voda(cil, do_cm):
+    """Výřez mapy příchodu vody s tím, co se zaplaví do hladiny do_cm, jako PNG v base64 a jeho rámec pro 3D vodu."""
+    import base64
+    from io import BytesIO
+
+    import numpy as np
+    from PIL import Image
+    from rozliv_dem import JEZ, NULA, SKLON
+    pole, zapad, sever, dx, dy, l0 = _prichod(cil)
+    do = int(max(0, (do_cm - l0) // 10))
+    i, j = np.nonzero(pole[..., 0] <= do)
+    okraj = 12
+    i0, i1 = max(0, i.min() - okraj), min(len(pole), i.max() + okraj + 1)
+    j0, j1 = max(0, j.min() - okraj), min(len(pole), j.max() + okraj + 1)
+    png = BytesIO()
+    Image.fromarray(pole[i0:i1, j0:j1], "RGB").save(png, "PNG", optimize=True)
+    return {"png": base64.b64encode(png.getvalue()).decode(), "zapad": zapad + j0 * dx, "sever": sever - i0 * dy,
+            "dx": dx, "dy": dy, "sirka": int(j1 - j0), "vyska": int(i1 - i0), "l0": l0, "do": do,
+            "nula": NULA[cil], "sklon": VODA_SKLON,
+            # nad jezem Střekov (staničení nad JEZ) hladina neklesne pod zdrž; poznáme to podle převýšení
+            "jez": [round(SKLON * JEZ[cil][0] / 1000, 3), JEZ[cil][1]] if cil in JEZ else None}
 
 
 BEZ_TOKENU = """<!doctype html><html lang="cs"><meta charset="utf-8">
@@ -624,6 +725,338 @@ function konfigurace(satelit) {
   return c;
 }
 
+// ---------- 3D voda ----------
+// Hladina je plocha ve výšce vody: nula vodočtu + stav + sklon podél Labe (nad jezem Střekov aspoň zdrž), zvýšená jako
+// terén. Kam voda sahá, říká mapa příchodu vody (pro každý pixel po 4 m nejnižší hladina z rozlivu DMR 5G, při které je
+// pod vodou); břeh se tak posouvá plynule i mezi spočítanými hladinami po 10 cm a hloubka dává barvu a pěnu u břehu.
+// Terén Mapboxu je hrubší a místy vyšší než DMR 5G, tam síť leží těsně nad ním, ať ve vodě nejsou díry.
+const VODA_BUNKA = 3;  // pixelů mapy příchodu na buňku sítě (12 m)
+const KLID = matchMedia('(prefers-reduced-motion: reduce)').matches;
+let casVody = null, plynuleVody = true;  // pevný čas vln a plynulé dorovnání hladiny po skoku (pro video)
+const VODA = {};  // klíč města → mapa příchodu, síť a řada
+function sitVody(v, px) {
+  const W = v.sirka, H = v.vyska, k = VODA_BUNKA, nx = Math.ceil((W - 1) / k) + 1, ny = Math.ceil((H - 1) / k) + 1;
+  const pix = (i, j) => (Math.min(i, H - 1) * W + Math.min(j, W - 1)) * 4;
+  const o = mapboxgl.MercatorCoordinate.fromLngLat([v.zapad + W * v.dx / 2, v.sever - H * v.dy / 2]);
+  const s = o.meterInMercatorCoordinateUnits();
+  const uzly = new Int32Array(nx * ny).fill(-1), data = [], lng = [], lat = [], index = [];
+  const uzel = (a, b) => {
+    const u = a * nx + b;
+    if (uzly[u] < 0) {
+      const i = Math.min(a * k, H - 1), j = Math.min(b * k, W - 1), p = pix(i, j);
+      const lo = v.zapad + (j + 0.5) * v.dx, la = v.sever - (i + 0.5) * v.dy;
+      const c = mapboxgl.MercatorCoordinate.fromLngLat([lo, la]);
+      uzly[u] = lng.length;
+      lng.push(lo); lat.push(la);
+      data.push((c.x - o.x) / s, (c.y - o.y) / s, (j + 0.5) / W, (i + 0.5) / H, (px[p + 1] - 128) * v.sklon);
+    }
+    return uzly[u];
+  };
+  for (let a = 0; a < ny - 1; a++) for (let b = 0; b < nx - 1; b++) {
+    let voda = false;  // buňka je ve síti, když se v ní během okna povodně něco zaplaví
+    for (let i = a * k; i <= (a + 1) * k && !voda; i++) for (let j = b * k; j <= (b + 1) * k; j++) {
+      if (px[pix(i, j)] <= v.do) { voda = true; break; }
+    }
+    if (!voda) continue;
+    const p00 = uzel(a, b), p01 = uzel(a, b + 1), p10 = uzel(a + 1, b), p11 = uzel(a + 1, b + 1);
+    index.push(p00, p10, p01, p01, p10, p11);
+  }
+  return {o, s, data: new Float32Array(data), lng: new Float64Array(lng), lat: new Float64Array(lat),
+          index: new Uint32Array(index), n: lng.length};
+}
+const vodaHotova = A ? Promise.all(Object.entries(A.rady).filter(([, r]) => r.voda).map(async ([klic, r]) => {
+  const v = r.voda, img = new Image();
+  img.src = 'data:image/png;base64,' + v.png;
+  await img.decode();
+  const obr = await createImageBitmap(img, {premultiplyAlpha: 'none', colorSpaceConversion: 'none'});
+  const platno = document.createElement('canvas');
+  platno.width = v.sirka; platno.height = v.vyska;
+  const c2 = platno.getContext('2d', {willReadFrequently: true});
+  c2.drawImage(obr, 0, 0);
+  const px = c2.getImageData(0, 0, v.sirka, v.vyska).data;
+  VODA[klic] = {klic, r, v, obr, px, sit: sitVody(v, px)};
+})).then(() => { for (const m of [mapaA, mapaB].filter(Boolean)) { m.terenVody = {}; naplanujTeren(m); m.triggerRepaint(); } })
+  .catch(e => console.error('3D voda', e)) : null;
+
+// stav na vodočtu v cm, který voda v mapě m právě ukazuje: mezi hodinami lineárně, po skoku plynule dorovná
+function cilovaHladina(m, r) {
+  const a = Math.floor(cas), b = Math.min(K, a + 1), f = cas - a;
+  const ha = hladinaMapy(m, r, a), hb = hladinaMapy(m, r, b);
+  return ha == null ? hb : hb == null ? ha : ha + (hb - ha) * f;
+}
+function hladinaVody(m, d, ted) {
+  const cil = cilovaHladina(m, d.r), st = (m.stavVody ||= {})[d.klic] ||= {cm: cil, t: ted};
+  if (cil == null) return null;
+  if (st.cm == null || hraje || !plynuleVody) st.cm = cil;
+  else st.cm += (cil - st.cm) * (1 - Math.exp(-Math.max(0, ted - st.t) / 0.3));
+  st.t = ted;
+  return {cm: st.cm, dorovnava: Math.abs(cil - st.cm) > 0.3};
+}
+
+// terén Mapboxu pod uzly sítě; dotazy jen mimo vykreslování, do bufferu ho nahraje až render. Vlny kreslí mapu pořád,
+// takže událost idle nepřijde: render se sám ptá znovu, dokud se kamera hýbe nebo se dlaždice terénu načítají.
+function naplanujTeren(m) {
+  if (m.terenCasovac || !Object.keys(VODA).length) return;
+  m.terenCasovac = setTimeout(() => {
+    m.terenCasovac = null;
+    m.terenCas = performance.now() / 1000;
+    if (!m.nacteno || m.getZoom() < 10.5 || !m.getTerrain()) return;
+    m.terenHotovy = m.areTilesLoaded() && !m.isMoving();
+    const hranice = m.getBounds();
+    for (const d of Object.values(VODA)) {
+      const v = d.v, S = d.sit;
+      if (v.zapad > hranice.getEast() || v.zapad + v.sirka * v.dx < hranice.getWest() ||
+          v.sever < hranice.getSouth() || v.sever - v.vyska * v.dy > hranice.getNorth()) continue;
+      const T = (m.terenVody ||= {})[d.klic] ||= new Float32Array(S.n).fill(-1e4);
+      for (let i = 0; i < S.n; i++) {
+        const e = m.queryTerrainElevation([S.lng[i], S.lat[i]], {exaggerated: true});
+        if (e != null) T[i] = e;
+      }
+      (m.terenNovy ||= {})[d.klic] = true;
+    }
+    m.triggerRepaint();
+  }, 180);
+}
+
+const VODA_VS = `#version 300 es
+uniform mat4 u_matice;
+uniform float u_hladina, u_jez, u_jez_nad, u_prevyseni;
+layout(location = 0) in vec4 a_poz;    // x, y v m od středu, u, v v mapě příchodu
+layout(location = 1) in float a_nad;   // převýšení hladiny proti vodočtu v m
+layout(location = 2) in float a_teren; // terén Mapboxu se zvýšením v m
+out vec2 v_uv;
+out vec3 v_svet;
+void main() {
+  float h = u_hladina + a_nad;
+  if (a_nad > u_jez_nad) h = max(h, u_jez);
+  float z = max(h * u_prevyseni, a_teren + 0.35);
+  v_uv = a_poz.zw;
+  v_svet = vec3(a_poz.xy, z);
+  gl_Position = u_matice * vec4(a_poz.xy, z, 1.0);
+}`;
+const VODA_FS = `#version 300 es
+precision highp float;
+uniform sampler2D u_prichod;
+uniform float u_cm, u_l0, u_cas;
+uniform vec3 u_kamera, u_slunce, u_barva_slunce, u_obzor, u_zenit, u_melka, u_hluboka;
+in vec2 v_uv;
+in vec3 v_svet;
+out vec4 barva;
+float nahoda(ivec2 i) {
+  uvec2 q = uvec2(i + 65536);
+  uint h = (q.x * 1597334677u) ^ (q.y * 3812015801u);
+  h = (h ^ (h >> 15)) * 0x2c1b3c6du;
+  h ^= h >> 12;
+  return float(h) / 4294967295.0;
+}
+// šum s derivacemi: hodnota a sklon
+vec3 sum(vec2 p) {
+  ivec2 i = ivec2(floor(p));
+  vec2 f = fract(p), u = f * f * (3.0 - 2.0 * f), du = 6.0 * f * (1.0 - f);
+  float a = nahoda(i), b = nahoda(i + ivec2(1, 0)), c = nahoda(i + ivec2(0, 1)), d = nahoda(i + ivec2(1, 1));
+  float k = a - b - c + d;
+  return vec3(a + (b - a) * u.x + (c - a) * u.y + k * u.x * u.y, du * vec2(b - a + k * u.y, c - a + k * u.x));
+}
+// sklon hladiny: vlnky od 40 do 1 m, každá oktáva pootočená, ať nevznikají pruhy;
+// vlnky menší než pár pixelů se vynechají, jinak by z dálky zrnily
+vec2 vlnky(vec2 p, float stopa, float sila) {
+  vec2 g = vec2(0.0);
+  float lambda = 40.0, s = 0.03;
+  mat2 otoc = mat2(0.8, 0.6, -0.6, 0.8);
+  for (int i = 0; i < 7; i++) {
+    float lod = 1.0 - smoothstep(0.22, 0.6, stopa / lambda);
+    g += otoc * sum(p / lambda + float(i) * 13.7).yz * (s * lod * sila);
+    p = otoc * p;
+    lambda *= 0.56;
+    s = min(s * 1.35, 0.15);
+  }
+  return g;
+}
+void main() {
+  vec4 t = texture(u_prichod, v_uv);
+  float r = t.r * 255.0;
+  // příchod vody ve stavu na vodočtu; index 0 je koryto a co se zaplaví už při nejnižší hladině, to bereme jako hloubku 2 m
+  float prichod = r >= 1.0 ? u_l0 + r * 10.0 : u_l0 - 200.0 + r * 210.0;
+  float hloubka = (u_cm - prichod) / 100.0;
+  if (hloubka <= 0.0) discard;
+  float stopa = length(fwidth(v_svet.xy));
+  vec3 V = normalize(u_kamera - v_svet);
+
+  // proud po spádu hladiny (flow map): dvě fáze vlnek unášené po proudu, prolnuté tak, aby skok fáze nebyl vidět
+  float uhel = texelFetch(u_prichod, ivec2(v_uv * vec2(textureSize(u_prichod, 0))), 0).b * 6.2831853;
+  vec2 smer = vec2(cos(uhel), sin(uhel));
+  float rychlost = mix(0.4, 2.4, smoothstep(0.3, 3.5, hloubka));
+  float sila = mix(0.55, 1.15, smoothstep(0.3, 3.0, hloubka));
+  const float CYKLUS = 5.0;
+  float f0 = fract(u_cas / CYKLUS), f1 = fract(u_cas / CYKLUS + 0.5);
+  float w0 = 1.0 - abs(1.0 - 2.0 * f0);
+  vec2 g = vlnky(v_svet.xy - smer * rychlost * CYKLUS * f0, stopa, sila) * w0
+         + vlnky(v_svet.xy - smer * rychlost * CYKLUS * f1 + vec2(31.7, 17.3), stopa, sila) * (1.0 - w0);
+  vec3 n = normalize(vec3(-g, 1.0));
+
+  float F = 0.06 + 0.94 * pow(1.0 - clamp(dot(n, V), 0.0, 1.0), 5.0);
+  vec3 R = reflect(-V, n);
+  R.z = abs(R.z);
+  float kSlunci = max(dot(R, u_slunce), 0.0);
+  vec3 nebe = mix(u_obzor, u_zenit, smoothstep(0.0, 0.55, R.z)) + u_barva_slunce * (0.4 * pow(kSlunci, 6.0) + 1.4 * pow(kSlunci, 120.0));
+  vec3 telo = mix(u_melka, u_hluboka, 1.0 - exp(-hloubka / 1.4));
+  // pomalé šmouhy kalné vody unášené proudem, ať je voda živá i z dálky, kde drobné vlnky nejsou vidět
+  vec2 q = v_svet.xy - smer * rychlost * u_cas * 0.5;
+  telo *= 0.92 + 0.16 * sum(q / 90.0).x + 0.08 * sum(q / 23.0 + 5.1).x;
+  telo *= (0.78 + 0.34 * max(dot(n, u_slunce), 0.0)) * mix(vec3(1.0), u_barva_slunce, 0.22);
+  vec3 c = mix(telo, nebe, F);
+  vec3 Hv = normalize(V + u_slunce);
+  float nh = max(dot(n, Hv), 0.0);
+  c += u_barva_slunce * (pow(nh, 900.0) * 6.0 + pow(nh, 80.0) * 0.18);
+
+  // břeh: tenký světlý lem 1–2 px v každém přiblížení a zblízka pěna, kde je voda mělčí než 15 cm
+  float odBrehu = hloubka / max(fwidth(hloubka), 1e-4);
+  float lem = 1.0 - smoothstep(0.8, 2.6, odBrehu);
+  float detail = 1.0 - smoothstep(0.8, 2.5, stopa);
+  float vzor = sum(q / 2.6).x * 0.6 + sum(q / 1.1 + 7.7).x * 0.4;
+  float pena = max(lem * 0.75, (1.0 - smoothstep(0.0, 0.15, hloubka)) * smoothstep(0.42, 0.72, vzor) * detail);
+  c = mix(c, vec3(0.96, 0.94, 0.9), pena * 0.8);
+
+  // u kraje mapy příchodu se voda pomalu ztratí do řeky podkladu
+  float okraj = smoothstep(0.0, 0.05, min(min(v_uv.x, 1.0 - v_uv.x), min(v_uv.y, 1.0 - v_uv.y)));
+  float a = mix(0.62, 0.92, 1.0 - exp(-hloubka / 0.6));
+  a = max(a, pena * 0.9) * smoothstep(0.0, 0.03, hloubka) * okraj;
+  barva = vec4(c * a, a);
+}`;
+// barvy vody a odrazu: západ slunce jako ZAPAD, na satelitu den
+const SVETLO_VODY = {
+  zapad: {slunce: [-0.919, 0.334, 0.208], barva_slunce: [1.0, 0.64, 0.36], obzor: [0.96, 0.73, 0.57], zenit: [0.46, 0.53, 0.74],
+          melka: [0.34, 0.58, 0.6], hluboka: [0.07, 0.3, 0.42]},
+  den: {slunce: [-0.6, 0.45, 0.66], barva_slunce: [1.0, 0.96, 0.9], obzor: [0.82, 0.88, 0.93], zenit: [0.36, 0.55, 0.78],
+        melka: [0.42, 0.52, 0.5], hluboka: [0.1, 0.25, 0.32]}};
+
+function nasob(a, b) {  // 4 × 4 po sloupcích, a × b
+  const o = new Float64Array(16);
+  for (let i = 0; i < 4; i++) for (let j = 0; j < 4; j++) {
+    let s = 0;
+    for (let k = 0; k < 4; k++) s += a[k * 4 + j] * b[i * 4 + k];
+    o[i * 4 + j] = s;
+  }
+  return o;
+}
+function vrstvaVody(m) {
+  let gl = null, prog = null, u = {};
+  const mesta = {};  // GPU data podle města
+  function program() {
+    const shader = (typ, zdroj) => {
+      const s = gl.createShader(typ);
+      gl.shaderSource(s, zdroj);
+      gl.compileShader(s);
+      if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) throw new Error(gl.getShaderInfoLog(s));
+      return s;
+    };
+    const p = gl.createProgram();
+    gl.attachShader(p, shader(gl.VERTEX_SHADER, VODA_VS));
+    gl.attachShader(p, shader(gl.FRAGMENT_SHADER, VODA_FS));
+    gl.linkProgram(p);
+    if (!gl.getProgramParameter(p, gl.LINK_STATUS)) throw new Error(gl.getProgramInfoLog(p));
+    for (const jmeno of ['u_matice', 'u_hladina', 'u_jez', 'u_jez_nad', 'u_prevyseni', 'u_prichod', 'u_cm', 'u_l0', 'u_cas', 'u_kamera',
+                         'u_slunce', 'u_barva_slunce', 'u_obzor', 'u_zenit', 'u_melka', 'u_hluboka']) u[jmeno] = gl.getUniformLocation(p, jmeno);
+    return p;
+  }
+  function pripravMesto(d) {
+    const S = d.sit, g = {vao: gl.createVertexArray(), tex: gl.createTexture(), teren: gl.createBuffer()};
+    gl.bindVertexArray(g.vao);
+    const data = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, data);
+    gl.bufferData(gl.ARRAY_BUFFER, S.data, gl.STATIC_DRAW);
+    gl.enableVertexAttribArray(0);
+    gl.vertexAttribPointer(0, 4, gl.FLOAT, false, 20, 0);
+    gl.enableVertexAttribArray(1);
+    gl.vertexAttribPointer(1, 1, gl.FLOAT, false, 20, 16);
+    gl.bindBuffer(gl.ARRAY_BUFFER, g.teren);
+    gl.bufferData(gl.ARRAY_BUFFER, m.terenVody?.[d.klic] || new Float32Array(S.n).fill(-1e4), gl.DYNAMIC_DRAW);
+    gl.enableVertexAttribArray(2);
+    gl.vertexAttribPointer(2, 1, gl.FLOAT, false, 4, 0);
+    const idx = gl.createBuffer();
+    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, idx);
+    gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, S.index, gl.STATIC_DRAW);
+    gl.bindVertexArray(null);
+    g.buffery = [data, idx, g.teren];
+    gl.bindTexture(gl.TEXTURE_2D, g.tex);
+    gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, false);
+    gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, false);
+    gl.pixelStorei(gl.UNPACK_COLORSPACE_CONVERSION_WEBGL, gl.NONE);
+    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA8, gl.RGBA, gl.UNSIGNED_BYTE, d.obr);
+    for (const [k, v] of [[gl.TEXTURE_MIN_FILTER, gl.LINEAR], [gl.TEXTURE_MAG_FILTER, gl.LINEAR],
+                          [gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE], [gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE]]) gl.texParameteri(gl.TEXTURE_2D, k, v);
+    return g;
+  }
+  return {
+    id: 'voda', type: 'custom', renderingMode: '3d', slot: 'top',
+    onAdd(mapa, kontext) { gl = kontext; prog = program(); },
+    onRemove() {
+      for (const g of Object.values(mesta)) { gl.deleteVertexArray(g.vao); gl.deleteTexture(g.tex); g.buffery.forEach(b => gl.deleteBuffer(b)); }
+      if (prog) gl.deleteProgram(prog);
+      for (const k of Object.keys(mesta)) delete mesta[k];
+    },
+    render(_, matice) {
+      if (!A || uredni() || m.getZoom() < 10) return;
+      const ted = performance.now() / 1000, t = KLID ? 0 : casVody ?? ted;
+      if ((!m.terenHotovy || m.isMoving()) && ted - (m.terenCas || 0) > 0.4) naplanujTeren(m);
+      const kam = m.getFreeCameraOptions().position, sv = SVETLO_VODY[m.satelit ? 'den' : 'zapad'];
+      const prevyseni = m.getTerrain()?.exaggeration ?? 1;
+      let dal = !KLID && casVody == null;
+      gl.useProgram(prog);
+      gl.enable(gl.DEPTH_TEST);
+      gl.depthFunc(gl.LEQUAL);
+      gl.depthMask(false);
+      gl.enable(gl.BLEND);
+      gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
+      gl.disable(gl.CULL_FACE);
+      gl.disable(gl.STENCIL_TEST);
+      gl.uniform1f(u.u_cas, t);
+      gl.uniform1f(u.u_prevyseni, prevyseni);
+      gl.uniform1i(u.u_prichod, 0);
+      for (const k of ['slunce', 'barva_slunce', 'obzor', 'zenit', 'melka', 'hluboka']) gl.uniform3fv(u['u_' + k], sv[k]);
+      for (const d of Object.values(VODA)) {
+        const h = hladinaVody(m, d, ted);
+        if (!h) continue;
+        dal ||= h.dorovnava;
+        const g = mesta[d.klic] ||= pripravMesto(d), S = d.sit;
+        if (m.terenNovy?.[d.klic]) {
+          gl.bindBuffer(gl.ARRAY_BUFFER, g.teren);
+          gl.bufferSubData(gl.ARRAY_BUFFER, 0, m.terenVody[d.klic]);
+          m.terenNovy[d.klic] = false;
+        }
+        gl.uniformMatrix4fv(u.u_matice, false, new Float32Array(nasob(matice, [S.s, 0, 0, 0, 0, S.s, 0, 0, 0, 0, S.s, 0, S.o.x, S.o.y, 0, 1])));
+        gl.uniform3f(u.u_kamera, (kam.x - S.o.x) / S.s, (kam.y - S.o.y) / S.s, kam.z / S.s);
+        gl.uniform1f(u.u_hladina, d.v.nula + h.cm / 100);
+        gl.uniform1f(u.u_jez_nad, d.v.jez ? d.v.jez[0] : 1e4);
+        gl.uniform1f(u.u_jez, d.v.jez ? d.v.jez[1] : -1e4);
+        gl.uniform1f(u.u_cm, h.cm);
+        gl.uniform1f(u.u_l0, d.v.l0);
+        gl.activeTexture(gl.TEXTURE0);
+        gl.bindTexture(gl.TEXTURE_2D, g.tex);
+        gl.bindVertexArray(g.vao);
+        gl.drawElements(gl.TRIANGLES, S.index.length, gl.UNSIGNED_INT, 0);
+      }
+      gl.bindVertexArray(null);
+      if (dal) m.triggerRepaint();
+    }
+  };
+}
+// voda pod kliknutým bodem: hloubka a rozliv, ze kterého je
+function vodaV(m, lngLat) {
+  if (!A || uredni()) return null;
+  for (const d of Object.values(VODA)) {
+    const v = d.v, j = Math.floor((lngLat.lng - v.zapad) / v.dx), i = Math.floor((v.sever - lngLat.lat) / v.dy);
+    if (i < 0 || j < 0 || i >= v.vyska || j >= v.sirka) continue;
+    const r = d.px[(i * v.sirka + j) * 4], cm = m.stavVody?.[d.klic]?.cm;
+    if (r === 255 || cm == null || cm < v.l0 + 10 * r) continue;
+    const urovne = d.r.rozlivy.dem, u = urovne.reduce((a, b) => Math.abs(b.h - cm) < Math.abs(a.h - cm) ? b : a);
+    const hloubka = r === 0 ? 'koryto Labe' : `voda tu sahá asi ${(Math.round((cm - v.l0 - 10 * r) / 10) / 10).toLocaleString('cs-CZ')} m`;
+    return `${d.r.mesto}: ${hloubka}<br>Rozliv z výškového modelu (ČÚZK DMR 5G) pro hladinu ${cislo(cm)} cm, ` +
+      `${cislo(u.ha)} ha<br>Statický rozliv, bez proudění a hrází`;
+  }
+  return null;
+}
+
 // ---------- mapy a naše vrstvy ----------
 function vytvorMapu(kontejner, k) {
   const m = new mapboxgl.Map({
@@ -634,6 +1067,10 @@ function vytvorMapu(kontejner, k) {
   m.setPadding(k.padding);
   m.addControl(new mapboxgl.AttributionControl({customAttribution: ATRIBUCE}), 'bottom-right');
   m.on('style.load', () => pridejVrstvy(m));
+  if (A) {
+    m.on('sourcedata', e => { if (e.sourceId === 'vysky') m.terenHotovy = false; });
+    m.on('moveend', () => { m.terenHotovy = false; naplanujTeren(m); });
+  }
   klikani(m);
   return m;
 }
@@ -692,6 +1129,8 @@ function pridejVrstvy(m) {
     // řeky jsou zjednodušené, ve městě je přesnější podklad
     'line-opacity': ['interpolate', ['linear'], ['zoom'], 10, 0.9, 13, 0.25]
   }});
+  // 3D voda nad budovami a pod stanicemi; s hloubkovým testem, takže zakryje spodek domů, které stojí ve vodě
+  if (A && DEM) m.addLayer(vrstvaVody(m));
   m.addSource('stanice', {type: 'geojson', data: A ? staniceV(hodina()) : D.stanice});
   const s = ['sqrt', ['get', 'prutok']];
   // ve městě menší kolečka, ať nezakryjí rozliv
@@ -733,10 +1172,11 @@ function klikani(m) {
   m.on('click', e => {
     const vrstvy = KLIKACI.filter(id => m.getLayer(id) && m.getLayoutProperty(id, 'visibility') !== 'none');
     const f = m.queryRenderedFeatures(e.point, {layers: vrstvy}).sort((a, b) => poradi(a) - poradi(b))[0];
-    if (!f?.properties.tooltip) return;
+    const voda = f?.layer.id === 'stanice' ? null : vodaV(m, e.lngLat);
+    if (!voda && !f?.properties.tooltip) return;
     new mapboxgl.Popup({maxWidth: '330px'})
-      .setLngLat(f.layer.id === 'stanice' ? f.geometry.coordinates : e.lngLat)
-      .setHTML(f.properties.tooltip).addTo(m);
+      .setLngLat(f?.layer.id === 'stanice' ? f.geometry.coordinates : e.lngLat)
+      .setHTML(voda || f.properties.tooltip).addTo(m);
   });
   for (const id of KLIKACI) {
     m.on('mouseenter', id, () => { m.getCanvas().style.cursor = 'pointer'; });
@@ -800,11 +1240,11 @@ function obnovMapu(m, i) {
   const rady = Object.values(A.rady), k = rady.map(r => uroven(r, hladinaMapy(m, r, i)));
   if (k.join() === m.klic) return;  // polygony se mění jen při změně úrovně, ne každou hodinu
   m.klic = k.join();
+  // rozliv z terénu kreslí 3D voda, polygony jsou jen úřední území
   m.getSource('rozliv').setData({type: 'FeatureCollection', features: rady.flatMap((r, j) => {
-    const u = r.urovne[k[j]];
-    return u ? [{type: 'Feature', geometry: u.g, properties: {tooltip: `${r.mesto}: ` + (r.zdroj === 'dem' ?
-      `rozliv z výškového modelu (ČÚZK DMR 5G) pro hladinu ${u.h} cm, ${cislo(u.ha)} ha<br>Statický rozliv, bez proudění a hrází` :
-      `záplavové území Q${u.N} (DIBAVOD, VÚV TGM), ${cislo(u.ha)} ha<br>Vyplní se od hladiny ${u.h} cm podle ČHMÚ`)}}] : [];
+    const u = r.zdroj === 'dibavod' && r.urovne[k[j]];
+    return u ? [{type: 'Feature', geometry: u.g, properties: {tooltip: `${r.mesto}: záplavové území Q${u.N} ` +
+      `(DIBAVOD, VÚV TGM), ${cislo(u.ha)} ha<br>Vyplní se od hladiny ${u.h} cm podle ČHMÚ`}}] : [];
   })});
 }
 
@@ -1191,12 +1631,18 @@ if (A) {
       obnovListu(i);
       nakresleno = i;
     }
+    if (hraje) for (const m of mapy()) m.triggerRepaint();  // voda stoupá plynule i uvnitř hodiny
     prubeh();
     if (porovnani) stitky.style.setProperty('--x', porovnani.currentPosition + 'px');
     requestAnimationFrame(snimek);
   };
   // pro nahrávání videa a ovládání z konzole (prelet je globální funkce)
-  Object.assign(window, {prehraj, pauza, nastavRychlost, skoc, zavriUvod, prelet,
+  // nastavVodu({cas: s nebo null, plynule}): pevný čas vln a dorovnání hladiny po skoku, pro video snímek po snímku
+  const nastavVodu = ({cas: t = null, plynule = true} = {}) => {
+    casVody = t; plynuleVody = plynule;
+    for (const m of mapy()) m.triggerRepaint();
+  };
+  Object.assign(window, {prehraj, pauza, nastavRychlost, skoc, zavriUvod, prelet, nastavVodu,
     skocNaVrchol: () => skoc(R.vrchol),
     porovnat: (ano = true) => nastavRezim(ano ? 'porovnani' : 'animace'),
     stavPrehravace: () => ({hodina: hodina(), konec: K, hraje, rychlost, rezim, datum: A.popisky[hodina()],
