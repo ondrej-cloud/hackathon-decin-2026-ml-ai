@@ -2,7 +2,7 @@
 
 **Jsem:** ______ (Ondra / Dan / Honza / Tobias)
 
-Do prázdného místa napiš své jméno. Pak ve složce repozitáře spusť `claude` a celý tenhle text tam vlož. Všechno ostatní udělá sám, ty jen kontroluj, co dělá, a odpovídej na otázky.
+Do prázdného místa napiš své jméno. Postup je v sekci Postup, zadání pro každého na konci.
 
 ## O co jde
 
@@ -63,24 +63,24 @@ Předstih je nejvýš horizont a propásnutá povodeň se do něj počítá jako
 
 „Jako teď“ před žádnou povodní nevaruje, všechny propásne. Rychlý lineární model varoval 11–37 h předem, nic nepropásl a neměl planý poplach. Kdo je na povodních horší než „jako teď“, má někde chybu.
 
-## Pokyny pro Claude
+## Postup
 
-Pracuješ s člověkem, jehož jméno je nahoře. Postupuj krok za krokem a každý krok ověř, než půjdeš dál. Mluv česky a stručně. Platí všechno z `CLAUDE.md`: commity jen pod jménem člověka, seed 42, zápisy do `docs/`.
+Postupuj krok za krokem a každý krok ověř, než půjdeš dál. Seed je 42, zápisy do `docs/`.
 
-1. **Kdo je člověk.** Udělej, co říká `.claude/skills/<jméno malými písmeny bez diakritiky>/SKILL.md`, stejně jako po příkazu `/<jméno>`. Přepni se na jeho větev a pusť `git fetch origin` a `git merge origin/main`. Ověř, že existuje `data/external/labe_hodinove.parquet` a `src/porovnej.py`. Když ne, merge se nepovedl, zastav se a řekni to.
+1. **Větev.** Přepni se na svou větev a pusť `git fetch origin` a `git merge origin/main`. Ověř, že existuje `data/external/labe_hodinove.parquet` a `src/porovnej.py`. Když ne, merge se nepovedl, zastav se a řekni to.
 2. **Prostředí.** Použij `.venv` ve složce repozitáře, na Windows `.venv\Scripts\python`. Ověř, že jde `import pandas, sklearn, pyarrow`, pro Dana i `lightgbm`. Co chybí, doinstaluj přes `pip install`.
-3. **Kontrola.** Pusť `python src/porovnej.py jako_ted --rychle`. Děčín za 24 h musí mít na povodních 44,4 cm. Když vyjde jinak, zastav se a řekni to člověku, ať napíše Ondrovi.
-4. **Načti kontext.** Přečti `docs/NAPAD_LABE.md` (hlavně sekce Brány proti proudu), `src/features.py`, `src/evaluate.py` a níž zadání pro tohoto člověka. Člověku řekni ve třech větách, co bude dělat a proč.
+3. **Kontrola.** Pusť `python src/porovnej.py jako_ted --rychle`. Děčín za 24 h musí mít na povodních 44,4 cm. Když vyjde jinak, zastav se a napiš Ondrovi.
+4. **Načti kontext.** Přečti `docs/NAPAD_LABE.md` (hlavně sekce Brány proti proudu), `src/features.py`, `src/evaluate.py` a níž svoje zadání.
 5. **Model.** Napiš `src/models/<soubor>.py` podle zadání. Model je funkce `fit(X, y, cil, horizont)`, která vrátí funkci `predict(X)` (vzor je `src/models/jako_ted.py`). Funguje pro oba cíle (`decin`, `usti`) a všechny horizonty (12, 24, 36). První řádek docstringu je popis, který se uloží k výsledku. Nastavení dej do slovníku `PARAMETRY`.
 6. **Běh.** Nejdřív `python src/porovnej.py <soubor bez .py> --rychle` (jen Děčín za 24 h), když to dává smysl, tak bez `--rychle` (všech 6 kombinací). Výsledek se uloží do `results/` a předpovědi do `results/predpovedi/`. Srovnání s ostatními ukáže `python src/porovnej.py --prehled`.
 7. **Varianty.** Projdi pokusy ze zadání a pak iteruj podle pravidel níž (Jak dlouho iterovat). Každou variantu, kterou chceš mít ve srovnání, ulož jako `src/models/<soubor>_<co>.py`. Nejlepší varianta se nakonec jmenuje `<soubor>.py`. Ke každému pokusu přidej záznam do `docs/POKUSY.md`, i k nepovedenému: co se zkoušelo, proč, výsledek proti „jako teď“ a závěr.
 8. **Vysvětlení.** U nejlepší varianty ukaž, podle čeho model rozhoduje, podle zadání níž. Graf ulož do `docs/grafy/<soubor>_<co>.png` a jednou větou ho popiš v `docs/POKUSY.md`.
 9. **Co se nesmí.**
    - Nikdy nespouštěj `--test`, to dělá jen Ondra.
-   - Neměň `data.py`, `features.py`, `evaluate.py` ani `porovnej.py`. Když potřebuješ jiný vstup nebo najdeš chybu, řekni to člověku, ať to probere s Ondrou, jinak výsledky nepůjdou srovnat.
+   - Neměň `data.py`, `features.py`, `evaluate.py` ani `porovnej.py`. Když potřebuješ jiný vstup nebo najdeš chybu, proberte to s Ondrou, jinak výsledky nepůjdou srovnat.
    - Neladí se na tom, co vyjde v `--prehled` u ostatních, jen na vlastní validaci.
-   - Podezřele dobrý výsledek (na povodních pod 5 cm za 24 h) dej zkontrolovat subagentu `kontrolor`.
-10. **Odevzdání.** Rozbor podle vzoru z `CLAUDE.md` napiš člověku do chatu i do `docs/DENIK.md`. Pak `/sync main`: commitni jen svůj model, výsledky v `results/` a své zápisy v `docs/`. Polož člověku otázku poroty z rozboru.
+   - Podezřele dobrý výsledek (na povodních pod 5 cm za 24 h) dej zkontrolovat Ondrovi.
+10. **Odevzdání.** Rozbor (co, jak, proč, výsledek, slabiny, otázka poroty) připiš do `docs/DENIK.md`. Pak commitni jen svůj model, výsledky v `results/` a své zápisy v `docs/` a pošli je do `main`.
 
 ### Jak dlouho iterovat
 
@@ -98,7 +98,7 @@ Proč ne do nekonečna: validace má jen 4 povodně. Kdo zkusí sto variant, naj
 
 Projdi u každé varianty, než ji vyhlásíš za lepší:
 
-- **Povodně nejsou odlehlé hodnoty.** Data jsou zkontrolovaná (`docs/DATA.md`, sekce Labe) a jediná chyba (2/2006) je vyřazená. Nic dalšího nemaž, neořezávej ani nevyhlazuj, hlavně ne vysoké hodnoty, kvůli nim to celé děláme. Když narazíš na něco podezřelého v datech, řekni to člověku, ať to předá Ondrovi.
+- **Povodně nejsou odlehlé hodnoty.** Data jsou zkontrolovaná (`docs/DATA.md`, sekce Labe) a jediná chyba (2/2006) je vyřazená. Nic dalšího nemaž, neořezávej ani nevyhlazuj, hlavně ne vysoké hodnoty, kvůli nim to celé děláme. Když narazíš na něco podezřelého v datech, řekni to Ondrovi.
 - **Žádné informace z budoucnosti.** Používej jen sloupce z X a nic nepočítej z y ani z pozdějších řádků. Žádné klouzavé průměry vycentrované kolem t, žádné míchání řádků a žádné náhodné dělení dat. Škálování a další úpravy se učí jen na trénovacích datech uvnitř `fit`, nejlíp přes `Pipeline`.
 - **Přeučení.** U každé varianty porovnej chybu na trénovacích datech a na validaci. Když je na tréninku výrazně menší, třeba poloviční, model se učí nazpaměť. Pak ho zjednoduš: menší síť, méně listů, silnější regularizace. Týká se hlavně LightGBM a sítě.
 - **Vrcholy nad rámec tréninku.** Validační povodně 2006 (875 cm) a 2011 (730 cm) jsou vyšší než všechno v tréninku kromě 2013. Sleduj `vrcholy_o_kolik` v JSONu: když model vrcholy soustavně podhodnocuje, neumí předpovědět víc, než viděl.
@@ -107,7 +107,7 @@ Projdi u každé varianty, než ji vyhlásíš za lepší:
 - **Jednotky a čas.** Hladina je v cm, průtok v m³/s a čas v UTC. Číslo na konci názvu sloupce znamená, kolik hodin zpátky, ne dopředu.
 - **Co nevíme, nehádej.** Když si nejsi jistý, jestli je něco únik informací, nebo chyba, zastav se a zeptej se. Radši jedna otázka navíc než výsledek, který na testu propadne.
 
-**Časy:** první výsledek (`--rychle`) do 20:15, hotová nejlepší varianta s vysvětlením a `/sync main` do 21:00. Ve 21:00 porovnáváme.
+**Časy:** první výsledek (`--rychle`) do 20:15, hotová nejlepší varianta s vysvětlením v `main` do 21:00. Ve 21:00 porovnáváme.
 
 ## Zadání: Tobias, fyzikální model (`fyzika.py`)
 
@@ -178,7 +178,7 @@ Nad 1 500 m³/s je málo hodin (hlavně povodně 2006, 2011, 2013), čísla jsou
 2. Vstupy „průtok, který dorazí za h hodin“ počítej s dobou podle pásma. Zpoždění zaokrouhli na ta, která jsou v X.
 3. Vyzkoušej to v LightGBM (`lgbm_doba.py`). Když to pomůže, zkus stejné vstupy i v lineární regresi (`ridge_doba.py`, odmocnina průtoků jako v `ridge.py`), ať víme, jestli to platí obecně.
 4. Platí pravidla iterace a „Na co si dát pozor“. Doby měř jen na trénovacích datech, nikdy na validaci.
-5. Do 22:00 zapiš výsledek do `docs/POKUSY.md` (i když nepomůže), rozbor do `docs/DENIK.md` a `/sync main`.
+5. Do 22:00 zapiš výsledek do `docs/POKUSY.md` (i když nepomůže), rozbor do `docs/DENIK.md` a pošli to do `main`.
 
 Proč: fyzikálně je to transformace povodňové vlny (rozliv do nivy, drsnost a sklon koryta). Když to pomůže, máme pro porotu silný a vysvětlitelný krok. Když ne, víme proč.
 
@@ -193,6 +193,6 @@ Porota se zeptá, proč jsme nevystačili s daty z balíčku (2 roky). Odpovíme
 3. Pro každou kombinaci spočítej `prumer_povodne` (průměr `mae_povodne` přes 6 kombinací cíle a horizontu) a počet propásnutých povodní u 2. stupně. Použij `vyhodnot` z `src/evaluate.py`, nic v něm neměň.
 4. Pozor: v letech 2014–2018 nebyla žádná povodeň nad 2. stupněm. Krátká okna tedy povodeň v tréninku nemají, stejně jako balíček. To je na tom to zajímavé, napiš to k výsledku.
 5. Graf `docs/grafy/kolik_dat.png`: na ose x počet let, na ose y chyba na povodních, dvě čáry (jen kraj, všechny stanice) a vodorovná čára „bude jako teď“ (44,3 cm). Skript `src/kolik_dat.py`.
-6. Zápis do `docs/POKUSY.md` a krátký rozbor do `docs/DENIK.md`, pak `/sync main`. Hotovo do 22:00, aplikace má přednost, když se něco rozbije.
+6. Zápis do `docs/POKUSY.md` a krátký rozbor do `docs/DENIK.md`, pak to pošli do `main`. Hotovo do 22:00, aplikace má přednost, když se něco rozbije.
 
 Ve srovnání pátečních pokusů (`docs/NAPAD_LABE.md`, sekce Čas proti prostoru) vyšlo, že stanice proti proudu pomohly víc než historie. Tenhle graf to buď potvrdí na společném rozdělení, nebo ukáže, že to bylo jinak.

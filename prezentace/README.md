@@ -35,7 +35,7 @@ Rezerva je 15 s. Když se nestíhá, na slajdu 7 z druhého odstavce říct jen 
 
 HTML deck (`web/prezentace/index.html`) je zatím podle staré kostry s živým demem a musí ho Honza přestavět podle tabulky výš. Do té doby platí:
 
-- **Online:** https://field-zero.netlify.app/prezentace/ . Otvírat vždy s lomítkem na konci, ne `/prezentace/index.html`, jinak se deck nenačte.
+- **Online:** https://povodnovy-pult.netlify.app/prezentace/ . Otvírat vždy s lomítkem na konci, ne `/prezentace/index.html`, jinak se deck nenačte.
 - **Lokálně:** z kořene repa `npx serve web` a pak http://localhost:3000/prezentace/ .
 - **Klávesy:** šipky nebo mezerník další krok, F celá obrazovka, N poznámky řečníka, B černá obrazovka, Home a End na začátek a konec.
 - **Canva:** https://www.canva.com/d/xVAIR8am2CrRslj (poznámky řečníka u každé stránky, co dodělat ručně je v `docs/PREZENTACE.md`).
@@ -44,7 +44,7 @@ HTML deck (`web/prezentace/index.html`) je zatím podle staré kostry s živým 
 ## Před 14:30
 
 - [ ] Nácvik s časomírou v 11:00 a ve 13:00, na druhém hraje Ondra porotu (`OTAZKY.md`). Kdo přetáhne svůj slajd o víc než 10 s, škrtá text.
-- [ ] Na Macu, ze kterého se prezentuje: deck na celou obrazovku (F). V druhé kartě web https://field-zero.netlify.app/ na Dnešku, jen pro otázky poroty, během 7 minut se na něj nepřepíná.
+- [ ] Na Macu, ze kterého se prezentuje: deck na celou obrazovku (F). V druhé kartě web https://povodnovy-pult.netlify.app/ na Dnešku, jen pro otázky poroty, během 7 minut se na něj nepřepíná.
 - [ ] Video na slajdu 1 se pustí a je bez zvuku.
 - [ ] Mapa rozlivu na slajdu 8 je povodeň 4/2006 (869 proti 829 cm); snímek aplikace v záloze Z10 je z dnešního rána (84, 94, 90 cm).
 - [ ] Wi-Fi funguje, záloha hotspot z mobilu.

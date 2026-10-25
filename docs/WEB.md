@@ -1,4 +1,4 @@
-# Web: field-zero.netlify.app
+# Web: povodnovy-pult.netlify.app
 
 Statický web ve složce `web/`. Na Netlify se publikuje celá složka tak, jak je, bez build kroku; nastavení je v `netlify.toml` v kořeni repa (`publish = "web"` a hlavičky cache). Streamlit aplikace (`app/`) zůstává pro demo, web je to samé bez serveru: předpočítaná data v JSON, grafy vlastním SVG, mapy a animace jako samostatné stránky v iframu.
 

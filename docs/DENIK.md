@@ -425,3 +425,7 @@ Oprava proti 9:46: slajd 7 (Funguje to doopravdy?) říká Honza, slajdy 8 (mapa
 ## so 23:20 · Ondra
 - Co: úvodní video 2013 natočené znovu. Pět záběrů z různých stran (celé město, proti slunci s oblohou, podél řeky od jihu, Staré Město se sluncem v zádech, vrchol mezi domy), mezi nimi prolínačky přes 6 hodin povodně, kdy oba záběry běží ve stejné hodině. Světlo je západ slunce (nízké teplé slunce od západojihozápadu, dlouhé stíny, oranžový opar u obzoru) a platí i pro mapu povodní na webu. Domy jsou ve videu jen naše vrstva z OpenStreetMap ve všech vzdálenostech. 24,4 s, 60 fps, 1 727 natočených snímků, webová verze 32,6 MB; mezi sousedními snímky žádný skok (největší rozdíl 1,2 při mediánu 0,67).
 - Proč: v minulé verzi byl jeden průlet bez změny pohledu, za tmavého soumraku bez viditelného slunce a zblízka mizely domy (budovy Mapboxu se při pohybu kamery nestihly načíst).
+
+## ne 18:03 · Ondra
+- Co: repozitář připravený na zveřejnění. Nové README s výsledkem, postupem, webem a týmem, animace povodně a snímky webu v `docs/readme/`. Pracovní poznámky z přípravy a ostatní zadání hackathonu zůstávají jen lokálně (`.gitignore`). Zdroje náhledů map v `docs/grafy/mapbox3_*.png` přepsané na verzi se západem slunce, protože hodinové nasazení z nich vyrábí `web/img/` a na webu byl pořád starý tmavý náhled.
+- Proč: vyhráli jsme a repo bude veřejné, má se dát pochopit z první stránky.

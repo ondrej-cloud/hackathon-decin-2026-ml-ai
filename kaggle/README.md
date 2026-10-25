@@ -25,4 +25,3 @@ Stejný test jde pustit i lokálně (`python kaggle/gpu-test/gpu_test.py`) a č�
 
 `kaggle/.build/` a `kaggle/.out/` nejsou v Gitu. Na více variant najednou: zkopírovat `train/` pod jiným názvem, změnit `id` a `title` v `kernel-metadata.json` a poslat, případně z jiného účtu.
 
-Claude to celé umí přes příkaz `/kaggle`.

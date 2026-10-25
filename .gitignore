@@ -38,3 +38,17 @@ docs/grafy/video_povoden_*.mp4
 
 # Velké CSV výstupy vyrábí src/export_csv.py, do odevzdání je přidá odevzdani/vytvor.sh
 results/csv/predpovedi_*.csv
+
+# Pracovní poznámky a nastavení z přípravy, jen lokálně
+CLAUDE.md
+.claude/
+PRIPRAVA.md
+PLAN_TYMU.md
+docs/brainstorming-podklady.md
+docs/PREDAVKA.md
+docs/test-dan.txt
+
+# Ostatní zadání hackathonu (v repu jen naše úloha Labe)
+zadani/ksi-1-*
+zadani/ksi-2-*
+zadani/ufp-*

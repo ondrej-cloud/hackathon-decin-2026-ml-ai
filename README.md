@@ -1,243 +1,128 @@
-# Hackathon ML/AI 2026 – plán týmu
+# Povodňový pult
 
-FJFI ČVUT Děčín, od pátku 23. 10. 14:00 do soboty 24. 10. 17:00. Soutěž startuje v pátek v 16:00. V sobotu ve 14:00 odevzdáváme a od 14:30 prezentujeme porotě, každý tým nejvýš 15 minut. Ceny jsou 25, 15 a 10 tisíc Kč.
+**Den předem víme, kam v Děčíně dosáhne voda.** Předpověď hladiny Labe v Děčíně a Ústí nad Labem na 12, 24 a 36 hodin dopředu a 3D mapa, kam až se voda rozlije.
 
-Každý má výchozí zaměření, ale role se budou míchat podle toho, co je zrovna potřeba a co nás během práce napadne. Pracujeme ve společném soukromém repozitáři, každý na své větvi.
+[![1. místo, Hackathon ML/AI 2026](https://img.shields.io/badge/Hackathon_ML%2FAI_2026-1._m%C3%ADsto-c9a227?style=flat-square)](https://ksi.fjfi.cvut.cz/udalosti/hackathon-mlai-2026)
+[![Web](https://img.shields.io/badge/web-povodnovy--pult.netlify.app-167c9c?style=flat-square)](https://povodnovy-pult.netlify.app)
+[![Prezentace](https://img.shields.io/badge/prezentace-HTML_deck-1d1d1f?style=flat-square)](https://povodnovy-pult.netlify.app/prezentace/)
+[![Dnešek na webu](https://github.com/ondrej-cloud/hackathon-decin-2026-ml-ai/actions/workflows/dnesek.yml/badge.svg)](https://github.com/ondrej-cloud/hackathon-decin-2026-ml-ai/actions/workflows/dnesek.yml)
 
-## Jak se tu vyhrávalo
+<p align="center">
+  <img src="docs/readme/povoden_2013.webp" width="100%" alt="Povodeň v Děčíně v červnu 2013 hodinu po hodině: voda stoupá z koryta mezi domy">
+</p>
 
-| Ročník | Týmy / úlohy | 1. místo | Úloha vítěze | Co o tom víme |
-|---|---|---|---|---|
-| 2023 | 6 / 3 | SPŠE Plzeň | klasifikace fraktografických snímků (obrázky) | Porota hodnotila matematický model, grafické rozhraní a prezentaci. Stejnou úlohu řešilo i 3. místo. |
-| 2024 | 10 / 5 | Robin & Honza, Gymnázium Děčín (dva lidi) | Energetický detektiv: poznat charakter objektu podle spotřeby energie (data Datového centra ÚK) | Mentoři z Datového centra se nejvíc věnovali týmům s jejich zadáním a jeden z těch týmů vyhrál. Týmy, které se mentorů neptaly, podle nich dopadly hůř. 2. a 3. místo měly klasifikaci výbojů z tokamaku GOLEM. |
-| 2025 | 13 / 4 | Koranderium, SPŠ Tábor | nezveřejněno | 3. místo (SPŠ Teplice) mělo chatbota nad úředními deskami. Porota ocenila, že data nejen zpracoval, ale i srozumitelně vysvětlil. |
+S tímhle projektem jsme **vyhráli Hackathon ML/AI 2026**, který pořádala FJFI ČVUT v Děčíně 23. a 24. října 2026. Byli jsme čtyři středoškoláci a za 22 hodin jsme řešili úlohu [Dokážete předpovědět Labe?](zadani/README.md) a porotě jsme za 7 minut ukázali celý řetězec: data, čtyři porovnané modely, ověření na povodních, které model nikdy neviděl, a aplikaci, které rozumí i laik.
 
-V roce 2024 porota hodnotila čtyři věci: splnění zadání, zvolený postup (vhodné metody, úpravu dat), odbornost řešení a prezentaci. Seděli v ní lidé z FJFI, z Datového centra a z IT firem.
+**[Web](https://povodnovy-pult.netlify.app)** · **[Prezentace](https://povodnovy-pult.netlify.app/prezentace/)** · **[Deník z 24 hodin](docs/DENIK.md)** · **[Cesta k modelu](docs/CESTA_MODELU.md)**
 
-### Co z toho plyne pro nás
+## Výsledek
 
-1. **Za mentory chodit od první hodiny.** Sedí v porotě a vědí, co zadavatel opravdu potřebuje. Chodíme za nimi s konkrétními otázkami: na začátku s nápadem, večer s prvními výsledky, ráno s finální verzí.
-2. **Pokrýt všechna čtyři kritéria.** Splnění zadání si ověříme u mentora hned na začátku. Postup a odbornost znamenají, že každý umí vysvětlit, co dělal, a Ondra celek. Na prezentaci potřebujeme čas, ne jen poslední hodinu.
-3. **Demo, kterému rozumí laik.** V roce 2023 se hodnotilo grafické rozhraní, v roce 2025 porota ocenila srozumitelný výstup.
-4. **Úloha, ve které budeme mít ve 21:00 celý řetězec.** V roce 2024 vyhrála úloha od Datového centra. Rozhoduje ale hlavně to, jestli v ní stihneme ověřený výsledek a jestli k ní máme ochotného mentora.
-5. **Počet lidí nerozhoduje.** V roce 2024 vzaly 1. i 2. místo dvoučlenné týmy. Naše výhoda jsou tři účty Claude Max, díky kterým zkusíme víc přístupů. AI ale nejspíš budou používat i ostatní, takže rozhodne poctivé ověření, to, že řešení rozumíme, a prezentace.
-6. **Dotáhnout to do konce.** V roce 2024 porota veřejně pokárala tým, který soutěž nebral vážně, a v roce 2025 jeden tým nedokončil. Celý řetězec ve 21:00 je naše pojistka.
+| | Náš model | „Bude jako teď“ |
+|---|---|---|
+| Test 2021–2025, průměrná chyba během povodní | **22,4 cm** | 50,2 cm |
+| Vícenásobná validace, 8 povodní 2006–2013 | **20,1 cm** | 45,2 cm |
+| Povodeň Boris 9/2024, varování před 3. stupněm v Děčíně | **27 h předem** | nevaruje |
+| Povodeň 6/2013, největší v datech, model ji při učení neviděl | **3. stupeň 18 h předem**, vrchol 952 cm proti skutečným 1 072 cm | nevaruje |
+
+„Bude jako teď“ je laťka, se kterou se srovnáváme: hladina za 24 hodin bude stejná jako teď. Na všech povodních má náš model zhruba poloviční chybu. Testovací roky 2021–2025 jsme pustili jen jednou, na model vybraný předem, takže čísla nejsou vyladěná na test.
+
+<p align="center">
+  <img src="web/prezentace/grafy/07a_boris_2024.png" width="49%" alt="Boris 2024: předpověď 24 h předem proti skutečnosti">
+  <img src="web/prezentace/grafy/Z8_test_2021_2025.png" width="49%" alt="Test 2021–2025: chyba modelu proti bude jako teď">
+</p>
+
+## Jak to funguje
+
+Voda, která dnes teče v Praze, Mělníku nebo Lounech, bude zítra v Děčíně. Labe v Děčíně je součet Vltavy, horního Labe a Ohře, a z každé větve víme, kolik vody už je na cestě a za jak dlouho doteče.
+
+```mermaid
+flowchart LR
+  A["ČHMÚ: hladiny a průtoky<br/>12 stanic, 2006–2025, po hodinách"] --> B["98 vstupů<br/>stav teď až 36 h zpátky"]
+  B --> C["lineární regrese<br/>zvlášť pro Děčín a Ústí, 12 / 24 / 36 h"]
+  C --> D["hladina za 12, 24 a 36 h<br/>s rozmezím nejistoty"]
+  D --> E["rozliv z výšky terénu<br/>ČÚZK DMR 5G, po 10 cm"]
+  D --> F["web Dnes<br/>každou hodinu z živých dat"]
+  E --> G["3D mapa povodně<br/>a video"]
+```
+
+- **Data.** Balíček od pořadatelů měl nejvýš proti proudu Ústí, jen 4 hodiny před Děčínem, a jedinou povodeň. Doplnili jsme proto otevřená data ČHMÚ: 20 let, 12 stanic na Labi, Vltavě, Ohři a přítocích, 175 320 hodin. Podrobně v [docs/DATA.md](docs/DATA.md) a [docs/ZDROJE_DAT.md](docs/ZDROJE_DAT.md).
+- **Vstupy.** Hladina v Děčíně a Ústí a průtoky všech 12 stanic teď a až 36 hodin zpátky, 98 čísel. Jen to, co je v okamžiku předpovědi už změřené. Srážky, sníh ani teplota na validaci nepomohly.
+- **Čtyři modely, vyhrál nejjednodušší.** Každý z nás zkusil jiný princip na stejných datech a se stejným vyhodnocením. Lineární regrese vyšla nejlíp a dá se celá vysvětlit, proto je finální.
+
+  | Model (validace) | Chyba během povodní |
+  |---|---|
+  | **lineární regrese** | **17,1 cm** |
+  | neuronová síť (MLP) | 17,8 cm |
+  | LightGBM | 23,1 cm |
+  | fyzikální model (doba putování a měrná křivka) | 24,8 cm |
+  | „bude jako teď“ | 44,3 cm |
+
+- **Ověření.** Dělení vždy v čase, nikdy náhodně. Validace na celých povodních vynechaných z učení, vícenásobná validace přes 8 povodní a jeden finální test 2021–2025. Postup a všechna rozhodnutí v [docs/PREHLED.md](docs/PREHLED.md), každý pokus včetně nepovedených v [docs/POKUSY.md](docs/POKUSY.md).
+- **Rozliv.** Z předpovězené hladiny spočítáme, kam voda dosáhne: zaplavené je všechno pod hladinou, co je spojené s korytem. Terén je z ČÚZK DMR 5G (2 m), shoda s oficiálními záplavovými územími DIBAVOD je IoU 0,82–0,90.
+
+<p align="center">
+  <img src="web/prezentace/grafy/08b_jak_pocitame_rozliv.png" width="70%" alt="Jak se počítá rozliv: terén proti hladině">
+</p>
+
+## Web
+
+Na [povodnovy-pult.netlify.app](https://povodnovy-pult.netlify.app) jsou dvě stránky. **Dnes** ukazuje hladinu teď a předpověď na 12, 24 a 36 hodin s rozmezím nejistoty a vedle ní oficiální předpověď ČHMÚ. GitHub Action ji každou hodinu přepočítá z živých dat. **Povodně** přehraje šest historických povodní: 3D mapu rozlivu, jak přesná byla předpověď a co model hlásil hodinu po hodině.
+
+<p align="center">
+  <img src="docs/readme/web_dnes.jpg" width="49%" alt="Stránka Dnes: hladina teď a předpověď">
+  <img src="docs/readme/web_povodne.jpg" width="49%" alt="Stránka Povodně: co model hlásil hodinu po hodině">
+</p>
+
+Web je statický, bez serveru: předpočítaná data v JSON, grafy ve vlastním SVG, mapa v Mapbox GL. Jak se staví a nasazuje, je v [docs/WEB.md](docs/WEB.md).
+
+## Spuštění
+
+```bash
+python3 -m venv .venv && source .venv/bin/activate
+pip install -r app/requirements.txt
+
+python src/porovnej.py ridge          # natrénuje a vyhodnotí model na validaci
+python src/porovnej.py --prehled      # srovnání všech modelů
+streamlit run app/app.py              # aplikace na http://localhost:8501
+
+python src/uloz_model.py && python src/uloz_model.py --vse
+python src/export_web.py --vse        # data, mapy a animace pro web
+python src/dnesek_export.py           # předpověď na dnešek z živých dat ČHMÚ
+npx serve web                         # web na http://localhost:3000
+```
+
+Hodinová data jsou v repu (`data/external/labe_hodinove.parquet`), nic se nestahuje. Mapy a animace potřebují `MAPBOX_TOKEN` v souboru `.env`, bez něj aplikace použije OpenStreetMap.
+
+## Co je kde
+
+| Složka | Co tam je |
+|---|---|
+| [`src/`](src) | data, společné vstupy (`features.py`) a vyhodnocení (`evaluate.py`), modely v `src/models/`, export webu, video |
+| [`app/`](app) | aplikace ve Streamlitu, 3D mapa v Mapbox GL, rozliv z terénu, živá data ČHMÚ |
+| [`web/`](web) | statický web a HTML prezentace (`web/prezentace/`) |
+| [`data/external/`](data/external) | hodinové hladiny a průtoky ČHMÚ 2006–2025, stanice, rozlivy |
+| [`results/`](results) | výsledek každého pokusu jako samostatný soubor |
+| [`docs/`](docs) | deník, pokusy, data, cesta k modelu, porozumění úloze, grafy |
+| [`prezentace/`](prezentace) | texty řečníků, otázky poroty, grafy do slajdů |
+| [`zadani/`](zadani) | zadání úlohy |
 
 ## Tým
 
-| Kdo | Počítač | Claude | Výchozí zaměření |
-|---|---|---|---|
-| Ondra | MacBook M1, 16 GB | Max 20x | vedení a ověřování výsledků |
-| Dan | Lenovo Yoga 7i (Core Ultra 7 155H, bez NVIDIA) | Max 20x | modely a trénink |
-| Honza | starší notebook | Max 20x | aplikace a grafy |
-| Tobias | MacBook M4, 16 GB | Pro | prezentace a pohled uživatele |
-
-Zaměření je jen výchozí bod. Kdo má hotovo nebo dostane nápad, vezme si další věc, a na čem kdo dělá, se bude během noci měnit. Na kontrolních bodech si práci přerozdělíme. Kdo na čem zrovna dělá, píšeme do sekce **Stav** v `CLAUDE.md`, aktualizovat ji může kdokoli.
-
-Pevné je jen tohle: Ondra vede (téma, mentoři, čas, rozhodnutí, když se neshodneme) a hlídá, aby výsledky byly poctivě ověřené.
-
-**Oblasti práce**, mezi kterými se budeme přesouvat:
-
-- **Data:** rozbor dat, společné rozdělení na trénovací, validační a testovací část, úprava dat a nové veličiny.
-- **Ověřování:** jedno společné vyhodnocení, kontrola výsledků a úniku dat, finální test.
-- **Modely:** od jednoduchého základu (baseline) k lepším přístupům.
-- **Aplikace a grafy:** demo pro laika, grafy do prezentace, záložní video dema.
-- **Prezentace a příběh:** komu řešení pomáhá, deník, poznámky od mentorů, slajdy, nácvik.
-
-Co víme o počítačích:
-- Tabulková data a gradient boosting stačí na procesoru, na neuronové sítě je GPU zdarma na Kaggle nebo v Colabu. Lokálně mají GPU jen Macy (MPS).
-- Nejvýkonnější Mac je Tobiasův M4, demo na prezentaci nejspíš poběží z něj.
-- Honzův notebook je starší, těžký trénink na něm nepouštíme.
-- Tobias má Claude Pro s menším limitem, takže na něj nedáváme práci, která spotřebuje hodně Claude.
-
-## Pátek do 17:30: výběr tématu
-
-**14:00–15:30:** Příjezd, rozložit se a hned ověřit, že na místní Wi-Fi funguje Claude Code (záloha je hotspot z mobilu). Kdo chce, jde na úvod do strojového učení (14:30–15:30).
-
-**15:30–17:30:**
-1. Představení témat. Všichni poslouchají a píšou si.
-2. Projdeme každé téma: jaká jsou data, co z toho jde za 22 hodin udělat, komu to pomůže. Pomůže `/temata`. Vybereme jedno.
-3. Brainstorming: komu řešení pomáhá a proč, kdo je cílový uživatel, jak to bude fungovat a jak poznáme, že funguje (metrika).
-4. S prvním návrhem za mentory a upravit ho podle jejich zpětné vazby. Když se nápad nelíbí, vracíme se k bodu 2.
-5. Nejpozději v 17:30 je rozhodnuto. Domluvíme, kdo začne na čem a jak propojíme model s aplikací (co předpověď bere a vrací), zapíšeme to do Stavu a jdeme pracovat. Kdybychom se rozhodovali déle, nestihneme mít ve 21:00 celý řetězec.
-
-## Harmonogram
-
-Kontrolní body, kde se všichni na 10 minut sejdeme (`/stav`) a případně přerozdělíme práci:
-
-| Čas | Co musí platit |
+| | Na čem dělal |
 |---|---|
-| 19:00 | data jsou rozdělená, společné vyhodnocení hotové, máme první jednoduchý model a kostru aplikace |
-| 21:00 | celý řetězec od dat po aplikaci funguje, i když je model ještě slabý |
-| 0:00 | stav a plán na noc, chystáme dlouhý trénink |
-| 8:00 | výsledky z noci, vybíráme finální přístup |
-| 11:00 | konec nových funkcí, dál už jen opravy a nácvik |
-| 14:00 | odevzdání prezentace |
+| **Ondra** ([ondrej-cloud](https://github.com/ondrej-cloud)) | vedení týmu a ověřování výsledků, finální test, neuronová síť |
+| **Dan** ([midaxal](https://github.com/midaxal)) | LightGBM, rozmezí nejistoty předpovědi, grafy do prezentace |
+| **Honza** ([jo413](https://github.com/jo413)) | lineární regrese (finální model), aplikace a web, 3D mapa a rozliv z terénu |
+| **Tobias** ([tobiaszlobias](https://github.com/tobiaszlobias)) | fyzikální model, prezentace, úvodní video |
 
-Co se kdy hlavně děje:
+## Data a poděkování
 
-| Čas | Hlavní práce |
-|---|---|
-| 17:30–19:00 | rozbor a rozdělení dat, společné vyhodnocení, první jednoduchý model, kostra aplikace s falešnou předpovědí, sepsat zadání a komu řešení pomáhá |
-| 19:00–21:00 | pokusy s modely, napojení aplikace, za mentory s prvními výsledky |
-| 21:00–1:00 | zlepšování, kontrola úniku dat, osnova prezentace, plán na noc |
-| 1:00–8:00 | spíme ve dvou směnách (domluvíme na místě), přes noc běží dlouhý trénink |
-| 8:00–11:00 | výběr finálního přístupu, jeden test na testovací části, finální model v aplikaci, výsledky do prezentace |
-| 11:00–14:00 | jen opravy, záložní video dema, dva nácviky prezentace, odevzdání |
+Měření hladin a průtoků a N-leté průtoky: [ČHMÚ](https://www.chmi.cz) (otevřená data). Terén: ČÚZK DMR 5G. Záplavová území: DIBAVOD (VÚV TGM). Řeky a budovy: © přispěvatelé OpenStreetMap. Mapa: Mapbox. Předpověď srážek na stránce Dnes: Open-Meteo. Díky pořadatelům z FJFI ČVUT a mentorům za zadání a rady během noci.
 
-Na jídlo podle programu (večeře 18–19, snídaně 7:30–9, oběd 12–13) chodíme postupně, ať práce nestojí.
+## Limity
 
-## Repozitář
+Model vidí jen řeku, ne déšť, proto předpovídá nejvýš 36 hodin dopředu: dál už rozhoduje počasí, které ještě nespadlo. Rozliv je statický, bez proudění a hrází menších než rozlišení terénu. Je to výsledek 22 hodin práce, ne náhrada oficiální předpovědi ČHMÚ.
 
-Výchozí struktura. Klidně ji měňte, přejmenovávejte a přidávejte, co bude potřeba. Když se změní něco, co používají ostatní, zapište to do Stavu.
+---
 
-```
-hackathon-decin-2026-ml-ai/
-├── CLAUDE.md          kontext pro Claude, sekce Stav
-├── .claude/           role, příkazy a nastavení pro Claude
-├── zadani/            všech pět zadání (PDF a text), přehled v README
-├── data/
-│   ├── raw/           data od pořadatelů, NE do Gitu
-│   └── split/         společné rozdělení train / val / test
-├── src/               kód: příprava dat, vyhodnocení, modely, předpověď
-├── results/           výsledky pokusů, každý jako nový soubor
-├── models/            malé modely, velké přes Google Disk
-├── app/               aplikace
-└── docs/
-    ├── POKUSY.md      každý trénink a pokus: co, jak, výsledek, závěr
-    ├── DENIK.md       rozhodnutí, proč, co je špatně
-    ├── DATA.md        jak data vypadají, chyby v nich, rozdělení
-    ├── POROZUMENI.md  úloha a výsledky našimi slovy, limity, otázky
-    └── grafy/         grafy do prezentace
-```
-
-Pár pravidel, která platí, ať se struktura změní jakkoli:
-
-1. **Testovací část dat se nepoužívá k ladění.** Pustí se jednou, na finální model, a rozhoduje o tom Ondra.
-2. **Jedno společné vyhodnocení.** Všichni měří stejně, jinak nejdou výsledky srovnat. Každý pokus se uloží jako nový soubor do `results/`, takže nevznikají konflikty.
-3. **Propojení modelu a aplikace je dohoda.** Co předpověď bere a vrací, je zapsané ve Stavu. Dokud model není, aplikace jede s falešnou předpovědí.
-4. **Data a klíče nikdy do Gitu.**
-
-Když dva lidé potřebují stejný soubor, stačí si to říct. Git změny většinou spojí sám, a když ne, Claude konflikt vyřeší.
-
-## Claude Code v repozitáři
-
-Claude Code při každém startu sám načte `CLAUDE.md`: kontext hackathonu, pravidla, aktuální Stav, harmonogram a tento plán. Všichni čtyři Claude tak vědí totéž. Na začátku relace napiš svoje jméno jako příkaz. Claude se dozví, kdo jsi, na jakém počítači a s jakým účtem pracuješ a jaké je tvoje výchozí zaměření. Na čem děláš teď, zjistí ze Stavu nebo se zeptá.
-
-| Příkaz | Kdy | Co dělá |
-|---|---|---|
-| `/ondra`, `/dan`, `/honza`, `/tobias` | začátek relace | kdo jsi, tvůj počítač, účet a výchozí zaměření |
-| `/sync` | průběžně | commit tvé práce, stažení práce ostatních, push tvé větve |
-| `/sync main` | když je něco hotové | totéž a hotovou práci pošle i do `main` |
-| `/temata <text zadání>` | pátek 15:30 | rozbor témat a návrhy nápadů podle vzorců vítězů |
-| `/stav` | kontrolní body | přehled, co je hotové, kdo na čem dělá a co blokuje |
-| `/denik` | jednou za hodinu | dohledá, co se na všech větvích udělalo a v `docs/` chybí, doplní to a shrne |
-| `/kontrola` | po nových výsledcích | kontrola výsledků (únik dat, rozdělení, metrika) |
-| `/porota` | sobota ráno | nácvik otázek poroty |
-| `/kaggle [co natrénovat]` | neuronové sítě, noční trénink | nahraje data, pošle trénink na GPU na Kaggle, ohlídá ho a stáhne výsledky |
-
-Subagent `kontrolor` nezávisle zkontroluje jeden pokus. Commity z Claude jsou bez podpisu Claude, jen pod jménem autora.
-
-V `.claude/settings.json` je povolené spouštět Python, Streamlit, Kaggle a běžné příkazy Gitu bez ptaní. Zakázané jsou `git push --force`, `git reset --hard` a čtení `.env` a přihlašovacích údajů ke Kaggle. Povolení začnou platit, až Claude Code při prvním spuštění ve složce potvrdíš, že jí důvěřuješ.
-
-## Git
-
-Každý má svou větev: `ondra`, `dan`, `honza`, `tobias`. Na ni pushuje kdykoli a nikomu tím nic nerozbije. Do `main` posíláme to, co funguje a co se hodí ostatním, nejméně na každém kontrolním bodě. Na stejných souborech může pracovat víc lidí. Čím častěji `/sync`, tím menší konflikty.
-
-**Před odjezdem, každý:**
-
-1. Přijmout pozvánku z e-mailu od GitHubu.
-2. Přihlásit se: `gh auth login` (nebo přes GitHub Desktop).
-3. Naklonovat: `git clone https://github.com/ondrej-cloud/hackathon-decin-2026-ml-ai.git`
-4. Přepnout na svou větev: `cd hackathon-decin-2026-ml-ai` a `git switch dan` (svoje jméno).
-5. Spustit `claude`, potvrdit důvěru ve složku a napsat `/dan` (svoje jméno).
-6. Zkušební commit: vytvořit `docs/test-dan.txt` a napsat `/sync`. Komu to projde, má přístup v pořádku.
-
-**Pracovní cyklus během hackathonu** (celý ho udělá `/sync`):
-
-1. commit tvé práce na tvé větvi
-2. `git fetch` a `git merge origin/main` stáhne práci ostatních
-3. `git push origin <větev>`
-4. s `/sync main` navíc `git push origin HEAD:main`
-
-`/sync` spouštěj po každém funkčním kroku, nejméně jednou za hodinu. `/sync main` vždy, když máš něco, co potřebují ostatní.
-
-**Když něco nejde:**
-- Push do `main` je odmítnutý: někdo byl rychlejší, pusť `/sync main` znovu.
-- Konflikt: řekni Claude „vyřeš konflikt a zachovej změny obou stran“. Nikdy `git push --force`.
-- Data a velké modely: přes AirDrop, flashku nebo Google Disk, u všech do stejné složky `data/raw/`.
-
-## Deník a prezentace
-
-Porota hodnotí hlavně, jak úloze rozumíme a jak to vysvětlíme. Proto každý Claude zapisuje průběžně a sám, bez připomínání, ve stejném commitu jako kód (pravidla jsou v CLAUDE.md, sekce Dokumentace):
-
-| Soubor | Co tam je |
-|---|---|
-| `docs/POKUSY.md` | každý trénink a pokus, i nepovedený: otázka, data, vstupy, model, výsledek proti baseline, závěr |
-| `docs/DENIK.md` | rozhodnutí a proč, změny postupu, co je špatně a jak to řešíme |
-| `docs/DATA.md` | soubory, sloupce, rozložení, chybějící a chybné hodnoty, rozdělení, úpravy |
-| `docs/POROZUMENI.md` | úloha a pojmy našimi slovy, proč tahle metoda, jak číst výsledky, limity, odpovědi mentorů |
-
-Do deníku a pokusů se jen připisuje na konec a Git záznamy z různých větví spojí bez konfliktu. Jednou za hodinu někdo spustí `/denik`: Claude projde všechny větve, doplní, co se nezapsalo, a napíše krátké shrnutí. Čemu nerozumíme, na to se zeptáme v týmu nebo mentora.
-
-Od 21:00 se z `docs/` skládá prezentace v tomto pořadí: problém, pro koho, data, postup, výsledek a jak víme, že funguje, demo, co dál. V sobotu ráno sepíšeme 15–20 pravděpodobných otázek poroty a necháme Claude hrát porotu (`/porota`).
-
-## Claude
-
-Každý má vlastní účet, a tedy i vlastní limit. Počítá se v pětihodinových oknech a k tomu je týdenní strop, stav ukáže příkaz `/usage`.
-
-| Účet | Model | Agentů najednou |
-|---|---|---|
-| Max 20x (Ondra, Dan, Honza) | Opus na náročné věci (rozbor, návrh modelů, těžké chyby), Sonnet na rutinu | 1–3 podle toho, kolik stíháš kontrolovat |
-| Pro (Tobias) | Sonnet (přepnout příkazem `/model`) | 1 |
-
-- Spouštěj jen tolik agentů, kolik stíháš kontrolovat. Neověřený kód nepushuj.
-- Každý moc dobrý výsledek je podezřelý, dokud ho nezkontroluje Ondra nebo subagent `kontrolor`.
-- U každé větší změny ať Claude napíše do commitu co a proč. Porota se bude ptát „proč zrovna tohle?“.
-- Bez internetu Claude nefunguje. Na místě hned ověřit Wi-Fi, zálohou je hotspot z mobilu.
-
-**Pomohou další účty nebo placené GPU?** Na trénink ne. Claude model netrénuje, jen píše a spouští kód na našich počítačích. Další účty by přidaly jen další souběžné agenty, jenže brzdit nás bude kontrola výsledků, ne limit. Tři Max a jeden Pro stačí.
-
-GPU zatím kupovat nemusíme. Na tabulková data stačí procesor. Na obrázky stačí GPU zdarma na Kaggle (kolem 30 hodin týdně) nebo v Google Colabu. Kdyby to nestačilo, dá se Colab Pro nebo GPU na hodiny (RunPod, vast.ai) koupit přímo na místě během pár minut. GeForce NOW nepomůže: je to streamování her a vlastní kód se na něm spustit nedá.
-
-Kaggle má příkaz `kaggle`, přes který Claude Code umí poslat skript na GPU a stáhnout výsledek bez klikání v prohlížeči. Než tam nahrajeme data, zeptáme se pořadatelů, jestli smějí do cloudu.
-
-Pokud vybereme úlohu s textem (chatbot nad dokumenty), může být jazykový model přímo součástí řešení. Aplikace pak potřebuje API klíč placený zvlášť podle spotřeby (předplatné ho nepokrývá), nebo lokální model přes Ollamu. Klíč patří do `.env`, nikdy do Gitu.
-
-## Před odjezdem
-
-Celý postup krok za krokem, i s vysvětlením proč, je v `PRIPRAVA.md`. Dá se vložit rovnou do Claude Code, který ho provede.
-
-- [ ] Všichni: přijmout pozvánku, naklonovat, přepnout na svou větev, spustit `claude` se svým příkazem a zkušební `/sync` (postup v sekci Git)
-- [ ] Všichni: Python 3.11 nebo novější, virtuální prostředí a balíčky níž
-- [ ] Všichni: Claude Code nainstalovaný, přihlášený a vyzkoušený
-- [ ] Všichni: účet Google kvůli Colabu a Disku
-- [ ] Kdo bude trénovat na Kaggle: kroky 1–4 z `kaggle/README.md` (účet s ověřeným telefonem, `kaggle auth login`, test GPU)
-- [ ] Majitelé Maců: `brew install libomp`, jinak LightGBM na Macu nejde spustit
-- [ ] Majitelé Maců: ověřit, že PyTorch vidí GPU (příkaz níž)
-- [ ] Všichni: vyzkoušet `streamlit hello`
-- [ ] Všichni: přečíst [článek Datového centra](https://dcuk.cz/novinky/od-otazky-k-prototypu-co-se-da-vytvorit-za-jeden-hackathon/)
-- [ ] Sbalit nabíječky, prodlužku, flashku, spacák a karimatku
-
-```
-python3 --version                # musí být 3.11 nebo novější; na Macu jinak brew install python@3.12 a dál python3.12
-python3 -m venv .venv
-source .venv/bin/activate        # Windows: .venv\Scripts\activate
-pip install pandas numpy scikit-learn lightgbm xgboost optuna shap matplotlib plotly streamlit jupyter torch torchvision kaggle
-
-# Mac: vidí PyTorch GPU? Má vypsat True.
-python -c "import torch; print(torch.backends.mps.is_available())"
-```
-
-Na starším notebooku stačí bez `torch torchvision`.
-
-## Zdroje
-
-- [Hackathon ML/AI 2026, stránka akce](https://ksi.fjfi.cvut.cz/udalosti/hackathon-mlai-2026)
-- [Hackathon 2023 je za námi](https://www.ksi.fjfi.cvut.cz/informacni-deska/hackathon-2023-je-za-nami)
-- [Hackathon ML/AI 2024 zná své vítěze](https://ksi.fjfi.cvut.cz/informacni-deska/hackathon-mlai-2024-zna-sve-viteze)
-- [Hackathon ML/AI 2024, mentoři Datového centra](https://dcuk.cz/novinky/hackathon-ml-ai-2024-2/)
-- [Hackathon ML/AI 2025, výsledky](https://ksi.fjfi.cvut.cz/udalosti/hackathon-mlai-2025)
-- [Hackathon ML/AI 2025, reportáž Datového centra](https://dcuk.cz/novinky/hackathon-ml-ai-2025-kdyz-se-data-potkaji-s-kavou-kodem-a-velkymi-napady/)
-- [SPŠ Teplice, 3. místo 2025](https://www.sostp.cz/aktuality/891-nasi-zaci-opet-obstali-na-hackathonu)
-- [Od otázky k prototypu (Datové centrum, 2026)](https://dcuk.cz/novinky/od-otazky-k-prototypu-co-se-da-vytvorit-za-jeden-hackathon/)
+**In English.** Winning project of Hackathon ML/AI 2026 (Faculty of Nuclear Sciences and Physical Engineering, Czech Technical University, held in Děčín). We forecast the water level of the Elbe in Děčín and Ústí nad Labem 12, 24 and 36 hours ahead from 98 upstream gauge readings (20 years of hourly open data from the Czech Hydrometeorological Institute). A ridge regression beat a neural net, LightGBM and a physics-based routing model and halves the error of the persistence baseline on the untouched 2021–2025 test set (22.4 vs 50.2 cm during floods). It warned 27 h ahead of the flood stage 3 during storm Boris (2024). The forecast drives a terrain-based 3D flood map and a live website updated every hour.
