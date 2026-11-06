@@ -17,6 +17,7 @@ přepínače zobrazení (satelit, popisky, zajímavá místa, 3D objekty, názvy
 karty, jen nad tmavým přechodem: křivka hladiny se kreslí do přehrávané hodiny, předpověď 24 h před ní, vpravo tlačítko
 Celá obrazovka. Boxy jsou průsvitné sklo (Liquid Glass), mapa pod nimi prosvítá. Porovnání předpověď × skutečnost
 není v ovládání, zapne ho jen porovnat(true) z JS (video a kontroly). Podklad je pevně soumrak a výchozí téma.
+Mapa předpovědi na stránku Dnes (slovník z dnesek.json): mapbox_mapa.html_dnes(dnes), stejný přehrávač bez úvodního okna.
 """
 import json
 import math
@@ -56,6 +57,7 @@ BARVY_PULT = ([22, 124, 156], [242, 196, 55], [239, 108, 0], [198, 40, 40])
 SEDA_PULT = [142, 142, 147]
 PREBARVI = {tuple(a): b for a, b in zip(mapa.BARVY, BARVY_PULT)} | {tuple(mapa.SEDA): SEDA_PULT}
 OKOLI_DEM = 50  # cm; voda v animaci pokryje i hladiny o tolik nad nejvyšší v okně povodně
+DNES_ZPET = 24  # h změřené hladiny před předpovědí na ose mapy Dnes
 VODA_PIXEL = 4  # m, mapa příchodu vody pro 3D hladinu
 VODA_SKLON = 0.02  # m na jeden stupeň zeleného kanálu (převýšení hladiny proti vodočtu)
 
@@ -247,10 +249,7 @@ def html_animace(od, do, cil="decin", model="ridge", pohled="Děčín", nazev=No
         return BEZ_TOKENU
     cas = pd.date_range(mapa._cas_utc(od), mapa._cas_utc(do), freq="h")
     T = nacti().reindex(cas)
-    metadata, percentily = mapa._podklady()
-    stanice = [{"klic": s.klic, "nazev": s.stanice, "tok": s.tok, "lon": s.lon, "lat": s.lat, "spa": SPA.get(s.klic),
-                "p95": round(percentily[f"{s.klic}_Q"].iloc[0], 1), "p99": round(percentily[f"{s.klic}_Q"].iloc[1], 1)}
-               for s in metadata.itertuples(index=False)]
+    stanice = _stanice_animace()
     # řady a rozliv pro obě města: po přepnutí pohledu na druhé město je vidět i jeho voda a graf jeho hladiny;
     # druhé město má rozliv po 20 cm, ať stránka nenaroste dvakrát
     rady = {c: _rada_mesta(c, cas, T, model) for c in MESTA}
@@ -279,27 +278,82 @@ def html_animace(od, do, cil="decin", model="ridge", pohled="Děčín", nazev=No
     return _stranka(data, porovnani=True, pisma=pisma)
 
 
+def html_dnes(dnes, pisma=None) -> str:
+    """Mapa předpovědi ze slovníku web/data/dnesek.json: osa od DNES_ZPET h změřené hladiny po 36 h předpovědi.
+
+    Model předpovídá na 12, 24 a 36 h, mezi tím je hladina i rozmezí nejistoty lineárně jako v grafu na stránce.
+    Průtoky stanic známe jen do hodiny vydání, dál zůstává poslední měření.
+    """
+    token = mapa.mapbox_token()
+    if not token:
+        return BEZ_TOKENU
+    hist = dnes["historie"]
+    zpet = min(DNES_ZPET, len(hist["cas"]) - 1)
+    kroky = [0, *dnes["model"]["horizonty"]]
+    ted = pd.Timestamp(dnes["cas_utc"])
+    cas = pd.date_range(ted - pd.Timedelta(hours=zpet), ted + pd.Timedelta(hours=kroky[-1]), freq="h")
+    mistni = cas.tz_convert(mapa.PASMO)
+    rady = {c: _rada_dnes(c, dnes["stanice"][c], hist[f"{c}_H"][-zpet - 1:], zpet, kroky) for c in MESTA}
+    data = _spolecne(token, "Děčín") | {
+        "uzemi": _zaplavy([]), "anim": {
+            "cil": "decin", "popisky": [_popisek_casu(t) for t in cas], "start": zpet,
+            "pulnoci": [[i, f"{t.day}. {t.month}."] for i, t in enumerate(mistni) if t.hour == 0],
+            "rady": rady, "stanice": (stanice := _stanice_animace()),
+            "Q": {s["klic"]: hist[f"{s['klic']}_Q"][-zpet - 1:] for s in stanice},
+            "Hs": {k: rady[k]["H"] for k in SPA}, "dnes": {"ted": zpet, "kroky": kroky},
+        },
+    }
+    return _stranka(data, pisma=pisma)
+
+
+def _rada_dnes(cil, st, zmereno, zpet, kroky):
+    """Řada města pro mapu Dnes: H je změřeno do hodiny vydání a dál předpověď, P a pas (rozmezí) jen předpověď."""
+    import numpy as np
+    hodiny = range(kroky[-1] + 1)
+    mezi = lambda rada: [round(float(v)) for v in np.interp(hodiny, kroky, [st["ted"], *(rada[str(h)] for h in kroky[1:])])]
+    P = mezi(st["pred"])
+    pas = None
+    if all(st["dolni"][str(h)] is not None for h in kroky[1:]):
+        pas = {"lo": [None] * zpet + mezi(st["dolni"]), "hi": [None] * zpet + mezi(st["horni"])}
+    H = zmereno[:-1] + P
+    rozlivy, voda = _rozlivy(cil, [v for v in H + (pas["hi"] if pas else []) if v is not None])
+    return {"mesto": MESTA[cil], "H": H, "P": [None] * zpet + P, "pas": pas, "spa": SPA[cil], "rozlivy": rozlivy,
+            "voda": voda, "vrchol": zpet}
+
+
+def _stanice_animace():
+    metadata, percentily = mapa._podklady()
+    return [{"klic": s.klic, "nazev": s.stanice, "tok": s.tok, "lon": s.lon, "lat": s.lat, "spa": SPA.get(s.klic),
+             "p95": round(percentily[f"{s.klic}_Q"].iloc[0], 1), "p99": round(percentily[f"{s.klic}_Q"].iloc[1], 1)}
+            for s in metadata.itertuples(index=False)]
+
+
 def _rada_mesta(cil, cas, T, model):
-    """Hladina, předpověď 24 h předem a rozliv jednoho města pro animaci: úřední území jako polygony,
-    rozliv z terénu jako mapa příchodu vody pro 3D hladinu (plochy po 10 cm jen pro popisky)."""
+    """Hladina, předpověď 24 h předem a rozliv jednoho města pro animaci."""
     hodina = pd.Timedelta(hours=1)
     X = _vstupy(cil)
     X = X[X.index.isin(cas - 24 * hodina)]
     P = pd.Series(nacti_model(model, cil, 24).predict(X), index=X.index + 24 * hodina).reindex(cas)
     H, Pr = _rada(T[f"{cil}_H"]), _rada(P)
+    rozlivy, voda = _rozlivy(cil, [v for v in H + Pr if v is not None])
+    return {"mesto": MESTA[cil], "H": H, "P": Pr, "spa": SPA[cil], "rozlivy": rozlivy, "voda": voda,
+            "vrchol": max(range(len(H)), key=lambda i: -1 if H[i] is None else H[i])}
+
+
+def _rozlivy(cil, hodnoty):
+    """Rozlivy města pro hladiny `hodnoty`: úřední území jako polygony, rozliv z terénu jako mapa příchodu vody
+    pro 3D hladinu (plochy po 10 cm jen pro popisky)."""
     hladiny = n_lete().query("klic == @cil").set_index("N").H_cm
     rozlivy = {"dibavod": sorted(({"h": int(hladiny[N]), "N": N, "ha": round(_plocha_ha(s)),
                                    "g": {"type": "MultiPolygon", "coordinates": s}}
                                   for N, usek, s in _uzemi() if usek == cil), key=lambda u: u["h"])}
     voda = None
     if _dem(cil):
-        hodnoty = [v for v in H + Pr if v is not None]
         od_cm, do_cm = min(hodnoty) - OKOLI_DEM, max(hodnoty) + OKOLI_DEM
         urovne = [u for u in _dem(cil) if od_cm <= u["h"] <= do_cm] or [_dem_pro(cil, min(hodnoty))]
         rozlivy["dem"] = [{"h": u["h"], "ha": u["ha"]} for u in urovne]
         voda = _voda(cil, do_cm)
-    return {"mesto": MESTA[cil], "H": H, "P": Pr, "spa": SPA[cil], "rozlivy": rozlivy, "voda": voda,
-            "vrchol": max(range(len(H)), key=lambda i: -1 if H[i] is None else H[i])}
+    return rozlivy, voda
 
 
 def _osa_labe(cil):
@@ -491,6 +545,15 @@ button:focus-visible { outline: 2px solid var(--modra); outline-offset: 2px; }
   place-items: center; transition: transform 0.1s ease-out; }
 .nastaveni-tlacitko:active { transform: scale(0.94); }
 .nastaveni-tlacitko svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+/* mapa předpovědi na stránce Dnes: v pilulce i věta o hladině, nad osou skok na 12, 24 a 36 h */
+.dnes .okamzik { height: auto; min-height: 44px; max-width: min(400px, calc(100% - 88px)); flex-wrap: wrap; column-gap: 0; padding: 8px 18px 9px;
+  border-radius: 20px; white-space: normal; }
+.dnes .okamzik small { flex-basis: 100%; margin-top: 1px; color: var(--text); font-size: 13px; font-weight: 500; letter-spacing: 0; line-height: 1.3; }
+.dnes .okamzik > span { white-space: nowrap; }
+.animace.dnes .vpravo { top: 102px; max-height: calc(100% - 146px - var(--lista)); }
+.kdy { left: 50%; transform: translateX(-50%); bottom: calc(var(--lista) + 42px); padding: 3px; }
+.kdy .segment button { min-height: 32px; padding: 4px 14px; }
+.dnes .lista .vrchol span { display: block; }
 /* karta předpovědi statické mapy (bez animace) */
 h2 { margin: 0 0 8px; font-size: 13px; font-weight: 600; color: var(--tlumene); }
 .datum { font-size: 19px; font-weight: 700; letter-spacing: -0.02em; line-height: 1.15; }
@@ -631,7 +694,10 @@ h2 { margin: 0 0 8px; font-size: 13px; font-weight: 600; color: var(--tlumene); 
   .uvod-hraj { position: sticky; bottom: 0; height: 52px; font-size: 17px; margin-top: 14px; box-shadow: 0 -12px 16px rgba(255, 255, 255, 0.95); }
   .uvod-karta::after { content: ""; display: block; height: 14px; }
   .okamzik { top: 58px; right: auto; left: 12px; height: 36px; padding: 0 14px; font-size: 15px; }
+  .dnes .okamzik { right: 12px; max-width: none; height: auto; padding: 7px 14px 8px; border-radius: 18px; }
   .animace .vpravo { top: 102px; }
+  .animace.dnes .vpravo { top: 142px; max-height: calc(100% - 186px - var(--lista)); }
+  .kdy .segment button { padding: 4px 10px; }
   .lista .prah span { left: calc(4px + var(--k) * 34px); }
   .lista .prah i { display: none; }
   .lista .vrchol span { display: none; }  /* na telefonu by překryl pilulky stupňů, čára stačí */
@@ -664,6 +730,13 @@ h2 { margin: 0 0 8px; font-size: 13px; font-weight: 600; color: var(--tlumene); 
 <script>
 const D = JSON.parse(document.getElementById('data').textContent);
 const A = D.anim;  // jen v animaci: hodinové řady
+const DNES = A?.dnes;  // mapa předpovědi na stránce Dnes: do hodiny DNES.ted změřeno, dál předpověď
+const vRamu = (() => { try { return window.self !== window.top; } catch (e) { return true; } })();
+if (DNES) {
+  const c = new URLSearchParams(location.search).get('cil');
+  if (A.rady[c]) { A.cil = c; D.pohled = A.rady[c].mesto; }
+  document.title = 'Labe · předpověď v mapě';
+}
 mapboxgl.accessToken = D.token;
 const STUPNE = ['bez stupně', '1. stupeň', '2. stupeň', '3. stupeň'];
 const css = c => `rgb(${c[0]},${c[1]},${c[2]})`;
@@ -1037,7 +1110,8 @@ function vrstvaVody(m) {
         gl.uniform1f(u.u_hladina, d.v.nula + h.cm / 100);
         gl.uniform1f(u.u_jez_nad, d.v.jez ? d.v.jez[0] : 1e4);
         gl.uniform1f(u.u_jez, d.v.jez ? d.v.jez[1] : -1e4);
-        gl.uniform1f(u.u_cm, h.cm);
+        // pod nejnižší spočítanou hladinou je Labe celé v korytě, které z terénu zúžit neumíme
+        gl.uniform1f(u.u_cm, Math.max(h.cm, d.v.l0));
         gl.uniform1f(u.u_l0, d.v.l0);
         gl.activeTexture(gl.TEXTURE0);
         gl.bindTexture(gl.TEXTURE_2D, g.tex);
@@ -1056,7 +1130,8 @@ function vodaV(m, lngLat) {
     const v = d.v, j = Math.floor((lngLat.lng - v.zapad) / v.dx), i = Math.floor((v.sever - lngLat.lat) / v.dy);
     if (i < 0 || j < 0 || i >= v.vyska || j >= v.sirka) continue;
     const r = d.px[(i * v.sirka + j) * 4], cm = m.stavVody?.[d.klic]?.cm;
-    if (r === 255 || cm == null || cm < v.l0 + 10 * r) continue;
+    if (r === 255 || cm == null || (r > 0 && cm < v.l0 + 10 * r)) continue;
+    if (cm < v.l0) return `${d.r.mesto}: koryto Labe<br>Hladina ${cislo(cm)} cm, voda se z koryta nerozlévá`;
     const urovne = d.r.rozlivy.dem, u = urovne.reduce((a, b) => Math.abs(b.h - cm) < Math.abs(a.h - cm) ? b : a);
     const hloubka = r === 0 ? 'koryto Labe' : `voda tu sahá asi ${(Math.round((cm - v.l0 - 10 * r) / 10) / 10).toLocaleString('cs-CZ')} m`;
     return `${d.r.mesto}: ${hloubka}<br>Rozliv z výškového modelu (ČÚZK DMR 5G) pro hladinu ${cislo(cm)} cm, ` +
@@ -1070,7 +1145,11 @@ function vytvorMapu(kontejner, k) {
   const m = new mapboxgl.Map({
     container: kontejner, style: STYL[N.satelit ? 'satelit' : 'standard'], config: {basemap: konfigurace(N.satelit)},
     center: k.center, zoom: k.zoom, pitch: k.pitch, bearing: k.bearing, minZoom: 6, maxPitch: 80,
-    attributionControl: false, keyboard: !A  // v animaci šipky posouvají čas
+    attributionControl: false, keyboard: !A,  // v animaci šipky posouvají čas
+    // ve stránce Dnes se přes mapu musí dát rolovat dál: kolečko jen s ⌘ nebo ctrl, na telefonu dvěma prsty
+    cooperativeGestures: Boolean(DNES) && vRamu,
+    locale: {'ScrollZoomBlocker.CtrlMessage': 'Přiblížení: ctrl + kolečko', 'ScrollZoomBlocker.CmdMessage': 'Přiblížení: ⌘ + kolečko',
+             'TouchPanBlocker.Message': 'Mapou pohnete dvěma prsty'}
   });
   m.setPadding(k.padding);
   m.addControl(new mapboxgl.AttributionControl({customAttribution: ATRIBUCE}), 'bottom-right');
@@ -1203,27 +1282,28 @@ const K = A ? A.popisky.length - 1 : 0;
 let cas = A ? A.start : 0, rezim = A ? 'animace' : null;
 let R = A ? A.rady[A.cil] : null;  // řada v grafu přehrávače: město pohledu, na celém povodí město stránky
 let priZmeneMesta = () => {};
-let hraje = false, rychlost = 6;  // rychlost v hodinách povodně za sekundu
+let hraje = false, rychlost = DNES ? 4 : 6;  // rychlost v hodinách povodně za sekundu
 const podle = 'skutecnost';  // jednu mapu plní změřená hladina, předpověď je v porovnání vlevo
 const hodina = () => Math.round(cas);
 const stupenH = (spa, h) => h == null ? null : spa.filter(m => h >= m).length;
 const barvaStupne = st => st == null ? D.seda : D.barvy[st];
 
 function staniceV(i) {
+  const vyhled = DNES && i > DNES.ted;  // v předpovědi známe jen hladinu Děčína a Ústí, průtoky zůstávají z posledního měření
   return {type: 'FeatureCollection', features: A.stanice.map(s => {
-    const q = A.Q[s.klic][i];
-    let st, text = `${s.nazev} · ${s.tok}<br>Průtok: ${q == null ? 'chybí měření' : cislo(q) + ' m³/s'}`;
+    const q = A.Q[s.klic][vyhled ? DNES.ted : i], h = s.spa ? A.Hs[s.klic][i] : null;
+    let st, text = `${s.nazev} · ${s.tok}<br>Průtok: ${q == null ? 'chybí měření' : cislo(q) + ' m³/s'}${vyhled ? ' (poslední měření)' : ''}`;
     if (s.spa) {
-      const h = A.Hs[s.klic][i];
       st = stupenH(s.spa, h);
-      text += `<br>Hladina: ${h == null ? 'chybí měření' : cislo(h) + ' cm'}<br>${st == null ? 'stupeň nelze určit' :
+      text += `<br>${vyhled ? 'Předpověď hladiny' : 'Hladina'}: ${h == null ? 'chybí měření' : cislo(h) + ' cm'}<br>${st == null ? 'stupeň nelze určit' :
         st ? st + '. stupeň povodňové aktivity' : 'bez stupně povodňové aktivity'}`;
     } else {
       st = q == null ? null : q >= s.p99 ? 3 : q >= s.p95 ? 1 : 0;
       text += `<br>95. / 99. percentil: ${cislo(s.p95)} / ${cislo(s.p99)} m³/s<br>Barva není oficiální povodňový stupeň.`;
     }
     return {type: 'Feature', geometry: {type: 'Point', coordinates: [s.lon, s.lat]}, properties: {
-      prutok: q ?? 0, barva: css(barvaStupne(st)), popisek: `${s.nazev}\n${q == null ? 'chybí' : cislo(q) + ' m³/s'}`, tooltip: text}};
+      prutok: q ?? 0, barva: css(barvaStupne(st)), tooltip: text,
+      popisek: `${s.nazev}\n${DNES && s.spa ? cislo(h) + ' cm' : q == null ? 'chybí' : cislo(q) + ' m³/s'}`}};
   })};
 }
 
@@ -1262,6 +1342,7 @@ function prelet(p) {
   pohled = p;
   oznacPohled(p);
   if (A) priZmeneMesta(p);
+  if (DNES && vRamu) parent.postMessage({pohled: p}, location.origin);
   mapaA.flyTo({...kamera(p), duration: 3500, essential: true});
   mapaA.once('moveend', () => dolad(p));
   if (!A) panel();
@@ -1367,10 +1448,25 @@ function panel() {
     </div>`).join('');
 }
 
+// věta do pilulky na mapě Dnes: hladina, stupeň a kam voda sahá
+function vetaDnes(i) {
+  const r = R, h = r.H[i], pas = i > DNES.ted && r.pas;
+  if (h == null) return `${r.mesto}: hladina chybí`;
+  const st = stupenH(r.spa, h), dem = r.rozlivy.dem;
+  const hladina = pas ? `asi ${cislo(h)} cm (${cislo(pas.lo[i])} až ${cislo(pas.hi[i])})` : `${cislo(h)} cm`;
+  const voda = !r.voda || h < r.voda.l0 ? 'voda v korytě'
+    : `pod vodou asi ${cislo(dem.reduce((a, b) => Math.abs(b.h - h) < Math.abs(a.h - h) ? b : a).ha)} ha i s korytem`;
+  return `${r.mesto}: ${hladina}, ${st ? st + '. stupeň' : 'bez stupně'}, ${voda}`;
+}
 function panelAnimace(i) {  // datum a hodina v pravém boxu, hodnota na štítku hlavy osy
   const h = R.H[i], p = R.P[i], c = A.popisky[i].split(' ');  // "17. 1. 2011 05:00 SEČ"
-  document.getElementById('p-den').textContent = c.slice(0, 3).join('\u00a0');
+  document.getElementById('p-den').textContent = c.slice(0, DNES ? 2 : 3).join('\u00a0');
   document.getElementById('p-hodina').textContent = '\u00a0· ' + c[3].replace(/^0(?=\d)/, '');
+  if (DNES) {
+    const t = i - DNES.ted;
+    document.getElementById('p-kdy').textContent = '\u00a0· ' + (t > 0 ? `za\u00a0${t}\u00a0h` : t < 0 ? `před\u00a0${-t}\u00a0h` : 'teď');
+    document.getElementById('p-veta').textContent = vetaDnes(i);
+  }
   const stitek = document.getElementById('hlava-stitek');
   if (stitek) stitek.textContent = h == null ? '–' :
     cislo(h) + (rezim === 'porovnani' && p != null ? `\u00a0· předpověď\u00a0${cislo(p)}` : '') + '\u00a0cm';
@@ -1407,7 +1503,7 @@ const IKONA = {hraj: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4.
                stuj: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 4h4.5v16H6zM13.5 4H18v16h-4.5z"/></svg>',
                znovu: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5V1.5L7 6l5 4.5V7a6 6 0 1 1-6 6H4a8 8 0 1 0 8-8z"/></svg>'};
 if (A) {
-  let minule = null, nakresleno = -1, tahne = false, uvod = null, yL = null;
+  let minule = null, nakresleno = -1, tahne = false, uvod = null, yL = null, zastavNa = null, samo = Boolean(DNES);  // samo: mapa Dnes se po načtení sama přehraje, dokud na ni nikdo nesáhl
   const q = id => document.getElementById(id);
   const procento = i => i / K * 100;
   const casti = i => {
@@ -1418,7 +1514,7 @@ if (A) {
 
   // svislé měřítko grafu města r: od nejnižší hladiny po vrchol s rezervou na popisek, 1. stupeň vždy
   function meritko(r) {
-    const hodnoty = r.H.concat(r.P).filter(v => v != null);
+    const hodnoty = r.H.concat(r.P, r.pas ? r.pas.hi : [], r.pas ? r.pas.lo : []).filter(v => v != null);
     const dno = Math.min(...hodnoty), strop = Math.max(...hodnoty, r.spa[0]);
     return v => 100 - (v - (dno - 0.06 * (strop - dno))) / (1.3 * (strop - dno)) * 100;
   }
@@ -1435,6 +1531,11 @@ if (A) {
     });
     zavri();
     return d;
+  }
+  function cestaPasu(p, y) {  // rozmezí nejistoty jako plocha: dolní mez tam, horní zpátky
+    const x = i => (i / K * 1000).toFixed(1), body = p.lo.flatMap((v, i) => v == null ? [] : [i]);
+    return 'M' + body.map(i => `${x(i)},${y(p.lo[i]).toFixed(2)}`).join('L') + 'L' +
+      body.reverse().map(i => `${x(i)},${y(p.hi[i]).toFixed(2)}`).join('L') + 'Z';
   }
   // prahy jsou u sebe blízko, popisky proto vedle sebe
   const prahy = (r, y) => r.spa.map((v, k) => y(v) < 0 ? '' : `<div class="prah" style="top:${y(v)}%;--c:${D.spa_barvy[k + 1]}">
@@ -1454,15 +1555,18 @@ if (A) {
   // přehrávač: skutečná hladina se kreslí do aktuální hodiny, předpověď o 24 h dál (tolik dopředu už model v tu chvíli řekl)
   function grafListy(el, r) {
     yL = meritko(r);
+    // na mapě Dnes je celá osa vidět hned: změřená část plná, předpověď čárkovaně s rozmezím, svislá čára je teď
+    const zmereno = DNES ? r.H.map((v, i) => i <= DNES.ted ? v : null) : r.H;
     el.innerHTML = `<svg viewBox="0 0 1000 100" preserveAspectRatio="none" aria-hidden="true">
         <defs><clipPath id="klip-h"><rect id="klip-h-r" x="0" y="-20" width="0" height="140"/></clipPath>
           <clipPath id="klip-p"><rect id="klip-p-r" x="0" y="-20" width="0" height="140"/></clipPath>
           <linearGradient id="vypln" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity="0.22"/>
             <stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient></defs>
-        <path clip-path="url(#klip-p)" d="${cesta(r.P, yL)}" fill="none" stroke="#9fcad8" stroke-opacity="0.9" stroke-width="2" stroke-linejoin="round" vector-effect="non-scaling-stroke"/>
-        <path clip-path="url(#klip-h)" d="${cesta(r.H, yL, true)}" fill="url(#vypln)"/>
-        <path class="h" clip-path="url(#klip-h)" d="${cesta(r.H, yL)}" fill="none" stroke="#fff" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round" vector-effect="non-scaling-stroke"/>
-      </svg>` + prahy(r, yL) + vrchol(r, 'vrchol-lista');
+        ${DNES && r.pas ? `<path d="${cestaPasu(r.pas, yL)}" fill="#9fcad8" fill-opacity="0.3"/>` : ''}
+        <path clip-path="url(#klip-p)" d="${cesta(r.P, yL)}" fill="none" stroke="#9fcad8" stroke-opacity="0.9" stroke-width="2" stroke-linejoin="round"${DNES ? ' stroke-dasharray="6 5"' : ''} vector-effect="non-scaling-stroke"/>
+        <path clip-path="url(#klip-h)" d="${cesta(zmereno, yL, true)}" fill="url(#vypln)"/>
+        <path class="h" clip-path="url(#klip-h)" d="${cesta(zmereno, yL)}" fill="none" stroke="#fff" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round" vector-effect="non-scaling-stroke"/>
+      </svg>` + prahy(r, yL) + (DNES ? `<div class="vrchol" id="vrchol-lista" style="left:${procento(DNES.ted)}%"><span>teď</span></div>` : vrchol(r, 'vrchol-lista'));
   }
   function pasmo(r) {  // pruh pod osou: kdy byla skutečná hladina v kterém stupni
     let html = '', od = 0, st = stupenH(r.spa, r.H[0]);
@@ -1481,13 +1585,26 @@ if (A) {
   lista.className = 'lista';
   lista.id = 'lista';
   lista.innerHTML = `<button class="hraj" id="hraj"></button>
-    <div class="osa" id="osa" role="slider" tabindex="0" aria-label="Čas povodně" aria-valuemin="0" aria-valuemax="${K}">
+    <div class="osa" id="osa" role="slider" tabindex="0" aria-label="${DNES ? 'Čas předpovědi' : 'Čas povodně'}" aria-valuemin="0" aria-valuemax="${K}">
       <div class="graf" id="graf-osa"></div><div class="pasmo"><div id="pasmo"></div></div>
       <div class="najeti" id="najeti"><span></span></div><div class="hlava" id="hlava"><i></i><span id="hlava-stitek"></span></div>
     </div>
     <button class="kulate" id="cela" type="button"></button>
     <div class="dny" id="dny"></div>`;
   document.body.append(stin, lista);
+  if (DNES) {
+    document.body.classList.add('dnes');
+    q('okamzik').insertAdjacentHTML('beforeend', '<span id="p-kdy"></span><small id="p-veta"></small>');
+    const kdy = document.createElement('div');
+    kdy.className = 'sklo kdy';
+    kdy.innerHTML = `<div class="segment" role="group" aria-label="Kdy">${DNES.kroky.map(h =>
+      `<button data-h="${h}" aria-pressed="false">${h ? `Za\u00a0${h}\u00a0h` : 'Teď'}</button>`).join('')}</div>`;
+    kdy.addEventListener('click', e => {
+      const b = e.target.closest('button');
+      if (b) { pauza(); skoc(DNES.ted + +b.dataset.h); }
+    });
+    document.body.append(kdy);
+  }
   const osa = q('osa'), hlava = q('hlava'), najeti = q('najeti'), tlacitko = q('hraj'), stitky = q('stitky');
   function zobrazMesto(r) {
     R = r;
@@ -1523,13 +1640,14 @@ if (A) {
     kraj(hlava, procento(i) / 100 * osa.clientWidth);
     osa.setAttribute('aria-valuenow', i);
     osa.setAttribute('aria-valuetext', A.popisky[i]);
+    if (DNES) for (const b of document.querySelectorAll('.kdy button')) b.setAttribute('aria-pressed', DNES.ted + +b.dataset.h === i);
   }
   // každý snímek: křivka dorůstá k hlavě, tečka jede po ní plynule i uvnitř hodiny
   function prubeh() {
-    q('klip-h-r').setAttribute('width', (cas / K * 1000).toFixed(1));
-    q('klip-p-r').setAttribute('width', (Math.min(K, cas + 24) / K * 1000).toFixed(1));
-    q('pasmo').style.clipPath = `inset(0 ${(100 - procento(cas)).toFixed(2)}% 0 0)`;
-    q('vrchol-lista').classList.toggle('videt', cas >= R.vrchol);
+    q('klip-h-r').setAttribute('width', ((DNES ? K : cas) / K * 1000).toFixed(1));
+    q('klip-p-r').setAttribute('width', ((DNES ? K : Math.min(K, cas + 24)) / K * 1000).toFixed(1));
+    q('pasmo').style.clipPath = DNES ? 'none' : `inset(0 ${(100 - procento(cas)).toFixed(2)}% 0 0)`;
+    q('vrchol-lista').classList.toggle('videt', Boolean(DNES) || cas >= R.vrchol);
     const a = Math.floor(cas), b = Math.min(K, a + 1), ha = R.H[a], hb = R.H[b];
     const h = ha == null ? hb : hb == null ? ha : ha + (hb - ha) * (cas - a);
     hlava.firstChild.style.top = `calc(5px + (100% - 14px) * ${(h == null ? 50 : yL(h)) / 100})`;
@@ -1537,7 +1655,7 @@ if (A) {
   }
   function ikona() {
     tlacitko.innerHTML = hraje ? IKONA.stuj : cas >= K ? IKONA.znovu : IKONA.hraj;
-    tlacitko.setAttribute('aria-label', hraje ? 'Zastavit' : 'Přehrát povodeň');
+    tlacitko.setAttribute('aria-label', hraje ? 'Zastavit' : DNES ? 'Přehrát předpověď' : 'Přehrát povodeň');
     lista.classList.toggle('hraje', hraje);
   }
   function zavriUvod() {
@@ -1547,15 +1665,14 @@ if (A) {
     u.classList.add('pryc');
     setTimeout(() => u.remove(), 350);
   }
-  function prehraj() { zavriUvod(); if (cas >= K) cas = A.start; hraje = true; minule = null; ikona(); }
-  function pauza() { hraje = false; minule = null; ikona(); }
+  function prehraj() { zavriUvod(); if (cas >= K) cas = A.start; hraje = true; minule = null; samo = false; ikona(); }
+  function pauza() { hraje = false; minule = null; zastavNa = null; samo = false; ikona(); }
   function nastavRychlost(h) { if (+h > 0) rychlost = +h; }  // bez ovládání na stránce; pro video a deck
   function skoc(i) { cas = Math.max(0, Math.min(K, Math.round(+i))); minule = null; ikona(); }
   const krok = d => { pauza(); skoc(hodina() + d); };
 
   // celá obrazovka: celý dokument (Safari přes webkit); v rámu, kde je zakázaná, se stejná stránka otevře v nové kartě
   const cela = q('cela');
-  const vRamu = (() => { try { return window.self !== window.top; } catch (e) { return true; } })();
   const fsLze = Boolean(document.fullscreenEnabled || document.webkitFullscreenEnabled);
   const fsPrvek = () => document.fullscreenElement || document.webkitFullscreenElement;
   const novaKarta = () => { if (vRamu && location.protocol !== 'about:') open(location.href, '_blank', 'noopener'); };
@@ -1583,7 +1700,7 @@ if (A) {
 
   tlacitko.addEventListener('click', () => hraje ? pauza() : prehraj());
   const zBodu = e => { const o = osa.getBoundingClientRect(); return Math.round(Math.min(1, Math.max(0, (e.clientX - o.left) / o.width)) * K); };
-  osa.addEventListener('pointerdown', e => { tahne = true; osa.setPointerCapture(e.pointerId); cas = zBodu(e); });
+  osa.addEventListener('pointerdown', e => { if (zastavNa != null || samo) pauza(); tahne = true; osa.setPointerCapture(e.pointerId); cas = zBodu(e); });
   // při najetí ukáže čas a hladinu pod kurzorem místo štítku hlavy, ať se nepřekrývají
   const schovejNajeti = () => { najeti.style.display = 'none'; osa.classList.remove('najizdi'); };
   osa.addEventListener('pointermove', e => {
@@ -1612,24 +1729,32 @@ if (A) {
   document.addEventListener('keyup', e => { if (e.code === 'Space' && e.target.tagName === 'BUTTON') e.preventDefault(); });
 
   // úvod: nadpis, jedna řádka s rozsahem a vrcholem, graf a jedno tlačítko
-  const H0 = A.rady[A.cil];
-  uvod = document.createElement('div');
-  uvod.className = 'uvod';
-  uvod.innerHTML = `<div class="uvod-karta" role="dialog" aria-labelledby="uvod-nazev">
-    <h1 id="uvod-nazev">${A.nazev} <span>· ${H0.mesto}</span></h1>
-    <p class="uvod-rozsah">${A.rozsah}, ${cislo(K + 1)} hodin. Vrchol <b>${kratce(H0.vrchol)}, ${cislo(H0.H[H0.vrchol])} cm</b>
-      ${odznak(stupenH(H0.spa, H0.H[H0.vrchol]))}</p>
-    <div class="uvod-graf" id="graf-uvod"></div>
-    <button class="uvod-hraj" id="uvod-hraj">${IKONA.hraj}Přehrát povodeň</button></div>`;
-  document.body.append(uvod);
-  grafUvodu(q('graf-uvod'), H0);
-  q('uvod-hraj').addEventListener('click', prehraj);
+  if (!DNES) {
+    const H0 = A.rady[A.cil];
+    uvod = document.createElement('div');
+    uvod.className = 'uvod';
+    uvod.innerHTML = `<div class="uvod-karta" role="dialog" aria-labelledby="uvod-nazev">
+      <h1 id="uvod-nazev">${A.nazev} <span>· ${H0.mesto}</span></h1>
+      <p class="uvod-rozsah">${A.rozsah}, ${cislo(K + 1)} hodin. Vrchol <b>${kratce(H0.vrchol)}, ${cislo(H0.H[H0.vrchol])} cm</b>
+        ${odznak(stupenH(H0.spa, H0.H[H0.vrchol]))}</p>
+      <div class="uvod-graf" id="graf-uvod"></div>
+      <button class="uvod-hraj" id="uvod-hraj">${IKONA.hraj}Přehrát povodeň</button></div>`;
+    document.body.append(uvod);
+    grafUvodu(q('graf-uvod'), H0);
+    q('uvod-hraj').addEventListener('click', prehraj);
+  }
   zobrazMesto(R);
 
   const snimek = ts => {
     if (hraje && !tahne && minule != null) {
-      cas = Math.min(cas + (ts - minule) / 1000 * rychlost, K);
-      if (cas >= K) { hraje = false; ikona(); document.dispatchEvent(new CustomEvent('povoden-konec')); }
+      const konec = zastavNa ?? K;
+      cas = Math.min(cas + (ts - minule) / 1000 * rychlost, konec);
+      if (cas >= konec) {
+        hraje = false;
+        zastavNa = null;
+        ikona();
+        if (konec === K) document.dispatchEvent(new CustomEvent('povoden-konec'));
+      }
     }
     minule = hraje && !tahne ? ts : null;
     const i = hodina();
@@ -1657,6 +1782,14 @@ if (A) {
                             skutecnost: R.H[hodina()], predpoved: R.P[hodina()], start: A.start, vrchol: R.vrchol})});
   ikona();
   requestAnimationFrame(snimek);
+  // na mapě Dnes voda po načtení doběhne z teď do zítřka a zastaví se; bez animací rovnou zítřek
+  if (DNES) mapaA.once('load', () => setTimeout(() => {
+    if (!samo) return;
+    samo = false;
+    if (KLID) return skoc(DNES.ted + 24);
+    prehraj();
+    zastavNa = DNES.ted + 24;
+  }, 400));
 }
 
 panel();

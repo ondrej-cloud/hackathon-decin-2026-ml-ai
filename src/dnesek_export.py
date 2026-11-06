@@ -1,10 +1,10 @@
 """Živá předpověď pro web: web/data/dnesek.json z operativních dat ČHMÚ, modelu ridge_vse a srážek z Open-Meteo.
 
-python src/dnesek_export.py             zapíše web/data/dnesek.json a vypíše souhrn
-python src/dnesek_export.py <cesta>     zapíše jinam (kontrola)
+python src/dnesek_export.py             zapíše web/data/dnesek.json a mapu web/mapa/dnes.html, vypíše souhrn
+python src/dnesek_export.py <cesta>     zapíše jen JSON jinam (kontrola)
 
 Když ČHMÚ neodpoví, zapíše se JSON s ok=false a větou v "chyba" a v "posledni" zůstane poslední úspěšný
-stav, skript neskončí chybou. Token Mapboxu ani .env se tu nepoužívají, stačí internet.
+stav, skript neskončí chybou. Mapa z něj vznikne taky. Předpověď potřebuje jen internet, mapa MAPBOX_TOKEN.
 """
 import json
 import os
@@ -24,6 +24,7 @@ from data import CILE, PROTI_PROUDU, SPA  # noqa: E402
 
 MODEL = "ridge_vse"
 VYSTUP = ROOT / "web/data/dnesek.json"
+MAPA = ROOT / "web/mapa/dnes.html"
 TZ = "Europe/Prague"
 HISTORIE_H = 72
 HORIZONTY = [str(h) for h in predikce.HORIZONTY]
@@ -85,9 +86,9 @@ def tabulka(P):
 
 
 def historie(P):
-    """Posledních 72 h: hladiny v cílech a průtok v Praze a Mělníku, pro graf 3 dnů. Chybějící hodiny jsou null."""
+    """Posledních 72 h: hladiny v cílech a průtoky všech stanic, pro graf 3 dnů a mapu. Chybějící hodiny jsou null."""
     D = P["tabulka"].loc[:P["cas_utc"]].tail(HISTORIE_H)
-    sloupce = [f"{k}_H" for k in CILE] + ["praha_Q", "melnik_Q"]
+    sloupce = [f"{k}_H" for k in CILE] + [f"{k}_Q" for k in CILE | PROTI_PROUDU]
     return {"cas": [_cesky_iso(t) for t in D.index]} | {c: [_cm(v) for v in D[c]] for c in sloupce}
 
 
@@ -167,11 +168,23 @@ def uloz(out, soubor):
     os.replace(docasny, soubor)
 
 
+def mapa_dnes(out):
+    """Stránka mapy ze stejných dat jako JSON; při výpadku ČHMÚ z posledního úspěšného stavu."""
+    import mapbox_mapa
+    dnes = out if out["ok"] else out.get("posledni")
+    if dnes:
+        MAPA.parent.mkdir(parents=True, exist_ok=True)
+        MAPA.write_text(mapbox_mapa.html_dnes(dnes, pisma="../fonts/"), encoding="utf-8")
+        print(f"{MAPA}: {MAPA.stat().st_size / 1e6:.1f} MB")
+
+
 if __name__ == "__main__":
     soubor = Path(sys.argv[1]).resolve() if len(sys.argv) > 1 else VYSTUP
     out = sestav(soubor)
     zkontroluj(out)
     uloz(out, soubor)
+    if soubor == VYSTUP:
+        mapa_dnes(out)
     print(f"{soubor}: {soubor.stat().st_size / 1e3:.1f} kB, ok={out['ok']}")
     if out["ok"]:
         print(f"vydáno {out['cas_cesky']} (stáří {out['stari_h']} h), upozornění: {out['upozorneni'] or 'žádné'}")

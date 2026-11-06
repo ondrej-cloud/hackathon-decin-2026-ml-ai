@@ -1,4 +1,4 @@
-// Stránka Dnes: hladina teď a za 12, 24 a 36 h z živých dat ČHMÚ, graf posledních 72 hodin, vodočet, průtoky a srážky.
+// Stránka Dnes: mapa předpovědi, hladina teď a za 12, 24 a 36 h z živých dat ČHMÚ, graf posledních 72 hodin, vodočet, průtoky a srážky.
 import { typo, cislo, cm, parseIso, posun, datumCas } from "./typo.js";
 import { DATA, H, KDE, NAZVY, BARVY, nacti, stav, zapisStav } from "./data.js";
 import { $, hlaska, segmenty, naZmenu, oznam, hlava } from "./spolecne.js";
@@ -8,8 +8,28 @@ import { graf } from "./graf.js";
 
 const S = { cil: stav().get("cil") || "decin" };
 let POV, DNES, prvni = true;
-const obsah = $("#obsah");
+const obsah = $("#obsah"), scena = $("#scena"), ramec = $("#ramec");
+const POHLEDY = { decin: "Děčín", usti: "Ústí nad Labem" };
 const spa = () => POV.stanice[S.cil].spa;
+const cestaMapy = () => `mapa/dnes.html${S.cil === "decin" ? "" : `?cil=${S.cil}`}`;
+
+// Stanice je jedna pro mapu i čísla: přepínač pod mapou přeletí mapu, přepínač v mapě přepne čísla.
+function naMape() {
+  const m = ramec.contentWindow;
+  if (m && m.prelet) m.prelet(POHLEDY[S.cil]);
+  else ramec.src = cestaMapy();
+}
+
+addEventListener("message", (e) => {
+  if (e.origin !== location.origin || e.source !== ramec.contentWindow) return;
+  const cil = Object.keys(POHLEDY).find((k) => POHLEDY[k] === e.data.pohled);
+  if (!cil || cil === S.cil) return;
+  S.cil = cil;
+  prvni = true;
+  const volba = $(`input[name="cil"][value="${cil}"]`);
+  if (volba) volba.checked = true;
+  ukaz();
+});
 
 async function start() {
   try {
@@ -19,12 +39,15 @@ async function start() {
       DNES = { ...DNES.posledni, upozorneni: [DNES.chyba, ...(DNES.posledni.upozorneni || [])].filter(Boolean) };
     }
   } catch (e) {
+    scena.remove();
     obsah.innerHTML = hlaska("Živá předpověď teď není k dispozici. Zkuste to za chvíli, mezitím se můžete podívat na povodně z historie.", "varovani") + upoutavka();
     return;
   }
   if (!POV.stanice[S.cil]) S.cil = "decin";
+  ramec.addEventListener("load", () => scena.classList.add("nacteno"), { once: true });
+  ramec.src = cestaMapy();
   $("#stanice").innerHTML = segmenty("cil", Object.entries(POV.stanice).map(([k, v]) => ({ hodnota: k, nazev: v.nazev })), S.cil, "Stanice");
-  naZmenu($("#stanice"), "cil", (v) => { S.cil = v; prvni = true; ukaz(); });
+  naZmenu($("#stanice"), "cil", (v) => { S.cil = v; prvni = true; ukaz(); naMape(); });
   ukaz();
 }
 

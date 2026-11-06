@@ -66,10 +66,10 @@ flowchart LR
 
 ## Web
 
-Na [povodnovy-pult.netlify.app](https://povodnovy-pult.netlify.app) jsou dvě stránky. **Dnes** ukazuje hladinu teď a předpověď na 12, 24 a 36 hodin s rozmezím nejistoty a vedle ní oficiální předpověď ČHMÚ. GitHub Action ji každou hodinu přepočítá z živých dat. **Povodně** přehraje šest historických povodní: 3D mapu rozlivu, jak přesná byla předpověď a co model hlásil hodinu po hodině.
+Na [povodnovy-pult.netlify.app](https://povodnovy-pult.netlify.app) jsou dvě stránky. **Dnes** otevře rovnou 3D mapu, ve které voda doběhne z dneška do zítřka a čas se dá posouvat až 36 hodin dopředu. Pod ní je hladina teď a předpověď na 12, 24 a 36 hodin s rozmezím nejistoty a vedle ní oficiální předpověď ČHMÚ. GitHub Action obojí každou hodinu přepočítá z živých dat. **Povodně** přehraje šest historických povodní: 3D mapu rozlivu, jak přesná byla předpověď a co model hlásil hodinu po hodině.
 
 <p align="center">
-  <img src="docs/readme/web_dnes.jpg" width="49%" alt="Stránka Dnes: hladina teď a předpověď">
+  <img src="docs/readme/web_dnes.jpg" width="49%" alt="Stránka Dnes: 3D mapa předpovědi, pod ní hladina teď a za 12, 24 a 36 hodin">
   <img src="docs/readme/web_povodne.jpg" width="49%" alt="Stránka Povodně: co model hlásil hodinu po hodině">
 </p>
 

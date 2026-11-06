@@ -6,23 +6,24 @@ Statický web ve složce `web/`. Na Netlify se publikuje celá složka tak, jak 
 
 | Cesta | Co to je | Odkud se bere |
 |---|---|---|
-| `web/index.html` | Dnes: hladina teď a za 12, 24 a 36 h v jedné kartě, graf posledních 72 hodin a vodočet, průtoky a srážky sbalené v Podrobnostech, dole odkaz na povodeň 2013; staré odkazy s `?povoden=…`, `?cas=…` nebo `?dnesek=0` přesměruje na Povodně | ručně |
+| `web/index.html` | Dnes: nahoře mapa předpovědi (iframe `mapa/dnes.html`, přepínač stanice řídí mapu i čísla), pod ní hladina teď a za 12, 24 a 36 h v jedné kartě, graf posledních 72 hodin a vodočet, průtoky a srážky sbalené v Podrobnostech, dole odkaz na povodeň 2013; staré odkazy s `?povoden=…`, `?cas=…` nebo `?dnesek=0` přesměruje na Povodně | ručně |
 | `web/povodne.html` | Povodně: jeden výběr povodně a města pro celou stránku; mapa (rozliv nebo voda v řekách v iframe, načte se až na klik), jak přesná byla předpověď (čtyři čísla, graf celé povodně, tabulka po dnech sbalená, přepínač 12/24/36 h) a co model hlásil hodinu po hodině (posuvník času, karta, graf s tím, co pak přišlo, vodočet); stav v adrese (`povoden`, `cil`, `h`, `cas`, `vrstva`) | ručně |
 | `web/kvalita.html`, `web/mapa.html`, `web/animace.html` | jen přesměrování na `povodne.html` se stejnými parametry (odkaz z decku na `mapa.html?povoden=2013-06&cil=decin` dál funguje) | ručně |
 | `web/prezentace/index.html` | HTML deck; otvírá se vždy jako `/prezentace/` (bez `index.html`, jinak server přesměruje a deck se nenačte); odkazy z decku do aplikace vedou na `../index.html?povoden=…` (na Netlify funguje bez přesměrování, ověřeno); lokální `npx serve` dotaz u `index.html` zahazuje, proto lokálně testovat přes `/?povoden=…` | ručně |
 | `web/css/`, `web/js/`, `web/fonts/`, `web/img/` | vzhled, skripty, písma (OFL), obrázky | ručně |
 | `web/data/povodne.json`, `rada_*.json`, `metriky.json`, `model_ridge_vse_*.json` | předpočítaná data; povodně z validace modelem `ridge` (učený 2006–2018), Boris 9/2024 modelem `ridge_test` (učený na všem do 2020 jako při finálním testu, stejná čísla jako v `docs/PREHLED.md` a v prezentaci: 14. 9. 2024 11:00 předpověď 577 cm, vrchol 649 předpovězen na 611 cm, 3. stupeň 27 h předem); povodeň 6/2013 (`zdroj` „trenink“) modelem `ridge_bez2013` (učený do 2020 bez této povodně a 20 dní kolem ní, protože 2013 je v tréninku; předtrénuje se sám při prvním běhu) | `python src/export_web.py --vse` |
 | `web/data/dnesek.json` | živá předpověď na dnešek | `python src/dnesek_export.py` |
+| `web/mapa/dnes.html` | mapa předpovědi na stránce Dnes: stejná stránka jako mapy povodní, osa od 24 h změřené hladiny po 36 h předpovědi, po načtení voda sama doběhne na +24 h; obsahuje token Mapboxu, proto není v Gitu | `python src/dnesek_export.py` |
 | `web/mapa/*.html`, `web/animace/*.html` | mapy a animace povodní | `python src/export_web.py --vse`; obsahují token Mapboxu, proto nejsou v Gitu |
 
 `web/data/dnesek.json` v Gitu je jen snímek z posledního lokálního běhu. Na webu ho každou hodinu přepíše GitHub Action (viz níž), do Gitu se nezapisuje. Když ho spustíš lokálně, ukáže se v `git status` jako změněný; commitnout ho můžeš, nemusíš.
 
 ## Dnešek (`src/dnesek_export.py`)
 
-Stáhne operativní data ČHMÚ (`app/aktualni.py`), spočítá předpověď modelem `ridge_vse` (učený na všem do 2025) s rozmezím nejistoty (`app/predikce.py`) a přidá předpověď srážek z Open-Meteo (`app/pocasi.py`). Zapíše `web/data/dnesek.json`, běží asi 15 s, nepotřebuje `.env` ani token.
+Stáhne operativní data ČHMÚ (`app/aktualni.py`), spočítá předpověď modelem `ridge_vse` (učený na všem do 2025) s rozmezím nejistoty (`app/predikce.py`) a přidá předpověď srážek z Open-Meteo (`app/pocasi.py`). Zapíše `web/data/dnesek.json` a `web/mapa/dnes.html`, běží asi 15 s. Předpověď nepotřebuje `.env` ani token, mapa `MAPBOX_TOKEN` (bez něj je na stránce jen hláška).
 
-- `ok=true`: `cas_cesky`, `stari_h`, `upozorneni` (věty, co chybí a co je dopočtené), `stanice.decin` a `stanice.usti` (`ted`, `stupen`, `pred`, `dolni`, `horni`, `chmu` po horizontech 12/24/36, `veta` pro laika), `tabulka` (průtoky 12 stanic, `dopocteno` u Mělníka a Nymburka), `historie` (posledních 72 h pro graf), `srazky`.
-- `ok=false`: `chyba` (věta), v `posledni` zůstane poslední úspěšný stav, aby web měl co ukázat a napsal k tomu, že je starý. Skript přitom neskončí chybou, aby nasazení proběhlo. Když `posledni` chybí nebo se `dnesek.json` nenačte, web přepne na přehrávání historie a napíše to nahoře.
+- `ok=true`: `cas_cesky`, `stari_h`, `upozorneni` (věty, co chybí a co je dopočtené), `stanice.decin` a `stanice.usti` (`ted`, `stupen`, `pred`, `dolni`, `horni`, `chmu` po horizontech 12/24/36, `veta` pro laika), `tabulka` (průtoky 12 stanic, `dopocteno` u Mělníka a Nymburka), `historie` (posledních 72 h pro graf a mapu: hladiny Děčína a Ústí, průtoky všech stanic), `srazky`.
+- `ok=false`: `chyba` (věta), v `posledni` zůstane poslední úspěšný stav, aby web měl co ukázat a napsal k tomu, že je starý. Skript přitom neskončí chybou, aby nasazení proběhlo. Mapa v tom případě vznikne z `posledni`. Když `posledni` chybí nebo se `dnesek.json` nenačte, stránka Dnes mapu schová a napíše to nahoře s odkazem na povodně.
 
 ## Lokálně
 
